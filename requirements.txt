@@ -1,6 +1,15 @@
 # 知识库文档站依赖
 # 安装命令：pip install -r requirements.txt
 mkdocs-material>=9.5
-# 可选（进阶）：
-# mkdocs-minify-plugin     # 压缩 HTML/CSS/JS，让网站更小更快
-# mkdocs-git-revision-date-localized-plugin  # 显示每页「最后更新时间」
+
+# Obsidian [[wikilink]] -> 站点链接（自动转换，无需手动改 Markdown）
+mkdocs-roamlinks-plugin
+
+# 每页显示「最后更新时间」（基于 git 提交记录）
+mkdocs-git-revision-date-localized-plugin
+
+# 压缩 HTML/CSS/JS，让网站更小更快
+mkdocs-minify-plugin
+
+# 中文搜索分词（Material 搜索自动调用，提升中文检索效果）
+jieba

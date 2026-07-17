@@ -9,60 +9,103 @@ docs_dir: docs
 # 注：Scripts/ 在 docs/ 之外，MkDocs 不会处理它，无需额外排除
 
 # 主题：Material（功能最全、颜值最高，中文界面完善）
+# 配色对齐参考项目 Power's Wiki：浅色白底 + 蓝色强调，深色黑底 + 蓝色强调
 theme:
   name: material
   language: zh
+  custom_dir: overrides        # 自定义主题覆盖（本地字体 preload 等）
+  font: false                  # 关闭 Material 默认字体加载，改用 extra.css 的本地字体（国内更稳）
+  logo: img/logo.svg           # 左上角站点图标
+  favicon: img/logo.svg
   palette:
-    # 浅色（默认）
+    # 浅色（默认）：白底 + 蓝色强调
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: indigo
-      accent: indigo
+      primary: white
+      accent: blue
       toggle:
         icon: material/weather-night
         name: 切换深色
-    # 深色
+    # 深色：黑底 + 蓝色强调
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: indigo
-      accent: indigo
+      primary: black
+      accent: blue
       toggle:
         icon: material/weather-sunny
         name: 切换浅色
   features:
-    - navigation.sections      # 左侧导航按文件夹分区
+    - navigation.tabs          # 顶部标签导航（参考项目风格，更简洁）
+    - navigation.sections      # 左侧导航按文件夹分区（嵌套分组）
+    - navigation.indexes       # 分区标题有专属首页（index.md），点击分区名可进入
+    - navigation.footer        # 底部「上一篇 / 下一篇」翻页
     - navigation.top           # 右侧「回到顶部」
     - navigation.tracking      # 滚动时高亮当前章节
+    - toc.follow               # 右侧目录跟随滚动
     - content.code.copy        # 代码块一键复制
     - search.suggest           # 搜索联想
     - search.highlight         # 搜索结果高亮
-    - toc.follow               # 右侧目录跟随滚动
 
-# 搜索（Material 自带，无需额外安装）
+# 插件
 plugins:
-  - search
+  - search                                             # 站内搜索（Material 自带）
+  - roamlinks                                          # Obsidian [[wikilink]] -> 站点链接（自动转换）
+  - git-revision-date-localized:                       # 每页显示「最后更新时间」
+      enable_creation_date: true
+      locale: zh
+  - minify:                                            # 压缩产物，更小更快
+      minify_html: true
+      minify_css: true
+      minify_js: true
+      cache_safe: true
 
-# Markdown 扩展：表格、代码高亮、折叠块、提示框等
+# Markdown 扩展：表格、代码高亮、折叠块、提示框、Mermaid 图、数学公式等
 markdown_extensions:
   - admonition
   - pymdownx.details
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.highlight:
       anchor_linenums: true
   - pymdownx.inlinehilite
-  - pymdownx.tabbed:
-      alternate_style: true
+  - pymdownx.betterem
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.snippets
+  - attr_list
+  - md_in_html
   - toc:
       permalink: true
 
-# 导航（手动维护，顺序可控，最直观）
+# 自定义样式与脚本
+extra_css:
+  - stylesheets/extra.css
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js
+
+# 导航（手动维护，顺序可控；结构对齐参考项目：一级分类 -> 分区首页/index.md -> 子页面）
 # 想偷懒？把整个 nav: 块删掉，MkDocs 会自动按文件名列出所有页面
 nav:
   - 首页: README.md
   - 知识库总索引: 00-索引.md
-  - 工作与项目: 工作与项目/MOC.md
-  - 技术与编程: 技术与编程/MOC.md
-  - 阅读与学习: 阅读与学习/MOC.md
-  - 生活与兴趣: 生活与兴趣/MOC.md
-  - 收件箱: Inbox/把待整理笔记放这里.md
-  - 笔记模板: Templates/笔记模板.md
+  - 工作与项目:
+      - 工作与项目/index.md
+  - 技术与编程:
+      - 技术与编程/index.md
+  - 阅读与学习:
+      - 阅读与学习/index.md
+  - 生活与兴趣:
+      - 生活与兴趣/index.md
+  - 博客:
+      - 博客/index.md
+      - 博客/2026-07-17-示例随笔.md
+  - 收件箱:
+      - Inbox/把待整理笔记放这里.md
+  - 笔记模板:
+      - Templates/笔记模板.md

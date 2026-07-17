@@ -1,0 +1,36 @@
+/* ============================================================
+   知识库自定义样式（对齐 Power's Wiki 的简洁视觉签名）
+   ============================================================ */
+
+/* 文字选取高亮：海玉色 + 黑字 */
+::selection {
+  background: aquamarine;
+  color: black;
+}
+
+/* 锚点跳转更顺滑 */
+html {
+  scroll-behavior: smooth;
+}
+
+/* 图片统一加黑色描边 + 白底，观感更干净（保持响应式，不强制固定宽度） */
+img:not([alt="badge"]):not([alt="logo"]) {
+  max-width: 100%;
+  border: 2px solid #000;
+  border-radius: 2px;
+  background: white;
+  padding: 3px;
+}
+
+/* —— 本地中文字体（不走 Google CDN，国内更稳）—— */
+@font-face {
+  font-family: "Noto Sans SC - local";
+  src: url("NotoSansSC-UI-subset.woff") format("woff");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+  unicode-range: U+0000-00FF, U+2013, U+2014, U+2018, U+2019, U+201C, U+201D, U+2022, U+3001, U+3002, U+300A, U+300B;
+}
+:root {
+  --md-text-font: "Noto Sans SC - local", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Segoe UI", Arial, sans-serif;
+}
