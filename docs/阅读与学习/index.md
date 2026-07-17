@@ -20,5 +20,8 @@ tags: [MOC, 阅读]
 ### 🔗 参考资料
 - 
 
+### 📖 教程
+- [Static Badge 完全教程](static-badge-教程.md) — shields.io 静态徽章：URL 拼装、`alt="badge"` 去边框、链接包裹可跳转
+
 ---
 相关：[← 总索引](../00-索引.md)

@@ -52,6 +52,7 @@ plugins:
   - roamlinks                                          # Obsidian [[wikilink]] -> 站点链接（自动转换）
   - git-revision-date-localized:                       # 每页显示「最后更新时间」
       enable_creation_date: true
+      enable_git_follow: false                          # 避免新建页面时间戳诡异告警
       locale: zh
   - minify:                                            # 压缩产物，更小更快
       minify_html: true
@@ -93,6 +94,7 @@ extra_javascript:
 # 想偷懒？把整个 nav: 块删掉，MkDocs 会自动按文件名列出所有页面
 nav:
   - 首页: README.md
+  - 使用指南: 使用指南.md
   - 知识库总索引: 00-索引.md
   - 工作与项目:
       - 工作与项目/index.md
@@ -116,6 +118,7 @@ nav:
               - 硬件与半导体/硬件设计/基础知识/ADC与DAC基础知识.md
   - 阅读与学习:
       - 阅读与学习/index.md
+      - 阅读与学习/static-badge-教程.md
   - 生活与兴趣:
       - 生活与兴趣/index.md
   - 博客:
