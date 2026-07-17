@@ -40,6 +40,12 @@ https://img.shields.io/badge/<LABEL>-<MESSAGE>-<COLOR>
 
 > 注意：中文可以直接写在 URL 里（shields.io 支持 UTF-8），但**空格必须编码成 `%20`**，否则链接会断。
 
+下面就是上面三行**真实渲染出来**的样子（点击可跳到 shields.io 徽章页；无边框是因为 `alt="badge"`，这一节后面会讲）：
+
+[![badge](https://img.shields.io/badge/build-passing-brightgreen?style=flat-square)](https://shields.io/badges)
+[![badge](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](https://shields.io/badges)
+[![badge](https://img.shields.io/badge/版本-v1.2.3-orange?style=flat-square)](https://shields.io/badges)
+
 ---
 
 ## 2. URL 的完整拼装规则
@@ -78,6 +84,15 @@ badge/Last%20commit-2026--07--17-orange
 | `plastic` | 强立体高光 |
 | `for-the-badge` | 大写粗体、大圆角（适合社交类） |
 | `social` | 仿 GitHub 社交按钮 |
+
+下面是**同一组文字**在不同 `style` 下的真实渲染（左→右：`flat` / `flat-square` / `plastic` / `for-the-badge`）：
+
+[![badge](https://img.shields.io/badge/style-flat-9cf?style=flat)](https://shields.io/badges)
+[![badge](https://img.shields.io/badge/style-flat--square-9cf?style=flat-square)](https://shields.io/badges)
+[![badge](https://img.shields.io/badge/style-plastic-9cf?style=plastic)](https://shields.io/badges)
+[![badge](https://img.shields.io/badge/style-for--the--badge-9cf?style=for-the-badge)](https://shields.io/badges)
+
+> 本知识库首页统一用 `flat-square`（倒数第二个），左右齐平、无阴影，最像 wiki-power。
 
 加风格只需在 URL 末尾加 `?style=flat-square`：
 
@@ -121,6 +136,10 @@ shields.io 只管**出图**。图本身是个 `<img>`，默认不跳转。要让
 
 > 这正是 wiki-power 首页的做法：他把每个 badge 都用链接包起来，所以「能跳转」。
 > 我一开始写的是裸 `![...]`（没有外层链接），所以不跳转——这就是差异来源。
+
+下面这个徽章是**真的能点**的：点它会跳到本站的「硬件与半导体」分区（试试看）。
+
+[![badge](https://img.shields.io/badge/点击我跳到-硬件与半导体-9cf?style=flat-square)](/硬件与半导体/)
 
 ### 办法 B：用 shields 的 `link` 查询参数（嵌 HTML 时用）
 
@@ -171,6 +190,23 @@ img:not([alt="badge"]):not([alt="logo"]) {
 [![badge](https://img.shields.io/badge/知识库-Wiki-blue?style=flat-square){ loading=lazy }](/)
 ```
 
+### 4.4 对比演示：无边框 vs 带外边框（本文重点）
+
+同样是 `知识库-Wiki-blue` 这个徽章，**只差在 `alt` 写没写 `badge`、有没有用链接包起来**，渲染结果天差地别：
+
+**① 现在用的 · 无边框版**（`alt="badge"`，且用链接包裹 → 能跳、无框）：
+
+[![badge](https://img.shields.io/badge/知识库-Wiki-blue?style=flat-square)](/)
+
+**② 早期翻车的 · 带外边框旧版**（alt 写成了描述文字 `Last commit`、且没包链接 → 不跳、带框）：
+
+![Last commit](https://img.shields.io/badge/Last%20commit-2026--07--17-orange?style=flat-square)
+
+> 第 ② 个就是本文开头说的「带框框的那个 Static Badge」：因为 `alt` 不是 `badge`，`extra.css` 里的 `img:not([alt="badge"])` 规则就给它加了 2px 黑边 + 白底 + 内边距；同时它没被链接包裹，点了也不会跳。
+> 把它和 ① 并排看，就能直观感受到「`alt="badge"` + 外层链接」这套组合拳的威力。
+
+如果你想在文章里**主动展示一个带框徽章**（比如做对比教学），只要把 `alt` 写成非 `badge` 的字（如 `alt="带框示例"`）即可，无需改 CSS——边框规则会自动套上去。
+
 ---
 
 ## 5. 实战：复刻 wiki-power 首页 badge
@@ -190,6 +226,23 @@ img:not([alt="badge"]):not([alt="logo"]) {
 [![badge](https://img.shields.io/badge/生活与兴趣-Life-orange?style=flat-square){ loading=lazy }](/生活与兴趣/)
 [![badge](https://img.shields.io/badge/博客-Blog-ff69b4?style=flat-square){ loading=lazy }](/博客/)
 ```
+
+下面就是上面那段**真实渲染出来的首页徽章行**（全部 `alt="badge"`、可点击、无边框；`Last commit` / `Contact` 因仓库未推公网暂用 `#` 占位）：
+
+[![badge](https://img.shields.io/badge/Last%20commit-2026--07--17-orange?style=flat-square)](#)
+[![badge](https://img.shields.io/badge/Contact%20%26%20Subscribe-me-blue?style=flat-square)](#)
+[![badge](https://img.shields.io/badge/知识库-Wiki-blue?style=flat-square)](/)
+[![badge](https://img.shields.io/badge/硬件与半导体-Hardware-9cf?style=flat-square)](/硬件与半导体/)
+[![badge](https://img.shields.io/badge/技术与编程-Tech-brightgreen?style=flat-square)](/技术与编程/)
+[![badge](https://img.shields.io/badge/阅读与学习-Read-yellow?style=flat-square)](/阅读与学习/)
+[![badge](https://img.shields.io/badge/生活与兴趣-Life-orange?style=flat-square)](/生活与兴趣/)
+[![badge](https://img.shields.io/badge/博客-Blog-ff69b4?style=flat-square)](/博客/)
+
+首页下方还用 `.md-button` 做了几个大按钮（Material 的按钮样式），真实渲染如下：
+
+[硬件 & 半导体](/硬件与半导体/){ .md-button }
+[技术与编程](/技术与编程/){ .md-button }
+[阅读与学习](/阅读与学习/){ .md-button }
 
 要点回顾：
 
