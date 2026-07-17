@@ -1,0 +1,62 @@
+# 我的知识库（Obsidian Vault）
+
+这是一个用 Obsidian 管理的个人知识库，同时可用 [MkDocs](https://www.mkdocs.org/) + Material 主题一键构建成文档网站。目录结构如下：
+
+```
+wiki/                            # Obsidian Vault 根目录（也是 MkDocs 项目根）
+├── mkdocs.yml                   # MkDocs 配置（文档站入口）
+├── requirements.txt             # 文档站 Python 依赖
+├── .gitignore                   # 已忽略 site/ 构建产物
+├── docs/                        # ← MkDocs 文档源（所有笔记都在这里）
+│   ├── 00-索引.md               #   总入口 / 知识地图
+│   ├── README.md                #   文档站首页
+│   ├── Inbox/                   #   全局收件箱：未分类笔记先丢这里
+│   ├── 工作与项目/              #   领域文件夹
+│   │   ├── Inbox/               #     该领域待整理
+│   │   └── MOC.md               #     领域索引（Map of Content）
+│   ├── 技术与编程/  （同上结构）
+│   ├── 阅读与学习/  （同上结构）
+│   ├── 生活与兴趣/  （同上结构）
+│   └── Templates/               #   笔记模板
+├── Scripts/
+│   └── classify.py              # 自动分类脚本（扫描 docs/ 下的 Inbox）
+└── site/                        # 构建产物（mkdocs build 生成，勿提交）
+```
+
+> 说明：笔记统一放在 `docs/` 下，是因为 MkDocs 要求文档源必须是配置文件的**子目录**。Obsidian 会照常把整个 `wiki/` 当 vault，子文件夹里的笔记完全正常。
+
+## 快速开始
+
+1. 用 Obsidian 打开本文件夹（`File → Open folder as vault`）。
+2. 新笔记写到 `docs/Inbox/`。
+3. 在终端运行自动分类：
+
+   ```bash
+   python Scripts/classify.py
+   ```
+
+   脚本会扫描 `docs/` 下所有 `Inbox/`，按内容把 `.md` 笔记移动到对应领域，并写入 `category` 与 `tags`。
+4. 已归位的笔记，到对应领域的 `MOC.md` 里做链接和整理。
+
+## 构建文档网站（MkDocs）
+
+只需两步：
+
+```bash
+pip install -r requirements.txt   # 首次：安装 mkdocs-material
+mkdocs build                      # 构建，产物在 site/
+mkdocs serve                      # 本地预览，浏览器打开 http://127.0.0.1:8000
+```
+
+> 部署：把 `site/` 整个目录上传到 GitHub Pages / Vercel / 任意静态托管即可。
+
+## 自动分类原理
+
+`Scripts/classify.py` 对每个收件箱里的笔记：
+
+- 提取标题 + 正文，按关键词命中数给每个领域打分；
+- 分数最高的领域即为其归属（至少需要命中 1 个关键词）；
+- 命中后在笔记 frontmatter 写入 `category: <领域>` 与对应 `tags`；
+- 已带 `category` 且属于已知领域的笔记会被跳过，不重复搬运。
+
+> 想新增领域，只需：① 建一个同名文件夹（含 `Inbox/`）；② 在 `classify.py` 的 `DOMAINS` 里加一组关键词。

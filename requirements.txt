@@ -1,0 +1,6 @@
+# 知识库文档站依赖
+# 安装命令：pip install -r requirements.txt
+mkdocs-material>=9.5
+# 可选（进阶）：
+# mkdocs-minify-plugin     # 压缩 HTML/CSS/JS，让网站更小更快
+# mkdocs-git-revision-date-localized-plugin  # 显示每页「最后更新时间」

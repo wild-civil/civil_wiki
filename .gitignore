@@ -1,0 +1,11 @@
+# MkDocs 构建产物
+site/
+
+# MkDocs Material 资源缓存
+.material/
+
+# 一些参考文件
+Reference
+
+# 
+.workbuddy

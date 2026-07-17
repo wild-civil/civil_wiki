@@ -1,0 +1,68 @@
+site_name: 我的知识库
+site_description: 基于 Obsidian Vault 构建的个人知识库文档站
+# site_url: https://你的用户名.github.io/wiki   # 部署到 GitHub Pages 后再填，本地预览留空即可
+
+# 文档源：vault 内的 docs/ 子目录（MkDocs 要求 docs_dir 必须是配置文件的子目录）
+docs_dir: docs
+
+# 构建产物输出到 site/（已加入 .gitignore，不要提交）
+# 注：Scripts/ 在 docs/ 之外，MkDocs 不会处理它，无需额外排除
+
+# 主题：Material（功能最全、颜值最高，中文界面完善）
+theme:
+  name: material
+  language: zh
+  palette:
+    # 浅色（默认）
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: 切换深色
+    # 深色
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: 切换浅色
+  features:
+    - navigation.sections      # 左侧导航按文件夹分区
+    - navigation.top           # 右侧「回到顶部」
+    - navigation.tracking      # 滚动时高亮当前章节
+    - content.code.copy        # 代码块一键复制
+    - search.suggest           # 搜索联想
+    - search.highlight         # 搜索结果高亮
+    - toc.follow               # 右侧目录跟随滚动
+
+# 搜索（Material 自带，无需额外安装）
+plugins:
+  - search
+
+# Markdown 扩展：表格、代码高亮、折叠块、提示框等
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.tabbed:
+      alternate_style: true
+  - toc:
+      permalink: true
+
+# 导航（手动维护，顺序可控，最直观）
+# 想偷懒？把整个 nav: 块删掉，MkDocs 会自动按文件名列出所有页面
+nav:
+  - 首页: README.md
+  - 知识库总索引: 00-索引.md
+  - 工作与项目: 工作与项目/MOC.md
+  - 技术与编程: 技术与编程/MOC.md
+  - 阅读与学习: 阅读与学习/MOC.md
+  - 生活与兴趣: 生活与兴趣/MOC.md
+  - 收件箱: Inbox/把待整理笔记放这里.md
+  - 笔记模板: Templates/笔记模板.md
