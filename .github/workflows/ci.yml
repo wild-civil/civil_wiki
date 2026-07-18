@@ -3,7 +3,7 @@ name: ci
 on:
   push:
     branches:
-      - master          # 你的主分支名（当前是 master）
+      - main            # 主分支名（本地 master 已 rename 为 main）
 
 permissions:
   contents: write       # 允许 mkdocs gh-deploy 推送到 gh-pages 分支

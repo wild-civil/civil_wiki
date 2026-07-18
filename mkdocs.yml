@@ -1,12 +1,12 @@
 site_name: 我的知识库
 site_description: 基于 Obsidian Vault 构建的个人知识库文档站
 
-# ⚠️ 部署到 GitHub Pages 前把 your-username 改成你的 GitHub 用户名；仓库名若不是 wiki 则同时改 /wiki
-site_url: https://your-username.github.io/wiki/
+# 部署到 GitHub Pages：站点地址（决定资源路径 / canonical / Sitemap）
+site_url: https://wild-civil.github.io/civil_wiki/
 
-# GitHub 仓库建好后再启用（取消下面两行的注释，并替换用户名/仓库名）
-# repo_url: https://github.com/your-username/wiki
-# edit_uri: edit/master/docs
+# GitHub 仓库（启用后顶栏出现仓库图标 + 每页「Edit on GitHub」）
+repo_url: https://github.com/wild-civil/civil_wiki
+edit_uri: edit/main/docs
 
 # 文档源：vault 内的 docs/ 子目录（MkDocs 要求 docs_dir 必须是配置文件的子目录）
 docs_dir: docs
