@@ -3,4 +3,20 @@
 {% block extrahead %}
   {{ super() }}
   <link rel="preload" href="{{ 'stylesheets/NotoSansSC-UI-subset.woff' | url }}" as="font" type="font/woff" crossorigin>
+
+  {% if config.site_url and page %}
+  {# Open Graph / Twitter Card 社交分享卡片（博客改造 item 8）#}
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{ page.meta.title | default(config.site_name, true) }}">
+  <meta property="og:description" content="{{ page.meta.description | default(config.site_description, true) }}">
+  <meta property="og:url" content="{{ page.canonical_url }}">
+  <meta property="og:image" content="{{ config.site_url }}assets/images/social.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ page.meta.title | default(config.site_name, true) }}">
+  <meta name="twitter:description" content="{{ page.meta.description | default(config.site_description, true) }}">
+  <meta name="twitter:image" content="{{ config.site_url }}assets/images/social.png">
+  {% endif %}
 {% endblock %}

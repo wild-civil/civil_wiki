@@ -1,6 +1,12 @@
 site_name: 我的知识库
 site_description: 基于 Obsidian Vault 构建的个人知识库文档站
-# site_url: https://你的用户名.github.io/wiki   # 部署到 GitHub Pages 后再填，本地预览留空即可
+
+# ⚠️ 部署到 GitHub Pages 前把 your-username 改成你的 GitHub 用户名；仓库名若不是 wiki 则同时改 /wiki
+site_url: https://your-username.github.io/wiki/
+
+# GitHub 仓库建好后再启用（取消下面两行的注释，并替换用户名/仓库名）
+# repo_url: https://github.com/your-username/wiki
+# edit_uri: edit/master/docs
 
 # 文档源：vault 内的 docs/ 子目录（MkDocs 要求 docs_dir 必须是配置文件的子目录）
 docs_dir: docs
@@ -60,6 +66,10 @@ plugins:
       minify_js: true
       cache_safe: true
   - tags                                               # 标签聚合：每页 tags 自动汇总到 /标签/ 索引页
+
+# 构建后 hook：生成 sitemap.xml（博客改造 item 9），零第三方依赖
+hooks:
+  - Scripts/sitemap_hook.py
 
 # Markdown 扩展：表格、代码高亮、折叠块、提示框、Mermaid 图、数学公式等
 markdown_extensions:
@@ -133,6 +143,9 @@ nav:
       - 生活与兴趣/index.md
   - 博客:
       - 博客/index.md
+      - 博客改造日志:
+          - 博客/博客改造日志/index.md
+          - 博客/博客改造日志/2026-07-19-改造全记录.md
   - "🛠 工具":
       - 使用指南: 使用指南.md
       - 知识库总索引: 00-索引.md

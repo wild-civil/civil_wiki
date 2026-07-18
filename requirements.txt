@@ -13,3 +13,6 @@ mkdocs-minify-plugin
 
 # 中文搜索分词（Material 搜索自动调用，提升中文检索效果）
 jieba
+
+# 生成社交分享卡片（1200x630 PNG），无需 cairosvg
+Pillow
