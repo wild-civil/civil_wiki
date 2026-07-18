@@ -1,0 +1,35 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - master          # 你的主分支名（当前是 master）
+
+permissions:
+  contents: write       # 允许 mkdocs gh-deploy 推送到 gh-pages 分支
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # 拉全量历史，git-revision-date 插件才能取到正确时间
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      # 缓存 Material 的依赖，加速后续构建
+      - run: echo "cache_id=$(date --utc +%V)" >> "$GITHUB_ENV"
+      - uses: actions/cache@v4
+        with:
+          key: mkdocs-material-${{ env.cache_id }}
+          path: .cache
+          restore-keys: |
+            mkdocs-material-
+
+      - run: pip install -r requirements.txt
+
+      # 构建并发布到 gh-pages 分支
+      - run: mkdocs gh-deploy --force

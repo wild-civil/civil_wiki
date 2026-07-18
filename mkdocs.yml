@@ -59,6 +59,7 @@ plugins:
       minify_css: true
       minify_js: true
       cache_safe: true
+  - tags                                               # 标签聚合：每页 tags 自动汇总到 /标签/ 索引页
 
 # Markdown 扩展：表格、代码高亮、折叠块、提示框、Mermaid 图、数学公式等
 markdown_extensions:
@@ -88,7 +89,7 @@ extra_css:
   - stylesheets/extra.css
 extra_javascript:
   - javascripts/mathjax.js
-  - https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js
+  - javascripts/mathjax/tex-mml-svg.js   # 本地化 MathJax（SVG 输出，无需外部字体；不再走 cdnjs CDN）
 
 # 导航（手动维护，顺序可控；结构对齐参考项目：一级分类 -> 分区首页/index.md -> 子页面）
 # 想偷懒？把整个 nav: 块删掉，MkDocs 会自动按文件名列出所有页面
@@ -132,11 +133,9 @@ nav:
       - 生活与兴趣/index.md
   - 博客:
       - 博客/index.md
-      - 博客/2026-07-17-示例随笔.md
   - "🛠 工具":
       - 使用指南: 使用指南.md
       - 知识库总索引: 00-索引.md
-      - 收件箱:
-          - Inbox/把待整理笔记放这里.md
+      - 标签: 标签.md
       - 笔记模板:
           - Templates/笔记模板.md
