@@ -23,7 +23,9 @@ graph LR
 
 ## 笔记目录
 
-- [CH582M 特性与概览](BLE%20MCU/CH582M%20特性与概览.md)
+- [CH582M 特性与概览](BLE%20MCU&SOC/WCH/CH58(2)3M/CH582M%20特性与概览.md) — 核心规格、外设速查、系列选型对比
+- [CH582M Flash 存储与 SNV 详解](BLE%20MCU&SOC/WCH/CH58(2)3M/CH582M%20Flash%20存储与%20SNV%20详解.md) — Flash 分区地图、配对绑定机制、外接存储扩展方案
+- [CH582M DataFlash 地址偏移实践](BLE%20MCU&SOC/WCH/CH58(2)3M/CH582M%20DataFlash%20地址偏移实践.md) — 自定义配置区与 BLE SNV 共存时的地址规划
 
 ---
 
