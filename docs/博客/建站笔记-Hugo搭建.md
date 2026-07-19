@@ -213,7 +213,7 @@ jobs:
 4. **FontAwesome 本地化成本高** → 直接用 CDN，构建零负担。
 5. **CI 用非 extended 版 hugo** → 若用 SCSS 会报错；统一 `extended: true`。
 6. **没本地先验证** → 至少跑一次 `hugo --minify` 看 `public/`。
-7. **Pages Source 设成 main** → 站点 404；必须 `gh-pages`（见 [分支区别笔记 →](建站笔记-GitHubPages分支区别.md)）。
+7. **项目页把 Pages Source 设成 main** → 站点 404；必须 `gh-pages`（用户页则相反，默认就是 `main` 根目录，见 [分支区别笔记 →](建站笔记-GitHubPages分支区别.md)）。
 
 ---
 

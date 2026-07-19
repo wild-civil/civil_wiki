@@ -47,7 +47,7 @@ GitHub Pages 本质上是一个「静态文件服务器」：你告诉它
 
 ## 三、MkDocs 与 Hugo 殊途同归
 
-不管你用哪个引擎，**最终都落到 `gh-pages`**：
+不管你用哪个引擎，**项目页（Project Pages）的成品最终都落在 `gh-pages`**：
 
 | 引擎 | 构建命令 | 谁把产物推到 `gh-pages` | Pages Source |
 |---|---|---|---|
@@ -118,7 +118,37 @@ main（源码）                  gh-pages（成品）
 
 ---
 
-## 七、小结
+## 七、重要例外：用户页（User Pages）为什么「就是 main」
+
+上面「成品落在 `gh-pages`」是**项目页（Project Pages）**的默认行为。但 GitHub Pages 还有
+一种特殊仓库——**用户页 / 组织页（User / Org Pages）**：
+
+- 仓库名必须恰好是 `<用户名>.github.io`（例如 `wild-civil.github.io`）。
+- GitHub **默认直接从 `main`/`master` 分支的根目录** serve，**不经过 `gh-pages`**。
+- 站点地址就是 `https://<用户名>.github.io/`（没有 `/仓库名` 后缀）。
+
+所以本站最早用 Hexo 搭的博客，仓库就是 `wild-civil.github.io`，它的成品（Hexo 构建出的
+`public/` 内容）被直接推到 `main` 分支根目录、Pages 直接 serve——这就是它「就是 main」的原因。
+
+> **关键结论：决定走 `main` 还是 `gh-pages` 的，不是引擎（Hexo/Hugo/MkDocs），而是仓库类型。**
+> - 仓库名 = `<用户名>.github.io` → **用户页** → 默认 `main`/`master` 根目录。
+> - 其他仓库名（如 `civil_wiki`、`civil_nav`）→ **项目页** → 默认 `gh-pages`。
+>
+> 当然，用户页也能在 `Settings → Pages` 里手动改成 `gh-pages` 或 `main` 的 `/docs` 目录；
+> 只是默认与最常见的做法就是「用户页用默认分支根、项目页用 gh-pages」。
+> 本站 `wild-civil.github.io`（Hexo）还配了自定义域名 `blog2.hanvon.top`，因此
+> `wild-civil.github.io` 会 301 跳转到 `blog2.hanvon.top`。
+
+| 维度 | 用户页（`<user>.github.io`） | 项目页（其他仓库名） |
+|---|---|---|
+| 仓库名 | 必须 `<user>.github.io` | 任意 |
+| 默认 Source | `main`/`master` 分支根目录 | `gh-pages` 分支 |
+| 站点地址 | `https://<user>.github.io/` | `https://<user>.github.io/<repo>/` |
+| 典型例子 | `wild-civil.github.io`（Hexo 博客） | `civil_wiki`（MkDocs）、`civil_nav`（Hugo） |
+
+---
+
+## 八、小结
 
 - `main` 是「厨房」，`gh-pages` 是「上菜的盘子」；Pages 只端盘子，不进厨房。
 - 部署失败先检查三件事：**Source 是否 gh-pages**、**gh-pages 里有没有 index.html**、
