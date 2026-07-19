@@ -43,6 +43,12 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://wiki.hanvon.top/博客/建站教程-从零搭建多站点MkDocs/</loc>
+    <lastmod>2026-07-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://wiki.hanvon.top/工作与项目/</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>weekly</changefreq>
