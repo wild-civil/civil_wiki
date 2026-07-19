@@ -1,205 +1,211 @@
 <?xml version='1.0' encoding='utf-8'?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://wild-civil.github.io/civil_wiki/</loc>
+    <loc>https://wiki.hanvon.top/</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://wild-civil.github.io/civil_wiki/00-索引/</loc>
+    <loc>https://wiki.hanvon.top/00-索引/</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://wild-civil.github.io/civil_wiki/Templates/笔记模板/</loc>
+    <loc>https://wiki.hanvon.top/Templates/笔记模板/</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://wild-civil.github.io/civil_wiki/使用指南/</loc>
+    <loc>https://wiki.hanvon.top/使用指南/</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://wild-civil.github.io/civil_wiki/博客/</loc>
+    <loc>https://wiki.hanvon.top/博客/</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://wild-civil.github.io/civil_wiki/博客/博客改造日志/</loc>
+    <loc>https://wiki.hanvon.top/博客/博客改造日志/</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://wild-civil.github.io/civil_wiki/博客/博客改造日志/2026-07-19-改造全记录/</loc>
+    <loc>https://wiki.hanvon.top/博客/博客改造日志/2026-07-19-改造全记录/</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://wild-civil.github.io/civil_wiki/工作与项目/</loc>
+    <loc>https://wiki.hanvon.top/工作与项目/</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://wild-civil.github.io/civil_wiki/技术与编程/</loc>
+    <loc>https://wiki.hanvon.top/技术与编程/</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://wild-civil.github.io/civil_wiki/标签/</loc>
+    <loc>https://wiki.hanvon.top/标签/</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://wild-civil.github.io/civil_wiki/生活与兴趣/</loc>
+    <loc>https://wiki.hanvon.top/生活与兴趣/</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://wild-civil.github.io/civil_wiki/硬件与半导体/</loc>
+    <loc>https://wiki.hanvon.top/硬件与半导体/</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://wild-civil.github.io/civil_wiki/硬件与半导体/嵌入式开发/</loc>
+    <loc>https://wiki.hanvon.top/硬件与半导体/嵌入式开发/</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://wild-civil.github.io/civil_wiki/硬件与半导体/嵌入式开发/BLE MCU&amp;SOC/</loc>
+    <loc>https://wiki.hanvon.top/硬件与半导体/嵌入式开发/BLE MCU&amp;SOC/</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://wild-civil.github.io/civil_wiki/硬件与半导体/嵌入式开发/BLE MCU&amp;SOC/WCH/</loc>
+    <loc>https://wiki.hanvon.top/硬件与半导体/嵌入式开发/BLE MCU&amp;SOC/WCH/</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://wild-civil.github.io/civil_wiki/硬件与半导体/嵌入式开发/BLE MCU&amp;SOC/WCH/CH58(2)3M/</loc>
+    <loc>https://wiki.hanvon.top/硬件与半导体/嵌入式开发/BLE MCU&amp;SOC/WCH/CH58(2)3M/</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://wild-civil.github.io/civil_wiki/硬件与半导体/嵌入式开发/BLE MCU&amp;SOC/WCH/CH58(2)3M/CH582M DataFlash 地址偏移实践/</loc>
+    <loc>https://wiki.hanvon.top/硬件与半导体/嵌入式开发/BLE MCU&amp;SOC/WCH/CH58(2)3M/CH582M DataFlash 地址偏移实践/</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://wild-civil.github.io/civil_wiki/硬件与半导体/嵌入式开发/BLE MCU&amp;SOC/WCH/CH58(2)3M/CH582M Flash 存储与 SNV 详解/</loc>
+    <loc>https://wiki.hanvon.top/硬件与半导体/嵌入式开发/BLE MCU&amp;SOC/WCH/CH58(2)3M/CH582M Flash 存储与 SNV 详解/</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://wild-civil.github.io/civil_wiki/硬件与半导体/嵌入式开发/BLE MCU&amp;SOC/WCH/CH58(2)3M/CH582M 特性与概览/</loc>
+    <loc>https://wiki.hanvon.top/硬件与半导体/嵌入式开发/BLE MCU&amp;SOC/WCH/CH58(2)3M/CH582M 特性与概览/</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://wild-civil.github.io/civil_wiki/硬件与半导体/硬件设计/</loc>
+    <loc>https://wiki.hanvon.top/硬件与半导体/硬件设计/</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://wild-civil.github.io/civil_wiki/硬件与半导体/硬件设计/基础知识/</loc>
+    <loc>https://wiki.hanvon.top/硬件与半导体/硬件设计/基础知识/</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://wild-civil.github.io/civil_wiki/硬件与半导体/硬件设计/基础知识/ADC与DAC基础知识/</loc>
+    <loc>https://wiki.hanvon.top/硬件与半导体/硬件设计/基础知识/ADC与DAC基础知识/</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://wild-civil.github.io/civil_wiki/硬件与半导体/硬件设计/基础知识/基本元器件-二极管/</loc>
+    <loc>https://wiki.hanvon.top/硬件与半导体/硬件设计/基础知识/基本元器件-二极管/</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://wild-civil.github.io/civil_wiki/硬件与半导体/硬件设计/基础知识/基本元器件-光电耦合器/</loc>
+    <loc>https://wiki.hanvon.top/硬件与半导体/硬件设计/基础知识/基本元器件-光电耦合器/</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://wild-civil.github.io/civil_wiki/硬件与半导体/硬件设计/基础知识/基本元器件-场效应管/</loc>
+    <loc>https://wiki.hanvon.top/硬件与半导体/硬件设计/基础知识/基本元器件-场效应管/</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://wild-civil.github.io/civil_wiki/硬件与半导体/硬件设计/基础知识/基本元器件-晶体三级管/</loc>
+    <loc>https://wiki.hanvon.top/硬件与半导体/硬件设计/基础知识/基本元器件-晶体三级管/</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://wild-civil.github.io/civil_wiki/硬件与半导体/硬件设计/基础知识/基本元器件-电容/</loc>
+    <loc>https://wiki.hanvon.top/硬件与半导体/硬件设计/基础知识/基本元器件-电容/</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://wild-civil.github.io/civil_wiki/硬件与半导体/硬件设计/基础知识/基本元器件-电感与磁珠/</loc>
+    <loc>https://wiki.hanvon.top/硬件与半导体/硬件设计/基础知识/基本元器件-电感与磁珠/</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://wild-civil.github.io/civil_wiki/硬件与半导体/硬件设计/基础知识/基本元器件-电阻/</loc>
+    <loc>https://wiki.hanvon.top/硬件与半导体/硬件设计/基础知识/基本元器件-电阻/</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://wild-civil.github.io/civil_wiki/硬件与半导体/硬件设计/基础知识/基本元器件-运算放大器/</loc>
+    <loc>https://wiki.hanvon.top/硬件与半导体/硬件设计/基础知识/基本元器件-运算放大器/</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://wild-civil.github.io/civil_wiki/硬件与半导体/硬件设计/基础知识/数字电路基础知识/</loc>
+    <loc>https://wiki.hanvon.top/硬件与半导体/硬件设计/基础知识/数字电路基础知识/</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://wild-civil.github.io/civil_wiki/阅读与学习/</loc>
+    <loc>https://wiki.hanvon.top/阅读与学习/</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://wild-civil.github.io/civil_wiki/阅读与学习/git-从入门到协同实战/</loc>
+    <loc>https://wiki.hanvon.top/阅读与学习/git-从入门到协同实战/</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://wild-civil.github.io/civil_wiki/阅读与学习/static-badge-教程/</loc>
+    <loc>https://wiki.hanvon.top/阅读与学习/static-badge-教程/</loc>
+    <lastmod>2026-07-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wiki.hanvon.top/阅读与学习/域名规划与部署/</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
