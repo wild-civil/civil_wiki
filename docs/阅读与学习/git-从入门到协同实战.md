@@ -322,7 +322,7 @@ git push -u origin main
 
 - `Settings → Pages → Source` 选 **「Deploy from a branch」**
 - 分支选 **`gh-pages` / (root)**，保存
-- 等 Actions 跑完（约 1–2 分钟），访问 👉 `https://wild-civil.github.io/civil_wiki/`
+- 等 Actions 跑完（约 1–2 分钟），访问 👉 `https://blog2.hanvon.top/civil_wiki/`（注：因账号用户站点已绑定自定义域名 `blog2.hanvon.top`，项目页会继承该域名，`wild-civil.github.io/civil_wiki/` 会 301 跳转到这里）
 
 > ⚠️ **隐私坑（必读）**：GitHub Pages 渲染出的网页是**全网公开**的，即使仓库设为私有也一样（私有只藏得住 `.md` 源文件，藏不住渲染页）。`hidden: true` 也只是不进导航，**页面仍可被 URL 直接访问**。真·敏感内容务必物理移出 `docs/` 或发布前打码。
 

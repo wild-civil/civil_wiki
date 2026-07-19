@@ -2,7 +2,10 @@ site_name: 我的知识库
 site_description: 基于 Obsidian Vault 构建的个人知识库文档站
 
 # 部署到 GitHub Pages：站点地址（决定资源路径 / canonical / Sitemap）
-site_url: https://wild-civil.github.io/civil_wiki/
+# 注意：用户站点 wild-civil.github.io 已绑定自定义域名 blog2.hanvon.top，
+# GitHub 会把该项目页默认继承到 blog2.hanvon.top/civil_wiki/，github.io 地址会 301 跳转。
+# 因此 site_url 直接用自定义域名，避免 canonical/sitemap/OG 指向被重定向的旧地址。
+site_url: https://blog2.hanvon.top/civil_wiki/
 
 # GitHub 仓库（启用后顶栏出现仓库图标 + 每页「Edit on GitHub」）
 repo_url: https://github.com/wild-civil/civil_wiki
