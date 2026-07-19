@@ -9,6 +9,7 @@
 也有把**搭建过程本身**写下来的实战教程：
 
 - [从零搭建多站点 MkDocs（GitHub Pages + 自定义域名） →](建站教程-从零搭建多站点MkDocs.md)
+- [Hugo 对照笔记：从 MkDocs 到 Hugo 的迁移与对比 →](建站笔记-Hugo对照.md)
 
 ## 写作约定
 
