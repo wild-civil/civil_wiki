@@ -9,9 +9,9 @@ tags:
 
 # 建站笔记：从零用 Hugo 搭一个导航站 / 作品集
 
-> 我们喜欢的两个参考站 `nav.wiki-power.com` / `works.wiki-power.com` 都是 **Hugo** 搭的
+> 我喜欢的两个参考站 `nav.wiki-power.com` / `works.wiki-power.com` 都是 **Hugo** 搭的
 > （实测 `meta generator = Hugo 0.147.7`，观感是自定义 Bootstrap 主题）。为了「几乎一致」的视觉，
-> 我们把 **civil_nav / civil_works** 从 MkDocs 重写为 Hugo。这篇把 **从零搭一个 Hugo 站**
+> 我把 **civil_nav / civil_works** 从 MkDocs 重写为 Hugo。这篇把 **从零搭一个 Hugo 站**
 > 的完整流程、目录结构、数据驱动内容、自定义布局、本地验证与 CI 部署一次讲清。
 >
 > 适用场景：导航站（卡片网格）、作品集（带分类筛选）、个人主页——这类「数据驱动、不需要每页一篇 Markdown」的站，Hugo 比 MkDocs 更顺手。

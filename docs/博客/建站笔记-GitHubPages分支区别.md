@@ -100,7 +100,7 @@ main（源码）                  gh-pages（成品）
 4. 仓库需为 **Public**（私有仓库的 Pages 需要 GitHub Pro/Team，公开项目免费）。
 5. 改完后等 1–2 分钟让 Actions 重跑、证书签发，再访问。
 
-> 真实案例：我们的 `works.hanvon.top` 一开始 404，就是因为 Source 误设为 `main`；
+> 真实案例：我的 `works.hanvon.top` 一开始 404，就是因为 Source 误设为 `main`；
 > 改回 `gh-pages` 后立即恢复 HTTP 200 + HTTPS。
 
 ---

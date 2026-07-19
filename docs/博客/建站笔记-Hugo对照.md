@@ -9,14 +9,14 @@ tags:
 
 # Hugo 对照笔记：从 MkDocs 到 Hugo 的迁移与对比
 
-> 本站最早四个子站全是 MkDocs Material。后来发现我们喜欢的参考站
+> 本站最早四个子站全是 MkDocs Material。后来发现我喜欢的参考站
 > `nav.wiki-power.com` / `works.wiki-power.com` 其实是 **Hugo** 搭的
 > （实测 `<meta name="generator" content="Hugo 0.147.7">`），观感是用一套
-> 自定义 Bootstrap 主题做的。为了「几乎一致」的视觉，我们把 **civil_nav / civil_works**
+> 自定义 Bootstrap 主题做的。为了「几乎一致」的视觉，我把 **civil_nav / civil_works**
 > 从 MkDocs 重写为 Hugo；知识库 `civil_wiki` 与书摘 `civil_digest` 保留 MkDocs
 > （它们依赖 Obsidian `[[wikilink]]` 直转，迁 Hugo 收益低）。
 >
-> 这篇把 **MkDocs ↔ Hugo** 的关键差异、我们怎么用 Hugo 复刻那套观感、以及部署映射记下来。
+> 这篇把 **MkDocs ↔ Hugo** 的关键差异、我怎么用 Hugo 复刻那套观感、以及部署映射记下来。
 
 ---
 
@@ -91,7 +91,7 @@ sections:
 ## 三、civil_works 的「分类筛选网格」
 
 参考原站 `works.wiki-power.com`：顶部一排分类按钮，下方卡片网格，点按钮按类别过滤。
-我们用 `data/projects.yaml` 存作品，每个作品带 `categories` 数组；模板把类别拼成
+我用 `data/projects.yaml` 存作品，每个作品带 `categories` 数组；模板把类别拼成
 class，再用一小段 `filterSelection()` JS 做显示/隐藏（就是原站那套 W3Schools filter grid）：
 
 ```yaml
@@ -171,7 +171,7 @@ GitHub 的 `Settings → Pages` 完全不用改。Hugo 的 `ci.yml` 核心：
 
 - 同一套「Obsidian 写 → push → 自动部署 → 自定义域名 HTTPS」闭环，**MkDocs 和 Hugo 都能跑**，
   区别只在构建工具与主题写法。
-- 我们当前的分工：**wiki / digest = MkDocs**（文档型、Obsidian 友好）；
+- 我当前的分工：**wiki / digest = MkDocs**（文档型、Obsidian 友好）；
   **nav / works = Hugo**（导航 / 作品集，对齐参考站观感）。
 - 要不要把 wiki 也转 Hugo？不必——除非你哪天想要某个 Hugo 文档主题的样子。到时按本文第四节的
   部署映射改 `ci.yml` 即可，域名与 DNS 都不用动。
