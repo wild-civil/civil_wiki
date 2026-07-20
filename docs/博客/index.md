@@ -13,6 +13,7 @@
 - [GitHub Pages 的 main 与 gh-pages 分支区别 →](建站笔记-GitHubPages分支区别.md)
 - [从零用 Hugo 搭一个导航站 / 作品集 →](建站笔记-Hugo搭建.md)
 - [博客引擎的选择：MkDocs / Hugo / Hexo 怎么选（含更多平台全景） →](建站笔记-博客引擎的选择.md)
+- [三站架构、怎么改、怎么编译、怎么在本地看（Hugo × Hugo × Hexo） →](建站笔记-三站架构与本地预览.md)
 
 ## 写作约定
 
