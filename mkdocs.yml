@@ -159,6 +159,9 @@ nav:
               - 基础知识: EDA/Altium Designer/基础知识.md
               - 原理图绘制: EDA/Altium Designer/原理图绘制.md
               - PCB Layout 基础知识: EDA/Altium Designer/PCB Layout 基础知识.md
+              - 铺铜（Polygon Pour）: EDA/Altium Designer/铺铜（Polygon Pour）.md
+              - DRC 设计规则校验: EDA/Altium Designer/DRC 设计规则校验.md
+              - 快捷键速查: EDA/Altium Designer/快捷键速查.md
   - 机械与动力:
       - 机械与动力/index.md
       - 发动机二冲程与四冲程: 机械与动力/发动机-二冲程与四冲程.md

@@ -58,6 +58,8 @@ PCB（印刷电路板）是原理图的「物理实现」：把元件摆到板�
 - `Place → Polygon Pour`，选网络（如 GND），设连接方式（一般直接连接或热焊盘）。
 - 铺铜后 `Tools → Polygon Pours → Repour All` 更新。
 
+> 铺铜与导线的间距在哪设、铺铜到底连不连导线、重铺与快捷键——详见专题 [铺铜（Polygon Pour）](铺铜（Polygon Pour）.md)。
+
 ## 6. 设计规则与 DRC
 
 规则在 `Design → Rules`（PCB Rules and Constraints Editor）里设，常用：
@@ -69,6 +71,8 @@ PCB（印刷电路板）是原理图的「物理实现」：把元件摆到板�
 - **Plane / Polygon Connect**：铺铜连接方式。
 
 设好规则后跑 **DRC（Tools → Design Rule Check）**，按 Messages 把违规清零。DRC 不过，别出图。
+
+> DRC 条目逐条中英对照翻译与规则优先级说明——详见专题 [DRC 设计规则校验](DRC 设计规则校验.md)。
 
 ## 7. 输出生产文件
 
