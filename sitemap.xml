@@ -13,6 +13,42 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://wiki.hanvon.top/EDA/</loc>
+    <lastmod>2026-07-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wiki.hanvon.top/EDA/Altium Designer/</loc>
+    <lastmod>2026-07-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wiki.hanvon.top/EDA/Altium Designer/PCB Layout 基础知识/</loc>
+    <lastmod>2026-07-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wiki.hanvon.top/EDA/Altium Designer/原理图绘制/</loc>
+    <lastmod>2026-07-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wiki.hanvon.top/EDA/Altium Designer/基础知识/</loc>
+    <lastmod>2026-07-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wiki.hanvon.top/EDA/嘉立创EDA/</loc>
+    <lastmod>2026-07-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://wiki.hanvon.top/Templates/笔记模板/</loc>
     <lastmod>2026-07-24</lastmod>
     <changefreq>weekly</changefreq>
@@ -25,12 +61,6 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://wiki.hanvon.top/博客/</loc>
-    <lastmod>2026-07-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
     <loc>https://wiki.hanvon.top/博客/博客改造日志/</loc>
     <lastmod>2026-07-24</lastmod>
     <changefreq>weekly</changefreq>
@@ -38,6 +68,12 @@
   </url>
   <url>
     <loc>https://wiki.hanvon.top/博客/博客改造日志/2026-07-19-改造全记录/</loc>
+    <lastmod>2026-07-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wiki.hanvon.top/博客/多站架构与本地预览/</loc>
     <lastmod>2026-07-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -67,12 +103,6 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://wiki.hanvon.top/博客/建站笔记-三站架构与本地预览/</loc>
-    <lastmod>2026-07-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
     <loc>https://wiki.hanvon.top/博客/建站笔记-全站架构小白篇/</loc>
     <lastmod>2026-07-24</lastmod>
     <changefreq>weekly</changefreq>
@@ -91,6 +121,12 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://wiki.hanvon.top/博客/杂记/</loc>
+    <lastmod>2026-07-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://wiki.hanvon.top/工作与项目/</loc>
     <lastmod>2026-07-24</lastmod>
     <changefreq>weekly</changefreq>
@@ -98,6 +134,36 @@
   </url>
   <url>
     <loc>https://wiki.hanvon.top/技术与编程/</loc>
+    <lastmod>2026-07-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wiki.hanvon.top/机械与动力/</loc>
+    <lastmod>2026-07-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wiki.hanvon.top/机械与动力/发动机-二冲程与四冲程/</loc>
+    <lastmod>2026-07-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wiki.hanvon.top/机械与动力/电池/</loc>
+    <lastmod>2026-07-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wiki.hanvon.top/机械与动力/电池/便携设备电池/</loc>
+    <lastmod>2026-07-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wiki.hanvon.top/机械与动力/电池/电池完全指南/</loc>
     <lastmod>2026-07-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
