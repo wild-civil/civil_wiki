@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 440" width="680" height="440" role="img">
+<style>
+.th{font-size:13px;font-weight:700;fill:#7A3E00;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+.ts{font-size:11px;fill:#5F5E5A;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+</style>
+<title>常见射频传输线截面</title>
+<desc>四种 PCB 上常用的射频传输线截面:微带线、带状线、共面波导 CPW、接地共面波导 GCPW。虚线表示电磁场主要分布区域。</desc>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+
+<text class="th" x="185" y="116" text-anchor="middle">① 微带线 Microstrip</text>
+<rect x="105" y="150" width="160" height="110" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+<rect x="85" y="260" width="200" height="14" fill="#FAC775" stroke="#854F0B" stroke-width="0.5"/>
+<rect x="165" y="138" width="40" height="12" fill="#378ADD" stroke="#185FA5" stroke-width="0.5"/>
+<path d="M185,150 Q140,205 185,260" fill="none" stroke="#185FA5" stroke-width="1" stroke-dasharray="4 4" opacity="0.7"/>
+<path d="M185,150 Q230,205 185,260" fill="none" stroke="#185FA5" stroke-width="1" stroke-dasharray="4 4" opacity="0.7"/>
+<text class="ts" x="185" y="292" text-anchor="middle">顶信号 + 底地 · 最常用</text>
+
+<text class="th" x="495" y="116" text-anchor="middle">③ 共面波导 CPW</text>
+<rect x="415" y="150" width="160" height="110" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+<rect x="424" y="138" width="46" height="12" fill="#FAC775" stroke="#854F0B" stroke-width="0.5"/>
+<rect x="482" y="138" width="26" height="12" fill="#378ADD" stroke="#185FA5" stroke-width="0.5"/>
+<rect x="520" y="138" width="46" height="12" fill="#FAC775" stroke="#854F0B" stroke-width="0.5"/>
+<path d="M482,150 Q476,162 470,150" fill="none" stroke="#185FA5" stroke-width="1" stroke-dasharray="3 3"/>
+<path d="M508,150 Q514,162 520,150" fill="none" stroke="#185FA5" stroke-width="1" stroke-dasharray="3 3"/>
+<text class="ts" x="495" y="292" text-anchor="middle">顶信号 + 两侧地 · 无底地</text>
+
+<text class="th" x="185" y="306" text-anchor="middle">② 带状线 Stripline</text>
+<rect x="85" y="320" width="200" height="12" fill="#FAC775" stroke="#854F0B" stroke-width="0.5"/>
+<rect x="105" y="332" width="160" height="60" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+<rect x="165" y="356" width="40" height="10" fill="#378ADD" stroke="#185FA5" stroke-width="0.5"/>
+<rect x="85" y="392" width="200" height="12" fill="#FAC775" stroke="#854F0B" stroke-width="0.5"/>
+<path d="M185,332 Q150,344 185,356" fill="none" stroke="#185FA5" stroke-width="1" stroke-dasharray="3 3" opacity="0.7"/>
+<path d="M185,332 Q220,344 185,356" fill="none" stroke="#185FA5" stroke-width="1" stroke-dasharray="3 3" opacity="0.7"/>
+<path d="M185,366 Q150,378 185,392" fill="none" stroke="#185FA5" stroke-width="1" stroke-dasharray="3 3" opacity="0.7"/>
+<path d="M185,366 Q220,378 185,392" fill="none" stroke="#185FA5" stroke-width="1" stroke-dasharray="3 3" opacity="0.7"/>
+<text class="ts" x="185" y="418" text-anchor="middle">信号夹两层地 · 全屏蔽</text>
+
+<text class="th" x="495" y="306" text-anchor="middle">④ 接地共面波导 GCPW</text>
+<rect x="415" y="320" width="160" height="66" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+<rect x="395" y="386" width="200" height="12" fill="#FAC775" stroke="#854F0B" stroke-width="0.5"/>
+<rect x="424" y="308" width="46" height="12" fill="#FAC775" stroke="#854F0B" stroke-width="0.5"/>
+<rect x="482" y="308" width="26" height="12" fill="#378ADD" stroke="#185FA5" stroke-width="0.5"/>
+<rect x="520" y="308" width="46" height="12" fill="#FAC775" stroke="#854F0B" stroke-width="0.5"/>
+<circle cx="447" cy="336" r="3" fill="#854F0B"/>
+<circle cx="447" cy="360" r="3" fill="#854F0B"/>
+<circle cx="547" cy="336" r="3" fill="#854F0B"/>
+<circle cx="547" cy="360" r="3" fill="#854F0B"/>
+<path d="M482,320 Q476,332 470,320" fill="none" stroke="#185FA5" stroke-width="1" stroke-dasharray="3 3"/>
+<path d="M508,320 Q514,332 520,320" fill="none" stroke="#185FA5" stroke-width="1" stroke-dasharray="3 3"/>
+<text class="ts" x="495" y="418" text-anchor="middle">顶信号 + 两侧地 + 底地 + 过孔</text>
+</svg>
