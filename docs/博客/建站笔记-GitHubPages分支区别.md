@@ -136,8 +136,8 @@ main（源码）                  gh-pages（成品）
 >
 > 当然，用户页也能在 `Settings → Pages` 里手动改成 `gh-pages` 或 `main` 的 `/docs` 目录；
 > 只是默认与最常见的做法就是「用户页用默认分支根、项目页用 gh-pages」。
-> 本站 `wild-civil.github.io`（Hexo）还配了自定义域名 `blog2.hanvon.top`，因此
-> `wild-civil.github.io` 会 301 跳转到 `blog2.hanvon.top`。
+> 本站 `wild-civil.github.io`（Hexo）还配了自定义域名 `blog.hanvon.top`，因此
+> `wild-civil.github.io` 会 301 跳转到 `blog.hanvon.top`。
 
 | 维度 | 用户页（`<user>.github.io`） | 项目页（其他仓库名） |
 |---|---|---|
