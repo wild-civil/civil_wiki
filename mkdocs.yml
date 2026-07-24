@@ -150,6 +150,15 @@ nav:
           - 2.4G天线设计方案: 硬件与半导体/射频与天线/2.4G天线设计方案.md
           - 天线类型与各领域应用: 硬件与半导体/射频与天线/天线类型与各领域应用.md
           - 射频传输线-微带与共面波导: 硬件与半导体/射频与天线/射频传输线-微带与共面波导.md
+  - EDA:
+      - EDA/index.md
+      - 嘉立创EDA:
+          - EDA/嘉立创EDA/index.md
+      - Altium Designer:
+          - EDA/Altium Designer/index.md
+          - 基础知识: EDA/Altium Designer/基础知识.md
+          - 原理图绘制: EDA/Altium Designer/原理图绘制.md
+          - PCB Layout 基础知识: EDA/Altium Designer/PCB Layout 基础知识.md
   - 机械与动力:
       - 机械与动力/index.md
       - 发动机二冲程与四冲程: 机械与动力/发动机-二冲程与四冲程.md
