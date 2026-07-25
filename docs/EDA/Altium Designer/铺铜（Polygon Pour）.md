@@ -33,6 +33,8 @@ tags: [EDA, Altium, PCB, 铺铜, Polygon, 铜皮, 地]
 
 关键区别：**Fill 不会因规则改变而自动重画**，它就是一个固定铜块；**Polygon Pour 会**，而且遵守 Clearance / Polygon Connect 等规则——所以"铺铜"默认指 Polygon Pour。
 
+> 内电层（负片 Plane）的编辑逻辑与表层铺铜**完全不同**：网络分配走 `Tools → Split Planes → Rebuild Split Planes`、分割只靠 `Place → Line` 画闭合轮廓、禁止放 Polygon/Fill。实操要点（含跨 PCB 复制丢层、DRC 清空平面等坑）见 [AD24 多层板实操](AD24 多层板实操.md)。
+
 ## 三、怎么放铺铜（步骤 + 快捷键）
 
 1. 放铺铜：快捷键 `P` → `G`（`Place → Polygon Pour`）；
