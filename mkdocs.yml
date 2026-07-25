@@ -150,10 +150,14 @@ nav:
           - 2.4G天线设计方案: 硬件与半导体/射频与天线/2.4G天线设计方案.md
           - 天线类型与各领域应用: 硬件与半导体/射频与天线/天线类型与各领域应用.md
           - 射频传输线-微带与共面波导: 硬件与半导体/射频与天线/射频传输线-微带与共面波导.md
+          - 特征阻抗与阻抗匹配: 硬件与半导体/射频与天线/特征阻抗与阻抗匹配.md
       - EDA:
           - EDA/index.md
           - 嘉立创EDA:
               - EDA/嘉立创EDA/index.md
+              - 元件库与封装: EDA/嘉立创EDA/元件库与封装.md
+              - 实战下单流程: EDA/嘉立创EDA/实战下单流程.md
+              - 规则与DRC: EDA/嘉立创EDA/规则与DRC.md
           - Altium Designer:
               - EDA/Altium Designer/index.md
               - 基础知识: EDA/Altium Designer/基础知识.md
