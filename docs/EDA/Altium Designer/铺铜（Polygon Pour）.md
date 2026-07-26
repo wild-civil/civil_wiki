@@ -35,6 +35,10 @@ tags: [EDA, Altium, PCB, 铺铜, Polygon, 铜皮, 地]
 
 > 内电层（负片 Plane）的编辑逻辑与表层铺铜**完全不同**：网络分配走 `Tools → Split Planes → Rebuild Split Planes`、分割只靠 `Place → Line` 画闭合轮廓、禁止放 Polygon/Fill。实操要点（含跨 PCB 复制丢层、DRC 清空平面等坑）见 [AD24 多层板实操](AD24 多层板实操.md)。
 
+<img src="../assets/正片与负片层对照.svg" alt="正片层(表层Polygon Pour)与负片层(内电层Internal Plane)对照：左为起始无铜、画铜才有铜；右为起始满铜、画线挖空" />
+
+> 上图直观对比：表层铺铜是「加法」——在空板上画铜才有铜；内电层是「减法」——整层满铜，画线挖空来分割网络。
+
 ## 三、怎么放铺铜（步骤 + 快捷键）
 
 1. 放铺铜：快捷键 `P` → `G`（`Place → Polygon Pour`）；
