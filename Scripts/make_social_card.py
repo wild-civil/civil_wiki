@@ -52,7 +52,7 @@ def get_site_text():
         text = fh.read()
     text = re.sub(r"!!python/name:", "", text)
     cfg = yaml.safe_load(text)
-    name = (cfg.get("site_name") or "我的知识库").strip()
+    name = (cfg.get("site_name") or "航的知识库").strip()
     desc = (cfg.get("site_description") or "").strip()
     return name, desc
 
