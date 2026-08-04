@@ -159,6 +159,7 @@ nav:
       - 汽车电子:
           - 硬件与半导体/汽车电子/index.md
           - 无钥匙进入系统: 硬件与半导体/汽车电子/无钥匙进入系统.md
+          - KeyGo（BLE 手机钥匙）: 硬件与半导体/汽车电子/KeyGo-BLE手机钥匙.md
       - EDA:
           - EDA/index.md
           - 嘉立创EDA:
