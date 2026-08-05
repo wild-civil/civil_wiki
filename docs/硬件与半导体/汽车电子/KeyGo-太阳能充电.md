@@ -174,7 +174,7 @@ DPPM 是"输入电流环限幅"：先供负载、剩余充电池。官方资料�
 
 ### 3.4 IU5070E 关键电气参数（精选）
 
-> 以下为对 KeyGo 选型决策**最关键**的参数（输入/电源、路径管理、输出保护、充电电流）。完整电气特性表（含工作电流、睡眠/SYSOFF、预充/终止/再充、温度保护、引脚等全部参数）见归档的 **[IU5070E 官方 datasheet](../../references/IU5070E_datasheet.pdf)**。
+> 以下为对 KeyGo 选型决策**最关键**的参数（输入/电源、路径管理、输出保护、充电电流）。完整电气特性表（含工作电流、睡眠/SYSOFF、预充/终止/再充、温度保护、引脚等全部参数）见归档的 **[IU5070E 官方 datasheet](../../references/IU5070E_datasheet.pdf){:target="_blank"}**。
 
 以下参数均来自官方 datasheet（`references/IU5070E_datasheet.pdf`），按功能分组。
 
@@ -243,7 +243,7 @@ DPPM 是"输入电流环限幅"：先供负载、剩余充电池。官方资料�
 
 ### 3.5 CN3165 完整电气参数
 
-以下参数均来自 [CN3165 官方 datasheet](../../references/CN3165_datasheet.pdf) 电气参数表（VIN=5V, TA=-40°C~85°C）。完整原文见归档 PDF。
+以下参数均来自 [CN3165 官方 datasheet](../../references/CN3165_datasheet.pdf){:target="_blank"} 电气参数表（VIN=5V, TA=-40°C~85°C）。完整原文见归档 PDF。
 
 #### 3.5.1 输入与电源参数
 
@@ -304,15 +304,15 @@ DPPM 是"输入电流环限幅"：先供负载、剩余充电池。官方资料�
 
 ### 3.6 IU5070E 其余参数（见归档 datasheet）
 
-IU5070E 其余电气参数（工作电流、睡眠/SYSOFF、预充/终止/再充、温度保护、引脚等）均已在归档的 **[IU5070E 官方 datasheet](../../references/IU5070E_datasheet.pdf)** 中，与上文 §3.4 截图同源。下表列出对 KeyGo 仍有意义的项，具体数值请核对 PDF：
+IU5070E 其余电气参数（工作电流、睡眠/SYSOFF、预充/终止/再充、温度保护、引脚等）均已在归档的 **[IU5070E 官方 datasheet](../../references/IU5070E_datasheet.pdf){:target="_blank"}** 中，与上文 §3.4 截图同源。下表列出对 KeyGo 仍有意义的项，具体数值请核对 PDF：
 
 | 参数组 | 重要性 | 对 KeyGo 的影响 | 备注 |
 |--------|--------|----------------|------|
-| **IVIN(operating)** — 充电工作态内部控制电路功耗 | **最高** | `I_ic-self` 公式的真值，决定弱光净充电计算是否准确 | 同类 IC 通常 0.5~2mA；待从 PDF 确认 |
+| **IVIN(operating)** — 充电工作态内部控制电路功耗 | **最高** | `I_ic-self` 公式的真值，决定弱光净充电计算是否准确 | ⚠️ **datasheet 未给出此参数**；仅提供 IQ=850µA(静态)/IIN=500µA(待机)/IBAT=7~9µA(漏电)，均非工作态自耗。需实测或咨询原厂 |
 | **睡眠/SYSOFF 模式参数** | 高 | 决定夜间/车库纯电池模式的消耗 | IU5070E 有 SYSOFF 引脚声称可进零功耗，具体数值见 PDF |
 | 预充电/终止/再充电阈值 | 中 | 影响微充放循环行为 | 车载场景频繁微充放，此参数影响电池寿命 |
 | 温度保护 TEMP | 中 | 车载夏天挡风玻璃可达 80°C+ | 需确认热关断阈值是否适配 |
-| 软启动时间 / CHRG-DONE 引脚 / ISET 引脚电压 | 低/中/中 | 上电瞬态 / MCU 状态检测 / 反推 RISET 公式 | KISET=400AΩ 已知，VISET 见 PDF |
+| 软启动时间 / CHRG-DONE 引脚 / ISET(RISET) 引脚 | 低/中/中 | 上电瞬态 / MCU 状态检测 / 设定充电电流 | ✅ **RISET(Pin10/ISET)已确认**：`ICC=KISET/RISET=400AΩ/RISET`（PDF p2引脚表+p5电气表+p8应用说明三处交叉验证） |
 
 > 当前按"精选 + 归档原件"方案，避免 wiki 变成 datasheet 副本。如需把这些参数也逐条抄入正文，告诉我即可。
 
@@ -359,7 +359,7 @@ CH582 GPIO → N-MOS → Si522(NFC，休眠断电)
        - ICC = **400 AΩ / RISET** = 恒流**充电输出电流**（灌进电池的），不是芯片自耗
        - 豆包把两个完全不同方向的电流混为一谈，整个净充电账需重算
     3. **IU5070E 已确认参数汇总**：IQ=850µA(空闲) / IIN=500µA(待机) / IBAT=7~9µA(漏电) / ICC=400/RISET(输出) / KISET=400AΩ / MPPT低至1mA / OVP 8.6V
-    4. **唯一需从归档 datasheet 确认的参数**：IVIN(operating) —— 充电工作态内部控制电路功耗。同类 IC 通常 0.5~2mA，对 KeyGo 弱光场景可接受。
+    4. **IVIN(operating) 在 datasheet 中不存在** ⚠️：IU5070E 仅给出 IQ=850µA(静态)/IIN=500µA(待机)/IBAT=7~9µA(漏电)，无工作态电源电流参数。需实测或问原厂。
     5. **其余数字仍需核实**：CN3165 参数、388µA 负载假设——**全部待实测核实**。
     6. **先拿官方资料 + 打样实测**：确认 IVIN(operating)，买 SC-4747-9N 样品测 Voc/Isc（阴天值），用 KeyGo 真实 I_load 重算 `I_net`。
 
@@ -367,11 +367,11 @@ CH582 GPIO → N-MOS → Si522(NFC，休眠断电)
 
 ## 参考
 
-- **IU5070E 官方 datasheet**（[references/IU5070E_datasheet.pdf](../../references/IU5070E_datasheet.pdf)，上大科技/上海智浦欣，Rev1.1）：
+- **IU5070E 官方 datasheet**（[references/IU5070E_datasheet.pdf](../../references/IU5070E_datasheet.pdf){:target="_blank"}，上大科技/上海智浦欣，Rev1.1）：
   - **静态电流表**：IQ=850µA(未使能) / IIN=500µA(待机) / IBAT=7~9µA(漏电)
   - **电池充电参数表**：**ICC=KISET/RISET=400AΩ/RISET** (充电输出电流) / ITC=0.1×ICC / KISET=400AΩ / VBAT(CV)=4.16/4.2/4.24V
   - 已归档至仓库 `docs/references/`，网页可直链下载
-- **CN3165 官方 datasheet**（[references/CN3165_datasheet.pdf](../../references/CN3165_datasheet.pdf)，如韵微电子）：§3.5 参数来源，已归档
+- **CN3165 官方 datasheet**（[references/CN3165_datasheet.pdf](../../references/CN3165_datasheet.pdf){:target="_blank"}，如韵微电子）：§3.5 参数来源，已归档
 - IU5070E 产品页（sandtech，含 MPPT/DPPM/8.6V OVP/7~9µA 漏电参数）：<http://www.sandtech.cn/products_42/481.html>
 - IU5070 介绍（eefocus 转载上大科技原文，MPPT 低至 1mA、DPPM、SYSOFF）：<https://m.eefocus.com/article/1918722.html>
 - 上大科技四款充电 IC 对比（IU5060S/IU5062S/IU5066E/IU5070E）：<https://m.eefocus.com/article/1888256.html>
