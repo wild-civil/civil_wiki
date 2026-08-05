@@ -35,15 +35,27 @@ img:not([alt="badge"]):not([alt="logo"]) {
   --md-text-font: "Noto Sans SC - local", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Segoe UI", Arial, sans-serif;
 }
 
-/* —— 多列表格（.datasheet 包裹）：数值列不折行，文字列保底宽度 ——
-   仅作用于 <div class="datasheet"> 内表格，不影响其他/未来表格 */
+/* —— 多列表格（<div class="datasheet" markdown="1"> 包裹）：优化宽表排版 ——
+   仅作用于 .datasheet 内的表格，不影响其他/未来未标记的表格。
+   用法：在 Markdown 表格外层包一层 <div class="datasheet" markdown="1"> 即可。
+
+   原理说明（min-width vs width）：
+   • min-width = 硬地板：该列绝不能窄于此值。浏览器按内容自动分配宽度时，
+     如果算出的值 < min-width，则强制取 min-width。这是最终裁决者。
+   • width = 软建议：告诉浏览器"我想要这个比例的份额"。但只是建议——
+     其他列内容很宽时可能被压缩到远低于此值；只有 table-layout:fixed 时才变硬性比例。
+     实际宽度 = max(浏览器算出的值, min-width)
+   • 对普通屏幕上的 8 列表，min-width 才是真正起作用的那个；
+     width:% 仅在超宽屏（总宽足够大时）才超过 min-width 生效。 */
+
+/* 最后一列（如"KeyGo 相关性"/备注）：硬地板 + 比例建议 */
 .md-typeset .datasheet table th:last-child,
 .md-typeset .datasheet table td:last-child {
-  min-width: 140px;
+  min-width: 280px;
   width: 18%;
 }
 /* 第4列起到倒数第2列（数值列：最小/典型/最大/单位）不折行，
-   把宽度让给最后的文字列；:not(:last-child) 确保相关性列仍正常折行 */
+   把宽度让给最后的文字列；:not(:last-child) 确保最后一列仍可折行 */
 .md-typeset .datasheet table td:nth-child(n+4):not(:last-child) {
   white-space: nowrap;
 }
