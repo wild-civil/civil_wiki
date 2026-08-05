@@ -34,3 +34,10 @@ img:not([alt="badge"]):not([alt="logo"]) {
 :root {
   --md-text-font: "Noto Sans SC - local", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Segoe UI", Arial, sans-serif;
 }
+
+/* —— 多列表格：最后一列（如"相关性/备注"）保底宽度，防止文字挤成竖条 —— */
+.md-typeset table th:last-child,
+.md-typeset table td:last-child {
+  min-width: 140px;
+  width: 18%;
+}
