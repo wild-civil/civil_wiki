@@ -35,9 +35,15 @@ img:not([alt="badge"]):not([alt="logo"]) {
   --md-text-font: "Noto Sans SC - local", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Segoe UI", Arial, sans-serif;
 }
 
-/* —— 多列表格：最后一列（如"相关性/备注"）保底宽度，防止文字挤成竖条 —— */
-.md-typeset table th:last-child,
-.md-typeset table td:last-child {
+/* —— 多列表格（加 .datasheet 类）：数值列不折行，文字列保底宽度 ——
+   作用域限定到 .datasheet，不影响未标记的未来表格 */
+.md-typeset table.datasheet th:last-child,
+.md-typeset table.datasheet td:last-child {
   min-width: 140px;
   width: 18%;
+}
+/* 第4列起到倒数第2列（典型为数值列：最小/典型/最大/单位）不折行，
+   把宽度让给最后的文字列；:not(:last-child) 确保相关性列仍正常折行 */
+.md-typeset table.datasheet td:nth-child(n+4):not(:last-child) {
+  white-space: nowrap;
 }
