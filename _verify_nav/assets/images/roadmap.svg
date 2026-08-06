@@ -1,0 +1,36 @@
+<svg viewBox="0 0 680 562" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI','Microsoft YaHei',sans-serif" role="img">
+  <title>知识库下一步路线图</title>
+  <desc>1-9 改造已全部完成（提交 c28dcf1）· 按优先级排列</desc>
+  <text x="40" y="38" font-size="15" font-weight="500" fill="#1a1a1a">知识库下一步路线图</text>
+  <text x="40" y="60" font-size="12.5" font-weight="400" fill="#5f5e5a">1-9 改造已全部完成（提交 c28dcf1）· 按优先级排列</text>
+
+  <rect x="40" y="84" width="600" height="140" rx="12" fill="#e6f1fb" stroke="#185fa5" stroke-width="1.5"/>
+  <rect x="40" y="84" width="6" height="140" rx="3" fill="#185fa5"/>
+  <circle cx="84" cy="120" r="16" fill="#185fa5"/>
+  <text x="84" y="124" font-size="13" font-weight="500" fill="#ffffff" text-anchor="middle">1</text>
+  <text x="112" y="114" font-size="14" font-weight="500" fill="#0c447c">1 · 上线部署（关键阻塞项）</text>
+  <text x="112" y="134" font-size="12" font-weight="400" fill="#5f5e5a">把站点发布到互联网，让社交卡片 / Sitemap 真正生效</text>
+  <text x="112" y="160" font-size="12.5" font-weight="400" fill="#2c2c2a">• 建 GitHub 仓库（渲染页全网公开，敏感笔记别放 docs/）</text>
+  <text x="112" y="182" font-size="12.5" font-weight="400" fill="#2c2c2a">• 填 site_url / repo_url / edit_uri（配置已留占位）</text>
+  <text x="112" y="204" font-size="12.5" font-weight="400" fill="#2c2c2a">• git push → CI 自动部署到 gh-pages 分支</text>
+
+  <rect x="40" y="240" width="600" height="146" rx="12" fill="#e1f5ee" stroke="#0f6e56" stroke-width="1.5"/>
+  <rect x="40" y="240" width="6" height="146" rx="3" fill="#0f6e56"/>
+  <circle cx="84" cy="278" r="16" fill="#0f6e56"/>
+  <text x="84" y="282" font-size="13" font-weight="500" fill="#ffffff" text-anchor="middle">2</text>
+  <text x="112" y="272" font-size="14" font-weight="500" fill="#085041">2 · 填充内容（知识库的本意）</text>
+  <text x="112" y="292" font-size="12" font-weight="400" fill="#5f5e5a">主题、导航、博客都是脚手架，价值在真实笔记</text>
+  <text x="112" y="318" font-size="12.5" font-weight="400" fill="#2c2c2a">• 往 docs/ 各分区写真实笔记（硬件 / 嵌入式 / 学习）</text>
+  <text x="112" y="340" font-size="12.5" font-weight="400" fill="#2c2c2a">• 延续「博客改造日志」系列，每次改动都记一笔</text>
+  <text x="112" y="362" font-size="12.5" font-weight="400" fill="#2c2c2a">• 把导入的 10 篇硬件文当素材，写自己的读后总结</text>
+
+  <rect x="40" y="402" width="600" height="140" rx="12" fill="#eeedfe" stroke="#534ab7" stroke-width="1.5"/>
+  <rect x="40" y="402" width="6" height="140" rx="3" fill="#534ab7"/>
+  <circle cx="84" cy="438" r="16" fill="#534ab7"/>
+  <text x="84" y="442" font-size="13" font-weight="500" fill="#ffffff" text-anchor="middle">3</text>
+  <text x="112" y="432" font-size="14" font-weight="500" fill="#26215c">3 · 自动化与打磨</text>
+  <text x="112" y="452" font-size="12" font-weight="400" fill="#5f5e5a">让维护变轻松，细节更专业</text>
+  <text x="112" y="478" font-size="12.5" font-weight="400" fill="#2c2c2a">• 恢复每日自动分类（之前已暂停，需确认仍适配新结构）</text>
+  <text x="112" y="500" font-size="12.5" font-weight="400" fill="#2c2c2a">• 可选：robots.txt / 自定义 favicon / 搜索优化</text>
+  <text x="112" y="522" font-size="12.5" font-weight="400" fill="#2c2c2a">• 日常预览：mkdocs serve（已就绪，8000 端口）</text>
+</svg>

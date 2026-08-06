@@ -178,6 +178,7 @@ flowchart TD
 ## 参考
 
 - [吐槽一下XC6206，静态电流竟然差了300倍！（数码之家）](https://www.mydigit.cn/thread-489893-1-1.html) — 山寨 XC6206 静态电流实测 ~1mA vs 原版 ~3µA，印证本文第 1 节低功耗踩坑。
+- 系统化的选型方法、候选对比表与真假鉴别见 [KeyGo 电源选型（5V→3.3V LDO 与低功耗）](KeyGo-LDO电源选型与低功耗.md)。
 - [实践证明，XC6206是个"垃圾"（数码之家）](https://www.mydigit.cn/thread-73727-1-1.html) — 输出电容 ESR/容量不当致 LDO 自激、电压波动、莫名挂掉，对应本文第 2.2 节。
 - 项目主文：[KeyGo：BLE 手机钥匙 · 第 4 节 电源管理实战](KeyGo-BLE手机钥匙.md#power-ldo)。
 - [沁恒CH582触摸功耗测试 BleTouchKey（CSDN）](https://blog.csdn.net/chen244798611/article/details/133762595) — CH582 低功耗实测参考点：关触摸上报+屏蔽打印后，唤醒 ≈6mA、睡眠 ≈18µA，对应本文第 3.4 节。

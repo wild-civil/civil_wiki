@@ -1,0 +1,32 @@
+<svg viewBox="0 0 680 434" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI','Microsoft YaHei',sans-serif" role="img">
+  <title>公开仓库与私有仓库对 GitHub Pages 的影响对比</title>
+  <desc>关键结论：仓库是否公开只决定源码 md 是否可见，渲染出的网站始终全网公开</desc>
+  <text x="40" y="36" font-size="15" font-weight="500" fill="#1a1a1a">公开 vs 私有仓库：对 GitHub Pages 意味着什么</text>
+  <text x="40" y="58" font-size="12.5" font-weight="400" fill="#5f5e5a">关键：仓库是否公开，只决定源码 .md 是否可见；渲染出的网站始终全网公开</text>
+
+  <rect x="40" y="84" width="296" height="250" rx="12" fill="#f1efe8" stroke="#5f5e5a" stroke-width="1.5"/>
+  <text x="60" y="114" font-size="14" font-weight="500" fill="#444441">公开仓库 · Public</text>
+  <line x1="60" y1="128" x2="316" y2="128" stroke="#b4b2a9" stroke-width="1"/>
+  <text x="60" y="154" font-size="12.5" font-weight="400" fill="#5f5e5a">渲染网站</text>
+  <text x="60" y="174" font-size="13" font-weight="500" fill="#2c2c2a">全网公开（任何人有链接都能看）</text>
+  <text x="60" y="206" font-size="12.5" font-weight="400" fill="#5f5e5a">源 .md 文件</text>
+  <text x="60" y="226" font-size="13" font-weight="500" fill="#2c2c2a">全网公开（可浏览 / 克隆 / 提 PR）</text>
+  <text x="60" y="272" font-size="12" font-weight="400" fill="#5f5e5a">适合：内容完全无敏感，</text>
+  <text x="60" y="290" font-size="12" font-weight="400" fill="#5f5e5a">想开源分享、接受别人 fork</text>
+
+  <rect x="344" y="84" width="296" height="250" rx="12" fill="#eaf3de" stroke="#3b6d11" stroke-width="1.5"/>
+  <rect x="500" y="96" width="56" height="22" rx="11" fill="#3b6d11"/>
+  <text x="528" y="110" font-size="12" font-weight="500" fill="#ffffff" text-anchor="middle">推荐</text>
+  <text x="364" y="114" font-size="14" font-weight="500" fill="#27500a">私有仓库 · Private</text>
+  <line x1="364" y1="128" x2="620" y2="128" stroke="#97c459" stroke-width="1"/>
+  <text x="364" y="154" font-size="12.5" font-weight="400" fill="#5f5e5a">渲染网站</text>
+  <text x="364" y="174" font-size="13" font-weight="500" fill="#2c2c2a">全网公开（同左，任何人有链接都能看）</text>
+  <text x="364" y="206" font-size="12.5" font-weight="400" fill="#5f5e5a">源 .md 文件</text>
+  <text x="364" y="226" font-size="13" font-weight="500" fill="#27500a">仅协作者可见（外人看不了源码）</text>
+  <text x="364" y="272" font-size="12" font-weight="400" fill="#5f5e5a">适合：笔记含半成品 / 工作细节，</text>
+  <text x="364" y="290" font-size="12" font-weight="400" fill="#5f5e5a">只想藏源码、内容仍愿公开</text>
+
+  <rect x="40" y="350" width="600" height="64" rx="12" fill="#faeeda" stroke="#854f0b" stroke-width="1.5"/>
+  <text x="60" y="378" font-size="13" font-weight="500" fill="#633806">无论公私，渲染页都全网公开</text>
+  <text x="60" y="400" font-size="12.5" font-weight="400" fill="#633806">真·敏感内容别进 docs/：要么整篇移出，要么发布前打码（hidden:true 并不能隐藏页面）</text>
+</svg>

@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 420" width="850" height="420" role="img" style="background-color: #ffffff; font-family: Arial, sans-serif;">
+  <defs>
+    <!-- 常用颜色定义 -->
+    <style>
+      .title-text { font-size: 18px; font-weight: bold; fill: #333; }
+      .label-text { font-size: 16px; font-weight: bold; fill: #222; }
+      .dim-text { font-size: 15px; font-weight: bold; fill: #111; text-anchor: middle; }
+      .dim-line { stroke: #555; stroke-width: 1.2; stroke-dasharray: 3,3; }
+      .arrow-line { stroke: #333; stroke-width: 1.5; }
+      .arrow-head { fill: #333; }
+    </style>
+    
+    <!-- 箭头样式 -->
+    <marker id="arrow-start" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" class="arrow-head"/>
+    </marker>
+    <marker id="arrow-end" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" class="arrow-head"/>
+    </marker>
+  </defs>
+
+  <!-- 标题 -->
+  <text x="30" y="35" class="title-text">共面单端阻抗模型 (CPWG Cross-Section)</text>
+
+  <g transform="translate(40, 20)">
+    <!-- 1. 底层参考地铜箔 (Bottom GND - Orange) -->
+    <rect x="100" y="300" width="600" height="20" fill="#F5A623" stroke="#D98200" stroke-width="1.5"/>
+
+    <!-- 2. 介质层 (Dielectric Er1 - Grey) -->
+    <rect x="100" y="140" width="600" height="160" fill="#D8D8D8" stroke="#979797" stroke-width="1.5"/>
+    <text x="210" y="230" class="label-text" font-size="20">Er1</text>
+
+    <!-- 3. 顶层铜箔 (Top Copper - Orange, 考虑蚀刻梯形侧边) -->
+    <!-- 左侧铺铜地 (Left GND Plane) -->
+    <polygon points="100,120 270,120 285,140 100,140" fill="#F5A623" stroke="#D98200" stroke-width="1.5"/>
+    <!-- 中间信号线 (Signal Trace: Bottom W1, Top W2) -->
+    <polygon points="370,120 450,120 465,140 355,140" fill="#F5A623" stroke="#D98200" stroke-width="1.5"/>
+    <!-- 右侧铺铜地 (Right GND Plane) -->
+    <polygon points="535,120 700,120 700,140 520,140" fill="#F5A623" stroke="#D98200" stroke-width="1.5"/>
+
+    <!-- 4. 绿油/阻焊层 (Solder Mask CEr - Green, 带有沉降凹陷) -->
+    <path d="M 100,105 
+             L 260,105 
+             L 295,126 
+             L 345,126 
+             L 365,105 
+             L 455,105 
+             L 475,126 
+             L 510,126 
+             L 530,105 
+             L 700,105 
+             L 700,120 
+             L 535,120 L 520,140 L 465,140 L 450,120 L 370,120 L 355,140 L 285,140 L 270,120 L 100,120 Z" 
+          fill="#4CAF50" stroke="#388E3C" stroke-width="1.2" stroke-linejoin="round"/>
+    <text x="130" y="90" class="label-text">CEr</text>
+    <line x1="145" y1="93" x2="145" y2="103" class="arrow-line" marker-end="url(#arrow-end)"/>
+
+    <!-- ==================== 标注辅助虚线与尺寸 ==================== -->
+    
+    <!-- H1 介质厚度标注 -->
+    <line x1="60" y1="140" x2="100" y2="140" class="dim-line"/>
+    <line x1="60" y1="300" x2="100" y2="300" class="dim-line"/>
+    <line x1="70" y1="140" x2="70" y2="300" class="arrow-line" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)"/>
+    <text x="45" y="225" class="dim-text">H1</text>
+
+    <!-- T1 铜厚标注 -->
+    <line x1="700" y1="120" x2="740" y2="120" class="dim-line"/>
+    <line x1="700" y1="140" x2="740" y2="140" class="dim-line"/>
+    <line x1="730" y1="120" x2="730" y2="140" class="arrow-line" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)"/>
+    <text x="755" y="135" class="dim-text">T1</text>
+
+    <!-- W1 / W2 线宽标注 -->
+    <!-- W2 (Top Width) -->
+    <line x1="370" y1="60" x2="370" y2="120" class="dim-line"/>
+    <line x1="450" y1="60" x2="450" y2="120" class="dim-line"/>
+    <line x1="370" y1="70" x2="450" y2="70" class="arrow-line" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)"/>
+    <text x="410" y="60" class="dim-text">W2</text>
+
+    <!-- W1 (Bottom Width) -->
+    <line x1="355" y1="140" x2="355" y2="350" class="dim-line"/>
+    <line x1="465" y1="140" x2="465" y2="350" class="dim-line"/>
+    <line x1="355" y1="340" x2="465" y2="340" class="arrow-line" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)"/>
+    <text x="410" y="365" class="dim-text">W1</text>
+
+    <!-- D1 间隙标注 -->
+    <line x1="450" y1="60" x2="450" y2="120" class="dim-line"/>
+    <line x1="535" y1="60" x2="535" y2="120" class="dim-line"/>
+    <line x1="450" y1="70" x2="535" y2="70" class="arrow-line" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)"/>
+    <text x="492" y="60" class="dim-text">D1</text>
+
+    <!-- C1 / C2 绿油厚度标注 -->
+    <!-- C2 (铜上绿油厚度) -->
+    <line x1="410" y1="105" x2="410" y2="120" class="arrow-line" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)"/>
+    <text x="425" y="116" class="dim-text" style="font-size:13px;">C2</text>
+
+    <!-- C1 (间隙处绿油厚度) -->
+    <line x1="320" y1="126" x2="320" y2="140" class="arrow-line" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)"/>
+    <text x="305" y="137" class="dim-text" style="font-size:13px;">C1</text>
+  </g>
+</svg>

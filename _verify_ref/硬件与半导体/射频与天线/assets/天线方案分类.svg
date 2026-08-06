@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 430" width="760" height="430" font-family="'Segoe UI','Helvetica Neue',Arial,'Microsoft YaHei',sans-serif">
+  <!-- background -->
+  <rect x="0" y="0" width="760" height="430" fill="#ffffff"/>
+
+  <!-- title -->
+  <text x="380" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#202124">2.4G 天线方案分类</text>
+
+  <!-- root node -->
+  <rect x="280" y="50" width="200" height="42" rx="9" fill="#1a73e8"/>
+  <text x="380" y="76" text-anchor="middle" font-size="16" font-weight="700" fill="#ffffff">2.4G 天线方案</text>
+
+  <!-- connectors root -> branches -->
+  <path d="M380 92 L380 108 L190 108 L190 122" fill="none" stroke="#5f6368" stroke-width="1.6"/>
+  <path d="M380 108 L570 108 L570 122" fill="none" stroke="#5f6368" stroke-width="1.6"/>
+
+  <!-- branch headers -->
+  <rect x="90" y="122" width="200" height="40" rx="8" fill="#e8f0fe" stroke="#1a73e8" stroke-width="1.4"/>
+  <text x="190" y="147" text-anchor="middle" font-size="15" font-weight="600" fill="#174ea6">内置方案</text>
+  <text x="190" y="172" text-anchor="middle" font-size="11" fill="#5f6368">量产 · 小体积 · 成本低</text>
+
+  <rect x="470" y="122" width="200" height="40" rx="8" fill="#fef7e0" stroke="#f9ab00" stroke-width="1.4"/>
+  <text x="570" y="147" text-anchor="middle" font-size="15" font-weight="600" fill="#b06000">外置方案</text>
+  <text x="570" y="172" text-anchor="middle" font-size="11" fill="#5f6368">要距离 · 可更换</text>
+
+  <!-- internal children connectors -->
+  <path d="M190 162 L190 200" fill="none" stroke="#5f6368" stroke-width="1.4"/>
+  <path d="M190 162 L190 250" fill="none" stroke="#5f6368" stroke-width="1.4"/>
+  <path d="M190 162 L190 300" fill="none" stroke="#5f6368" stroke-width="1.4"/>
+
+  <!-- external children connectors -->
+  <path d="M570 162 L570 200" fill="none" stroke="#5f6368" stroke-width="1.4"/>
+  <path d="M570 162 L570 250" fill="none" stroke="#5f6368" stroke-width="1.4"/>
+  <path d="M570 162 L570 300" fill="none" stroke="#5f6368" stroke-width="1.4"/>
+
+  <!-- internal children -->
+  <rect x="70" y="200" width="240" height="44" rx="8" fill="#ffffff" stroke="#5f6368" stroke-width="1.2"/>
+  <text x="190" y="227" text-anchor="middle" font-size="14" font-weight="600" fill="#202124">陶瓷芯片天线</text>
+  <text x="190" y="244" text-anchor="middle" font-size="11" fill="#5f6368">最小巧 · 净空/匹配极敏感</text>
+
+  <rect x="70" y="250" width="240" height="44" rx="8" fill="#e6f4ea" stroke="#34a853" stroke-width="1.6"/>
+  <text x="190" y="277" text-anchor="middle" font-size="14" font-weight="700" fill="#137333">倒 F 天线 IFA ★</text>
+  <text x="190" y="294" text-anchor="middle" font-size="11" fill="#137333">最常用 · nRF/ESP32 官方参考</text>
+
+  <rect x="70" y="300" width="240" height="44" rx="8" fill="#ffffff" stroke="#5f6368" stroke-width="1.2"/>
+  <text x="190" y="327" text-anchor="middle" font-size="14" font-weight="600" fill="#202124">蛇形单极子</text>
+  <text x="190" y="344" text-anchor="middle" font-size="11" fill="#5f6368">面积更省 · 效率/带宽略降</text>
+
+  <!-- external children -->
+  <rect x="450" y="200" width="240" height="44" rx="8" fill="#ffffff" stroke="#5f6368" stroke-width="1.2"/>
+  <text x="570" y="227" text-anchor="middle" font-size="14" font-weight="600" fill="#202124">¼λ 鞭状 / 弹簧</text>
+  <text x="570" y="244" text-anchor="middle" font-size="11" fill="#5f6368">橡胶鸭 ~31mm · 增益高最皮实</text>
+
+  <rect x="450" y="250" width="240" height="44" rx="8" fill="#ffffff" stroke="#5f6368" stroke-width="1.2"/>
+  <text x="570" y="277" text-anchor="middle" font-size="14" font-weight="600" fill="#202124">PCB 偶极子</text>
+  <text x="570" y="294" text-anchor="middle" font-size="11" fill="#5f6368">½λ≈61mm · 全向 · 遥控器常用</text>
+
+  <rect x="450" y="300" width="240" height="44" rx="8" fill="#ffffff" stroke="#5f6368" stroke-width="1.2"/>
+  <text x="570" y="327" text-anchor="middle" font-size="14" font-weight="600" fill="#202124">IPEX / u.FL 转接</text>
+  <text x="570" y="344" text-anchor="middle" font-size="11" fill="#5f6368">板端留座 · 天线后期选配</text>
+
+  <!-- footer note -->
+  <text x="380" y="408" text-anchor="middle" font-size="11" fill="#80868b">★ = 量产 BLE / WiFi 模组最主流选择</text>
+</svg>

@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 360" width="1100" height="360" role="img" aria-label="嘉立创阻抗计算器参数含义标注">
+  <style>
+    .lab { font: 600 13px "Source Sans Pro","Microsoft YaHei",sans-serif; fill:#222; }
+    .hd  { font: 700 14px "Source Sans Pro","Microsoft YaHei",sans-serif; fill:#1a1a1a; }
+    .sub { font: 500 11px "Source Sans Pro","Microsoft YaHei",sans-serif; fill:#444; }
+    .arr { stroke:#c0392b; stroke-width:1.6; fill:none; }
+    .tlb { font: 700 12px "Source Sans Pro","Microsoft YaHei",sans-serif; fill:#c0392b; }
+  </style>
+  <text x="550" y="26" text-anchor="middle" class="hd">嘉立创阻抗计算器参数含义（单端微带 · 外层为例）</text>
+
+  <!-- 截面图区域 -->
+  <g transform="translate(80,60)">
+    <!-- 防焊层 -->
+    <rect x="60" y="40" width="280" height="28" fill="#C8E6C9" stroke="#854F0B" stroke-width="0.8" opacity="0.9"/>
+    <text x="200" y="58" text-anchor="middle" class="lab">防焊层（solder mask）</text>
+    <!-- 介质 -->
+    <rect x="60" y="68" width="280" height="100" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.8"/>
+    <text x="200" y="92" text-anchor="middle" class="lab">PCB 介质（FR4）</text>
+    <!-- 铜走线 -->
+    <rect x="170" y="110" width="60" height="10" fill="#378ADD" stroke="#222" stroke-width="0.5"/>
+    <text x="200" y="148" text-anchor="middle" class="sub">信号走线</text>
+    <!-- 参考地 -->
+    <rect x="60" y="168" width="280" height="10" fill="#378ADD" stroke="#222" stroke-width="0.5"/>
+    <text x="200" y="192" text-anchor="middle" class="lab">完整 GND 平面</text>
+
+    <!-- 标注 W（走线宽度） -->
+    <line class="arr" x1="170" y1="115" x2="170" y2="220"/>
+    <line class="arr" x1="230" y1="115" x2="230" y2="220"/>
+    <text x="200" y="240" text-anchor="middle" class="tlb">W</text>
+    <text x="200" y="256" text-anchor="middle" class="sub">走线宽度（mm / mil）</text>
+
+    <!-- 标注 T（铜厚） -->
+    <line class="arr" x1="270" y1="110" x2="305" y2="85"/>
+    <text x="310" y="80" class="tlb">T</text>
+    <text x="320" y="94" class="sub">铜厚</text>
+    <text x="320" y="108" class="sub">1oz≈35μm</text>
+
+    <!-- 标注 D1（走线到参考地） -->
+    <line class="arr" x1="240" y1="120" x2="290" y2="160"/>
+    <text x="296" y="155" class="tlb">D1</text>
+    <text x="306" y="170" class="sub">走线→参考地</text>
+    <text x="306" y="184" class="sub">介质厚度</text>
+
+    <!-- 标注 D2（防焊层厚度） -->
+    <line class="arr" x1="280" y1="55" x2="330" y2="55"/>
+    <text x="336" y="50" class="tlb">D2</text>
+    <text x="356" y="46" class="sub">防焊层厚度</text>
+    <text x="356" y="60" class="sub">（≈0.025-0.04mm）</text>
+
+    <!-- 标注 Er1 / Er2（介电常数） -->
+    <line class="arr" x1="100" y1="100" x2="60" y2="100"/>
+    <text x="20" y="104" class="tlb">Er1</text>
+    <text x="0" y="118" class="sub">FR4：4.2-4.6</text>
+
+    <line class="arr" x1="100" y1="55" x2="60" y2="55"/>
+    <text x="20" y="59" class="tlb">Er2</text>
+    <text x="0" y="73" class="sub">防焊：≈3.5</text>
+
+    <!-- 备注：H 等价 D1 -->
+    <text x="200" y="290" text-anchor="middle" class="sub">有些软件把它叫 H（height，介质厚度）；H 和 D1 在这里同义</text>
+  </g>
+
+  <!-- 右侧参数速查 -->
+  <g transform="translate(560,60)">
+    <text x="0" y="0" class="hd">6 个必填参数</text>
+    <rect x="0" y="14" width="500" height="246" fill="#FFFBEF" stroke="#854F0B" stroke-width="1" rx="6"/>
+    <g class="sub">
+      <text x="14" y="40"><tspan font-weight="700" fill="#c0392b">W</tspan>  走线宽度——你画 PCB 时实际走的线宽（mm 或 mil）</text>
+      <text x="14" y="62"><tspan font-weight="700" fill="#c0392b">S</tspan>  走线到共面地边缘的距离（仅 CPW 模式有；微带模式没这一项）</text>
+      <text x="14" y="84"><tspan font-weight="700" fill="#c0392b">T</tspan>  铜厚——1oz=35μm（默认）、0.5oz=17μm（精密板）；下单时按板厂工艺确认</text>
+      <text x="14" y="106"><tspan font-weight="700" fill="#c0392b">D1 / H</tspan>  介质厚度——走线到下方参考地平面的距离；外层=core 厚度，</text>
+      <text x="14" y="122" class="sub">          内层=core 上下的 prepreg 厚度；下单时**必须**按真实叠层填</text>
+      <text x="14" y="144"><tspan font-weight="700" fill="#c0392b">D2</tspan>  防焊层厚度——0.025~0.04mm（嘉立创默认 0.03mm）；不填也行，</text>
+      <text x="14" y="160" class="sub">          对结果影响极小（&lt;1Ω）</text>
+      <text x="14" y="182"><tspan font-weight="700" fill="#c0392b">Er1</tspan>  介质介电常数——FR4 默认 4.3~4.5；Rogers 板需改（3.0~3.5）</text>
+      <text x="14" y="204"><tspan font-weight="700" fill="#c0392b">Er2</tspan>  防焊介电常数——通常 3.3~3.8，默认 3.5；不填也行</text>
+      <text x="14" y="228" class="sub" fill="#c0392b">▸ D1、H、介质厚度、叠层厚度这几个是同一个意思在不同软件的不同叫法；</text>
+      <text x="14" y="244" class="sub" fill="#c0392b">▸ 真正影响结果最多的是 W 和 D1 / H。Er1 也别乱改，按板厂给的实测值填。</text>
+    </g>
+  </g>
+</svg>
