@@ -1,6 +1,9 @@
 # MkDocs 构建产物
 site/
 
+# 沙箱 safe-delete 钩子每次 mkdocs build 清理 site/ 时隔离出的副本（非源码，忽略）
+_verify*/
+
 # MkDocs Material 资源缓存
 .material/
 

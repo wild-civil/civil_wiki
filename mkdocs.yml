@@ -124,6 +124,7 @@ nav:
                       - 硬件与半导体/嵌入式开发/BLE MCU&SOC/WCH/CH58(2)3M/CH582M 特性与概览.md
                       - 硬件与半导体/嵌入式开发/BLE MCU&SOC/WCH/CH58(2)3M/CH582M Flash 存储与 SNV 详解.md
                       - 硬件与半导体/嵌入式开发/BLE MCU&SOC/WCH/CH58(2)3M/CH582M DataFlash 地址偏移实践.md
+                      - 硬件与半导体/嵌入式开发/BLE MCU&SOC/WCH/CH58(2)3M/CH582M 低功耗与BLE唤醒.md
       - 硬件设计:
           - 硬件与半导体/硬件设计/index.md
           - 电源管理:
