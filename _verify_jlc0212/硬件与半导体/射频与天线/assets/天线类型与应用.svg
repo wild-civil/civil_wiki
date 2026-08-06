@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 430" width="760" height="430" font-family="'Segoe UI','Helvetica Neue',Arial,'Microsoft YaHei',sans-serif">
+  <rect x="0" y="0" width="760" height="430" fill="#ffffff"/>
+
+  <text x="380" y="30" text-anchor="middle" font-size="18" font-weight="700" fill="#202124">天线类型 × 典型应用领域</text>
+
+  <!-- column headers -->
+  <text x="155" y="58" text-anchor="middle" font-size="13" font-weight="700" fill="#5f6368">天线类型</text>
+  <text x="500" y="58" text-anchor="middle" font-size="13" font-weight="700" fill="#5f6368">典型应用领域</text>
+  <line x1="40" y1="68" x2="720" y2="68" stroke="#dadce0" stroke-width="1.2"/>
+
+  <!-- row 1 -->
+  <rect x="40" y="80" width="230" height="42" rx="8" fill="#e8f0fe" stroke="#1a73e8" stroke-width="1.2"/>
+  <text x="155" y="106" text-anchor="middle" font-size="14" font-weight="600" fill="#174ea6">单极子 / 鞭状</text>
+  <rect x="290" y="86" width="120" height="30" rx="15" fill="#f1f3f4"/><text x="350" y="106" text-anchor="middle" font-size="12" fill="#202124">WiFi 路由</text>
+  <rect x="420" y="86" width="110" height="30" rx="15" fill="#f1f3f4"/><text x="475" y="106" text-anchor="middle" font-size="12" fill="#202124">遥控/玩具</text>
+  <rect x="540" y="86" width="170" height="30" rx="15" fill="#f1f3f4"/><text x="625" y="106" text-anchor="middle" font-size="12" fill="#202124">IoT 网关</text>
+
+  <!-- row 2 -->
+  <rect x="40" y="134" width="230" height="42" rx="8" fill="#e8f0fe" stroke="#1a73e8" stroke-width="1.2"/>
+  <text x="155" y="160" text-anchor="middle" font-size="14" font-weight="600" fill="#174ea6">偶极子 (½λ)</text>
+  <rect x="290" y="140" width="120" height="30" rx="15" fill="#f1f3f4"/><text x="350" y="160" text-anchor="middle" font-size="12" fill="#202124">2.4G 键鼠</text>
+  <rect x="420" y="140" width="120" height="30" rx="15" fill="#f1f3f4"/><text x="480" y="160" text-anchor="middle" font-size="12" fill="#202124">遥控器</text>
+  <rect x="550" y="140" width="160" height="30" rx="15" fill="#f1f3f4"/><text x="630" y="160" text-anchor="middle" font-size="12" fill="#202124">老旧路由</text>
+
+  <!-- row 3 -->
+  <rect x="40" y="188" width="230" height="42" rx="8" fill="#e6f4ea" stroke="#34a853" stroke-width="1.2"/>
+  <text x="155" y="214" text-anchor="middle" font-size="14" font-weight="600" fill="#137333">倒 F (IFA)</text>
+  <rect x="290" y="194" width="100" height="30" rx="15" fill="#e6f4ea"/><text x="340" y="214" text-anchor="middle" font-size="12" fill="#137333">手机</text>
+  <rect x="400" y="194" width="120" height="30" rx="15" fill="#e6f4ea"/><text x="460" y="214" text-anchor="middle" font-size="12" fill="#137333">BLE 模组</text>
+  <rect x="530" y="194" width="180" height="30" rx="15" fill="#e6f4ea"/><text x="620" y="214" text-anchor="middle" font-size="12" fill="#137333">ESP32 / nRF</text>
+
+  <!-- row 4 -->
+  <rect x="40" y="242" width="230" height="42" rx="8" fill="#e8f0fe" stroke="#1a73e8" stroke-width="1.2"/>
+  <text x="155" y="268" text-anchor="middle" font-size="14" font-weight="600" fill="#174ea6">陶瓷芯片</text>
+  <rect x="290" y="248" width="120" height="30" rx="15" fill="#f1f3f4"/><text x="350" y="268" text-anchor="middle" font-size="12" fill="#202124">可穿戴</text>
+  <rect x="420" y="248" width="140" height="30" rx="15" fill="#f1f3f4"/><text x="490" y="268" text-anchor="middle" font-size="12" fill="#202124">超小模组</text>
+  <rect x="570" y="248" width="140" height="30" rx="15" fill="#f1f3f4"/><text x="640" y="268" text-anchor="middle" font-size="12" fill="#202124">BLE 信标</text>
+
+  <!-- row 5 -->
+  <rect x="40" y="296" width="230" height="42" rx="8" fill="#fef7e0" stroke="#f9ab00" stroke-width="1.2"/>
+  <text x="155" y="322" text-anchor="middle" font-size="14" font-weight="600" fill="#b06000">螺旋 (Helical)</text>
+  <rect x="290" y="302" width="140" height="30" rx="15" fill="#f1f3f4"/><text x="360" y="322" text-anchor="middle" font-size="12" fill="#202124">手持对讲</text>
+  <rect x="440" y="302" width="110" height="30" rx="15" fill="#f1f3f4"/><text x="495" y="322" text-anchor="middle" font-size="12" fill="#202124">RFID</text>
+  <rect x="560" y="302" width="150" height="30" rx="15" fill="#f1f3f4"/><text x="635" y="322" text-anchor="middle" font-size="12" fill="#202124">太空/卫星</text>
+
+  <!-- row 6 -->
+  <rect x="40" y="350" width="230" height="42" rx="8" fill="#fef7e0" stroke="#f9ab00" stroke-width="1.2"/>
+  <text x="155" y="376" text-anchor="middle" font-size="14" font-weight="600" fill="#b06000">贴片 (Patch)</text>
+  <rect x="290" y="356" width="120" height="30" rx="15" fill="#f1f3f4"/><text x="350" y="376" text-anchor="middle" font-size="12" fill="#202124">GPS/北斗</text>
+  <rect x="420" y="356" width="150" height="30" rx="15" fill="#f1f3f4"/><text x="495" y="376" text-anchor="middle" font-size="12" fill="#202124">卫星通信</text>
+  <rect x="580" y="356" width="130" height="30" rx="15" fill="#f1f3f4"/><text x="645" y="376" text-anchor="middle" font-size="12" fill="#202124">毫米波雷达</text>
+
+  <text x="380" y="416" text-anchor="middle" font-size="11" fill="#80868b">同一领域常多种天线并存，按尺寸/距离/成本取舍</text>
+</svg>

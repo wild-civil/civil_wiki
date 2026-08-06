@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 360" width="680" height="360">
+  <rect width="680" height="360" fill="#FAEEDA"/>
+  <text x="340" y="34" text-anchor="middle" font-size="20" font-weight="bold" fill="#3a2a12">特征阻抗看截面，延时看长度</text>
+
+  <!-- Left: cross-section determines Z0 -->
+  <rect x="40" y="70" width="280" height="180" rx="10" fill="#ffffff" stroke="#854F0B" stroke-width="2"/>
+  <text x="180" y="92" text-anchor="middle" font-size="15" font-weight="bold" fill="#3a2a12">截面（决定 Z₀）</text>
+  <rect x="90" y="150" width="180" height="60" fill="#d9c39c" stroke="#854F0B" stroke-width="1"/>
+  <rect x="150" y="138" width="60" height="12" fill="#378ADD" stroke="#1f4f86" stroke-width="1"/>
+  <rect x="90" y="210" width="180" height="12" fill="#378ADD" stroke="#1f4f86" stroke-width="1"/>
+  <line x1="150" y1="124" x2="210" y2="124" stroke="#854F0B" stroke-width="1.5"/>
+  <text x="180" y="120" text-anchor="middle" font-size="13" fill="#3a2a12">W</text>
+  <line x1="262" y1="150" x2="262" y2="210" stroke="#854F0B" stroke-width="1.5"/>
+  <text x="270" y="184" font-size="12" fill="#3a2a12">H</text>
+  <text x="180" y="242" text-anchor="middle" font-size="12" fill="#3a2a12">线宽 W · 介质厚 H · 铜厚 t · Er</text>
+
+  <!-- Right: length does not change Z0 -->
+  <rect x="360" y="70" width="280" height="180" rx="10" fill="#ffffff" stroke="#854F0B" stroke-width="2"/>
+  <text x="500" y="92" text-anchor="middle" font-size="15" font-weight="bold" fill="#3a2a12">长度（不改变 Z₀）</text>
+  <rect x="385" y="150" width="230" height="14" fill="#378ADD" stroke="#1f4f86" stroke-width="1"/>
+  <line x1="385" y1="178" x2="615" y2="178" stroke="#854F0B" stroke-width="1.5"/>
+  <line x1="385" y1="173" x2="385" y2="183" stroke="#854F0B" stroke-width="1.5"/>
+  <line x1="615" y1="173" x2="615" y2="183" stroke="#854F0B" stroke-width="1.5"/>
+  <text x="500" y="196" text-anchor="middle" font-size="13" fill="#3a2a12">长度 L</text>
+  <text x="500" y="224" text-anchor="middle" font-size="12" fill="#3a2a12">延时 · 损耗 · 时序</text>
+  <text x="500" y="240" text-anchor="middle" font-size="12" font-weight="bold" fill="#b35900">Z₀ 不变</text>
+
+  <!-- bottom note -->
+  <rect x="40" y="280" width="600" height="48" rx="8" fill="#fff4e0" stroke="#854F0B" stroke-width="1.5"/>
+  <text x="340" y="305" text-anchor="middle" font-size="14" fill="#3a2a12">同一根均匀走线：拉 1 cm 或 20 cm，Z₀ 相同 —— 长度只影响延时/损耗，不计入阻抗计算</text>
+</svg>

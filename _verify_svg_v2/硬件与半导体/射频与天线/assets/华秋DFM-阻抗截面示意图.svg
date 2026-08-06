@@ -1,0 +1,138 @@
+<svg width="680" height="400" viewBox="0 0 680 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">华秋 DFM 阻抗计算截面示意图（GCPW 共面单端外层）</title>
+  <desc id="desc">展示 1.2 mm 双面板共面单端阻抗模型的截面尺寸与参数：W1=26.50、W2=25.70、D1=8.00、H1=41.9291、Er1=4.2、T1=1.3780、C1=1.1969、C2=0.5000、CEr=3.5，计算结果 55.11 Ω。</desc>
+  <style>
+    .t { font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif; font-size: 12px; fill: #2c2c2a; }
+    .th { font-family: ui-sans-serif, system-ui, sans-serif; font-size: 14px; font-weight: 600; fill: #2c2c2a; }
+    .tc { font-family: ui-sans-serif, system-ui, sans-serif; font-size: 11px; fill: #5f5e5a; }
+    .tm { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; fill: #2c2c2a; }
+    .dim { stroke: #444441; stroke-width: 0.75; fill: none; marker-start: url(#arr); marker-end: url(#arr); }
+    .leader { stroke: #5f5e5a; stroke-width: 0.5; fill: none; stroke-dasharray: 3,2; }
+    .note-line { stroke: #888; stroke-width: 0.5; fill: none; }
+  </style>
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M1 1 L5 5 L1 9" fill="none" stroke="#444441" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <!-- 主截面区域 -->
+  <g transform="translate(25,52)">
+    <text x="200" y="-34" class="th" text-anchor="middle">阻抗计算</text>
+
+    <!-- 底层地平铜 -->
+    <rect x="45" y="270" width="310" height="5" fill="#f5a623" stroke="#d48c12" stroke-width="0.5"/>
+
+    <!-- FR4 介质 -->
+    <rect x="45" y="125" width="310" height="145" fill="#d9d9d9" stroke="#bdbdbd" stroke-width="0.5"/>
+    <text x="200" y="197" class="t" text-anchor="middle" dominant-baseline="central">Er1</text>
+
+    <!-- 顶层铜：左侧共面地（带蚀刻斜边） -->
+    <path d="M 45 125 L 118 125 L 116 119 L 47 119 Z" fill="#f5a623" stroke="#d48c12" stroke-width="0.5"/>
+    <!-- 右侧共面地 -->
+    <path d="M 282 125 L 355 125 L 353 119 L 284 119 Z" fill="#f5a623" stroke="#d48c12" stroke-width="0.5"/>
+    <!-- 中间信号线：梯形 W1 &gt; W2 -->
+    <path d="M 145 125 L 265 125 L 260 119 L 150 119 Z" fill="#f5a623" stroke="#d48c12" stroke-width="0.5"/>
+
+    <!-- 绿油阻焊层：起伏包裹 -->
+    <path d="M 45 113
+             L 113 113
+             C 115 113, 115 112, 117 111
+             L 122 107
+             C 123 106, 124 106, 126 106
+             L 148 106
+             C 150 106, 151 107, 153 108
+             L 156 112
+             C 157 113, 158 113, 160 113
+             L 250 113
+             C 252 113, 253 112, 254 111
+             L 257 107
+             C 258 106, 260 106, 262 106
+             L 284 106
+             C 286 106, 287 107, 288 108
+             L 293 112
+             C 294 113, 295 113, 297 113
+             L 355 113
+             L 355 119
+             L 282 119
+             L 282 125
+             L 284 125
+             L 284 119
+             L 265 119
+             L 260 125
+             L 150 125
+             L 145 119
+             L 118 119
+             L 116 125
+             L 45 125
+             Z" fill="#66bb6a" fill-opacity="0.75" stroke="#388e3c" stroke-width="0.6"/>
+
+    <!-- 尺寸标注 H1 -->
+    <line x1="35" y1="125" x2="35" y2="275" class="dim"/>
+    <text x="23" y="200" class="t" text-anchor="middle" dominant-baseline="central">H1</text>
+    <line x1="35" y1="125" x2="45" y2="125" class="leader"/>
+    <line x1="35" y1="275" x2="45" y2="275" class="leader"/>
+
+    <!-- 尺寸标注 T1 -->
+    <line x1="370" y1="119" x2="370" y2="125" class="dim"/>
+    <text x="383" y="122" class="tc" dominant-baseline="central">T1</text>
+    <line x1="360" y1="119" x2="370" y2="119" class="leader"/>
+    <line x1="360" y1="125" x2="370" y2="125" class="leader"/>
+
+    <!-- 尺寸标注 C1：沟槽处阻焊厚度 -->
+    <line x1="385" y1="106" x2="385" y2="125" class="dim"/>
+    <text x="398" y="116" class="tc" dominant-baseline="central">C1</text>
+    <line x1="360" y1="106" x2="385" y2="106" class="leader"/>
+    <line x1="360" y1="125" x2="385" y2="125" class="leader"/>
+
+    <!-- 尺寸标注 C2：信号线上方阻焊厚度 -->
+    <line x1="275" y1="113" x2="275" y2="119" class="dim"/>
+    <text x="262" y="116" class="tc" text-anchor="end" dominant-baseline="central">C2</text>
+    <line x1="260" y1="113" x2="275" y2="113" class="leader"/>
+    <line x1="260" y1="119" x2="275" y2="119" class="leader"/>
+
+    <!-- W1 标注：信号线底部宽度 -->
+    <line x1="145" y1="308" x2="265" y2="308" class="dim"/>
+    <text x="205" y="322" class="t" text-anchor="middle">W1</text>
+    <line x1="145" y1="308" x2="145" y2="125" class="leader"/>
+    <line x1="265" y1="308" x2="265" y2="125" class="leader"/>
+
+    <!-- W2 标注：信号线顶部宽度 -->
+    <line x1="150" y1="64" x2="260" y2="64" class="dim"/>
+    <text x="205" y="52" class="t" text-anchor="middle">W2</text>
+    <line x1="150" y1="64" x2="150" y2="106" class="leader"/>
+    <line x1="260" y1="64" x2="260" y2="106" class="leader"/>
+
+    <!-- D1 标注：信号线到共面地间隙 -->
+    <line x1="265" y1="308" x2="282" y2="308" class="dim"/>
+    <text x="273" y="322" class="t" text-anchor="middle">D1</text>
+    <line x1="265" y1="308" x2="265" y2="125" class="leader"/>
+    <line x1="282" y1="308" x2="282" y2="125" class="leader"/>
+
+    <!-- CEr 标注 -->
+    <text x="65" y="103" class="tc">CEr</text>
+    <line x1="77" y1="105" x2="90" y2="111" class="note-line"/>
+  </g>
+
+  <!-- 参数表 -->
+  <g transform="translate(420,52)">
+    <text x="110" y="-34" class="th" text-anchor="middle">参数</text>
+    <rect x="0" y="-14" width="235" height="285" fill="#f8f8f8" stroke="#d3d1c7" stroke-width="0.5" rx="6"/>
+    <g transform="translate(14,16)">
+      <text x="0" y="0" class="t">设计线宽</text><text x="130" y="0" class="tm">W1 = 26.50</text>
+      <text x="0" y="25" class="t">线面宽度</text><text x="130" y="25" class="tm">W2 = 25.70</text>
+      <text x="0" y="50" class="t">到铜距离</text><text x="130" y="50" class="tm">D1 = 8.00</text>
+      <text x="0" y="75" class="t">上参考厚度</text><text x="130" y="75" class="tm">H1 = 41.9291</text>
+      <text x="0" y="100" class="t">板材介电常数</text><text x="130" y="100" class="tm">Er1 = 4.2000</text>
+      <text x="0" y="125" class="t">铜箔厚度</text><text x="130" y="125" class="tm">T1 = 1.3780</text>
+      <text x="0" y="150" class="t">基材上阻焊</text><text x="130" y="150" class="tm">C1 = 1.1969</text>
+      <text x="0" y="175" class="t">铜箔上阻焊</text><text x="130" y="175" class="tm">C2 = 0.5000</text>
+      <text x="0" y="200" class="t">阻焊介电常数</text><text x="130" y="200" class="tm">CEr = 3.5000</text>
+    </g>
+    <rect x="14" y="235" width="68" height="25" fill="#ffffff" stroke="#bdbdbd" stroke-width="0.5" rx="4"/>
+    <text x="48" y="250" class="tc" text-anchor="middle" dominant-baseline="central">配置</text>
+    <rect x="92" y="235" width="68" height="25" fill="#66bb6a" stroke="#388e3c" stroke-width="0.5" rx="4"/>
+    <text x="126" y="250" class="t" text-anchor="middle" dominant-baseline="central" fill="#ffffff">计算</text>
+    <text x="174" y="250" class="th" dominant-baseline="central">55.11 Ω</text>
+  </g>
+</svg>

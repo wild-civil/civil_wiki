@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 400" width="720" height="400" role="img">
+<title>正片层与负片层对照</title>
+<desc>左为正片层（Positive，表层 Polygon Pour）：起始无铜，你画的地方才有铜，遵守 Clearance/Connect 规则，改板后需 Repour 重铺。右为负片层（Negative，内电层 Internal Plane）：起始满铜，你画线挖空，分割区各赋一个网络，不遵守表层铺铜规则，分割靠 Place→Line 闭合轮廓。</desc>
+<style>
+.th{font-size:14px;font-weight:700;fill:#7A3E00;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+.ts{font-size:11px;fill:#5F5E5A;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+.tw{font-size:12px;font-weight:700;fill:#FFFFFF;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+.tb{font-size:12px;font-weight:700;fill:#185FA5;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+.tf{font-size:12px;font-weight:700;fill:#7A3E00;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+</style>
+
+<!-- ===== 左：正片层 Positive ===== -->
+<text class="th" x="190" y="34" text-anchor="middle">正片层（Positive）</text>
+<text class="ts" x="190" y="52" text-anchor="middle">表层 · Polygon Pour 铺铜</text>
+
+<rect x="70" y="74" width="240" height="200" fill="#FAEEDA" stroke="#854F0B" stroke-width="1"/>
+
+<!-- 走线（你画的铜） -->
+<line x1="95" y1="120" x2="250" y2="120" stroke="#378ADD" stroke-width="4" stroke-linecap="round"/>
+<circle cx="95" cy="120" r="5" fill="#378ADD"/>
+<circle cx="250" cy="120" r="5" fill="#378ADD"/>
+<!-- 铺铜块（你画的铜） -->
+<polygon points="95,150 235,150 250,205 238,250 95,250" fill="#378ADD" stroke="#185FA5" stroke-width="0.5"/>
+<text class="tw" x="165" y="208" text-anchor="middle">GND 铺铜</text>
+
+<text class="tb" x="190" y="300" text-anchor="middle">你画的地方 = 有铜（蓝）</text>
+<text class="ts" x="190" y="322" text-anchor="middle">起始无铜 → 做「加法」</text>
+<text class="ts" x="190" y="340" text-anchor="middle">遵守 Clearance / Connect；改板需 Repour 重铺</text>
+
+<!-- ===== 右：负片层 Negative ===== -->
+<text class="th" x="530" y="34" text-anchor="middle">负片层（Negative）</text>
+<text class="ts" x="530" y="52" text-anchor="middle">内电层 · Internal Plane</text>
+
+<rect x="410" y="74" width="240" height="200" fill="#378ADD" stroke="#185FA5" stroke-width="1"/>
+
+<!-- 挖空分割线（你画的 = 没铜） -->
+<rect x="512" y="74" width="12" height="200" fill="#FAEEDA"/>
+<rect x="524" y="150" width="126" height="11" fill="#FAEEDA"/>
+<rect x="590" y="150" width="60" height="11" fill="#378ADD"/>
+
+<!-- 区域网络标注 -->
+<text class="tw" x="462" y="182" text-anchor="middle">GND</text>
+<text class="tw" x="587" y="240" text-anchor="middle">AGND</text>
+<text class="tw" x="588" y="138" text-anchor="middle" font-size="10">POWER</text>
+<rect x="524" y="150" width="126" height="11" fill="none" stroke="#FAEEDA" stroke-width="0"/>
+
+<text class="tb" x="530" y="300" text-anchor="middle">你画的地方 = 没铜（挖空）</text>
+<text class="ts" x="530" y="322" text-anchor="middle">起始满铜 → 做「减法」</text>
+<text class="ts" x="530" y="340" text-anchor="middle">不遵守表层铺铜规则；分割靠 Place→Line</text>
+
+<!-- ===== 底部总结 ===== -->
+<line x1="40" y1="360" x2="680" y2="360" stroke="#854F0B" stroke-width="0.5" stroke-dasharray="4 3"/>
+<text class="tf" x="360" y="384" text-anchor="middle">正片 = 加法（画铜才有铜）；负片 = 减法（满铜，画线挖空）—— 两套编辑逻辑完全隔离</text>
+</svg>
