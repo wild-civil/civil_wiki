@@ -116,6 +116,7 @@ nav:
           - 板级 Bring-up 与验证清单: 工作与项目/AHRS板固件仿真与验证/板级BringUp与验证清单.md
           - 仿真踩坑实录（Keil Simulator 对 H7 不可用）: 工作与项目/AHRS板固件仿真与验证/仿真踩坑实录_KeilSimulator对H7不可用.md
           - MATLAB ESKF 算法验证（Phase 1）: 工作与项目/AHRS板固件仿真与验证/MATLAB_ESKF算法验证.md
+          - Renode 仿真验证（L2 指令级）: 工作与项目/AHRS板固件仿真与验证/Renode仿真验证.md
   - 技术与编程:
       - 技术与编程/index.md
       - 可视化与图形:
