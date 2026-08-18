@@ -109,8 +109,18 @@ nav:
   - 首页: README.md
   - 工作与项目:
       - 工作与项目/index.md
+      - AHRS 板固件仿真与验证:
+          - 工作与项目/AHRS板固件仿真与验证/index.md
+          - 验证策略总览（MIL/SIL/PIL/HIL 与仿真工具谱系）: 工作与项目/AHRS板固件仿真与验证/验证策略总览.md
+          - PC 端 SIL 实战（真实固件零修改跑通）: 工作与项目/AHRS板固件仿真与验证/SIL_PC实战.md
+          - 板级 Bring-up 与验证清单: 工作与项目/AHRS板固件仿真与验证/板级BringUp与验证清单.md
+          - 仿真踩坑实录（Keil Simulator 对 H7 不可用）: 工作与项目/AHRS板固件仿真与验证/仿真踩坑实录_KeilSimulator对H7不可用.md
+          - MATLAB ESKF 算法验证（Phase 1）: 工作与项目/AHRS板固件仿真与验证/MATLAB_ESKF算法验证.md
   - 技术与编程:
       - 技术与编程/index.md
+      - 可视化与图形:
+          - 技术与编程/可视化与图形/index.md
+          - SVG 从认识到制作: 技术与编程/可视化与图形/SVG从认识到制作.md
   - 硬件与半导体:
       - 硬件与半导体/index.md
       - 嵌入式开发:
