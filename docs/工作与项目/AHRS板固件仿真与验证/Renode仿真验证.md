@@ -460,7 +460,7 @@ Renode 有内置「传感器数据表」机制（RESD，CSV 式 `时间,值` 格
 - [x] **路线 A 收口：GDB 确认固件跑到 `main()`**（2026-08-19）——`Machine started` 只代表 CPU 起来了；本项目固件无 `printf`，所以靠 GDB 命中 `Breakpoint 1, main () at main.c:110` 确认，而非看串口。已证固件跑过 PWR 死等进入主循环。踩坑 7 轮的真正根因 = `Python.PythonPeripheral` 是 `request` 处理器模型（非 `def ReadDoubleWord` 模块），见 §6.1 坑⑤。
 - [x] **路线 A 冒烟测试通过**（2026-08-19 上午，用户贴 GDB 实测）：`continue` 反复命中 `main.c:299`（`ins_sensor_manager_poll`）、全程无 `HardFault_Handler`，连上时 PC 在 `HAL_ADC_PollForConversion`（已跑过 PWR 死等、在循环里）。`RW_IRAM2 outside ELF segments` 为良性警告（DTCM 段，Renode LoadELF 已整体载入）。固件 `main.c:420-422` 自带 PB1 心跳（`HAL_GPIO_TogglePin(LED_STATUS=PB1)`），故 LED 可视化无需改固件。
 - [x] **PB1 心跳 / 心跳可视化确认（2026-08-19）**：固件自带 PB1 心跳无需改；`.repl` 接 `status_led: Miscellaneous.LED @ gpioPortB 1`（`peripherals` 已证挂在 PB1，见 §6.2 坑⑥）。但 Renode 1.16.1 的 `STM32_GPIOPort` **不会把引脚输出传播给挂在其下的 `LED`** → `gpioPortB.status_led State` 恒 `False`（坑⑦，非文件错，见 §6.2）。改用 **ODR 寄存器 bit1 翻转**作硬证明：`watch "sysbus ReadDoubleWord 0x58020414" 300`，实测返回值在 **`0x00000080` ↔ `0x00000082`** 跳变（bit1 翻转）→ **固件心跳确认**。LED 不亮可忽略。
-- [ ] 确认 `peripherals` 列出的 H7 外设覆盖度，标记哪些本项目要用但缺模型（若 `start` 后刷 `non existing peripheral` 警告，照 §6.1 `filename:` 桩模式补）
+- [x] **外设覆盖缺口已核对**（2026-08-19，交叉核对 `Core/Src` HAL handle 与 Renode `peripherals` 清单，非凭记忆）：SPI1/2/3/6 未建模（仅 spi4）、I2C 从机(IST8310/BMP581/MS5611)未挂（控制器已建）、USART3/TIM4/ADC1/FDCAN1 直接可用。缺口表见本节末「外设覆盖缺口表」。路线 B 第一刀 = SPI1+ICM-42688P（ESKF 核心源，最难）或先 I2C 从机（平缓）。
 - [ ] 评估路线 B 工作量：先建 **1 个 IMU（ICM-42688P）** 的 C# 寄存器模型，接 `ahrs_data_gen.m` 合成数据，跑通 `ins_eskf_15d` 整链
 - [ ] 与 [MATLAB ESKF 算法验证](MATLAB_ESKF算法验证.md) 对齐：用同源合成数据，在 Renode 里复现 att/pos/vel 误差量级，确认「真实固件 == 参考算法」
 - [ ] （板回后）HIL 阶段交叉确认 D-Cache + DMA 行为差异
@@ -473,6 +473,27 @@ Renode 有内置「传感器数据表」机制（RESD，CSV 式 `时间,值` 格
 1.5. **（已完成）PB1 心跳可视化 / 心跳硬证明**：固件 `main.c:420-422` 已有 `HAL_GPIO_TogglePin(LED_STATUS=PB1)` 心跳（零固件改动）；`.repl` 已加 `status_led: Miscellaneous.LED @ gpioPortB 1`（接法正确，见 §6.2 坑⑥）。但 Renode 1.16.1 的 GPIO→LED 不传播输出 → `status_led State` 恒 False（坑⑦，非文件错）。**改用 ODR bit1 翻转作心跳硬证明**：`watch "sysbus ReadDoubleWord 0x58020414" 300` 看 bit1 跳变，实测 `0x80↔0x82` → 固件心跳确认。详见 §6.2。
 2. **确认外设覆盖缺口**：`peripherals` 列一遍，对照本项目要用到的（SPI1/2/3/4/6、I2C1/2/3、USART3、TIM4 加热 PWM、ADC1 NTC、FDCAN、BDMA/SRAM4）打勾，缺的标出来——这是路线 B / 后续桩的清单。
 3. **进入路线 B（核心价值）**：优先拿 **ICM-42688P**（SPI1，本项目主 IMU）开刀，照 §7 骨架建 C# 寄存器模型 + `ahrs_data_gen.m` 合成数据经 Python hook 定时 `FeedSample`，让真实 `ins_sensor_manager → ins_eskf_15d` 整链在虚拟 H743 上跑起来。
+
+### 外设覆盖缺口表（已核对，2026-08-19）
+
+交叉核对 `Core/Src` 真实 HAL handle（`hspi*`/`hi2c*`/`huart*`/`htim*`/`hadc*`/`hfdcan*`）与 Renode `peripherals` 清单所得。路线 B（传感器在环）须补的即下表「Renode 模型」为 ✗ 的行。
+
+| 总线 | 设备 | Renode 模型 | 路线 B 动作 |
+| --- | --- | --- | --- |
+| **SPI1** | ICM-42688P（主 IMU） | ✗（仅 spi4 建模） | **实例化 SPI1（`STM32H7_SPI`@0x40013000）+ ICM-42688P 寄存器模型（核心）** |
+| SPI2 | FRAM | ✗ | 实例化 SPI2 + FRAM 桩 |
+| SPI3 | 底板通信（slave） | ✗ | 自验证非必需，可后补 |
+| SPI4 | BMI088 | ✓ 控制器 | 挂 BMI088 模型 |
+| SPI6 | IIM-42652 + RM3100 | ✗ | 实例化 SPI6（+BDMA/SRAM4）+ 模型 |
+| I2C1 | IST8310 | ✓控制器 / ✗从机 | 挂 IST8310 从机 |
+| I2C2 | BMP581 | ✓控制器 / ✗从机 | 挂 BMP581 从机 |
+| I2C3 | MS5611 | ✓控制器 / ✗从机 | 挂 MS5611 从机 |
+| USART3 | UM982 | ✓ | 直接可用 |
+| TIM4 | 加热 PWM | ✓ | 直接可用 |
+| ADC1 | NTC（3ch） | ✓（`adcM1S2`@0x40022000 = ADC12） | 直接可用 |
+| FDCAN1 | 输出帧 | ✓ | 直接可用 |
+
+> ESKF 的 accel/gyro 核心来源 = SPI1 的 ICM-42688P；磁力计/气压计走 I2C（控制器已建模、只缺从机，Renode 里 I2C 传感器例子更多）。路线 B 第一刀二选一：① 直接攻 SPI1+ICM（最高价值、最难）；② 先做 I2C 从机让 mag/baro `valid`（更平缓、学习曲线友好）。
 
 ## 11. 操作速查卡（复盘用，照抄即可）
 
