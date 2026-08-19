@@ -576,11 +576,16 @@ Python 钩原理（坑⑧）：`DummyI2CSlave` 在**写相位**触发 `DataRecei
     - **(a) `include` 不加 `@`** —— 实测 `include "@D:/.../i2c_slaves.py"` 报 `File does not exist: @D:/.../i2c_slaves.py`：`include`（/`i`）把参数当脚本路径，**不会**像 `LoadELF`/`LoadPlatformDescription` 那样把 `@` 当作「这是文件」标记；`@` 被当成路径字面量的一部分 → 自然找不到。正确写法：`include "D:/.../i2c_slaves.py"`（引号可省，但**绝不能有 `@`**）。`include` 既能加载 `.resc` 也能直接加载 `.py`（Renode 自带测试 `Renesas_DA14592.robot` 即 `include "${echo_i2c_peripheral}"` 加载 `.py`）。
     - **(b) Renode 1.16.1 的 `include` 加载 `.py` 不会把顶层函数暴露成 monitor 命令** —— 实测 `.include "x.py"` 能执行文件、定义函数，但 `.resc` 里再写 `setup_ist8310 "..."` 调它 → 报 `No such command or device: setup_ist8310`（与自带测试的版本行为不同）。**正确做法：让 `.py` 在模块顶层直接调用接线函数（自执行）**，`include` 跑文件时即完成 `DataReceived` 挂钩，`.resc` 里**不要再调**任何 monitor 命令。取外设用 `monitor.Machine[path]`（官方 `echo-i2c-peripheral.py` 同款 API：`dummy = monitor.Machine[path]`），并 `dummy.DataReceived += I2CRegisterSlave(dummy, reg_map).write` 挂钩；本项目 `i2c_slaves.py` 已改为自执行 + `monitor.Machine`/`self.GetPeripheral` 双兜底。
 
+!!! warning "坑⑩：I2C 回包必须是 `IEnumerable<byte>`，不能传 Python `list[int]`（2026-08-19 实测）"
+    - **现象**：固件 bring-up 跑一会儿后 Renode 抛 `Error in IEnumeratorOfTWrapper.Current. Could not cast: System.Byte in System.Int32`，栈顶在 `DummyI2CSlave.EnqueueResponseBytes` → `Misc.EnqueueRange[T]`。`Could not cast` 来自 `EnqueueRange<byte>` 遍历 `data` 时对每个元素做 `byte` 强转失败。
+    - **根因**：`DummyI2CSlave.EnqueueResponseBytes(IEnumerable<byte> bs)` 形参是 `IEnumerable<byte>`；而我原来传的是 `list(resp)`（Python `list[int]`），IronPython 把它 marshal 成 `IEnumerable<int>`。一旦固件读到命中 `reg_map` 的已知寄存器（WHO_AM_I / CHIP_ID / PROM 等）触发 `EnqueueResponseBytes` 就崩；扫描未命中寄存器时 `resp==[]` 不 enqueue 故先不崩 —— 所以「正常运行一会儿才崩」。
+    - **修复**：把回包包成 `bytearray`（`IEnumerable<byte>`）并 `& 0xFF` 兜底：`self.dummy.EnqueueResponseBytes(bytearray(b & 0xFF for b in resp))`。**任何传给 `EnqueueResponseBytes` 的数据都必须是 `bytes`/`bytearray`，绝不可以是 Python `list`。**
+
 ### 12.3 文件清单（software/Renode/）
 
 - `i2c_slaves.py` —— `I2CRegisterSlave` 通用类（按 `reg_map` 回数据）+ 三个 `reg_map` + **模块顶层 `_wire()` 自执行**把三从机挂到 `sysbus.i2c1.ist8310` / `sysbus.i2c2.bmp581` / `sysbus.i2c3.ms5611`。**纯 ASCII**（IronPython 对 `#`/中文注释 `Non-ASCII` 报错，见 §6.1 坑②）。加载即生效，无需 monitor 命令。
 - `stm32h743_pwr.repl` —— 末尾新增三行 `Mocks.DummyI2CSlave @ i2cN 0x..`（**`.repl` 不支持顶层 `#`**，见 §6.2 坑③）。
-- `stm32h743.resc` —— `LoadPlatformDescription` 之后 `include` python + 三个 `setup_*`（`#` 注释在 `.resc` 里合法）。
+- `stm32h743.resc` —— `LoadPlatformDescription` 之后 `include "D:/.../i2c_slaves.py"`（`.py` 自执行接线，无需 monitor 命令；`#` 注释在 `.resc` 里合法，但 `include` 路径**绝不加 `@`**）。
 - `gdb_i2c_check.gdb` —— 断 `main` + 三个 `valid=1` 行（ist_ist8310.c:83 / bosch_bmp581.c:88 / te_ms5611.c:93）+ `HardFault_Handler`，自动 `target remote localhost:3333`。
 
 ### 12.4 验证判定
