@@ -461,7 +461,8 @@ Renode 有内置「传感器数据表」机制（RESD，CSV 式 `时间,值` 格
 - [x] **路线 A 冒烟测试通过**（2026-08-19 上午，用户贴 GDB 实测）：`continue` 反复命中 `main.c:299`（`ins_sensor_manager_poll`）、全程无 `HardFault_Handler`，连上时 PC 在 `HAL_ADC_PollForConversion`（已跑过 PWR 死等、在循环里）。`RW_IRAM2 outside ELF segments` 为良性警告（DTCM 段，Renode LoadELF 已整体载入）。固件 `main.c:420-422` 自带 PB1 心跳（`HAL_GPIO_TogglePin(LED_STATUS=PB1)`），故 LED 可视化无需改固件。
 - [x] **PB1 心跳 / 心跳可视化确认（2026-08-19）**：固件自带 PB1 心跳无需改；`.repl` 接 `status_led: Miscellaneous.LED @ gpioPortB 1`（`peripherals` 已证挂在 PB1，见 §6.2 坑⑥）。但 Renode 1.16.1 的 `STM32_GPIOPort` **不会把引脚输出传播给挂在其下的 `LED`** → `gpioPortB.status_led State` 恒 `False`（坑⑦，非文件错，见 §6.2）。改用 **ODR 寄存器 bit1 翻转**作硬证明：`watch "sysbus ReadDoubleWord 0x58020414" 300`，实测返回值在 **`0x00000080` ↔ `0x00000082`** 跳变（bit1 翻转）→ **固件心跳确认**。LED 不亮可忽略。
 - [x] **外设覆盖缺口已核对**（2026-08-19，交叉核对 `Core/Src` HAL handle 与 Renode `peripherals` 清单，非凭记忆）：SPI1/2/3/6 未建模（仅 spi4）、I2C 从机(IST8310/BMP581/MS5611)未挂（控制器已建）、USART3/TIM4/ADC1/FDCAN1 直接可用。缺口表见本节末「外设覆盖缺口表」。路线 B 第一刀 = SPI1+ICM-42688P（ESKF 核心源，最难）或先 I2C 从机（平缓）。
-- [ ] 评估路线 B 工作量：先建 **1 个 IMU（ICM-42688P）** 的 C# 寄存器模型，接 `ahrs_data_gen.m` 合成数据，跑通 `ins_eskf_15d` 整链
+- [x] **路线 B·I2C 从机建模（mag/baro `valid=1`，2026-08-19）**：平缓第一刀。三个 I2C 从机用 `Mocks.DummyI2CSlave + Python 钩` 落地（`i2c_slaves.py` + `.repl` 三行 + `.resc` 三个 `setup_*`），喂静态合成数据让 IST8310/BMP581/MS5611 的 init 与 read 都成功。验证脚本 `gdb_i2c_check.gdb` 断三个 `valid=1` 行。坑⑧（I2C 从机 `DataReceived`+`EnqueueResponseBytes` 机制、写事务不 enqueue 防 FIFO 污染）见 §12。待用户在 Renode 实测确认。
+- [ ] **（下一刀）路线 B·SPI IMU 建模**：建 **ICM-42688P**（SPI1）的 C# 寄存器模型（或 Python SPI 桩），接 `ahrs_data_gen.m` 合成数据，让 `ins_eskf_15d` 整链真正跑融合——Renode 仿真的核心价值点。
 - [ ] 与 [MATLAB ESKF 算法验证](MATLAB_ESKF算法验证.md) 对齐：用同源合成数据，在 Renode 里复现 att/pos/vel 误差量级，确认「真实固件 == 参考算法」
 - [ ] （板回后）HIL 阶段交叉确认 D-Cache + DMA 行为差异
 
@@ -471,8 +472,9 @@ Renode 有内置「传感器数据表」机制（RESD，CSV 式 `时间,值` 格
 
 1. **（已用 GDB 完成，记录备查）验证固件进 main + 冒烟测试**：`machine StartGdbServer 3333` + `arm-none-eabi-gdb` 连 `localhost:3333`，`break main` / `break main.c:299` / `break HardFault_Handler` / `continue`；反复命中 `main.c:299` 且无 HardFault = 固件活着。本项目无 `printf`，UART analyzer 看不到输出属正常。深度验证脚本见 `software/Renode/gdb_depth_check.gdb`。
 1.5. **（已完成）PB1 心跳可视化 / 心跳硬证明**：固件 `main.c:420-422` 已有 `HAL_GPIO_TogglePin(LED_STATUS=PB1)` 心跳（零固件改动）；`.repl` 已加 `status_led: Miscellaneous.LED @ gpioPortB 1`（接法正确，见 §6.2 坑⑥）。但 Renode 1.16.1 的 GPIO→LED 不传播输出 → `status_led State` 恒 False（坑⑦，非文件错）。**改用 ODR bit1 翻转作心跳硬证明**：`watch "sysbus ReadDoubleWord 0x58020414" 300` 看 bit1 跳变，实测 `0x80↔0x82` → 固件心跳确认。详见 §6.2。
-2. **确认外设覆盖缺口**：`peripherals` 列一遍，对照本项目要用到的（SPI1/2/3/4/6、I2C1/2/3、USART3、TIM4 加热 PWM、ADC1 NTC、FDCAN、BDMA/SRAM4）打勾，缺的标出来——这是路线 B / 后续桩的清单。
-3. **进入路线 B（核心价值）**：优先拿 **ICM-42688P**（SPI1，本项目主 IMU）开刀，照 §7 骨架建 C# 寄存器模型 + `ahrs_data_gen.m` 合成数据经 Python hook 定时 `FeedSample`，让真实 `ins_sensor_manager → ins_eskf_15d` 整链在虚拟 H743 上跑起来。
+2. **确认外设覆盖缺口**：`peripherals` 列一遍，对照本项目要用到的（SPI1/2/3/4/6、I2C1/2/3、USART3、TIM4 加热 PWM、ADC1 NTC、FDCAN、BDMA/SRAM4）打勾，缺的标出来——这是路线 B / 后续桩的清单。（已完成，缺口表见本节末。）
+3. **路线 B·I2C 从机（平缓第一刀，已完成建模）**：IST8310/BMP581/MS5611 用 `Mocks.DummyI2CSlave + Python 钩` 建模，`valid=1` 机制验证见 §12、验证脚本 `gdb_i2c_check.gdb`。待 Renode 实测确认。
+4. **路线 B·SPI IMU（下一刀，核心价值）**：建 **ICM-42688P**（SPI1，本项目主 IMU）寄存器模型（C# 或 Python SPI 桩）+ `ahrs_data_gen.m` 合成数据，让真实 `ins_sensor_manager → ins_eskf_15d` 整链在虚拟 H743 上跑融合。
 
 ### 外设覆盖缺口表（已核对，2026-08-19）
 
@@ -526,6 +528,67 @@ watch "sysbus ReadDoubleWord 0x58020414" 300
 **D. 常见踩坑一句话索引：** 见 §6.1（坑①~⑤：script: 内联 def / .py 非 ASCII / .repl `#` 注释 / `i` 不要 `@` / `PythonPeripheral` 是 `request` 处理器）、§6.2（坑⑥：LED 子外设须 `gpioPortB.status_led` 全路径查；坑⑦：Renode GPIO→LED 不传播，LED 恒 False 可忽略，改用 ODR bit1）。
 
 **E. 若 `start` 后刷一堆 WARNING（`non existing peripheral` / `Unknown slave` / `Unhandled write` / `DCacheCleanByMVAToPoCAddress`）：** 全部正常，是「最小 MCU 仿真」必有现象——固件在认真初始化 7 个传感器 + UM982 + SPI3，但 Renode 还没建模它们 → 全扑空、`valid=0`、ESKF 被跳过（循环能干净跑的原因）。`DCacheClean*` 那行反而是好事：证明你们修的 D-Cache 一致性代码在跑。这些 WARNING 不表示仿真坏，传感器模型是路线 B 才补。
+
+**F. 路线 B·I2C 从机验证（mag/baro `valid=1`，见 §12）：**
+
+```text
+arm-none-eabi-gdb D:/01_Job/Project/AHRS-Board/software/STM32H743_AHRS-Board/MDK-ARM/STM32H743_AHRS-Board/STM32H743_AHRS-Board.axf -x D:/01_Job/Project/AHRS-Board/software/Renode/gdb_i2c_check.gdb
+```
+
+GDB 自动连 `localhost:3333` 并断在 `main`；再 `continue` 跑进主循环第一次 `ins_sensor_manager_poll`：依次命中 `ist_ist8310.c:83` / `bosch_bmp581.c:88` / `te_ms5611.c:93`（三个 `s->valid = 1;` 行）= I2C 从机建模成功、传感器在环机制跑通。若其中某个断点**没命中**，说明对应传感器 init 失败（`SM_ERR_*` 置位 → poll 跳过 read）→ 查 Renode monitor 是否还刷 `Unknown slave at address XX`（从机没挂上）或 WHO_AM_I/CHIP_ID 回值不对。
+
+## 12. 路线 B·I2C 从机建模（平缓第一刀，2026-08-19）
+
+> 目的：先把**磁力计/气压计**做成「在环」，让固件真实驱动读到的 `valid=1`，验证整条「传感器在环」机制跑通。I2C 控制器 Renode 已建模（`i2c1/2/3` 为 `STM32F7_I2C`），只缺从机；且 I2C 从机可用 **`Mocks.DummyI2CSlave` + Python 钩** 平缓落地（不用写 C#）。SPI IMU（ICM-42688P 等）建模更难，留作下一刀。
+
+### 12.1 固件侧协议（读真实代码，非凭记忆）
+
+三个驱动都走 `HAL_I2C_Mem_Read` / `HAL_I2C_Mem_Write`（即「先写寄存器地址 1 字节、再读/写 N 字节」）。`valid` 在各自 `*_read()` 里置 1，且 `ins_sensor_manager_poll` **只在 init 成功（无 `SM_ERR_*`）时才调用 read** —— 所以要让 init 与 read 都成功。
+
+| 传感器 | 总线/地址 | init 关键读 | read 关键读（置 valid） |
+| --- | --- | --- | --- |
+| IST8310 | i2c1 / 0x0E(14) | WHO_AM_I(0x00) 须 =0x10 | STAT1(0x02) bit0=DRDY；DATAX..Z(0x03) 读 6 字节（小端） |
+| BMP581 | i2c2 / 0x47(71) | CHIP_ID(0x01) 须 =0x50 | TEMP_DATA(0x20) 3 字节 + PRESS_DATA(0x1D) 3 字节（小端有符号） |
+| MS5611 | i2c3 / 0x77(119) | PROM 8 字（0xA0\|i<<1，各 2 字节大端） | ADC(0x00) 读 3 字节（D1/D2，大端），一阶补偿出 P/T |
+
+> 注意：固件启动实打的从机地址正是 **14 / 71 / 119**（之前 WARNING 里 `Unknown slave at address 14/71/119`），与上面吻合。
+
+### 12.2 Renode I2C 从机机制（官方 `echo-i2c-peripheral.py` + 文档确认）
+
+```text
+# .repl 里挂从机（地址可写 0x 十六进制）
+ist8310: Mocks.DummyI2CSlave @ i2c1 0x0E
+bmp581: Mocks.DummyI2CSlave @ i2c2 0x47
+ms5611: Mocks.DummyI2CSlave @ i2c3 0x77
+
+# .resc 里加载 Python 并挂钩（monitor 路径 = sysbus.<bus>.<slave>）
+include "@.../i2c_slaves.py"
+setup_ist8310 "sysbus.i2c1.ist8310"
+setup_bmp581 "sysbus.i2c2.bmp581"
+setup_ms5611 "sysbus.i2c3.ms5611"
+```
+
+Python 钩原理（坑⑧）：`DummyI2CSlave` 在**写相位**触发 `DataReceived`，读相位从 FIFO 取 `EnqueueResponseByte(s)` 入队的数据。
+
+- 读事务：master 先写 **1 字节寄存器地址** → `DataReceived([reg])`，`len(data)==1` → 按 `reg` 查表 `EnqueueResponseBytes(该寄存器响应)`。
+- 写事务：master 写 **≥2 字节**（reg + 数据）→ `len(data)>1` → **忽略、不 enqueue**。
+
+> **关键技巧（防 FIFO 污染）**：每个从机响应表按寄存器号给**精确长度**的字节，且写事务一律不 enqueue。这样每次读事务前 FIFO 是空的、读相位精确抽走所需字节，不会出现「上一次读的残留字节被下一次读先抽走」的错位。若想偷懒 enqueue 超长，反而会污染后续读——别这么做。
+
+### 12.3 文件清单（software/Renode/）
+
+- `i2c_slaves.py` —— `I2CRegisterSlave` 通用类（按 `reg_map` 回数据）+ 三个 `mc_setup_*` 钩函数（monitor 里去掉 `mc_` 前缀调用，如 `setup_ist8310`）。**纯 ASCII**（IronPython 对 `#`/中文注释 `Non-ASCII` 报错，见 §6.1 坑②）。
+- `stm32h743_pwr.repl` —— 末尾新增三行 `Mocks.DummyI2CSlave @ i2cN 0x..`（**`.repl` 不支持顶层 `#`**，见 §6.2 坑③）。
+- `stm32h743.resc` —— `LoadPlatformDescription` 之后 `include` python + 三个 `setup_*`（`#` 注释在 `.resc` 里合法）。
+- `gdb_i2c_check.gdb` —— 断 `main` + 三个 `valid=1` 行（ist_ist8310.c:83 / bosch_bmp581.c:88 / te_ms5611.c:93）+ `HardFault_Handler`，自动 `target remote localhost:3333`。
+
+### 12.4 验证判定
+
+- ✅ PASS：GDB `continue` 后依次命中三个 `valid=1` 行，且全程不碰 `HardFault_Handler` → I2C 从机建模成功、传感器在环机制跑通。
+- ❌ 某断点未命中：对应传感器 init 失败（`SM_ERR_*` 置位 → poll 跳过 read）→ 查 Renode monitor 是否还刷 `Unknown slave at address XX`（从机没挂上 / 总线名错），或 WHO_AM_I/CHIP_ID 回值不对（改 `i2c_slaves.py` 的 `reg_map`）。
+
+> 当前 `i2c_slaves.py` 给的是**静态合成数据**（仅让 `valid=1`），非时变；mag/baro 数值是合理量级（如 BMP581 25℃/1000hPa）。后续若要喂真实运动学合成数据，可把 `reg_map` 换成由 Python 定时 `EnqueueResponseBytes` 驱动的时变序列（参照路线 B SPI IMU 的 `ahrs_data_gen.m` 思路）。
+
 
 ## 参考链接
 
