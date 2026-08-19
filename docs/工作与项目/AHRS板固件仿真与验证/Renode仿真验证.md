@@ -317,6 +317,47 @@ else:
 !!! tip "PWR 桩为什么能跳过死等"
     官方 `stm32h743.repl` 未建 `PWR(0x58024800)`，固件 `SystemInit` 时钟初始化死等 `PWR->VOSRDY` 就绪标志；桩对**所有读返回 `0xFFFFFFFF`**（"所有标志就绪"），固件以为 VOSRDY 已置位就跳出死等继续跑。这是 hack 不是硬件精确——后续想细修可按真实 `PWR` 寄存器（CR1/CSR1 等）让对应位返回真实值。若你用的 Renode 版本已自带 `STM32.PWR` 真实模型，可直接换 `pwr: STM32.PWR @ sysbus 0x58024800`，不必用 Python 桩。
 
+### 6.2 PB1 心跳可视化与 Renode LED 模型局限（2026-08-19 实测）
+
+固件 `main.c:420-422` 自带 PB1 心跳：`if ((loop_count++ % 1000) == 0) HAL_GPIO_TogglePin(LED_STATUS_GPIO_Port, LED_STATUS_Pin);`（`LED_STATUS = PB1`，约 1 Hz 翻转）。**无需改固件即可在 Renode 里看「板子在 blink」**。
+
+**`.repl` 接法（已验证正确）：**
+
+```text
+status_led: Miscellaneous.LED @ gpioPortB 1
+```
+
+`peripherals` 树里显示为 `gpioPortB` 的**子外设** `└── status_led (LED) Address: 1`，证明接法 100% 正确（官方 `nucleo_h753zi.repl` 同款语法 `GreenLED: Miscellaneous.LED @ gpioPortB 0`）。
+
+!!! warning "两个查询 / 模型坑（2026-08-19 实测）"
+    - **坑⑥：LED 是子外设，monitor 须用全路径查** —— 裸 `status_led State` 报 `No such command or device`；正确写法是 `gpioPortB.status_led State`，`watch` 也必须带引号 + 刷新毫秒：`watch "gpioPortB.status_led State" 500`（漏引号报 `Bad parameters`）。
+    - **坑⑦：Renode 1.16.1 的 `STM32_GPIOPort` 不会把引脚输出翻转传播给挂在其下的 `LED` 子外设** —— 即使固件真在翻转 PB1，`gpioPortB.status_led State` 也**始终 `False`**。实测：手动 `sysbus WriteDoubleWord 0x58020414 0x2/0x0` 写 ODR（此时 PB1 还是输入模式，更不可能翻）、以及固件运行时，LED 都不翻。这是 Renode 该版本 **GPIO→LED 传播建模的短板**，**不是 `.repl` 写错**，也**不影响路线 A 收口**（见下方「心跳的硬证明」）。
+
+**心跳的硬证明（不依赖 LED 模型，推荐）：** 直接看 GPIOB 输出寄存器 ODR 的 bit1 翻转。
+
+GPIOB 寄存器偏移速查（base `0x58020400`）：
+
+| 寄存器 | 偏移 | 说明 |
+|---|---|---|
+| MODER | 0x00 | 引脚模式（0b01=输出，HAL_GPIO_Init 设） |
+| OTYPER | 0x04 | 输出类型 |
+| OSPEEDR | 0x08 | 速度 |
+| PUPDR | 0x0C | 上下拉 |
+| IDR | 0x10 | 输入数据 |
+| **ODR** | **0x14** | 输出数据（PB1 = bit1） |
+| **BSRR** | **0x18** | 置位/复位（HAL_GPIO_TogglePin 走它；低 16 位 BS、高 16 位 BR） |
+
+Renode monitor 操作：
+
+```text
+start                              # 让固件跑（配置 PB1 为输出 + 进循环）
+watch "sysbus ReadDoubleWord 0x58020414" 300
+```
+
+盯着返回值 bit1（即 `值 & 0x2`）：在 `0x…0` 与 `0x…2` 之间跳 → 固件确实在翻转 PB1 = 心跳铁证。
+
+**实测结论（2026-08-19）**：`ReadDoubleWord 0x58020414` 在 **`0x00000080` ↔ `0x00000082`** 之间跳变（bit1 翻转）→ **固件心跳确认，路线 A 彻底坐实**。LED 恒 False 即上方坑⑦，可忽略，改用 ODR bit1 翻转即可。
+
 ## 7. 针对 AHRS 板的三条路线（重点）
 
 现状：MCU 有官方 `.repl`，但**板级外设一个模型都没有**。三条递进路线：
@@ -417,6 +458,8 @@ Renode 有内置「传感器数据表」机制（RESD，CSV 式 `时间,值` 格
 - [x] 装 Renode（v1.16.1），环境 OK
 - [x] 写 `stm32h743.resc` + `stm32h743_pwr.repl` + `stm32h743_pwr.py`（§6.1 三件套），**直接用真实固件 `.axf` 跑通路线 A**（`Machine started`、无 FatalError、无 PWR 警告；76888 B 加载、PC=0x8000395、SP=0x24002B08）
 - [x] **路线 A 收口：GDB 确认固件跑到 `main()`**（2026-08-19）——`Machine started` 只代表 CPU 起来了；本项目固件无 `printf`，所以靠 GDB 命中 `Breakpoint 1, main () at main.c:110` 确认，而非看串口。已证固件跑过 PWR 死等进入主循环。踩坑 7 轮的真正根因 = `Python.PythonPeripheral` 是 `request` 处理器模型（非 `def ReadDoubleWord` 模块），见 §6.1 坑⑤。
+- [x] **路线 A 冒烟测试通过**（2026-08-19 上午，用户贴 GDB 实测）：`continue` 反复命中 `main.c:299`（`ins_sensor_manager_poll`）、全程无 `HardFault_Handler`，连上时 PC 在 `HAL_ADC_PollForConversion`（已跑过 PWR 死等、在循环里）。`RW_IRAM2 outside ELF segments` 为良性警告（DTCM 段，Renode LoadELF 已整体载入）。固件 `main.c:420-422` 自带 PB1 心跳（`HAL_GPIO_TogglePin(LED_STATUS=PB1)`），故 LED 可视化无需改固件。
+- [x] **PB1 心跳 / 心跳可视化确认（2026-08-19）**：固件自带 PB1 心跳无需改；`.repl` 接 `status_led: Miscellaneous.LED @ gpioPortB 1`（`peripherals` 已证挂在 PB1，见 §6.2 坑⑥）。但 Renode 1.16.1 的 `STM32_GPIOPort` **不会把引脚输出传播给挂在其下的 `LED`** → `gpioPortB.status_led State` 恒 `False`（坑⑦，非文件错，见 §6.2）。改用 **ODR 寄存器 bit1 翻转**作硬证明：`watch "sysbus ReadDoubleWord 0x58020414" 300`，实测返回值在 **`0x00000080` ↔ `0x00000082`** 跳变（bit1 翻转）→ **固件心跳确认**。LED 不亮可忽略。
 - [ ] 确认 `peripherals` 列出的 H7 外设覆盖度，标记哪些本项目要用但缺模型（若 `start` 后刷 `non existing peripheral` 警告，照 §6.1 `filename:` 桩模式补）
 - [ ] 评估路线 B 工作量：先建 **1 个 IMU（ICM-42688P）** 的 C# 寄存器模型，接 `ahrs_data_gen.m` 合成数据，跑通 `ins_eskf_15d` 整链
 - [ ] 与 [MATLAB ESKF 算法验证](MATLAB_ESKF算法验证.md) 对齐：用同源合成数据，在 Renode 里复现 att/pos/vel 误差量级，确认「真实固件 == 参考算法」
@@ -424,11 +467,44 @@ Renode 有内置「传感器数据表」机制（RESD，CSV 式 `时间,值` 格
 
 ### 当前下一步（路线 A 已收口 → 进入路线 B）
 
-> **路线 A 已于 2026-08-19 收口**：GDB `continue` 命中 `Breakpoint 1, main () at main.c:110`，证明固件跑过 `SystemInit`（含此前卡死的 PWR 死等）进入主循环。本项目固件无 `printf`（`uart = NULL`），故收口证据是 GDB 命中 `main`、而非串口打印。
+> **路线 A 已于 2026-08-19 收口**：GDB `continue` 命中 `Breakpoint 1, main () at main.c:110`，证明固件跑过 `SystemInit`（含此前卡死的 PWR 死等）进入主循环；同日再跑**冒烟测试**，`continue` 反复命中 `main.c:299`（`ins_sensor_manager_poll`）、全程无 `HardFault_Handler`，确认循环持续运转。本项目固件无 `printf`（`uart = NULL`），故收口证据是 GDB 命中、而非串口打印。
 
-1. **（已用 GDB 完成，记录备查）验证固件进 main**：`machine StartGdbServer 3333` + `arm-none-eabi-gdb` 连 `localhost:3333`，`break main` / `break HardFault_Handler` / `continue`；命中 `main` 即收口，命中 `HardFault_Handler` 需 `bt` 定位。本项目无 `printf`，UART analyzer 看不到输出属正常。
+1. **（已用 GDB 完成，记录备查）验证固件进 main + 冒烟测试**：`machine StartGdbServer 3333` + `arm-none-eabi-gdb` 连 `localhost:3333`，`break main` / `break main.c:299` / `break HardFault_Handler` / `continue`；反复命中 `main.c:299` 且无 HardFault = 固件活着。本项目无 `printf`，UART analyzer 看不到输出属正常。深度验证脚本见 `software/Renode/gdb_depth_check.gdb`。
+1.5. **（已完成）PB1 心跳可视化 / 心跳硬证明**：固件 `main.c:420-422` 已有 `HAL_GPIO_TogglePin(LED_STATUS=PB1)` 心跳（零固件改动）；`.repl` 已加 `status_led: Miscellaneous.LED @ gpioPortB 1`（接法正确，见 §6.2 坑⑥）。但 Renode 1.16.1 的 GPIO→LED 不传播输出 → `status_led State` 恒 False（坑⑦，非文件错）。**改用 ODR bit1 翻转作心跳硬证明**：`watch "sysbus ReadDoubleWord 0x58020414" 300` 看 bit1 跳变，实测 `0x80↔0x82` → 固件心跳确认。详见 §6.2。
 2. **确认外设覆盖缺口**：`peripherals` 列一遍，对照本项目要用到的（SPI1/2/3/4/6、I2C1/2/3、USART3、TIM4 加热 PWM、ADC1 NTC、FDCAN、BDMA/SRAM4）打勾，缺的标出来——这是路线 B / 后续桩的清单。
 3. **进入路线 B（核心价值）**：优先拿 **ICM-42688P**（SPI1，本项目主 IMU）开刀，照 §7 骨架建 C# 寄存器模型 + `ahrs_data_gen.m` 合成数据经 Python hook 定时 `FeedSample`，让真实 `ins_sensor_manager → ins_eskf_15d` 整链在虚拟 H743 上跑起来。
+
+## 11. 操作速查卡（复盘用，照抄即可）
+
+> 路线 A 全链路「从零跑通 → GDB 收口 → 心跳确认」的完整命令序列。文件见 `software/Renode/`（`stm32h743.resc` / `stm32h743_pwr.repl` / `stm32h743_pwr.py`）。
+
+**A. 启动仿真（Renode Monitor）：**
+
+```text
+i "D:/01_Job/Project/AHRS-Board/software/Renode/stm32h743.resc"
+machine StartGdbServer 3333
+start
+```
+
+**B. GDB 收口（另一个终端）：**
+
+```text
+arm-none-eabi-gdb D:/01_Job/Project/AHRS-Board/software/STM32H743_AHRS-Board/MDK-ARM/STM32H743_AHRS-Board/STM32H743_AHRS-Board.axf -x D:/01_Job/Project/AHRS-Board/software/Renode/gdb_depth_check.gdb
+```
+
+GDB 里反复 `continue`：反复命中 `main.c:299`（`ins_sensor_manager_poll`）、命中 `ins_output_publish`、全程**不碰 `HardFault_Handler`** = 固件活着。
+
+**C. 心跳硬证明（Renode Monitor，不依赖 LED 模型）：**
+
+```text
+watch "sysbus ReadDoubleWord 0x58020414" 300
+```
+
+返回值 bit1（`值 & 0x2`）在 `0x…0` ↔ `0x…2`（实测 `0x80 ↔ 0x82`）跳 = 固件在 blink = 心跳确认。
+
+**D. 常见踩坑一句话索引：** 见 §6.1（坑①~⑤：script: 内联 def / .py 非 ASCII / .repl `#` 注释 / `i` 不要 `@` / `PythonPeripheral` 是 `request` 处理器）、§6.2（坑⑥：LED 子外设须 `gpioPortB.status_led` 全路径查；坑⑦：Renode GPIO→LED 不传播，LED 恒 False 可忽略，改用 ODR bit1）。
+
+**E. 若 `start` 后刷一堆 WARNING（`non existing peripheral` / `Unknown slave` / `Unhandled write` / `DCacheCleanByMVAToPoCAddress`）：** 全部正常，是「最小 MCU 仿真」必有现象——固件在认真初始化 7 个传感器 + UM982 + SPI3，但 Renode 还没建模它们 → 全扑空、`valid=0`、ESKF 被跳过（循环能干净跑的原因）。`DCacheClean*` 那行反而是好事：证明你们修的 D-Cache 一致性代码在跑。这些 WARNING 不表示仿真坏，传感器模型是路线 B 才补。
 
 ## 参考链接
 
