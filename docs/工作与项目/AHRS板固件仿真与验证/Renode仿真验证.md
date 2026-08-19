@@ -587,7 +587,8 @@ Python 钩原理（坑⑧）：`DummyI2CSlave` 在**写相位**触发 `DataRecei
         1. **刷屏**（仅噪声，固件活着——30ms 节奏说明主循环在跑，不是紧循环）。
         2. **潜在死循环**：`ins_delay_us()` 用 `while ((DWT->CYCCNT - s) < t)` 忙等；`CYCCNT` 恒 0 → `(0-0)<t` 永真 → **死循环**。`te_ms5611.c` 读路径（触发 ADC 后 `ins_delay_us(dl)`，`dl=odly[osr]` 非 0）一旦 I2C 从机接通走到这里就会**卡死**，正好挡在 `te_ms5611.c:93` 的 `valid=1` 断点之前。
     - **修复（固件侧 `AHRS_RENODE_SIM` 开关，`d582a31`）**：仿真构建下 `ins_time_us` 改 `HAL_GetTick()*1000`（ms→us）、`ins_delay_us` 改 `HAL_Delay((us+999)/1000)`（向上取整到 ms）。SysTick 在 Renode 中**已建模**，所以二者都正常工作；正常（非仿真）构建走原 DWT 分支，**零改动**。**Keil 用法**：Project→Options→C/C++→Define 追加 `AHRS_RENODE_SIM`（逗号分隔），重新 Build 出 .axf 再载入 Renode。修后 `0xE0001004` 警告彻底消失（sim 分支不再碰 DWT）。
-    - **替代方案（不改固件，需重载 Renode 平台）**：在 `.repl` 里 `dwt_cyccnt: Python.PythonPeripheral @ sysbus 0xE0001004`（size 4，script 定义 `ReadDoubleWord` 自增 counter、`WriteDoubleWord` 置位），让 CYCCNT 递增即可同时消除警告与死循环。该方案对 Renode Python 外设 API 有依赖、未实测，作为不改固件的备选。
+    - **⚠ 宏没加进工程 = 白重建（2026-08-19 实测踩坑）**：用户按上述加宏后 Rebuild，但 `0xE0001004` 警告依旧、GDB 停在 `ins_delay_us` 忙等（PC `0x800DD2C`）。反汇编 `.axf` 见 `bl dwt_init` + `ldr r3,[r1,#4]`（r1=0xE0001000）→ **仍是 DWT 路径**；查 `MDK-ARM/*.uvprojx` 的 `<Define>` 仍是 `USE_PWR_LDO_SUPPLY,USE_HAL_DRIVER,STM32H743xx`，**宏根本没进工程**（重建 ≠ 加了宏，两点须同时做）。判定方法：`arm-none-eabi-objdump -d axf | awk '/^0800dd14 <ins_delay_us>:/,/^$/'` 看是否 `bl dwt_init`。
+    - **替代方案（不改固件，`8bfeae0` 已落地）**：Renode 侧挂 DWT 桩——`.repl` 里 `dwt: Python.PythonPeripheral @ sysbus 0xE0001000`（size 0x10，`filename: ".../dwt_stub.py"`）；`dwt_stub.py` 用 `request.IsRead/IsWrite/Value/Offset` 模型，`Offset==0x4`（CYCCNT）时 `cyccnt += 48000`（每次读≈100us@480MHz）返回，写忽略。忙等快速退出、时间戳仍前进，固件与 Keil **零改动**。Renode 1.16.1 Python 外设脚本是**每访问 handler**（`request` 对象，属性大小写不敏感），不是 `ReadDoubleWord()` 函数，见 `stm32h743_pwr.py`。
 
 ### 12.3 文件清单（software/Renode/）
 
