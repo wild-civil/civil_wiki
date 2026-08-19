@@ -215,9 +215,9 @@ renode
 
 ### 6.1 实战记录：真实 .axf 已跑通（补 PWR 桩 + 全套踩坑）
 
-> 2026-08-18 实测：用 Keil 出的真实固件 `.axf`（76888 B）加载，**`Machine started`、无 FatalError、无 PWR 警告刷屏**，路线 A 最小 MCU 系统立住。下面是能直接抄的最终三件套与踩坑。
+> 2026-08-18 实测：用 Keil 出的真实固件 `.axf`（76888 B）加载，**`Machine started`、无 FatalError、无 PWR 警告刷屏**，路线 A 最小 MCU 系统立住。2026-08-19 用 GDB 确认固件**真的跑进 `main()`**（见下方「收口确认」），路线 A 正式收口。下面是能直接抄的最终三件套与踩坑。
 
-**成功日志（节选）：**
+**成功日志（节选，2026-08-18 加载固件）：**
 
 ```text
 Renode, version 1.16.1 (d66b0c2a-202602161036)
@@ -231,6 +231,24 @@ Starting emulation...
 18:58:16.8732 [INFO] cpu: Setting initial values: PC = 0x8000395, SP = 0x24002B08.
 18:58:16.8732 [INFO] STM32H743: Machine started.
 ```
+
+**收口确认（2026-08-19，GDB `arm-none-eabi-gdb` 连 `machine StartGdbServer 3333`）：**
+
+```text
+(gdb) target remote localhost:3333
+Reset_Handler () at startup_stm32h743xx.s:243
+(gdb) break main
+Breakpoint 1 at 0x800e810: file ../Core/Src/main.c, line 110.
+(gdb) break HardFault_Handler
+Breakpoint 2 at 0x80003a2: HardFault_Handler. (2 locations)
+(gdb) continue
+Continuing.
+
+Breakpoint 1, main () at ../Core/Src/main.c:110
+110     {
+```
+
+> 命中 `main` 即证明：固件跑过了 `SystemInit` 时钟初始化（含此前卡死的 PWR `ACTVOSRDY` 死等），真正进入应用主循环，**路线 A 收口**。注意本项目固件**无 `printf`**（`ins_output` 的 AA55 帧输出当前 `uart = NULL` 未接），所以 Renode 的 UART analyzer 看不到任何打印——收口证据靠的就是 GDB 命中 `main`，不是看串口。
 
 **三个文件（最终可用版，放在 `software/Renode/`）：**
 
@@ -267,35 +285,24 @@ using "D:/Program Files/Renode/platforms/cpus/stm32h743.repl"
 
 pwr: Python.PythonPeripheral @ sysbus 0x58024800
     size: 0x400
-    initable: true
+    initable: false
     filename: "D:/01_Job/Project/AHRS-Board/software/Renode/stm32h743_pwr.py"
 ```
 
-`stm32h743_pwr.py`（**必须纯 ASCII**，见下方坑②）：
+`stm32h743_pwr.py`（**必须纯 ASCII**，且必须是 `request` 处理器模型，见下方坑⑤）：
 
 ```python
-# AHRS-Board PWR stub (Python peripheral for Renode)
-# Official stm32h743.repl has no PWR(0x58024800). Firmware SystemInit
-# dead-waits on PWR VOSRDY ready flag -> infinite loop. This stub returns
-# 0xFFFFFFFF for all reads ("all flags ready") to skip the VOSRDY dead-wait
-# and let firmware run past init. Hack, not hardware-accurate; refine later.
-
-def ReadByte(offset):
-    return 0xFF
-
-def ReadWord(offset):
-    return 0xFFFF
-
-def ReadDoubleWord(offset):
-    return 0xFFFFFFFF
-
-def WriteByte(offset, value):
+# AHRS-Board PWR stub (PythonPeripheral request-handler model)
+# Official stm32h743.repl lacks PWR @0x58024800. Firmware SystemInit
+# dead-waits on PWR VOSRDY / ACTVOSRDY flags. Return 0xFFFFFFFF for every
+# read so all "ready" bits are set and the firmware runs past clock init.
+# NOTE: Renode PythonPeripheral scripts are per-access handlers, NOT modules
+# with ReadDoubleWord() functions. Use the global 'request' object.
+if request.IsInit:
     pass
-
-def WriteWord(offset, value):
-    pass
-
-def WriteDoubleWord(offset, value):
+elif request.IsRead:
+    request.Value = 0xFFFFFFFF
+else:
     pass
 ```
 
@@ -304,6 +311,8 @@ def WriteDoubleWord(offset, value):
     2. **`.py` 外设文件必须纯 ASCII** —— IronPython 加载 `filename:` 指向的 `.py` 时若含非 ASCII（如中文注释，`\xe6` 是 UTF-8 中文首字节）报 `Non-ASCII character '\xe6' ... but no encoding declared`。最稳 = `.py` 全 ASCII（中文注释改英文）；PEP 263 `# coding: utf-8` 声明也行但要求声明行本身 ASCII 且位于第 1/2 行，不如直接零非 ASCII 省心。
     3. **`.repl` 不支持 `#` 注释**（报 `unexpected '#'`）、不支持 `"""` 多行字符串**（报 `Unterminated string`）**。`script:` 的值也不能用 `@`（那是 Monitor 命令语法，报 `unexpected '@'`）。`.repl` 须零注释、字符串单行。
     4. **`include` / `i` 命令加载 `.resc` 不需要 `@`**（只方法参数 `LoadELF`/`LoadHEX`/`LoadPlatformDescription` 要 `@`）。实测 `i "D:\...\stm32h743.resc"`（带引号、反斜杠）也能成功——引号路径里反斜杠 OK，但 `.repl`/方法参数里仍建议一律正斜杠。
+    5. **`Python.PythonPeripheral` 是「每次总线访问都执行的处理器」，不是「定义 `ReadDoubleWord` 函数的模块」**（2026-08-19 实测，路线 A 收口的真正根因，前四坑都解决后仍卡 7 轮就是它）——IronPython 加载 `.py` 后，Renode 把脚本当成一段**在每次读/写外设时执行的处理器**，通过全局对象 `request` 交互：`request.IsInit` / `request.IsRead` / `request.IsWrite` 判断访问类型，读时用 `request.Value = <值>` 给返回值，写时读 `request.Value`。**在模块里写 `def ReadDoubleWord(offset): return 0xFFFFFFFF` 永远不会被调用**，所以读恒定返回 0、固件死等就绪标志不退出。正确写法就是上面的 `.py` 模板（`if request.IsRead: request.Value = 0xFFFFFFFF`）。官方样例 `platforms/pydev/flipflop.py`、`counter.py` 即此模型。
+    - ⚠️ **误诊复盘**：曾误以为是 `initable` 门控（`initable: true` 未 `EnsureInit` 前读返回 0），并据此试过 `sysbus.pwr EnsureInit`——但本机 Renode 1.16.1 里 `PythonPeripheral` 没有 `Init` 方法（叫 `EnsureInit` 但调了也无用）。真正问题是脚本模型理解错，**与 `initable` 无关**；最终 `.repl` 写 `initable: false` 仅作显式声明，加载即激活。
 
 !!! tip "PWR 桩为什么能跳过死等"
     官方 `stm32h743.repl` 未建 `PWR(0x58024800)`，固件 `SystemInit` 时钟初始化死等 `PWR->VOSRDY` 就绪标志；桩对**所有读返回 `0xFFFFFFFF`**（"所有标志就绪"），固件以为 VOSRDY 已置位就跳出死等继续跑。这是 hack 不是硬件精确——后续想细修可按真实 `PWR` 寄存器（CR1/CSR1 等）让对应位返回真实值。若你用的 Renode 版本已自带 `STM32.PWR` 真实模型，可直接换 `pwr: STM32.PWR @ sysbus 0x58024800`，不必用 Python 桩。
@@ -407,17 +416,17 @@ Renode 有内置「传感器数据表」机制（RESD，CSV 式 `时间,值` 格
 
 - [x] 装 Renode（v1.16.1），环境 OK
 - [x] 写 `stm32h743.resc` + `stm32h743_pwr.repl` + `stm32h743_pwr.py`（§6.1 三件套），**直接用真实固件 `.axf` 跑通路线 A**（`Machine started`、无 FatalError、无 PWR 警告；76888 B 加载、PC=0x8000395、SP=0x24002B08）
-- [ ] **路线 A 收口：确认固件真正跑到 `main()` 并出 printf**（见下方「下一步」）——`Machine started` 只代表 CPU 起来了，不等于进 main；需开对 UART 的 analyzer 看输出
+- [x] **路线 A 收口：GDB 确认固件跑到 `main()`**（2026-08-19）——`Machine started` 只代表 CPU 起来了；本项目固件无 `printf`，所以靠 GDB 命中 `Breakpoint 1, main () at main.c:110` 确认，而非看串口。已证固件跑过 PWR 死等进入主循环。踩坑 7 轮的真正根因 = `Python.PythonPeripheral` 是 `request` 处理器模型（非 `def ReadDoubleWord` 模块），见 §6.1 坑⑤。
 - [ ] 确认 `peripherals` 列出的 H7 外设覆盖度，标记哪些本项目要用但缺模型（若 `start` 后刷 `non existing peripheral` 警告，照 §6.1 `filename:` 桩模式补）
 - [ ] 评估路线 B 工作量：先建 **1 个 IMU（ICM-42688P）** 的 C# 寄存器模型，接 `ahrs_data_gen.m` 合成数据，跑通 `ins_eskf_15d` 整链
 - [ ] 与 [MATLAB ESKF 算法验证](MATLAB_ESKF算法验证.md) 对齐：用同源合成数据，在 Renode 里复现 att/pos/vel 误差量级，确认「真实固件 == 参考算法」
 - [ ] （板回后）HIL 阶段交叉确认 D-Cache + DMA 行为差异
 
-### 当前下一步（路线 A 收口 → 路线 B）
+### 当前下一步（路线 A 已收口 → 进入路线 B）
 
-1. **先验证固件真的在跑**：`start` 后开 **printf 实际重定向到的那个 UART** 的 analyzer（本项目 USART3 接的是 UM982，调试控制台大概率是 usart1/2/3 里的某一个，查固件 `fputc`/`_write`/Retarget 重定向确认），看有没有初始化 banner / 心跳打印。
-   - 有输出 → 路线 A 验证完成，进入路线 B。
-   - **空窗几秒无输出** → 两种可能：(a) 固件卡在别的未建模外设（但 Renode 会刷 `non existing peripheral` 警告，没刷说明不是这个）；(b) **HardFault / 跑飞**。此时开 GDB：`machine StartGdbServer 3333`，用 `arm-none-eabi-gdb` 连 `localhost:3333`，`info registers` / `bt` 看 PC 卡在哪、是不是进了 HardFault Handler。
+> **路线 A 已于 2026-08-19 收口**：GDB `continue` 命中 `Breakpoint 1, main () at main.c:110`，证明固件跑过 `SystemInit`（含此前卡死的 PWR 死等）进入主循环。本项目固件无 `printf`（`uart = NULL`），故收口证据是 GDB 命中 `main`、而非串口打印。
+
+1. **（已用 GDB 完成，记录备查）验证固件进 main**：`machine StartGdbServer 3333` + `arm-none-eabi-gdb` 连 `localhost:3333`，`break main` / `break HardFault_Handler` / `continue`；命中 `main` 即收口，命中 `HardFault_Handler` 需 `bt` 定位。本项目无 `printf`，UART analyzer 看不到输出属正常。
 2. **确认外设覆盖缺口**：`peripherals` 列一遍，对照本项目要用到的（SPI1/2/3/4/6、I2C1/2/3、USART3、TIM4 加热 PWM、ADC1 NTC、FDCAN、BDMA/SRAM4）打勾，缺的标出来——这是路线 B / 后续桩的清单。
 3. **进入路线 B（核心价值）**：优先拿 **ICM-42688P**（SPI1，本项目主 IMU）开刀，照 §7 骨架建 C# 寄存器模型 + `ahrs_data_gen.m` 合成数据经 Python hook 定时 `FeedSample`，让真实 `ins_sensor_manager → ins_eskf_15d` 整链在虚拟 H743 上跑起来。
 
