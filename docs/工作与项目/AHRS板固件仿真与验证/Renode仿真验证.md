@@ -40,7 +40,7 @@ Monitor 常用命令（括号内为缩写）：
 | 命令 | 作用 |
 |---|---|
 | `mach create [名字]` | 新建一台机器 |
-| `include @path/to/x.resc` (`i`) | 加载脚本 |
+| `include path/to/x.resc` (`i`) | 加载脚本（`.resc` 或 `.py` 均可，路径**不加 `@`**） |
 | `start` (`s`) | 启动仿真 |
 | `machine LoadPlatformDescription @platforms/cpus/stm32h743.repl` | 加载平台描述 |
 | `sysbus LoadELF $bin` | 加载并运行固件（设 PC/SP） |
@@ -562,7 +562,7 @@ bmp581: Mocks.DummyI2CSlave @ i2c2 0x47
 ms5611: Mocks.DummyI2CSlave @ i2c3 0x77
 
 # .resc 里加载 Python 并挂钩（monitor 路径 = sysbus.<bus>.<slave>）
-include "@.../i2c_slaves.py"
+include "D:/01_Job/Project/AHRS-Board/software/Renode/i2c_slaves.py"
 setup_ist8310 "sysbus.i2c1.ist8310"
 setup_bmp581 "sysbus.i2c2.bmp581"
 setup_ms5611 "sysbus.i2c3.ms5611"
@@ -575,9 +575,13 @@ Python 钩原理（坑⑧）：`DummyI2CSlave` 在**写相位**触发 `DataRecei
 
 > **关键技巧（防 FIFO 污染）**：每个从机响应表按寄存器号给**精确长度**的字节，且写事务一律不 enqueue。这样每次读事务前 FIFO 是空的、读相位精确抽走所需字节，不会出现「上一次读的残留字节被下一次读先抽走」的错位。若想偷懒 enqueue 超长，反而会污染后续读——别这么做。
 
+!!! warning "坑⑨：用 `include` 加载 `.py` 的两个语法陷阱（2026-08-19 实测，路线 B 当场踩）"
+    - **(a) `include` 不加 `@`** —— 实测 `include "@D:/.../i2c_slaves.py"` 报 `File does not exist: @D:/.../i2c_slaves.py`：`include`（/`i`）把参数当脚本路径，**不会**像 `LoadELF`/`LoadPlatformDescription` 那样把 `@` 当作「这是文件」标记；`@` 被当成路径字面量的一部分 → 自然找不到。正确写法：`include "D:/.../i2c_slaves.py"`（引号可省，但**绝不能有 `@`**）。`include` 既能加载 `.resc` 也能直接加载 `.py`（Renode 自带测试 `Renesas_DA14592.robot` 即 `include "${echo_i2c_peripheral}"` 加载 `.py`）。
+    - **(b) `.py` 里定义的函数名须与 `.resc` 调用的 monitor 命令名逐字一致** —— `include` 一个 `.py` 后，其顶层 `def` 会暴露成 monitor 命令；但**没有自动去前缀机制**。若 `.py` 写 `def mc_setup_ist8310(...)` 而 `.resc` 调 `setup_ist8310 "..."` → 报 `No such command`。两边必须同名（本项目统一为 `setup_ist8310` / `setup_bmp581` / `setup_ms5611`）。
+
 ### 12.3 文件清单（software/Renode/）
 
-- `i2c_slaves.py` —— `I2CRegisterSlave` 通用类（按 `reg_map` 回数据）+ 三个 `mc_setup_*` 钩函数（monitor 里去掉 `mc_` 前缀调用，如 `setup_ist8310`）。**纯 ASCII**（IronPython 对 `#`/中文注释 `Non-ASCII` 报错，见 §6.1 坑②）。
+- `i2c_slaves.py` —— `I2CRegisterSlave` 通用类（按 `reg_map` 回数据）+ 三个 `setup_*` 钩函数（`setup_ist8310` / `setup_bmp581` / `setup_ms5611`，**名字须与 .resc 调用逐字一致**）。**纯 ASCII**（IronPython 对 `#`/中文注释 `Non-ASCII` 报错，见 §6.1 坑②）。
 - `stm32h743_pwr.repl` —— 末尾新增三行 `Mocks.DummyI2CSlave @ i2cN 0x..`（**`.repl` 不支持顶层 `#`**，见 §6.2 坑③）。
 - `stm32h743.resc` —— `LoadPlatformDescription` 之后 `include` python + 三个 `setup_*`（`#` 注释在 `.resc` 里合法）。
 - `gdb_i2c_check.gdb` —— 断 `main` + 三个 `valid=1` 行（ist_ist8310.c:83 / bosch_bmp581.c:88 / te_ms5611.c:93）+ `HardFault_Handler`，自动 `target remote localhost:3333`。
