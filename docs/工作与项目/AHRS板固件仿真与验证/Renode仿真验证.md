@@ -581,6 +581,14 @@ Python 钩原理（坑⑧）：`DummyI2CSlave` 在**写相位**触发 `DataRecei
     - **根因**：`DummyI2CSlave.EnqueueResponseBytes(IEnumerable<byte> bs)` 形参是 `IEnumerable<byte>`；而我原来传的是 `list(resp)`（Python `list[int]`），IronPython 把它 marshal 成 `IEnumerable<int>`。一旦固件读到命中 `reg_map` 的已知寄存器（WHO_AM_I / CHIP_ID / PROM 等）触发 `EnqueueResponseBytes` 就崩；扫描未命中寄存器时 `resp==[]` 不 enqueue 故先不崩 —— 所以「正常运行一会儿才崩」。
     - **修复**：把回包包成 `bytearray`（`IEnumerable<byte>`）并 `& 0xFF` 兜底：`self.dummy.EnqueueResponseBytes(bytearray(b & 0xFF for b in resp))`。**任何传给 `EnqueueResponseBytes` 的数据都必须是 `bytes`/`bytearray`，绝不可以是 Python `list`。**
 
+!!! warning "坑⑪：Renode 不建模 DWT CYCCNT → `ins_delay_us` 死循环 + 刷屏 WARNING（2026-08-19 实测）"
+    - **现象**：仿真跑起来后 monitor 持续刷 `ReadDoubleWord from non existing peripheral at 0xE0001004`（约每 30ms 一次，同 PC）。`0xE0001004` = Cortex-M **DWT->CYCCNT**（周期计数器，偏移 0x004）。这是固件 `ins_time_us()`（`Core/Src/ins_port.c`）读 `DWT->CYCCNT` 做微秒时间戳。
+    - **根因**：Renode 1.16.1 的 Cortex-M 模型**不实现 DWT 单元**，读 `0xE0001004` 落到 sysbus 无外设 → WARNING，且返回值恒为 0。这有两个后果：
+        1. **刷屏**（仅噪声，固件活着——30ms 节奏说明主循环在跑，不是紧循环）。
+        2. **潜在死循环**：`ins_delay_us()` 用 `while ((DWT->CYCCNT - s) < t)` 忙等；`CYCCNT` 恒 0 → `(0-0)<t` 永真 → **死循环**。`te_ms5611.c` 读路径（触发 ADC 后 `ins_delay_us(dl)`，`dl=odly[osr]` 非 0）一旦 I2C 从机接通走到这里就会**卡死**，正好挡在 `te_ms5611.c:93` 的 `valid=1` 断点之前。
+    - **修复（固件侧 `AHRS_RENODE_SIM` 开关，`d582a31`）**：仿真构建下 `ins_time_us` 改 `HAL_GetTick()*1000`（ms→us）、`ins_delay_us` 改 `HAL_Delay((us+999)/1000)`（向上取整到 ms）。SysTick 在 Renode 中**已建模**，所以二者都正常工作；正常（非仿真）构建走原 DWT 分支，**零改动**。**Keil 用法**：Project→Options→C/C++→Define 追加 `AHRS_RENODE_SIM`（逗号分隔），重新 Build 出 .axf 再载入 Renode。修后 `0xE0001004` 警告彻底消失（sim 分支不再碰 DWT）。
+    - **替代方案（不改固件，需重载 Renode 平台）**：在 `.repl` 里 `dwt_cyccnt: Python.PythonPeripheral @ sysbus 0xE0001004`（size 4，script 定义 `ReadDoubleWord` 自增 counter、`WriteDoubleWord` 置位），让 CYCCNT 递增即可同时消除警告与死循环。该方案对 Renode Python 外设 API 有依赖、未实测，作为不改固件的备选。
+
 ### 12.3 文件清单（software/Renode/）
 
 - `i2c_slaves.py` —— `I2CRegisterSlave` 通用类（按 `reg_map` 回数据）+ 三个 `reg_map` + **模块顶层 `_wire()` 自执行**把三从机挂到 `sysbus.i2c1.ist8310` / `sysbus.i2c2.bmp581` / `sysbus.i2c3.ms5611`。**纯 ASCII**（IronPython 对 `#`/中文注释 `Non-ASCII` 报错，见 §6.1 坑②）。加载即生效，无需 monitor 命令。
