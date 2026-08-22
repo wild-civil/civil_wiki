@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 560" font-family="'Segoe UI','Microsoft YaHei',sans-serif">
+  <defs>
+    <marker id="ar" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+      <path d="M0,0 L9,4.5 L0,9 z" fill="#475569"/>
+    </marker>
+    <style>
+      .t { font: 700 16px sans-serif; fill: #0f172a; }
+      .sub { font: 400 12px sans-serif; fill: #475569; }
+      .bh { font: 600 12.5px sans-serif; fill: #0f172a; }
+      .bs { font: 400 11px sans-serif; fill: #334155; }
+      .lab { font: 600 11px sans-serif; fill: #1e293b; }
+      .note { font: 400 11.5px sans-serif; fill: #334155; }
+    </style>
+  </defs>
+  <rect x="0" y="0" width="760" height="560" fill="#f8fafc"/>
+
+  <!-- ===================== 松组合 LC ===================== -->
+  <text x="195" y="26" text-anchor="middle" class="t">松组合 (LC · Loosely Coupled)</text>
+  <text x="195" y="46" text-anchor="middle" class="sub">GNSS 先独立解算 PVT，再与 INS 比差值</text>
+
+  <!-- LC left lane: IMU -> INS -->
+  <rect x="60" y="78" width="110" height="48" rx="6" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="115" y="100" text-anchor="middle" class="bh">IMU</text>
+  <text x="115" y="116" text-anchor="middle" class="bs">角速度/比力</text>
+
+  <rect x="50" y="170" width="130" height="58" rx="6" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="115" y="194" text-anchor="middle" class="bh">INS 解算</text>
+  <text x="115" y="210" text-anchor="middle" class="bs">机械编排 + ESKF 预测</text>
+  <text x="115" y="226" text-anchor="middle" class="bs">→ 名义 p_ins, v_ins</text>
+
+  <!-- LC right lane: satellite -> GNSS receiver PVT -->
+  <rect x="310" y="60" width="100" height="34" rx="6" fill="#ecfdf5" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="360" y="82" text-anchor="middle" class="bs">卫星信号</text>
+
+  <rect x="300" y="170" width="130" height="58" rx="6" fill="#ecfdf5" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="365" y="194" text-anchor="middle" class="bh">GNSS 接收机</text>
+  <text x="365" y="210" text-anchor="middle" class="bs">独立解算 PVT</text>
+  <text x="365" y="226" text-anchor="middle" class="bs">→ p_gps, v_gps</text>
+
+  <!-- LC merge: subtractor -->
+  <rect x="125" y="300" width="180" height="46" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="215" y="318" text-anchor="middle" class="bh">量测相减</text>
+  <text x="215" y="335" text-anchor="middle" class="bs">z = p_ins − p_gps</text>
+
+  <!-- LC ESKF -->
+  <rect x="125" y="400" width="180" height="56" rx="6" fill="#faf5ff" stroke="#a855f7" stroke-width="1.5"/>
+  <text x="215" y="420" text-anchor="middle" class="bh">ESKF 量测更新</text>
+  <text x="215" y="437" text-anchor="middle" class="bs">H = 位置块单位阵 I</text>
+  <text x="215" y="452" text-anchor="middle" class="bs">(即 12 篇 GNSS 位置/速度)</text>
+
+  <!-- LC arrows -->
+  <line x1="115" y1="126" x2="115" y2="168" stroke="#475569" stroke-width="1.5" marker-end="url(#ar)"/>
+  <line x1="360" y1="94" x2="360" y2="168" stroke="#475569" stroke-width="1.5" marker-end="url(#ar)"/>
+  <line x1="115" y1="228" x2="160" y2="300" stroke="#475569" stroke-width="1.5" marker-end="url(#ar)"/>
+  <line x1="365" y1="228" x2="270" y2="300" stroke="#475569" stroke-width="1.5" marker-end="url(#ar)"/>
+  <line x1="215" y1="346" x2="215" y2="398" stroke="#475569" stroke-width="1.5" marker-end="url(#ar)"/>
+  <!-- feedback LC -->
+  <path d="M125,428 C40,428 40,200 50,200" fill="none" stroke="#a855f7" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#ar)"/>
+
+  <rect x="55" y="486" width="320" height="58" rx="6" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="65" y="506" class="note">⚠️ 致命短板：GNSS 必须输出<tspan fill="#dc2626" font-weight="600">有效 PVT</tspan>（通常</text>
+  <text x="65" y="524" class="note">需 ≥4 颗星 + 良好几何）。丢星/城市峡谷下</text>
+  <text x="65" y="542" class="note">PVT 中断 → 量测消失 → INS 独自漂移。</text>
+
+  <!-- ===================== 紧组合 TC ===================== -->
+  <text x="565" y="26" text-anchor="middle" class="t">紧组合 (TC · Tightly Coupled)</text>
+  <text x="565" y="46" text-anchor="middle" class="sub">原始伪距直喂 KF，与 INS 预测伪距比</text>
+
+  <!-- TC left lane: IMU -> INS (same) -->
+  <rect x="430" y="78" width="110" height="48" rx="6" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="485" y="100" text-anchor="middle" class="bh">IMU</text>
+  <text x="485" y="116" text-anchor="middle" class="bs">角速度/比力</text>
+
+  <rect x="420" y="170" width="130" height="58" rx="6" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="485" y="194" text-anchor="middle" class="bh">INS 解算</text>
+  <text x="485" y="210" text-anchor="middle" class="bs">机械编排 + ESKF 预测</text>
+  <text x="485" y="226" text-anchor="middle" class="bs">→ 名义 p_ins</text>
+
+  <!-- TC right lane: satellite -> ephemeris -> predicted rho ; raw rho -->
+  <rect x="680" y="58" width="100" height="34" rx="6" fill="#ecfdf5" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="730" y="80" text-anchor="middle" class="bs">卫星信号</text>
+
+  <rect x="655" y="140" width="130" height="40" rx="6" fill="#ecfdf5" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="720" y="158" text-anchor="middle" class="bh">星历 → 卫星位置</text>
+  <text x="720" y="174" text-anchor="middle" class="bs">ρ̂ = f(p_ins, 星历)</text>
+
+  <rect x="655" y="206" width="130" height="34" rx="6" fill="#ecfdf5" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="720" y="228" text-anchor="middle" class="bs">原始伪距 ρ / 多普勒</text>
+
+  <!-- TC merge: residual -->
+  <rect x="495" y="300" width="180" height="46" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="585" y="318" text-anchor="middle" class="bh">残差</text>
+  <text x="585" y="335" text-anchor="middle" class="bs">z = ρ − ρ̂ (每星一行)</text>
+
+  <!-- TC ESKF -->
+  <rect x="495" y="400" width="180" height="56" rx="6" fill="#faf5ff" stroke="#a855f7" stroke-width="1.5"/>
+  <text x="585" y="420" text-anchor="middle" class="bh">ESKF 量测更新</text>
+  <text x="585" y="437" text-anchor="middle" class="bs">H = +LOS (每星一行)</text>
+  <text x="585" y="452" text-anchor="middle" class="bs">ρ̂ 由 p_ins + 星历推算</text>
+
+  <!-- TC arrows -->
+  <line x1="485" y1="126" x2="485" y2="168" stroke="#475569" stroke-width="1.5" marker-end="url(#ar)"/>
+  <line x1="730" y1="92" x2="730" y2="138" stroke="#475569" stroke-width="1.5" marker-end="url(#ar)"/>
+  <line x1="730" y1="180" x2="730" y2="204" stroke="#475569" stroke-width="1.5" marker-end="url(#ar)"/>
+  <line x1="485" y1="228" x2="530" y2="300" stroke="#475569" stroke-width="1.5" marker-end="url(#ar)"/>
+  <line x1="720" y1="240" x2="630" y2="300" stroke="#475569" stroke-width="1.5" marker-end="url(#ar)"/>
+  <line x1="585" y1="346" x2="585" y2="398" stroke="#475569" stroke-width="1.5" marker-end="url(#ar)"/>
+  <!-- feedback TC -->
+  <path d="M495,428 C410,428 410,200 420,200" fill="none" stroke="#a855f7" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#ar)"/>
+
+  <rect x="425" y="486" width="320" height="58" rx="6" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="435" y="506" class="note">✅ 抗少星：每颗星 = 1 个独立约束。</text>
+  <text x="435" y="524" class="note">只剩 1~3 颗星(城市峡谷/隧道口)仍有</text>
+  <text x="435" y="542" class="note">部分修正，不会像 LC 那样"全断"。</text>
+</svg>

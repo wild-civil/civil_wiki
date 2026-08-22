@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 480" font-family="'Segoe UI','Microsoft YaHei',sans-serif">
+  <defs>
+    <style>
+      .t { font: 700 16px sans-serif; fill: #0f172a; }
+      .s { font: 400 12px sans-serif; fill: #475569; }
+      .rh { font: 600 12px sans-serif; fill: #1e293b; }
+      .rl { font: 400 12px sans-serif; fill: #334155; }
+      .note { font: 400 12.5px sans-serif; fill: #334155; }
+      .tag { font: 600 11px sans-serif; fill: #fff; }
+    </style>
+  </defs>
+  <rect x="0" y="0" width="680" height="480" fill="#f8fafc"/>
+  <text x="340" y="26" text-anchor="middle" class="t">观测模型：每种传感器点亮误差态的哪些块</text>
+  <text x="340" y="48" text-anchor="middle" class="s">固件 15 态序  [ p(0:2) · v(3:5) · φ(6:8) · ba(9:11) · bg(12:14) ]　|　●=该传感器直接可观此分量</text>
+
+  <!-- column groups -->
+  <rect x="242" y="86" width="60" height="362" rx="6" fill="#3b82f6" opacity="0.08"/>
+  <rect x="322" y="86" width="60" height="362" rx="6" fill="#22c55e" opacity="0.08"/>
+  <rect x="402" y="86" width="60" height="362" rx="6" fill="#06b6d4" opacity="0.08"/>
+  <rect x="482" y="86" width="60" height="362" rx="6" fill="#f59e0b" opacity="0.08"/>
+  <rect x="562" y="86" width="60" height="362" rx="6" fill="#ec4899" opacity="0.08"/>
+
+  <!-- column headers -->
+  <text x="272" y="74" text-anchor="middle" class="rh">GNSS位置</text>
+  <text x="352" y="74" text-anchor="middle" class="rh">GNSS速度</text>
+  <text x="432" y="74" text-anchor="middle" class="rh">气压高度</text>
+  <text x="512" y="74" text-anchor="middle" class="rh">加速度计</text>
+  <text x="592" y="74" text-anchor="middle" class="rh">磁强计</text>
+
+  <!-- row guide lines -->
+  <g stroke="#e2e8f0" stroke-width="1">
+    <line x1="242" y1="96" x2="622" y2="96"/>
+    <line x1="242" y1="120" x2="622" y2="120"/>
+    <line x1="242" y1="144" x2="622" y2="144"/>
+    <line x1="242" y1="168" x2="622" y2="168"/>
+    <line x1="242" y1="192" x2="622" y2="192"/>
+    <line x1="242" y1="216" x2="622" y2="216"/>
+    <line x1="242" y1="240" x2="622" y2="240"/>
+    <line x1="242" y1="264" x2="622" y2="264"/>
+    <line x1="242" y1="288" x2="622" y2="288"/>
+    <line x1="242" y1="312" x2="622" y2="312"/>
+    <line x1="242" y1="336" x2="622" y2="336"/>
+    <line x1="242" y1="360" x2="622" y2="360"/>
+    <line x1="242" y1="384" x2="622" y2="384"/>
+    <line x1="242" y1="408" x2="622" y2="408"/>
+    <line x1="242" y1="432" x2="622" y2="432"/>
+  </g>
+  <!-- block separators -->
+  <g stroke="#94a3b8" stroke-width="1.4" stroke-dasharray="4 3">
+    <line x1="238" y1="158" x2="626" y2="158"/>
+    <line x1="238" y1="230" x2="626" y2="230"/>
+    <line x1="238" y1="302" x2="626" y2="302"/>
+    <line x1="238" y1="374" x2="626" y2="374"/>
+  </g>
+
+  <!-- row labels -->
+  <g class="rl" text-anchor="end">
+    <text x="226" y="100">p_x</text>
+    <text x="226" y="124">p_y</text>
+    <text x="226" y="148">p_z</text>
+    <text x="226" y="172">v_x</text>
+    <text x="226" y="196">v_y</text>
+    <text x="226" y="220">v_z</text>
+    <text x="226" y="244">φ_roll</text>
+    <text x="226" y="268">φ_pitch</text>
+    <text x="226" y="292">φ_yaw</text>
+    <text x="226" y="316">ba_x</text>
+    <text x="226" y="340">ba_y</text>
+    <text x="226" y="364">ba_z</text>
+    <text x="226" y="388">bg_x</text>
+    <text x="226" y="412">bg_y</text>
+    <text x="226" y="436">bg_z</text>
+  </g>
+  <!-- block labels on far left -->
+  <g class="tag" text-anchor="middle">
+    <rect x="40" y="106" width="46" height="20" rx="4" fill="#3b82f6"/><text x="63" y="120">位置</text>
+    <rect x="40" y="178" width="46" height="20" rx="4" fill="#22c55e"/><text x="63" y="192">速度</text>
+    <rect x="40" y="250" width="46" height="20" rx="4" fill="#f59e0b"/><text x="63" y="264">姿态</text>
+    <rect x="36" y="322" width="54" height="20" rx="4" fill="#a855f7"/><text x="63" y="336">加计偏</text>
+    <rect x="36" y="394" width="54" height="20" rx="4" fill="#ef4444"/><text x="63" y="408">陀螺偏</text>
+  </g>
+
+  <!-- observed circles (●) -->
+  <!-- GNSS位置 k0: rows 0,1,2 -->
+  <circle cx="272" cy="96"  r="11" fill="#3b82f6" stroke="#fff" stroke-width="1.5"/>
+  <circle cx="272" cy="120" r="11" fill="#3b82f6" stroke="#fff" stroke-width="1.5"/>
+  <circle cx="272" cy="144" r="11" fill="#3b82f6" stroke="#fff" stroke-width="1.5"/>
+  <!-- GNSS速度 k1: rows 3,4,5 -->
+  <circle cx="352" cy="168" r="11" fill="#22c55e" stroke="#fff" stroke-width="1.5"/>
+  <circle cx="352" cy="192" r="11" fill="#22c55e" stroke="#fff" stroke-width="1.5"/>
+  <circle cx="352" cy="216" r="11" fill="#22c55e" stroke="#fff" stroke-width="1.5"/>
+  <!-- 气压高度 k2: row 2 only -->
+  <circle cx="432" cy="144" r="11" fill="#06b6d4" stroke="#fff" stroke-width="1.5"/>
+  <!-- 加速度计 k3: rows 6,7 (roll,pitch) -->
+  <circle cx="512" cy="240" r="11" fill="#f59e0b" stroke="#fff" stroke-width="1.5"/>
+  <circle cx="512" cy="264" r="11" fill="#f59e0b" stroke="#fff" stroke-width="1.5"/>
+  <!-- 磁强计 k4: rows 6,7,8 (full attitude) -->
+  <circle cx="592" cy="240" r="11" fill="#ec4899" stroke="#fff" stroke-width="1.5"/>
+  <circle cx="592" cy="264" r="11" fill="#ec4899" stroke="#fff" stroke-width="1.5"/>
+  <circle cx="592" cy="288" r="11" fill="#ec4899" stroke="#fff" stroke-width="1.5"/>
+
+  <!-- annotations -->
+  <text x="240" y="462" class="note">① 加速度计只观 <tspan fill="#f59e0b" font-weight="600">roll / pitch</tspan>（重力方向，不含航向）；</text>
+  <text x="240" y="476" class="note">② 磁强计补上 <tspan fill="#ec4899" font-weight="600">yaw</tspan>（罗盘航向）——两者合起来才可观<tspan font-weight="600">全姿态</tspan>；③ GNSS 位置/速度直接可观 p、v；气压只可观高度(=−p_z)。</text>
+</svg>

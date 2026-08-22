@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 380" font-family="'Segoe UI', 'Microsoft YaHei', Arial, sans-serif">
+  <!-- 背景 -->
+  <rect width="680" height="380" fill="#f8fafc"/>
+  <rect x="0" y="0" width="680" height="380" fill="none" stroke="#cbd5e1"/>
+
+  <!-- 标题 -->
+  <text x="340" y="28" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e293b">FDI 四阶段：残差生成 → 残差评价 → 决策 → 重构</text>
+
+  <!-- ============ 四阶段主流程（横向） ============ -->
+  <!-- 阶段 1：残差生成 -->
+  <rect x="20" y="60" width="150" height="120" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <text x="95" y="84" text-anchor="middle" font-size="13" font-weight="bold" fill="#2563eb">① 残差生成</text>
+  <text x="95" y="106" text-anchor="middle" font-size="10" fill="#475569">解析冗余方程</text>
+  <text x="95" y="122" text-anchor="middle" font-size="10" fill="#475569">r = 量测 − 预测</text>
+  <text x="95" y="140" text-anchor="middle" font-size="9" fill="#94a3b8">3×IMU 两两互差 /</text>
+  <text x="95" y="152" text-anchor="middle" font-size="9" fill="#94a3b8">INS vs GNSS（13篇）/</text>
+  <text x="95" y="164" text-anchor="middle" font-size="9" fill="#94a3b8">NIS 新息（14篇）</text>
+  <text x="95" y="172" font-size="9" fill="#94a3b8"></text>
+
+  <line x1="170" y1="120" x2="200" y2="120" stroke="#64748b" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- 阶段 2：残差评价 -->
+  <rect x="200" y="60" width="150" height="120" rx="8" fill="#ffffff" stroke="#16a34a" stroke-width="2"/>
+  <text x="275" y="84" text-anchor="middle" font-size="13" font-weight="bold" fill="#16a34a">② 残差评价</text>
+  <text x="275" y="106" text-anchor="middle" font-size="10" fill="#475569">归一化统计量</text>
+  <text x="275" y="122" text-anchor="middle" font-size="10" fill="#475569">χ² / NIS 门限</text>
+  <text x="275" y="140" text-anchor="middle" font-size="9" fill="#94a3b8">偶发尖峰 → 量测异常</text>
+  <text x="275" y="152" text-anchor="middle" font-size="9" fill="#94a3b8">持续上升 → 漂移故障</text>
+  <text x="275" y="164" text-anchor="middle" font-size="9" fill="#94a3b8">CUSUM：缓变早检</text>
+
+  <line x1="350" y1="120" x2="380" y2="120" stroke="#64748b" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- 阶段 3：决策 -->
+  <rect x="380" y="60" width="130" height="120" rx="8" fill="#ffffff" stroke="#d97706" stroke-width="2"/>
+  <text x="445" y="84" text-anchor="middle" font-size="13" font-weight="bold" fill="#d97706">③ 决策</text>
+  <text x="445" y="106" text-anchor="middle" font-size="10" fill="#475569">表决 / 门限</text>
+  <text x="445" y="122" text-anchor="middle" font-size="10" fill="#475569">2oo3 多数票</text>
+  <text x="445" y="140" text-anchor="middle" font-size="9" fill="#94a3b8">判定故障通道</text>
+  <text x="445" y="152" text-anchor="middle" font-size="9" fill="#94a3b8">故障类别 / 置信</text>
+
+  <line x1="510" y1="120" x2="540" y2="120" stroke="#64748b" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- 阶段 4：重构 -->
+  <rect x="540" y="60" width="120" height="120" rx="8" fill="#ffffff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="600" y="84" text-anchor="middle" font-size="13" font-weight="bold" fill="#7c3aed">④ 重构</text>
+  <text x="600" y="106" text-anchor="middle" font-size="10" fill="#475569">隔离 + 降级</text>
+  <text x="600" y="122" text-anchor="middle" font-size="10" fill="#475569">切换健康源</text>
+  <text x="600" y="140" text-anchor="middle" font-size="9" fill="#94a3b8">置位 err 位 →</text>
+  <text x="600" y="152" text-anchor="middle" font-size="9" fill="#94a3b8">poll 跳过（固件）</text>
+
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <!-- ============ 反馈回路（重构 → 融合） ============ -->
+  <path d="M 600 180 L 600 216 Q 600 230 586 230 L 94 230 Q 80 230 80 216 L 80 185" fill="none" stroke="#7c3aed" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#arr)"/>
+  <text x="340" y="222" text-anchor="middle" font-size="9" fill="#7c3aed">重构反馈：剔除故障源后，融合只用健康通道（fail-safe 降级，绝不拿坏数据喂滤波器）</text>
+
+  <!-- ============ 底部：故障源 → 残差生成的输入 ============ -->
+  <rect x="20" y="262" width="640" height="100" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="340" y="284" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e293b">冗余从哪来：本板传感器阵容（8 路，每路独立总线）</text>
+
+  <g font-size="10" fill="#1e293b" text-anchor="middle">
+    <rect x="40" y="296" width="90" height="46" rx="6" fill="#eff6ff" stroke="#2563eb"/><text x="85" y="314">3×IMU</text><text x="85" y="330" font-size="9" fill="#475569">ICM-42688P</text><text x="85" y="342" font-size="9" fill="#475569">IIM-42652 BMI088</text>
+    <rect x="145" y="296" width="90" height="46" rx="6" fill="#f0fdf4" stroke="#16a34a"/><text x="190" y="314">2×磁力计</text><text x="190" y="330" font-size="9" fill="#475569">RM3100 / IST8310</text><text x="190" y="342" font-size="9" fill="#475569"></text>
+    <rect x="250" y="296" width="90" height="46" rx="6" fill="#fffbeb" stroke="#d97706"/><text x="295" y="314">2×气压计</text><text x="295" y="330" font-size="9" fill="#475569">BMP581 / MS5611</text><text x="295" y="342" font-size="9" fill="#475569"></text>
+    <rect x="355" y="296" width="90" height="46" rx="6" fill="#f5f3ff" stroke="#7c3aed"/><text x="400" y="314">1×GNSS</text><text x="400" y="330" font-size="9" fill="#475569">UM982 (USART3)</text><text x="400" y="342" font-size="9" fill="#475569"></text>
+    <rect x="460" y="296" width="190" height="46" rx="6" fill="#fef2f2" stroke="#dc2626"/><text x="555" y="314">固件现状：SM_ERR_* 位掩码</text><text x="555" y="330" font-size="9" fill="#475569">init/通信错误置位 → poll 时跳过（硬故障隔离）</text><text x="555" y="342" font-size="9" fill="#dc2626">软故障表决/NIS 在线监测：待补（本篇方案）</text>
+  </g>
+
+  <text x="340" y="372" text-anchor="middle" font-size="9" fill="#94a3b8">硬故障（断线/卡死）由通信层检；软故障（偏差/漂移/刻度）由残差统计检——两条腿缺一不可</text>
+</svg>
