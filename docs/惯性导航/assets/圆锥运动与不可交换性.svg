@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 400" width="680" height="400" role="img">
+<title>圆锥运动与不可交换性</title>
+<desc>陀螺绕 z 轴自旋 + 载体绕 x 轴摆动 → 角速度矢量的尖端在惯性空间"画"出圆锥面。这是测试姿态更新算法的标准运动：直接积分四元数会出现 x 轴单调漂移（圆锥误差），必须用 Bortz 旋转向量或 coning 补偿。</desc>
+<style>
+.th{font-size:13.5px;font-weight:700;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+.ts{font-size:10.5px;fill:#5F5E5A;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+.lb{font-size:11px;font-weight:700;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+.eq{font-size:15px;font-weight:700;font-family:'Cambria Math','Times New Roman',serif;}
+</style>
+<defs>
+<marker id="az" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="#185FA5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+<marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="#B5502A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+
+<text class="th" x="340" y="26" text-anchor="middle" fill="#0C447C">圆锥运动（Coning）—— 不可交换误差的根源</text>
+
+<!-- 左：圆锥图 -->
+<g transform="translate(170,200)">
+  <!-- z 轴 -->
+  <line x1="0" y1="120" x2="0" y2="-100" stroke="#185FA5" stroke-width="1.4" marker-end="url(#az)"/>
+  <text class="lb" x="6" y="-90" fill="#0C447C" font-size="11">z 角动量</text>
+  <!-- 锥面 (椭圆) -->
+  <ellipse cx="0" cy="-40" rx="80" ry="22" fill="#FDE9D6" fill-opacity="0.5" stroke="#B5502A" stroke-width="1.4"/>
+  <ellipse cx="0" cy="-40" rx="80" ry="22" fill="none" stroke="#B5502A" stroke-width="1.4" stroke-dasharray="4 3"/>
+  <!-- 锥底 (小椭圆，载体) -->
+  <ellipse cx="0" cy="40" rx="44" ry="12" fill="#FDF3E7" stroke="#854F0B" stroke-width="1.2"/>
+  <text class="ts" x="0" y="60" text-anchor="middle" font-size="10">载体</text>
+  <!-- 锥面连线（两条母线） -->
+  <line x1="-80" y1="-40" x2="-44" y2="40" stroke="#B5502A" stroke-width="1.2" stroke-dasharray="3 3"/>
+  <line x1="80" y1="-40" x2="44" y2="40" stroke="#B5502A" stroke-width="1.2" stroke-dasharray="3 3"/>
+  <!-- 角速度 ω 矢量（沿 z） -->
+  <line x1="0" y1="0" x2="0" y2="-110" stroke="#B5502A" stroke-width="2.4" marker-end="url(#ar)"/>
+  <text class="lb" x="8" y="-60" fill="#B5502A" font-size="11">ω</text>
+  <text class="ts" x="8" y="-46" font-size="9">绕 z 自旋</text>
+  <!-- 摆动轴 x -->
+  <line x1="-100" y1="0" x2="100" y2="0" stroke="#3B6D11" stroke-width="1.2" marker-end="url(#az)"/>
+  <text class="lb" x="-100" y="14" fill="#3B6D11" font-size="10" text-anchor="end">x</text>
+  <text class="ts" x="100" y="14" fill="#3B6D11" font-size="10">绕 x 摆动</text>
+  <!-- 漂移方向 -->
+  <line x1="0" y1="0" x2="-90" y2="0" stroke="#854F0B" stroke-width="2" stroke-dasharray="6 3"/>
+  <text class="lb" x="-45" y="-6" text-anchor="middle" fill="#854F0B" font-size="10">漂移方向</text>
+  <!-- 标题 -->
+  <text class="ts" x="0" y="148" text-anchor="middle" font-size="10">ω 尖端在惯性空间画锥 → 不可交换</text>
+</g>
+
+<!-- 右：公式 + 影响 -->
+<rect x="350" y="60" width="300" height="84" rx="8" fill="#FDF3E7" stroke="#854F0B" stroke-width="1.2"/>
+<text class="th" x="500" y="82" text-anchor="middle" fill="#5C4A1E" font-size="12">角速度</text>
+<text class="eq" x="500" y="110" text-anchor="middle" fill="#B5502A">ω = (ωₓ sin Ωt, ωₓ cos Ωt, ω_z)</text>
+<text class="ts" x="500" y="132" text-anchor="middle">绕 z 自旋 + 绕 x 摆动 → 锥面运动</text>
+
+<rect x="350" y="158" width="300" height="76" rx="8" fill="#FBF3F0" stroke="#B5502A" stroke-width="1.2"/>
+<text class="th" x="500" y="180" text-anchor="middle" fill="#7E3318" font-size="12">朴素积分的灾难</text>
+<text class="lb" x="362" y="204" fill="#7E3318" font-size="10.5">q ← q ⊗ Δq 累加 → x 轴单边漂移</text>
+<text class="ts" x="362" y="222" font-size="10" fill="#7E3318">圆锥频率越高 → 漂移越大（不可交换误差）</text>
+
+<rect x="350" y="248" width="300" height="84" rx="8" fill="#F3F8F1" stroke="#3B6D11" stroke-width="1.2"/>
+<text class="th" x="500" y="270" text-anchor="middle" fill="#27500A" font-size="12">Bortz 二阶修正</text>
+<text class="eq" x="500" y="298" text-anchor="middle" fill="#3B6D11" font-size="13">φ̇ = ω + ½φ×ω + ⅙φ×(φ×ω)</text>
+<text class="ts" x="500" y="320" text-anchor="middle">叉乘项精确补偿不可交换误差</text>
+
+<!-- 底部对比 -->
+<rect x="20" y="350" width="640" height="40" rx="8" fill="#F6F4EC" stroke="#B9A15C" stroke-width="1.2"/>
+<text class="ts" x="340" y="370" text-anchor="middle">圆锥运动是测姿态算法精度的"压力测试"：Bortz Picard 误差 0.09″ vs 四元数 RK4 516″（5000 倍差距）</text>
+</svg>

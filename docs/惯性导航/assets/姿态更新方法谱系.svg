@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 420" width="680" height="420" role="img">
+<title>姿态更新方法谱系</title>
+<desc>姿态更新方法从早期欧拉角法（万向锁）→ 方向余弦矩阵（重）→ 四元数（工程首选）→ 旋转向量 Bortz（精度更高）。每条分支从微分方程到离散算法。</desc>
+<style>
+.th{font-size:13.5px;font-weight:700;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+.ts{font-size:10.5px;fill:#5F5E5A;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+.lb{font-size:11px;font-weight:700;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+</style>
+<defs>
+<marker id="af" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+
+<text class="th" x="340" y="26" text-anchor="middle" fill="#0C447C">姿态更新方法谱系：从欧拉角到 Bortz 旋转向量</text>
+
+<!-- 根节点：IMU 角增量 -->
+<rect x="265" y="46" width="150" height="40" rx="8" fill="#F6F8FB" stroke="#185FA5" stroke-width="1.6"/>
+<text class="th" x="340" y="62" text-anchor="middle" fill="#185FA5">IMU 角增量 Δθ</text>
+<text class="ts" x="340" y="78" text-anchor="middle" font-size="9.5">（陀螺直接输出）</text>
+
+<!-- 四条分支主干 -->
+<line x1="340" y1="86" x2="100" y2="118" stroke="#5F5E5A" stroke-width="1.4"/>
+<line x1="340" y1="86" x2="260" y2="118" stroke="#5F5E5A" stroke-width="1.4"/>
+<line x1="340" y1="86" x2="420" y2="118" stroke="#5F5E5A" stroke-width="1.4"/>
+<line x1="340" y1="86" x2="580" y2="118" stroke="#5F5E5A" stroke-width="1.4"/>
+
+<!-- 1. 欧拉角法 -->
+<rect x="30" y="118" width="140" height="240" rx="10" fill="#FBF3F0" stroke="#B5502A" stroke-width="1.6"/>
+<text class="th" x="100" y="142" text-anchor="middle" fill="#B5502A">欧拉角法</text>
+<text class="ts" x="100" y="160" text-anchor="middle">直接积分欧拉角微分方程</text>
+<text class="ts" x="100" y="176" text-anchor="middle" font-size="9">φ̇ = ...  θ̇ = ...  ψ̇ = ...</text>
+<rect x="50" y="190" width="100" height="40" rx="6" fill="#FFFFFF" stroke="#B5502A" stroke-width="1"/>
+<text class="lb" x="100" y="208" text-anchor="middle" fill="#B5502A" font-size="10">❌ 万向锁</text>
+<text class="ts" x="100" y="222" text-anchor="middle" font-size="9">pitch=±90° 丢 1 自由度</text>
+<rect x="50" y="240" width="100" height="40" rx="6" fill="#FFFFFF" stroke="#B5502A" stroke-width="1"/>
+<text class="lb" x="100" y="258" text-anchor="middle" fill="#B5502A" font-size="10">❌ 三角运算</text>
+<text class="ts" x="100" y="272" text-anchor="middle" font-size="9">sin/cos 多，实时负担大</text>
+<text class="ts" x="100" y="306" text-anchor="middle" font-size="9" fill="#7E3318">地位：仅作概念教学</text>
+<text class="ts" x="100" y="322" text-anchor="middle" font-size="9" fill="#7E3318">工程：已淘汰</text>
+
+<!-- 2. 方向余弦矩阵 -->
+<rect x="190" y="118" width="140" height="240" rx="10" fill="#F3F8F1" stroke="#3B6D11" stroke-width="1.6"/>
+<text class="th" x="260" y="142" text-anchor="middle" fill="#3B6D11">方向余弦 DCM</text>
+<text class="ts" x="260" y="160" text-anchor="middle">积分 Ṙ = R·(ω×)</text>
+<text class="ts" x="260" y="176" text-anchor="middle" font-size="9">（本质仍是矩阵微分方程）</text>
+<rect x="210" y="190" width="100" height="40" rx="6" fill="#FFFFFF" stroke="#3B6D11" stroke-width="1"/>
+<text class="lb" x="260" y="208" text-anchor="middle" fill="#3B6D11" font-size="10">✅ 无奇点</text>
+<text class="ts" x="260" y="222" text-anchor="middle" font-size="9">全 9 元素直接作用向量</text>
+<rect x="210" y="240" width="100" height="40" rx="6" fill="#FFFFFF" stroke="#B5502A" stroke-width="1"/>
+<text class="lb" x="260" y="258" text-anchor="middle" fill="#B5502A" font-size="10">❌ 9 数冗余</text>
+<text class="ts" x="260" y="272" text-anchor="middle" font-size="9">需周期性正交化</text>
+<text class="ts" x="260" y="306" text-anchor="middle" font-size="9" fill="#27500A">地位：物理清晰</text>
+<text class="ts" x="260" y="322" text-anchor="middle" font-size="9" fill="#27500A">工程：作桥梁，少用存</text>
+
+<!-- 3. 四元数 -->
+<rect x="350" y="118" width="140" height="240" rx="10" fill="#FDF3E7" stroke="#854F0B" stroke-width="1.6"/>
+<text class="th" x="420" y="142" text-anchor="middle" fill="#854F0B">四元数 ⭐</text>
+<text class="ts" x="420" y="160" text-anchor="middle">积分 q̇ = ½q⊗[0;ω]</text>
+<text class="ts" x="420" y="176" text-anchor="middle" font-size="9">递推：q ← q ⊗ Δq</text>
+<rect x="370" y="190" width="100" height="40" rx="6" fill="#FFFFFF" stroke="#854F0B" stroke-width="1"/>
+<text class="lb" x="420" y="208" text-anchor="middle" fill="#854F0B" font-size="10">✅ 工程首选</text>
+<text class="ts" x="420" y="222" text-anchor="middle" font-size="9">4 元素、无奇点、数值稳</text>
+<rect x="370" y="240" width="100" height="40" rx="6" fill="#FFFFFF" stroke="#854F0B" stroke-width="1"/>
+<text class="lb" x="420" y="258" text-anchor="middle" fill="#854F0B" font-size="10">⚠️ 不可交换</text>
+<text class="ts" x="420" y="272" text-anchor="middle" font-size="9">直接积分误差大（RK4 516″）</text>
+<text class="ts" x="420" y="306" text-anchor="middle" font-size="9" fill="#5C4A1E">地位：实时姿态存储</text>
+<text class="ts" x="420" y="322" text-anchor="middle" font-size="9" fill="#5C4A1E">本项目：q ← q⊗rv2q(ωΔt)</text>
+
+<!-- 4. 旋转向量 Bortz -->
+<rect x="510" y="118" width="140" height="240" rx="10" fill="#F6F8FB" stroke="#185FA5" stroke-width="1.6"/>
+<text class="th" x="580" y="142" text-anchor="middle" fill="#185FA5">旋转向量 Bortz</text>
+<text class="ts" x="580" y="160" text-anchor="middle">积分 φ̇ = ω + ½φ×ω + ⅙φ×(φ×ω)</text>
+<text class="ts" x="580" y="176" text-anchor="middle" font-size="9">（二阶 Bortz 修正补偿不可交换）</text>
+<rect x="530" y="190" width="100" height="40" rx="6" fill="#FFFFFF" stroke="#185FA5" stroke-width="1"/>
+<text class="lb" x="580" y="208" text-anchor="middle" fill="#185FA5" font-size="10">✅ 精度高</text>
+<text class="ts" x="580" y="222" text-anchor="middle" font-size="9">高动态下误差小 1-2 量级</text>
+<rect x="530" y="240" width="100" height="40" rx="6" fill="#FFFFFF" stroke="#185FA5" stroke-width="1"/>
+<text class="lb" x="580" y="258" text-anchor="middle" fill="#185FA5" font-size="10">⚠️ 多子样</text>
+<text class="ts" x="580" y="272" text-anchor="middle" font-size="9">cnscl 算法需 2-4 子样</text>
+<text class="ts" x="580" y="306" text-anchor="middle" font-size="9" fill="#0C447C">地位：高动态下必备</text>
+<text class="ts" x="580" y="322" text-anchor="middle" font-size="9" fill="#0C447C">PSINS：cnscl+rv2q</text>
+
+<!-- 底部 -->
+<rect x="20" y="384" width="640" height="20" rx="6" fill="#F6F4EC" stroke="#B9A15C" stroke-width="1"/>
+<text class="ts" x="340" y="398" text-anchor="middle">本项目 1000 Hz MEMS：单子样 rv2q 足够（5% 准则），战术级/高动态才需 Bortz 多子样</text>
+</svg>
