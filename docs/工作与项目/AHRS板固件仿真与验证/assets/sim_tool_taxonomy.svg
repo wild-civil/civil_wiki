@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 500" width="760" height="500" font-family="'Segoe UI','Helvetica Neue',Arial,'Microsoft YaHei',sans-serif">
+  <rect x="0" y="0" width="760" height="500" fill="#ffffff"/>
+
+  <text x="380" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#202124">仿真工具四类谱系</text>
+  <text x="380" y="54" text-anchor="middle" font-size="12" fill="#5f6368">它们大多「不跑你的 STM32 固件」，只当 数据源 / 参照系 / 闭环宿主</text>
+
+  <!-- ① -->
+  <rect x="40" y="78" width="340" height="96" rx="10" fill="#e8f0fe" stroke="#1a73e8" stroke-width="1.6"/>
+  <text x="60" y="104" font-size="15" font-weight="700" fill="#174ea6">① 飞行动力学 + 视景</text>
+  <text x="60" y="128" font-size="12.5" fill="#202124">X-Plane · FlightGear(+JSBSim)</text>
+  <text x="60" y="150" font-size="11.5" fill="#5f6368">角色：被控对象真值 + 三维可视化</text>
+  <text x="60" y="167" font-size="11.5" fill="#5f6368">用途：飞行动力学、航线、视景回放</text>
+
+  <!-- ② -->
+  <rect x="400" y="78" width="320" height="96" rx="10" fill="#e6f4ea" stroke="#34a853" stroke-width="1.6"/>
+  <text x="420" y="104" font-size="15" font-weight="700" fill="#137333">② 机器人 / 多旋翼 + 感知</text>
+  <text x="420" y="128" font-size="12.5" fill="#202124">Gazebo · AirSim</text>
+  <text x="420" y="150" font-size="11.5" fill="#5f6368">角色：多体动力学 + 传感器仿真</text>
+  <text x="420" y="167" font-size="11.5" fill="#5f6368">用途：相机/IMU/LiDAR、SLAM、规划</text>
+
+  <!-- ③ -->
+  <rect x="40" y="194" width="340" height="96" rx="10" fill="#fef7e0" stroke="#f9ab00" stroke-width="1.6"/>
+  <text x="60" y="220" font-size="15" font-weight="700" fill="#b06000">③ 自驾仪 SITL / HIL</text>
+  <text x="60" y="244" font-size="12.5" fill="#202124">JMavSim · RflySim(PX4)</text>
+  <text x="60" y="266" font-size="11.5" fill="#5f6368">角色：自驾固件 SITL</text>
+  <text x="60" y="283" font-size="11.5" fill="#5f6368">注意：跑的是 PX4，不是你的 C</text>
+
+  <!-- ④ -->
+  <rect x="400" y="194" width="320" height="96" rx="10" fill="#fce8e6" stroke="#ea4335" stroke-width="1.6"/>
+  <text x="420" y="220" font-size="15" font-weight="700" fill="#c5221f">④ 建模 / 控制 / MBD 骨干</text>
+  <text x="420" y="244" font-size="12.5" fill="#202124">MATLAB / Simulink + dSPACE·Speedgoat</text>
+  <text x="420" y="266" font-size="11.5" fill="#5f6368">角色：算法建模 + 自动代码生成</text>
+  <text x="420" y="283" font-size="11.5" fill="#5f6368">+ SIL / PIL / HIL 事实标准宿主</text>
+
+  <!-- school / enterprise / military band -->
+  <rect x="40" y="312" width="680" height="118" rx="10" fill="#ffffff" stroke="#5f6368" stroke-width="1.2"/>
+  <text x="60" y="336" font-size="13.5" font-weight="700" fill="#202124">谁用什么（典型）</text>
+
+  <rect x="60" y="348" width="200" height="70" rx="8" fill="#e8f0fe" stroke="#1a73e8" stroke-width="1.2"/>
+  <text x="160" y="370" text-anchor="middle" font-size="13" font-weight="700" fill="#174ea6">学校</text>
+  <text x="160" y="390" text-anchor="middle" font-size="11" fill="#5f6368">Gazebo+ROS</text>
+  <text x="160" y="407" text-anchor="middle" font-size="11" fill="#5f6368">PX4 SITL · RflySim</text>
+
+  <rect x="280" y="348" width="200" height="70" rx="8" fill="#e6f4ea" stroke="#34a853" stroke-width="1.2"/>
+  <text x="380" y="370" text-anchor="middle" font-size="13" font-weight="700" fill="#137333">企业</text>
+  <text x="380" y="390" text-anchor="middle" font-size="11" fill="#5f6368">Simulink + MBD</text>
+  <text x="380" y="407" text-anchor="middle" font-size="11" fill="#5f6368">Embedded Coder + dSPACE</text>
+
+  <rect x="500" y="348" width="200" height="70" rx="8" fill="#fef7e0" stroke="#f9ab00" stroke-width="1.2"/>
+  <text x="600" y="370" text-anchor="middle" font-size="13" font-weight="700" fill="#b06000">军工</text>
+  <text x="600" y="390" text-anchor="middle" font-size="11" fill="#5f6368">叠加 SCADE / Polyspace</text>
+  <text x="600" y="407" text-anchor="middle" font-size="11" fill="#5f6368">DO-178C · HLA/DIS 联邦</text>
+
+  <!-- footer -->
+  <text x="380" y="456" text-anchor="middle" font-size="11.5" fill="#80868b">你的 STM32 固件 = 被测对象（DUT）；要验它，靠 SIL（固件上 PC）+ HIL（固件上真 MCU）</text>
+</svg>
