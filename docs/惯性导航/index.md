@@ -41,6 +41,7 @@ tags: [MOC, 导航, 惯导, 科普]
 ## 本系列文章清单（从基础到融合，3 个 Tier / 16 篇）
 
 > 写作顺序按 M1→M5 正序打地基；每篇**自包含 + 通俗为主 + 数学推导折叠**，并锚定本项目真实代码（`ins_eskf_15d.c` / `ins_math.h`）。✅ = 已发布。
+> 📌 文中对 `ins_eskf_15d.c` / `ins_math.h` 的**行号引用对应 2026-08 代码快照**：函数名为主、行号为辅，代码演进后行号可能漂移。
 
 ### Tier 1 · 惯导基础知识（是什么 / 为什么）→ 📁 [01_基础篇/](01_基础篇/)
 | 篇 | 主题 | 状态 |
@@ -64,11 +65,20 @@ tags: [MOC, 导航, 惯导, 科普]
 |---|---|---|
 | [10 卡尔曼滤波基础](03_组合导航篇/10_卡尔曼滤波基础.md) | KF 五方程（预测+修正）/ 协方差椭圆 / 一维手算 + 双轨验证 / 与本项目 ESKF 15 态对应（锚定牛小骥讲义第 4 讲式 1-8、PSINS kfupdate） | ✅ 已发布（M3 组合导航篇开篇） |
 | [11 EKF 与 ESKF](03_组合导航篇/11_EKF与ESKF.md) | 直接法 EKF（姿态流形困境）→ ESKF 间接法 15 态/反馈注入（锚定牛小骥讲义式 9-10、固件 `ins_eskf_15d.c`）+ 双轨等价性实证 | ✅ 已发布 |
-| 12 观测模型 | GNSS / 磁力计 / 气压计 / 视觉 | 规划中 |
-| 13 松组合 vs 紧组合 | 两种组合架构的取舍 | 规划中 |
-| 14 一致性检验 NEES/NIS（χ²） | 验证框架的核心闸门 | 规划中 |
-| 15 多传感器冗余 + FDI | 故障检测隔离，对应本板 3×IMU | 规划中 |
+| [12 观测模型](03_组合导航篇/12_观测模型.md) | GNSS 位置/速度、气压高度、加计(重力)、磁强计(地磁) 的 H 矩阵 + 可观测性全景（锚定固件 ins_eskf_15d.c + 双轨有限差分验证） | ✅ 已发布 |
+| [13 松组合 vs 紧组合](03_组合导航篇/13_松组合vs紧组合.md) | LC/TC/UC 三种耦合深度、H 差异、少星鲁棒性（锚定牛小骥第4讲 + PSINS test_SINS_GPS_153 / test_SINS_GPS_tightly_coupled） | ✅ 已发布 |
+| [14 一致性检验 NEES/NIS（χ²）](03_组合导航篇/14_一致性检验.md) | 滤波器"体检"：NEES/NIS~χ²、均值闸门、三种失配指纹、gating 工程化（锚定 PSINS kfupdate 的 rk/Py0 + 固件 decoupled gating + 双轨 MC 验证） | ✅ 已发布 |
+| [15 多传感器冗余 + FDI](03_组合导航篇/15_多传感器冗余与FDI.md) | 故障检测隔离，对应本板 3×IMU（中值/2oo3 表决 + NIS 趋势检测，锚定固件 SM_ERR_* + PSINS imuerrset + 双轨验证） | ✅ 已发布 |
 | 16 实战：走读 ins_eskf_15d.c | 把前面所有概念落进真实代码 | 规划中 |
+
+### Tier 4 · 拆解 PSINS（工业参考逐行走读）→ 📁 04_拆解PSINS篇/
+> 科普 16 篇把原理讲完了，但"工业级参考" PSINS 还蒙着面纱。本系列把核心 demo（19–31 行的"薄壳"）追进 `base/` 库函数逐行拆解：代码在算什么、为什么这么算、对应科普系列哪一章。demo 是数据流入口，肉在库函数里。
+
+| 篇 | 拆解对象 | 主题 | 状态 |
+|---|---|---|---|
+| [P1 轨迹生成 · test_SINS_trj.m](04_拆解PSINS篇/P1_轨迹生成_拆解test_SINS_trj.md) | `trjsegment` + `trjsimu`（31 行薄壳） | 航段语言（8 基本+6 复合）/ wat 表 / 正演机数学（att/vn/pos 积分 + IMU 增量反算 + 圆锥/旋转补偿）/ 966 s 轨迹解析 | ✅ 已发布 |
+| P2 纯惯导 · test_SINS.m | `inspure` + 误差注入体系 | 正演→反演闭环验证、imuerrset/avperrset、误差传播对比 | 规划中 |
+| P3 航位推算 · test_DR.m | `odsimu` + `drupdate` | DR 数学（航向×里程）、安装角/刻度系数、与 SINS 的本质差异 | 规划中 |
 
 ## 学习路线图
 
@@ -96,27 +106,28 @@ tags: [MOC, 导航, 惯导, 科普]
 ### 第 3 步 · 姿态解算（旋转矢量的算法）
 - [ ] 互补滤波（规划中）
 - [ ] 梯度下降法（Madgwick）（规划中）
-- [ ] 卡尔曼滤波与 ESKF（规划中） ⭐ 外链：[维基 · 卡尔曼滤波](https://zh.wikipedia.org/wiki/卡尔曼滤波)
+- [x] 卡尔曼滤波与 ESKF（[10 卡尔曼滤波基础](03_组合导航篇/10_卡尔曼滤波基础.md) · [11 EKF 与 ESKF](03_组合导航篇/11_EKF与ESKF.md)，已发布） ⭐ 外链：[维基 · 卡尔曼滤波](https://zh.wikipedia.org/wiki/卡尔曼滤波)
 
 ### 第 4 步 · 惯导解算全流程
 - [x] [机械编排 · 姿态 → 速度 → 位置 的积分递推](02_解算篇/06_机械编排方程.md)（已发布，锚定牛小骥 I2NAV 讲义式 18）
 - [x] [姿态更新 · 欧拉/DCM/四元数/Bortz + 圆锥与划桨](02_解算篇/07_姿态更新算法.md)（已发布，6 种方法实测对比 + 牛小骥式 134-135）
 
 ### 第 5 步 · 组合导航
-- [ ] GNSS / INS 松耦合与紧耦合（规划中）
+- [x] [GNSS / INS 松耦合与紧耦合](03_组合导航篇/13_松组合vs紧组合.md)（已发布）
 - [ ] 因子图 / 预积分（规划中）
 
 ## 基础知识外链速查（随时回补）
 
-| 话题 | 外链 Wiki |
+| 话题 | 外链参考 |
 | --- | --- |
 | 协方差矩阵 | [维基 · 协方差矩阵](https://zh.wikipedia.org/wiki/协方差矩阵) |
-| 卡尔曼滤波 | [维基 · 卡尔曼滤波](https://zh.wikipedia.org/wiki/卡尔曼滤波) |
+| 卡尔曼滤波 | [维基 · 卡尔曼滤波](https://zh.wikipedia.org/wiki/卡尔曼滤波) / [Wikipedia · Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter) |
 | 四元数 | [维基 · 四元数与空间旋转](https://zh.wikipedia.org/wiki/四元数与空间旋转) |
 | 欧拉角 | [维基 · 欧拉角](https://zh.wikipedia.org/wiki/欧拉角) |
 | 惯性导航 | [维基 · 惯性导航系统](https://zh.wikipedia.org/wiki/惯性导航系统) |
 | 陀螺仪 | [维基 · 陀螺仪](https://zh.wikipedia.org/wiki/陀螺仪) |
 | 加速度计 | [维基 · 加速度计](https://zh.wikipedia.org/wiki/加速度计) |
+| ESKF（误差态 KF） | [Solà · Quaternion kinematics for the error-state Kalman filter（arXiv:1711.02508）](https://arxiv.org/abs/1711.02508) |
 
 ## PSINS 演示约定与致谢
 
