@@ -103,6 +103,7 @@ extra_css:
 extra_javascript:
   - javascripts/mathjax.js
   - javascripts/mathjax/tex-mml-svg.js   # 本地化 MathJax（SVG 输出，无需外部字体；不再走 cdnjs CDN）
+  - javascripts/pdf_links.js             # PDF 链接新窗口打开
 
 # 导航（手动维护，顺序可控；结构对齐参考项目：一级分类 -> 分区首页/index.md -> 子页面）
 # 想偷懒？把整个 nav: 块删掉，MkDocs 会自动按文件名列出所有页面
