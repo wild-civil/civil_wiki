@@ -98,13 +98,13 @@ $\text{标度因数误差} = \frac{\text{正向读数} - \text{反向读数}}{2g
 ??? note "📐 折叠：六面法为什么能同时标零偏和标度"
 
     假设加计实际模型 $\tilde f = (1+s)f + b$（忽略其他误差）：
-
+    
     - 正向（+z 朝上）：$\tilde f_+ = (1+s)(+g) + b = g + sg + b$
     - 反向（−z 朝上）：$\tilde f_- = (1+s)(-g) + b = -g - sg + b$
-
+    
     两式相加：$\tilde f_+ + \tilde f_- = 2b \Rightarrow b = \tfrac12(\tilde f_+ + \tilde f_-)$（**零偏**）  
     两式相减：$\tilde f_+ - \tilde f_- = 2g(1+s) \Rightarrow s = \tfrac{\tilde f_+ - \tilde f_-}{2g} - 1$（**标度**）
-
+    
     这就是"正反两个方向"的原因——一个方向解不开两个未知数。
 
 ---
@@ -305,7 +305,7 @@ PSINS 的 `imuadderr` 是"误差→数据"的正向通道，固件的 ESKF 是"�
 ## 关联与延伸
 
 - 上一篇：[03 传感器原理](03_传感器原理.md)（比力 / 角速度 / 误差单位速查）
-- 下一篇规划：`05 Allan 方差`——5 种噪声指纹（QN·ARW·BI·RRW·RR）、读 log-log 曲线、从实测数据"测出"本节所有随机参数、定 ESKF 的 Q 阵
+- 下一篇：[05 Allan 方差](05_Allan方差.md) —— 5 种噪声指纹（QN·ARW·BI·RRW·RR）、读 log-log 曲线、从实测数据"测出"本节所有随机参数、定 ESKF 的 Q 阵
 - 数学地基：[矩阵、概率与协方差](../数学基础.md)（随机过程、方差、协方差）
 - 外链：[维基 · 卡尔曼滤波](https://zh.wikipedia.org/wiki/卡尔曼滤波) · [维基 · Allan 方差](https://zh.wikipedia.org/wiki/艾伦方差) · [维基 · 加速度计](https://zh.wikipedia.org/wiki/加速度计)
 - 项目落地：[AHRS 板固件仿真与验证](../../工作与项目/AHRS板固件仿真与验证/)（`ins_eskf_15d.c` / `ins_thermal.h` 真实实现）

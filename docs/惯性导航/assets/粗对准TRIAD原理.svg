@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 420" width="680" height="420" role="img">
+<title>静基座粗对准：TRIAD 双矢量定姿</title>
+<desc>粗对准用两个已知参考矢量确定姿态：重力加速度 g 定俯仰/横滚（水平），地球自转角速度 ωie 定航向（陀螺罗盘效应）。两个矢量不平行，恰好构成完整三轴。</desc>
+<style>
+.th{font-size:14px;font-weight:700;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+.ts{font-size:10.5px;fill:#5F5E5A;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+.lb{font-size:11px;font-weight:700;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+.eq{font-size:15px;font-weight:700;font-family:'Cambria Math','Times New Roman',serif;}
+</style>
+<defs>
+<marker id="ag" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+
+<text class="th" x="340" y="26" text-anchor="middle" fill="#0C447C">静基座粗对准：两个"已知矢量"定三轴（TRIAD）</text>
+
+<!-- 左：导航系参考矢量 -->
+<text class="th" x="170" y="62" text-anchor="middle" fill="#27500A" font-size="12">导航系（已知）</text>
+<ellipse cx="170" cy="200" rx="120" ry="120" fill="#F6F8FB" fill-opacity="0.4" stroke="#C9D4E2" stroke-width="1"/>
+<!-- g 矢量 -->
+<line x1="170" y1="150" x2="170" y2="268" stroke="#B5502A" stroke-width="2.6" marker-end="url(#ag)"/>
+<text class="lb" x="180" y="270" fill="#B5502A">g（重力，朝下）</text>
+<text class="ts" x="180" y="286" font-size="9">定 俯仰/横滚（水平）</text>
+<!-- ωie 矢量 -->
+<line x1="170" y1="200" x2="300" y2="120" stroke="#3B6D11" stroke-width="2.6" marker-end="url(#ag)"/>
+<text class="lb" x="245" y="110" fill="#27500A">ωie（地球自转）</text>
+<text class="ts" x="250" y="140" font-size="9">定 航向（陀螺罗盘）</text>
+<text class="ts" x="170" y="330" text-anchor="middle">两个矢量不平行 → 叉乘出第三轴 → 完整姿态</text>
+<text class="ts" x="170" y="348" text-anchor="middle" font-size="9">导航系: g_n = (0,0,+g)、ω_ie^n = (0, ωcosφ, ωsinφ)</text>
+
+<!-- 中间：body 测量 -->
+<text class="th" x="340" y="62" text-anchor="middle" fill="#185FA5" font-size="12">机体系（测量）</text>
+<rect x="290" y="80" width="100" height="120" rx="8" fill="#FDF3E7" stroke="#854F0B" stroke-width="1.2"/>
+<text class="ts" x="340" y="112" text-anchor="middle" font-size="10">加计测：</text>
+<text class="eq" x="340" y="136" text-anchor="middle" fill="#B5502A" font-size="13">f_b ≈ −g_b</text>
+<text class="ts" x="340" y="158" text-anchor="middle" font-size="10">陀螺测：</text>
+<text class="eq" x="340" y="182" text-anchor="middle" fill="#3B6D11" font-size="13">ω_b ≈ ω_ie^b</text>
+<text class="ts" x="340" y="220" text-anchor="middle" font-size="9">静止时直接求平均即可</text>
+<text class="ts" x="340" y="236" text-anchor="middle" font-size="9">（1~10 秒足够）</text>
+
+<!-- 右：TRIAD -->
+<text class="th" x="545" y="62" text-anchor="middle" fill="#7E3318" font-size="12">TRIAD 定姿</text>
+<rect x="440" y="80" width="210" height="180" rx="10" fill="#F6F4EC" stroke="#B9A15C" stroke-width="1.2"/>
+<text class="ts" x="545" y="108" text-anchor="middle" font-size="10">已知：v_n1=g_n, v_n2=ω_ie^n</text>
+<text class="ts" x="545" y="128" text-anchor="middle" font-size="10">测量：v_b1=f_b, v_b2=ω_ie^b</text>
+<text class="eq" x="545" y="162" text-anchor="middle" fill="#5C4A1E" font-size="12">C_b^n = A_n · B_b'</text>
+<text class="ts" x="545" y="186" text-anchor="middle" font-size="10">A_n = [ĝ, ĝ×ω̂, ĝ×(ĝ×ω̂)]</text>
+<text class="ts" x="545" y="204" text-anchor="middle" font-size="10">B_b = [f̂, f̂×ω̂, f̂×(f̂×ω̂)]</text>
+<text class="ts" x="545" y="232" text-anchor="middle" font-size="9">（单位矢量构成的坐标架，互为正交）</text>
+<text class="ts" x="545" y="252" text-anchor="middle" font-size="9">PSINS: dv2atti(g_n, ω_ie^n, −f_b, ω_b)</text>
+
+<!-- 底部 -->
+<rect x="20" y="360" width="640" height="44" rx="8" fill="#EEF3F9" stroke="#185FA5" stroke-width="1.2"/>
+<text class="lb" x="340" y="380" text-anchor="middle" fill="#0C447C" font-size="11">为什么能定航向？—— 地球自转的"水平分量"在纬度 φ 处 = ω·cosφ</text>
+<text class="ts" x="340" y="398" text-anchor="middle" font-size="10">陀螺测到的 ω_b 里藏着"指北"信息（陀螺罗盘效应）；MEMS 陀螺噪声大，航向精度差（±几度），水平精度高（±0.1°）</text>
+</svg>
