@@ -25,6 +25,9 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
+#ifdef _WIN32
+#include <windows.h>   /* SetConsoleOutputCP：控制台切 UTF-8，中文/数学符号正常显示 */
+#endif
 
 /* ========== 四元数工具（与固件 ins_math.h 逐字一致） ========== */
 
@@ -87,6 +90,13 @@ static void qerr_phi(const double qt[4], const double q[4], double phi[3])
 
 int main(void)
 {
+#ifdef _WIN32
+    /* Windows 中文乱码修复：源码 UTF-8、控制台默认 GBK(936)。
+     * 方案：程序内把控制台切到 UTF-8 显示（Win10+ 现代终端均支持）。
+     * 注意：不能用编译 flag -fexec-charset=GBK——本源码含 φ₀/ωₛ/− 等
+     * Unicode 数学符号，GBK 无法表示（报 Illegal byte sequence）。 */
+    SetConsoleOutputCP(CP_UTF8);
+#endif
     /* —— 仿真参数 —— */
     double ts  = 0.1;                    /* 采样周期 10 Hz */
     double T   = 3600.0;                 /* 60 min */
@@ -204,5 +214,15 @@ int main(void)
         r_dwE, r_dwE/1852.0);
     printf("5. 把 bg 改成 0.1 deg/h 再跑：线性项 ×10 = 13.5 km，30 min 就爆表——消费级陀螺\n");
     printf("   为什么必须外部辅助（GNSS/气压计），M3 组合导航就是来\"修正\"这条发散的\n");
+
+    /* 运行结束前等待按键，避免双击 exe 时窗口一闪而过看不到结果
+     * 中文乱码已由 main 开头 SetConsoleOutputCP(CP_UTF8) 解决（见上注释） */
+    #ifdef _WIN32
+        system("pause");
+    #else
+        printf("\nPress Enter to exit...\n");
+        getchar();
+    #endif
+
     return 0;
 }
