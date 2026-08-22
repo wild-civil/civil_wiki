@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 380" font-family="'Segoe UI','Microsoft YaHei',sans-serif">
+  <defs>
+    <marker id="mv" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2b6cb0"/>
+    </marker>
+  </defs>
+
+  <text x="340" y="28" text-anchor="middle" font-size="17" font-weight="bold" fill="#1a202c">姿态流形：直接法的"归一化困境"</text>
+  <text x="340" y="48" text-anchor="middle" font-size="12" fill="#4a5568">四元数 q 在 SO(3) 流形（单位球）上 · 误差态 δθ 在切空间（3 维向量，线性无约束）</text>
+
+  <!-- 左侧：SO(3) 流形（单位四元数球） -->
+  <circle cx="160" cy="210" r="85" fill="#bee3f8" stroke="#2b6cb0" stroke-width="1.5" opacity="0.5"/>
+  <ellipse cx="160" cy="210" rx="85" ry="25" fill="none" stroke="#2b6cb0" stroke-width="0.6" opacity="0.5"/>
+  <ellipse cx="160" cy="210" rx="30" ry="85" fill="none" stroke="#2b6cb0" stroke-width="0.6" opacity="0.5"/>
+  <text x="160" y="58" text-anchor="middle" font-size="13" font-weight="bold" fill="#2b6cb0">直接法：四元数 q（4 维）</text>
+  <text x="160" y="78" text-anchor="middle" font-size="11" fill="#2b6cb0">约束 ‖q‖=1（SO(3) 流形）</text>
+
+  <!-- 真值点 + 估计点偏离 -->
+  <circle cx="160" cy="210" r="3" fill="#2f855a"/>
+  <text x="146" y="226" font-size="10" fill="#2f855a">真 q</text>
+  <!-- 估计点漂到球外 -->
+  <circle cx="220" cy="170" r="3" fill="#c53030"/>
+  <line x1="160" y1="210" x2="220" y2="170" stroke="#c53030" stroke-width="1.5"/>
+  <text x="228" y="170" font-size="10" fill="#c53030">估计 q̂</text>
+  <text x="228" y="184" font-size="10" fill="#c53030">（漂到球外！）</text>
+  <!-- 归一化箭头 -->
+  <path d="M 220,170 A 85,85 0 0,1 190,130" fill="none" stroke="#975a16" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#mv)"/>
+  <text x="232" y="148" font-size="10" fill="#975a16">强制归一化 q̂←q̂/‖q̂‖</text>
+  <text x="232" y="162" font-size="10" fill="#975a16">（但雅可比 F 错了！）</text>
+
+  <!-- 右侧：误差态切空间（3 维平面） -->
+  <rect x="350" y="140" width="280" height="170" rx="0" fill="#fef3c7" stroke="#b7791f" stroke-width="1.2" opacity="0.4"/>
+  <line x1="430" y1="160" x2="570" y2="290" stroke="#b7791f" stroke-width="0.5" stroke-dasharray="3,3"/>
+  <line x1="500" y1="150" x2="500" y2="305" stroke="#b7791f" stroke-width="0.5" stroke-dasharray="3,3"/>
+  <text x="510" y="58" text-anchor="middle" font-size="13" font-weight="bold" fill="#975a16">ESKF：误差 φ（3 维旋转矢量）</text>
+  <text x="510" y="78" text-anchor="middle" font-size="11" fill="#975a16">切空间（线性、无约束）</text>
+
+  <!-- 切空间原点 = 名义态 -->
+  <circle cx="500" cy="225" r="3" fill="#2b6cb0"/>
+  <text x="478" y="238" font-size="10" fill="#2b6cb0">名义 q_nom</text>
+  <!-- 误差小量 -->
+  <line x1="500" y1="225" x2="540" y2="260" stroke="#2f855a" stroke-width="1.5"/>
+  <circle cx="540" cy="260" r="3" fill="#2f855a"/>
+  <text x="548" y="264" font-size="10" fill="#2f855a">δθ（小量）</text>
+  <text x="548" y="278" font-size="10" fill="#4a5568">→ 线性化精确</text>
+  <!-- 反馈箭头 -->
+  <path d="M 540,260 L 500,225" stroke="#c53030" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#mv)"/>
+  <text x="513" y="240" font-size="9" fill="#c53030">q ← q ⊗ q(δθ)</text>
+
+  <!-- 底部对比 -->
+  <rect x="40" y="330" width="600" height="40" rx="8" fill="#fffbeb" stroke="#b7791f" stroke-width="1"/>
+  <text x="340" y="348" text-anchor="middle" font-size="11" fill="#744210" font-weight="bold">直接法：4 维 + 流形约束 + 归一化后雅可比失真；ESKF：3 维 + 切空间 + 线性无约束</text>
+  <text x="340" y="364" text-anchor="middle" font-size="11" fill="#744210">后者是惯导组合导航主流——这就是讲义第 4 讲式 9 用 φ 而非 q 当状态的原因</text>
+</svg>

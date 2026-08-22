@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 440" font-family="'Segoe UI','Microsoft YaHei',sans-serif">
+  <defs>
+    <marker id="ax1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2b6cb0"/>
+    </marker>
+    <marker id="ax2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c53030"/>
+    </marker>
+  </defs>
+
+  <text x="340" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1a202c">ESKF（误差状态卡尔曼滤波）双层闭环</text>
+  <text x="340" y="50" text-anchor="middle" font-size="12" fill="#4a5568">名义态走真实非线性 f · 误差态走线性 EKF · 反馈注入回名义态</text>
+
+  <!-- 左侧：名义态（非线性） -->
+  <rect x="40" y="80" width="220" height="180" rx="10" fill="#ebf8ff" stroke="#2b6cb0" stroke-width="2"/>
+  <text x="150" y="105" text-anchor="middle" font-size="14" font-weight="bold" fill="#2b6cb0">名义态 x_nom</text>
+  <text x="150" y="123" text-anchor="middle" font-size="10" fill="#4a5568">（高更新率，确定性递推）</text>
+  <text x="60" y="148" font-size="12" fill="#1a202c">· 状态：[p, v, q, bg, ba]</text>
+  <text x="60" y="168" font-size="12" fill="#1a202c">· 递推：x ← x ⊗ f(ω, f)</text>
+  <text x="60" y="188" font-size="11" fill="#4a5568">   （四元数右乘、比力投影）</text>
+  <text x="60" y="213" font-size="11" fill="#4a5568">· 1000 Hz IMU，每帧跑</text>
+  <text x="60" y="235" font-size="11" fill="#2b6cb0" font-weight="bold">· 全量、不滤波（按模型推）</text>
+
+  <!-- 右侧：误差态（线性 EKF） -->
+  <rect x="420" y="80" width="220" height="180" rx="10" fill="#fff5f5" stroke="#c53030" stroke-width="2"/>
+  <text x="530" y="105" text-anchor="middle" font-size="14" font-weight="bold" fill="#c53030">误差态 δx = 0</text>
+  <text x="530" y="123" text-anchor="middle" font-size="10" fill="#4a5568">（低更新率，线性 KF）</text>
+  <text x="440" y="148" font-size="12" fill="#1a202c">· 状态：[φ, δv, δp, δbg, δba]</text>
+  <text x="440" y="168" font-size="12" fill="#1a202c">· 时间更新：δx ← Fδx</text>
+  <text x="440" y="188" font-size="11" fill="#4a5568">   （F = 机械编排，09 篇）</text>
+  <text x="440" y="213" font-size="11" fill="#4a5568">· 量测更新：δx += K·(z-H·x_nom)</text>
+  <text x="440" y="235" font-size="11" fill="#c53030" font-weight="bold">· 15 态线性 EKF（= 10 篇 KF）</text>
+
+  <!-- IMU 输入 -->
+  <rect x="110" y="290" width="80" height="36" rx="8" fill="#c6f6d5" stroke="#2f855a" stroke-width="1.2"/>
+  <text x="150" y="312" text-anchor="middle" font-size="12" fill="#2f855a" font-weight="bold">IMU</text>
+  <line x1="150" y1="289" x2="150" y2="265" stroke="#2f855a" stroke-width="1.6" marker-end="url(#ax1)"/>
+
+  <!-- 量测输入 -->
+  <rect x="490" y="290" width="80" height="36" rx="8" fill="#fef3c7" stroke="#b7791f" stroke-width="1.2"/>
+  <text x="530" y="312" text-anchor="middle" font-size="12" fill="#975a16" font-weight="bold">GNSS/气压</text>
+  <line x1="530" y1="289" x2="530" y2="265" stroke="#b7791f" stroke-width="1.6" marker-end="url(#ax2)"/>
+
+  <!-- 反馈注入弧线（右下→左下→左上=注入名义态） -->
+  <path d="M 420,250 C 420,360 260,360 150,265" fill="none" stroke="#c53030" stroke-width="2.4" marker-end="url(#ax2)"/>
+  <text x="285" y="355" text-anchor="middle" font-size="11" fill="#c53030" font-weight="bold">反馈注入 x_nom ← x_nom + δx，δx 清零</text>
+
+  <!-- F 矩阵桥（误差态 ↔ 名义态，标在中间） -->
+  <path d="M 260,150 L 420,150" fill="none" stroke="#534AB7" stroke-width="1.6" stroke-dasharray="5,3"/>
+  <text x="340" y="142" text-anchor="middle" font-size="11" fill="#534AB7" font-weight="bold">F = 雅可比（在名义点）</text>
+
+  <!-- 底部 K-闭环：量测→误差态 -->
+  <path d="M 530,289 L 530,265" stroke="#b7791f" stroke-width="1.6"/>
+
+  <!-- 底部结论 -->
+  <rect x="40" y="395" width="600" height="36" rx="8" fill="#f7fafc" stroke="#4a5568" stroke-width="1"/>
+  <text x="340" y="418" text-anchor="middle" font-size="11" fill="#2d3748">解算频率解耦：惯导 1000 Hz 全量推进 + KF 10 Hz 修正——计算量小一个量级</text>
+</svg>
