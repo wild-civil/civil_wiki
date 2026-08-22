@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 320" width="680" height="320" role="img">
+<title>05 一图流：Allan 方差</title>
+<desc>Allan 方差把 IMU 噪声按时间尺度拆开：log-log 曲线五段斜率对应五种噪声，从曲线反推 ARW/BI/RRW 等参数并定 ESKF 的 Q 阵。双轨实现互相验证。</desc>
+<style>
+.th{font-size:13.5px;font-weight:700;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+.ts{font-size:10.5px;fill:#5F5E5A;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+.lb{font-size:11px;font-weight:700;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+</style>
+<defs>
+<marker id="a5" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+
+<text class="th" x="340" y="26" text-anchor="middle" fill="#0C447C">Allan 方差（一图流）：把噪声"剥"出来</text>
+
+<!-- 左：log-log 曲线 -->
+<line x1="50" y1="250" x2="310" y2="250" stroke="#5F5E5A" stroke-width="1.4" marker-end="url(#a5)"/>
+<line x1="50" y1="250" x2="50" y2="60" stroke="#5F5E5A" stroke-width="1.4" marker-end="url(#a5)"/>
+<text class="ts" x="38" y="55" text-anchor="middle" font-size="10">log σ</text>
+<text class="ts" x="318" y="252" text-anchor="end" font-size="10">log τ</text>
+<polyline points="50,95 95,150 150,195 210,222 260,235 300,238" fill="none" stroke="#0C447C" stroke-width="2.4"/>
+<text class="lb" x="55" y="108" fill="#B5502A" font-size="9">QN −1</text>
+<text class="lb" x="100" y="160" fill="#3B6D11" font-size="9">ARW −1/2</text>
+<text class="lb" x="200" y="214" fill="#854F0B" font-size="9">BI 0</text>
+<text class="lb" x="250" y="248" fill="#185FA5" font-size="9">RRW +1/2</text>
+
+<!-- 右：参数提取 -->
+<rect x="350" y="60" width="300" height="200" rx="12" fill="#EEF3F9" stroke="#185FA5" stroke-width="1.5"/>
+<text class="th" x="500" y="88" text-anchor="middle" fill="#0C447C" font-size="12">从曲线提取参数</text>
+<text class="lb" x="368" y="114" fill="#0C447C">ARW N = σ·√τ（−1/2 段）</text>
+<text class="lb" x="368" y="136" fill="#0C447C">BI  B = σ_min/0.664（平台）</text>
+<text class="lb" x="368" y="158" fill="#0C447C">RRW K（+1/2 段拟合）</text>
+<text class="lb" x="368" y="180" fill="#0C447C">RR  R（+1 段，需 1h+ 数据）</text>
+<text class="lb" x="368" y="214" fill="#7E3318" font-size="11">→ 定 ESKF 的 Q 阵：</text>
+<text class="ts" x="368" y="234" font-size="10">ARW → 测量噪声密度</text>
+<text class="ts" x="368" y="250" font-size="10">BI → bg/ba 漂移噪声</text>
+
+<!-- 底部 -->
+<rect x="20" y="290" width="640" height="0" />
+<text class="ts" x="340" y="308" text-anchor="middle">双轨验证：PSINS avar（MATLAB）与本项目 allan.py（Python）同一数据跑同一结果 → 工具正确性互相背书</text>
+</svg>

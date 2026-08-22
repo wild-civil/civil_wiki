@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 300" width="680" height="300" role="img">
+<title>03 一图流：传感器原理</title>
+<desc>IMU 双芯片：加速度计测比力 f=a−g（不是加速度！），陀螺测角速度（MEMS 用科里奥利力）。静止时加计读 1g 向上；自由落体读 0。</desc>
+<style>
+.th{font-size:14px;font-weight:700;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+.ts{font-size:10.5px;fill:#5F5E5A;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+.lb{font-size:11.5px;font-weight:700;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+.eq{font-size:16px;font-weight:700;font-family:'Cambria Math','Times New Roman',serif;}
+</style>
+
+<text class="th" x="340" y="26" text-anchor="middle" fill="#0C447C">IMU 到底测什么（一图流）</text>
+
+<!-- 左：加速度计 -->
+<rect x="30" y="60" width="290" height="200" rx="12" fill="#FDF3E7" stroke="#854F0B" stroke-width="1.6"/>
+<text class="th" x="175" y="90" text-anchor="middle" fill="#854F0B">加速度计：测"比力" f</text>
+<text class="eq" x="175" y="122" text-anchor="middle" fill="#B5502A">f = a − g</text>
+<text class="ts" x="175" y="142" text-anchor="middle">a = f + g（机械编排要用 a）</text>
+<text class="lb" x="50" y="168" fill="#854F0B" font-size="11">• 静止：f = −g，读 1g 向上</text>
+<text class="lb" x="50" y="188" fill="#854F0B" font-size="11">• 自由落体：f = 0，读数归零</text>
+<text class="lb" x="50" y="208" fill="#854F0B" font-size="11">• 加速上升：f > 1g（超重）</text>
+<text class="ts" x="50" y="236" fill="#5F5E5A">⚠️ 不是"运动加速度"！静止也有 1g</text>
+
+<!-- 右：陀螺 -->
+<rect x="360" y="60" width="290" height="200" rx="12" fill="#F6F8FB" stroke="#185FA5" stroke-width="1.6"/>
+<text class="th" x="505" y="90" text-anchor="middle" fill="#185FA5">陀螺：测角速度 ω</text>
+<text class="eq" x="505" y="122" text-anchor="middle" fill="#0C447C">F_c = −2m(ω×v)</text>
+<text class="ts" x="505" y="142" text-anchor="middle">MEMS 靠科里奥利力感知转动</text>
+<text class="lb" x="380" y="168" fill="#185FA5" font-size="11">• 三轴分工：驱动/输入/感测</text>
+<text class="lb" x="380" y="188" fill="#185FA5" font-size="11">• 输出角速度，不是角度</text>
+<text class="lb" x="380" y="208" fill="#185FA5" font-size="11">• 角度要靠积分（07 篇）</text>
+<text class="ts" x="380" y="236" fill="#5F5E5A">⚠️ MEMS 精度 1~10°/h，FOG 高 2 个量级</text>
+
+<!-- 底部 -->
+<rect x="30" y="280" width="620" height="0"/>
+<text class="ts" x="340" y="296" text-anchor="middle">误差单位速查：°/h 零偏 · µg 加计零偏 · °/√h 随机游走 · ppm 标度 · arcsec 安装（见正文）</text>
+</svg>

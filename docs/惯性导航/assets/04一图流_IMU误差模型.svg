@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 320" width="680" height="320" role="img">
+<title>04 一图流：IMU 误差模型</title>
+<desc>IMU 误差分两大类：确定性(可标定)：零偏/标度/安装/g灵敏度/温度；随机性(可建模)：白噪声→随机游走/零偏稳定性/马尔可夫。处理：标定 + 滤波器 bg/ba 状态。</desc>
+<style>
+.th{font-size:13.5px;font-weight:700;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+.ts{font-size:10.5px;fill:#5F5E5A;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+.lb{font-size:11px;font-weight:700;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+</style>
+
+<text class="th" x="340" y="26" text-anchor="middle" fill="#0C447C">IMU 误差模型（一图流）</text>
+
+<!-- 根 -->
+<rect x="275" y="44" width="130" height="40" rx="20" fill="#0C447C"/>
+<text class="th" x="340" y="68" text-anchor="middle" fill="#FFFFFF" font-size="12">IMU 误差</text>
+
+<line x1="340" y1="84" x2="340" y2="100" stroke="#5F5E5A" stroke-width="1.5"/>
+<line x1="180" y1="100" x2="500" y2="100" stroke="#5F5E5A" stroke-width="1.5"/>
+<line x1="180" y1="100" x2="180" y2="116" stroke="#5F5E5A" stroke-width="1.5"/>
+<line x1="500" y1="100" x2="500" y2="116" stroke="#5F5E5A" stroke-width="1.5"/>
+
+<!-- 左：确定性 -->
+<rect x="40" y="116" width="280" height="170" rx="12" fill="#F3F8F1" stroke="#3B6D11" stroke-width="1.6"/>
+<text class="th" x="180" y="140" text-anchor="middle" fill="#27500A">确定性误差（可标定）</text>
+<text class="ts" x="180" y="158" text-anchor="middle">同一条件可重现 → 转台/六面法补偿</text>
+<text class="lb" x="58" y="182" fill="#3B6D11">• 常值零偏 eb/db（°/h, µg）</text>
+<text class="lb" x="58" y="202" fill="#3B6D11">• 标度因数 dK（ppm）</text>
+<text class="lb" x="58" y="222" fill="#3B6D11">• 安装/交叉耦合（arcsec）</text>
+<text class="lb" x="58" y="242" fill="#3B6D11">• g 灵敏度（°/h/g）</text>
+<text class="lb" x="58" y="262" fill="#3B6D11">• 温度漂移（°/h/°C）→ 恒温 or 查表</text>
+
+<!-- 右：随机性 -->
+<rect x="360" y="116" width="280" height="170" rx="12" fill="#FBF3F0" stroke="#B5502A" stroke-width="1.6"/>
+<text class="th" x="500" y="140" text-anchor="middle" fill="#7E3318">随机误差（可建模）</text>
+<text class="ts" x="500" y="158" text-anchor="middle">每次不一样 → 方差/功率谱进滤波器</text>
+<text class="lb" x="378" y="182" fill="#B5502A">• 白噪声 → ARW（°/√h）</text>
+<text class="lb" x="378" y="202" fill="#B5502A">• 零偏稳定性 BI（°/h）</text>
+<text class="lb" x="378" y="222" fill="#B5502A">• 一阶马尔可夫（τ 相关）</text>
+<text class="lb" x="378" y="242" fill="#B5502A">• 量化噪声（LSB 下限）</text>
+<text class="lb" x="378" y="262" fill="#B5502A">→ Allan 方差测出来（05 篇）</text>
+
+<!-- 底部 -->
+<rect x="40" y="300" width="600" height="0"/>
+<text class="ts" x="340" y="316" text-anchor="middle">处理口诀：能标定的就标定（确定性），标不掉的建模进滤波器（随机性）→ ESKF 的 bg/ba 状态实时兜底</text>
+</svg>

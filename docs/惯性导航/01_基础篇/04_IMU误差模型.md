@@ -18,6 +18,11 @@
 > **核心思想**：能标定的就标定（确定性），标不掉的建模进滤波器（随机性）。ESKF 里的 `bg/ba` 状态就是"边飞边估零偏"——把标定没标干净的零偏当状态量实时估计。这就是为什么 15 态 ESKF 要留 6 个维度给零偏。
 
 ---
+---
+
+
+![本篇一图流](../assets/04一图流_IMU误差模型.svg)
+
 
 ## 二、常值零偏（Bias）
 
@@ -150,7 +155,7 @@ if isfield(imuerr, 'gSens')
 end
 ```
 
-即 $\delta\boldsymbol\omega = \text{diag}(\boldsymbol f)\,\boldsymbol s_g$，$\boldsymbol s_g$ 为 g 灵敏度系数。
+即 $\delta\boldsymbol\omega = \boldsymbol S_g\,\boldsymbol f$，其中 $\boldsymbol S_g$ 是 **3×3 g 灵敏度矩阵**（每一行：该陀螺轴受三个方向加速度的影响；对角为主灵敏度、非对角为交叉灵敏度）。上面简写成 $\text{diag}(\boldsymbol f)\,\boldsymbol s_g$ 是为了直观展示"每轴受自己方向加速度调制"。
 
 ### 3. 影响与对策
 
@@ -194,7 +199,7 @@ float invT = 1.0f / 298.15f + (1.0f / c->beta[i]) * logf(r / c->r25[i]);
 
 ---
 
-## 七、随机误差：白噪声 → 随机游走
+## 七、随机误差：白噪声 → 随机游走 {#random-walk}
 
 ### 1. 白噪声与角随机游走（ARW）
 
@@ -221,9 +226,7 @@ drift(:,1:3) = drift(:,1:3) + mvg*ts;
 
 ### 4. 零偏 vs 随机游走：谁主导？
 
-**05 Allan 方差**
-
-短时间（< t₀）随机游走主导（√t 长得快），长时间（> t₀）零偏主导（线性无封顶）。**t₀ 就是 Allan 方差曲线的最低点**——下一篇 05 的重点。
+短时间（< t₀）随机游走主导（√t 长得快），长时间（> t₀）零偏主导（线性无封顶）。**t₀ 就是 Allan 方差曲线的最低点**——见 [05 Allan 方差](05_Allan方差.md)。
 
 ---
 
