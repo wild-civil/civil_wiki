@@ -90,21 +90,17 @@ $\tilde{\boldsymbol\omega} = (1 + s_g)\boldsymbol\omega,\qquad s_g \approx \frac
 
 $\text{标度因数误差} = \frac{\text{正向读数} - \text{反向读数}}{2g} - 1$
 
-<details>
+??? note "📐 折叠：六面法为什么能同时标零偏和标度"
 
-<summary>📐 折叠：六面法为什么能同时标零偏和标度</summary>
+    假设加计实际模型 $\tilde f = (1+s)f + b$（忽略其他误差）：
 
-假设加计实际模型 $\tilde f = (1+s)f + b$（忽略其他误差）：
+    - 正向（+z 朝上）：$\tilde f_+ = (1+s)(+g) + b = g + sg + b$
+    - 反向（−z 朝上）：$\tilde f_- = (1+s)(-g) + b = -g - sg + b$
 
-- 正向（+z 朝上）：$\tilde f_+ = (1+s)(+g) + b = g + sg + b$
-- 反向（−z 朝上）：$\tilde f_- = (1+s)(-g) + b = -g - sg + b$
+    两式相加：$\tilde f_+ + \tilde f_- = 2b \Rightarrow b = \tfrac12(\tilde f_+ + \tilde f_-)$（**零偏**）  
+    两式相减：$\tilde f_+ - \tilde f_- = 2g(1+s) \Rightarrow s = \tfrac{\tilde f_+ - \tilde f_-}{2g} - 1$（**标度**）
 
-两式相加：$\tilde f_+ + \tilde f_- = 2b \Rightarrow b = \tfrac12(\tilde f_+ + \tilde f_-)$（**零偏**）  
-两式相减：$\tilde f_+ - \tilde f_- = 2g(1+s) \Rightarrow s = \tfrac{\tilde f_+ - \tilde f_-}{2g} - 1$（**标度**）
-
-这就是"正反两个方向"的原因——一个方向解不开两个未知数。
-
-</details>
+    这就是"正反两个方向"的原因——一个方向解不开两个未知数。
 
 ---
 
@@ -291,19 +287,15 @@ PSINS 的 `imuadderr` 是"误差→数据"的正向通道，固件的 ESKF 是"�
 6. 角随机游走（ARW）的误差随时间怎么扩散？和零偏有什么本质区别？
 7. `imuadderr` 的 `drift` 里 `ts*eb + sqrt(ts)*web*randn` 分别代表什么？
 
-<details>
+??? note "📐 参考答案"
 
-<summary>📐 参考答案</summary>
-
-1. 确定性（可重现，标定补偿）与随机性（不可预测，统计建模进滤波器）。
-2. $\tilde\omega = \omega + b_g + n_g$，$\tilde f = f + b_a + n_a$。
-3. 一个方向解不开两个未知数；相加得零偏 $b=(f_++f_-)/2$，相减得标度 $s=(f_+-f_-)/(2g)-1$。
-4. 质量不平衡 + 振动整流；振动越大陀螺零偏越漂，`bg` 估计抖动。
-5. 恒温 PID（三路 NTC + 加热 PWM，目标 40~50℃）；查表需要温箱逐点标定、且曲线随老化失效，恒温一次设定终身受益。
-6. 按 $\sqrt{t}$ 扩散（随机性），零偏按 $t$ 线性扩散（确定性）；短时随机游走主导、长时零偏主导，交点是 Allan 最低点。
-7. `ts*eb` = 常值零偏在采样间隔内的增量；`sqrt(ts)*web*randn` = 白噪声经积分后的随机游走增量（方差 ∝ t）。
-
-</details>
+    1. 确定性（可重现，标定补偿）与随机性（不可预测，统计建模进滤波器）。
+    2. $\tilde\omega = \omega + b_g + n_g$，$\tilde f = f + b_a + n_a$。
+    3. 一个方向解不开两个未知数；相加得零偏 $b=(f_++f_-)/2$，相减得标度 $s=(f_+-f_-)/(2g)-1$。
+    4. 质量不平衡 + 振动整流；振动越大陀螺零偏越漂，`bg` 估计抖动。
+    5. 恒温 PID（三路 NTC + 加热 PWM，目标 40~50℃）；查表需要温箱逐点标定、且曲线随老化失效，恒温一次设定终身受益。
+    6. 按 $\sqrt{t}$ 扩散（随机性），零偏按 $t$ 线性扩散（确定性）；短时随机游走主导、长时零偏主导，交点是 Allan 最低点。
+    7. `ts*eb` = 常值零偏在采样间隔内的增量；`sqrt(ts)*web*randn` = 白噪声经积分后的随机游走增量（方差 ∝ t）。
 
 ---
 

@@ -32,24 +32,20 @@
 **输入**：原始 IMU 数据 $y(t)$（N 个采样点，间隔 $t_s$）  
 **输出**：一族点 $(\tau, \sigma_A)$，画 log-log 即 Allan 曲线
 
-<details>
+??? note "📐 折叠：Allan 偏差的数学定义"
 
-<summary>📐 折叠：Allan 偏差的数学定义</summary>
+    对 $\tau = m t_s$（$m$ 是每簇的样本数）：
 
-对 $\tau = m t_s$（$m$ 是每簇的样本数）：
+    $$
+    \sigma_A^2(\tau) = \frac{1}{2 (K-1)} \sum_{k=1}^{K-1} (\bar y_{k+1} - \bar y_k)^2
+    $$
 
-$$
-\sigma_A^2(\tau) = \frac{1}{2 (K-1)} \sum_{k=1}^{K-1} (\bar y_{k+1} - \bar y_k)^2
-$$
+    其中 $K = N/m$ 是簇数，$\bar y_k$ 是第 $k$ 簇的均值。
 
-其中 $K = N/m$ 是簇数，$\bar y_k$ 是第 $k$ 簇的均值。
+    **与"普通方差"的区别**：
 
-**与"普通方差"的区别**：
-
-- 普通方差 $\text{Var}(y) = \frac{1}{N-1}\sum (y_i - \bar y)^2$：每个点平等
-- Allan 方差：是**簇均值**的差分方差——相当于"先低通滤波（簇平均），再看慢变"
-
-</details>
+    - 普通方差 $\text{Var}(y) = \frac{1}{N-1}\sum (y_i - \bar y)^2$：每个点平等
+    - Allan 方差：是**簇均值**的差分方差——相当于"先低通滤波（簇平均），再看慢变"
 
 **两种实现路径**（数学等价，实现不同）：
 
@@ -239,18 +235,14 @@ PSINS `avar` 走"倍增二分"（τ 是 2 的幂），本项目 `allan_dev` 走"
 5. 怎么从 Allan 曲线提取 ARW 和 BI？提取后怎么配 ESKF 的 Q 阵？
 6. 普通消费级 MEMS 静置 30 分钟能从 Allan 曲线稳定测出哪几段？为什么 RR/RRW 通常测不准？
 
-<details>
+??? note "📐 参考答案"
 
-<summary>📐 参考答案</summary>
-
-1. 普通方差是"每个点围绕均值的波动"；Allan 方差是"不同时间尺度 $\tau$ 上簇均值的差分方差"——按 $\tau$ 分簇=低通滤波，能把不同时间尺度的噪声拆开。
-2. ARW：$\sigma = N/\sqrt\tau$（斜率 -1/2）；BI：$\sigma \approx B \cdot 0.664$（斜率 0 平台）；RRW：$\sigma = K\sqrt{\tau/3}$（斜率 +1/2）。
-3. 最低点 = BI 主导区起点 = 1/f 噪声峰值；短 $\tau$ 侧随机游走主导（ARW），长 $\tau$ 侧零偏/斜坡主导，BI 是"转向点"。
-4. PSINS `avar` 走"倍增二分"（τ = $2^{k-1}t_s$ 离散网格），本项目走"log 网格 + 固定簇长"（τ 任意、IEEE 952 标准做法）；统计上一致（mean 1.3% 误差），个别点差异来自簇划分边界。
-5. ARW：短 $\tau$ 段拟合 $N = \sigma\sqrt\tau$；BI：曲线最低点 $B = \sigma_{\min}/0.664$。Q 阵：ARW/VRW 平方得到连续噪声密度 $q$；离散 $Q = q \cdot t_s$。BI 给 bg/ba 状态驱动噪声。
-6. 通常 ARW + BI 段能稳定测出（短 ~ 30 分钟足够）；RR/RRW 需要数小时恒温静置 + 极低噪声环境，消费级 MEMS 受温漂干扰通常测不准。
-
-</details>
+    1. 普通方差是"每个点围绕均值的波动"；Allan 方差是"不同时间尺度 $\tau$ 上簇均值的差分方差"——按 $\tau$ 分簇=低通滤波，能把不同时间尺度的噪声拆开。
+    2. ARW：$\sigma = N/\sqrt\tau$（斜率 -1/2）；BI：$\sigma \approx B \cdot 0.664$（斜率 0 平台）；RRW：$\sigma = K\sqrt{\tau/3}$（斜率 +1/2）。
+    3. 最低点 = BI 主导区起点 = 1/f 噪声峰值；短 $\tau$ 侧随机游走主导（ARW），长 $\tau$ 侧零偏/斜坡主导，BI 是"转向点"。
+    4. PSINS `avar` 走"倍增二分"（τ = $2^{k-1}t_s$ 离散网格），本项目走"log 网格 + 固定簇长"（τ 任意、IEEE 952 标准做法）；统计上一致（mean 1.3% 误差），个别点差异来自簇划分边界。
+    5. ARW：短 $\tau$ 段拟合 $N = \sigma\sqrt\tau$；BI：曲线最低点 $B = \sigma_{\min}/0.664$。Q 阵：ARW/VRW 平方得到连续噪声密度 $q$；离散 $Q = q \cdot t_s$。BI 给 bg/ba 状态驱动噪声。
+    6. 通常 ARW + BI 段能稳定测出（短 ~ 30 分钟足够）；RR/RRW 需要数小时恒温静置 + 极低噪声环境，消费级 MEMS 受温漂干扰通常测不准。
 
 ---
 
