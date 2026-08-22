@@ -6,7 +6,10 @@ window.MathJax = {
     inlineMath: [["\\(", "\\)"]],
     displayMath: [["\\[", "\\]"]],
     processEscapes: true,
-    processEnvironments: true
+    processEnvironments: true,
+    // tex-mml-svg.js 本地版不带 boldsymbol 扩展（会懒加载失败 → 整个 MathJax 崩）
+    // 用宏把 \boldsymbol{xxx} 重定义为 \mathbf{xxx}，零 .md 改动搞定
+    macros: { boldsymbol: ["\\mathbf{#1}", 1] }
   },
   options: {
     ignoreHtmlClass: ".*|",
