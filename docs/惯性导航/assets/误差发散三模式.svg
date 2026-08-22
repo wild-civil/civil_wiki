@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 440" font-family="'Segoe UI','Microsoft YaHei',sans-serif">
+  <defs>
+    <marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2b6cb0"/>
+    </marker>
+  </defs>
+
+  <text x="340" y="28" text-anchor="middle" font-size="17" font-weight="bold" fill="#1a202c">纯惯导误差的三种增长模式：为什么"必发散"</text>
+  <text x="340" y="48" text-anchor="middle" font-size="12" fill="#4a5568">纵轴为位置误差（对数/线性示意）· 模式由误差源类型决定</text>
+
+  <!-- 坐标轴 -->
+  <line x1="70" y1="360" x2="640" y2="360" stroke="#718096" stroke-width="1.5"/>
+  <line x1="70" y1="80" x2="70" y2="360" stroke="#718096" stroke-width="1.5"/>
+  <text x="640" y="380" text-anchor="end" font-size="11" fill="#4a5568">时间</text>
+  <text x="52" y="90" text-anchor="end" font-size="11" fill="#4a5568">误差</text>
+
+  <!-- 曲线 1：舒勒振荡（有界，蓝） -->
+  <path d="M 70,320 C 130,300 170,345 210,325 C 250,300 290,348 330,328 C 370,302 410,350 450,330 C 490,305 530,352 570,332 C 600,315 620,335 640,325" fill="none" stroke="#2b6cb0" stroke-width="2.6"/>
+  <text x="200" y="300" font-size="12" font-weight="bold" fill="#2b6cb0">初始误差/加计零偏</text>
+  <text x="200" y="315" font-size="10" fill="#718096">舒勒振荡 · 有界（T_s ≈ 84.4 min）</text>
+
+  <!-- 曲线 2：陀螺零偏线性发散（红） -->
+  <path d="M 70,335 L 640,150" fill="none" stroke="#c53030" stroke-width="2.8"/>
+  <text x="470" y="140" font-size="12" font-weight="bold" fill="#c53030">陀螺零偏 → 线性发散</text>
+  <text x="470" y="156" font-size="10" fill="#718096">δr ∝ R·δω·t（1 小时漂 1 海里）</text>
+
+  <!-- 曲线 3：高程通道指数发散（绿） -->
+  <path d="M 70,340 Q 200,330 400,240 T 640,60" fill="none" stroke="#2f855a" stroke-width="2.8"/>
+  <text x="400" y="60" font-size="12" font-weight="bold" fill="#2f855a">高程通道 → 指数发散</text>
+  <text x="400" y="76" font-size="10" fill="#718096">δh ∝ cosh(√2ω_s t)，短时 ≈ 加计二次积分</text>
+
+  <!-- 三个模式块 -->
+  <rect x="70" y="395" width="180" height="38" rx="8" fill="#ebf8ff" stroke="#2b6cb0" stroke-width="1"/>
+  <text x="160" y="412" text-anchor="middle" font-size="11" fill="#2b6cb0" font-weight="bold">模式 A · 有界振荡</text>
+  <text x="160" y="427" text-anchor="middle" font-size="9" fill="#4a5568">初始对准/加计零偏 → 可接受</text>
+  <rect x="260" y="395" width="180" height="38" rx="8" fill="#fff5f5" stroke="#c53030" stroke-width="1"/>
+  <text x="350" y="412" text-anchor="middle" font-size="11" fill="#c53030" font-weight="bold">模式 B · 线性发散</text>
+  <text x="350" y="427" text-anchor="middle" font-size="9" fill="#4a5568">陀螺零偏 → 小时级不可用</text>
+  <rect x="450" y="395" width="190" height="38" rx="8" fill="#f0fff4" stroke="#2f855a" stroke-width="1"/>
+  <text x="545" y="412" text-anchor="middle" font-size="11" fill="#2f855a" font-weight="bold">模式 C · 指数发散</text>
+  <text x="545" y="427" text-anchor="middle" font-size="9" fill="#4a5568">高程通道 → 分钟级就爆</text>
+
+  <!-- 结论 -->
+  <rect x="70" y="80" width="250" height="52" rx="8" fill="#fffbeb" stroke="#b7791f" stroke-width="1.2"/>
+  <text x="195" y="100" text-anchor="middle" font-size="11" font-weight="bold" fill="#975a16">结论</text>
+  <text x="195" y="117" text-anchor="middle" font-size="10" fill="#975a16">纯惯导无法长时工作 →</text>
+  <text x="195" y="129" text-anchor="middle" font-size="10" fill="#975a16">必须外部观测（GNSS/气压计）组合修正</text>
+</svg>
