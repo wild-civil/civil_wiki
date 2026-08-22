@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 400" width="680" height="400" role="img">
+<title>零偏漂移 vs 随机游走</title>
+<desc>零偏误差随时间线性增长（b·t），随机游走误差按时间平方根增长（σ·√t）。短时间随机游走主导，长时间零偏主导，交点是 Allan 方差曲线最低点。</desc>
+<style>
+.th{font-size:13.5px;font-weight:700;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+.ts{font-size:10.5px;fill:#5F5E5A;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+.lb{font-size:11px;font-weight:700;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+</style>
+<defs>
+<marker id="at" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+
+<!-- 标题 -->
+<text class="th" x="340" y="26" text-anchor="middle" fill="#0C447C">姿态误差的增长：零偏（线性）vs 随机游走（√t）</text>
+
+<!-- 坐标轴 -->
+<line x1="70" y1="330" x2="640" y2="330" stroke="#5F5E5A" stroke-width="1.6" marker-end="url(#at)"/>
+<line x1="70" y1="330" x2="70" y2="50" stroke="#5F5E5A" stroke-width="1.6" marker-end="url(#at)"/>
+<text class="ts" x="640" y="350" text-anchor="end">时间 t →</text>
+<text class="ts" x="40" y="50" text-anchor="middle">误差 →</text>
+<text class="ts" x="70" y="348" text-anchor="middle">0</text>
+<text class="ts" x="330" y="348" text-anchor="middle">t₀（交点）</text>
+<text class="ts" x="560" y="348" text-anchor="middle">t →</text>
+
+<!-- 随机游走 σ√t 曲线（红色） -->
+<path d="M70 330 C 120 318, 200 296, 300 268 S 480 205, 600 150" fill="none" stroke="#B5502A" stroke-width="3"/>
+<text class="lb" x="470" y="185" fill="#B5502A">随机游走：σ·√t</text>
+<text class="ts" x="470" y="200" fill="#B5502A">（短时主导，斜率越来越平）</text>
+
+<!-- 零偏 b·t 直线（蓝色） -->
+<line x1="70" y1="330" x2="610" y2="150" stroke="#185FA5" stroke-width="3"/>
+<text class="lb" x="470" y="140" fill="#0C447C">零偏：b·t</text>
+<text class="ts" x="470" y="155" fill="#0C447C">（长时主导，一直加速偏离）</text>
+
+<!-- 交点 -->
+<circle cx="330" cy="253" r="5" fill="#3B6D11"/>
+<line x1="330" y1="253" x2="330" y2="330" stroke="#3B6D11" stroke-width="1.2" stroke-dasharray="4 4"/>
+<text class="ts" x="340" y="248" fill="#27500A">t &lt; t₀：随机游走说了算</text>
+<text class="ts" x="340" y="262" fill="#27500A">t &gt; t₀：零偏说了算</text>
+
+<!-- 底部说明 -->
+<rect x="60" y="360" width="560" height="30" rx="6" fill="#EEF3F9" stroke="#185FA5" stroke-width="1"/>
+<text class="ts" x="340" y="379" text-anchor="middle" fill="#0C447C">交点就是 Allan 方差曲线的"最低点"：左边是 ARW 主导区（斜率 −1/2），右边是零偏/速率斜坡主导区——05 篇详述</text>
+</svg>

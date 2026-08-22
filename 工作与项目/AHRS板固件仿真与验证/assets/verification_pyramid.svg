@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 470" width="760" height="470" font-family="'Segoe UI','Helvetica Neue',Arial,'Microsoft YaHei',sans-serif">
+  <rect x="0" y="0" width="760" height="470" fill="#ffffff"/>
+
+  <text x="380" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#202124">STM32 AHRS 固件验证金字塔（L1 → L3）</text>
+  <text x="380" y="54" text-anchor="middle" font-size="12" fill="#5f6368">越往下：成本↑ · 保真度↑ · 越接近真实硬件</text>
+
+  <!-- L3 base (widest) -->
+  <polygon points="120,400 640,400 580,318 180,318" fill="#fef7e0" stroke="#f9ab00" stroke-width="1.6"/>
+  <text x="380" y="340" text-anchor="middle" font-size="16" font-weight="700" fill="#b06000">L3 · 实板 / HIL（真硅）</text>
+  <text x="380" y="362" text-anchor="middle" font-size="11.5" fill="#5f6368">抓：真实 DMA / D-Cache 缓存一致性 · SPI 时序裕量 · 1000Hz 实时性 · 栈深度 · SI/PI/EMC</text>
+  <text x="380" y="382" text-anchor="middle" font-size="11.5" fill="#5f6368">工具：开发板 / 样片 · dSPACE·Speedgoat HIL · 示波器 / 逻辑分析仪</text>
+
+  <!-- L2 middle -->
+  <polygon points="200,310 560,310 510,228 250,228" fill="#e8f0fe" stroke="#1a73e8" stroke-width="1.6"/>
+  <text x="380" y="250" text-anchor="middle" font-size="16" font-weight="700" fill="#174ea6">L2 · 全固件仿真（指令级）</text>
+  <text x="380" y="272" text-anchor="middle" font-size="11.5" fill="#5f6368">抓：HardFault / IRQ 丢失 · 外设初始化顺序 · 总线仲裁 · 中断优先级</text>
+  <text x="380" y="292" text-anchor="middle" font-size="11.5" fill="#5f6368">工具：Renode（建模 7 外设）· Keil Simulator（软件仿真）</text>
+
+  <!-- L1 top -->
+  <polygon points="280,220 480,220 440,142 320,142" fill="#e6f4ea" stroke="#34a853" stroke-width="1.6"/>
+  <text x="380" y="166" text-anchor="middle" font-size="15" font-weight="700" fill="#137333">L1 · PC 算法仿真（零硬件）</text>
+  <text x="380" y="188" text-anchor="middle" font-size="11" fill="#137333">抓：ESKF 收敛 · NaN/Inf · 增益/噪声协方差 · 多源更新顺序</text>
+
+  <!-- vertical arrow on the right -->
+  <path d="M690 150 L690 392" fill="none" stroke="#5f6368" stroke-width="1.6"/>
+  <path d="M690 392 L684 380 M690 392 L696 380" fill="none" stroke="#5f6368" stroke-width="1.6"/>
+  <text x="700" y="280" font-size="11" fill="#5f6368" transform="rotate(90 700 280)" text-anchor="middle">保真度 / 成本 递增</text>
+
+  <!-- bottom conclusion -->
+  <rect x="120" y="418" width="520" height="38" rx="8" fill="#ffffff" stroke="#5f6368" stroke-width="1.2"/>
+  <text x="380" y="438" text-anchor="middle" font-size="12" font-weight="600" fill="#202124">仿真省「算法 / 逻辑」试错钱；硬件时序 / 缓存 / 实时性 必须上真硅收口</text>
+</svg>

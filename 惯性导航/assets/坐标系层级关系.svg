@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 440" width="680" height="440" role="img">
+<title>惯性导航三级坐标系层级</title>
+<desc>地球固连坐标系ECEF → 当地水平坐标系(ENU/NED, 站心) → 载体坐标系(body) 的层级与变换关系。ECEF到当地水平由经纬度决定, 当地水平到载体由姿态(旋转矩阵R)决定。</desc>
+<style>
+.th{font-size:13px;font-weight:700;fill:#7A3E00;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+.ts{font-size:11px;fill:#5F5E5A;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+.tk{font-size:11px;fill:#0C447C;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+</style>
+<defs>
+<marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="#185FA5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+
+<!-- ECEF -->
+<rect x="40" y="150" width="180" height="140" rx="12" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.8"/>
+<text class="th" x="130" y="178" text-anchor="middle" fill="#0C447C">ECEF 地心固连系</text>
+<text class="ts" x="130" y="202" text-anchor="middle">原点 = 地球质心</text>
+<text class="ts" x="130" y="220" text-anchor="middle">X 经本初子午线·赤道</text>
+<text class="ts" x="130" y="238" text-anchor="middle">Z 指向北极</text>
+<text class="ts" x="130" y="262" text-anchor="middle">随地球一起转（非惯性）</text>
+
+<!-- ENU/NED -->
+<rect x="250" y="150" width="200" height="140" rx="12" fill="#EAF3DE" stroke="#3B6D11" stroke-width="0.8"/>
+<text class="th" x="350" y="178" text-anchor="middle" fill="#27500A">当地水平系（站心）</text>
+<text class="ts" x="350" y="202" text-anchor="middle">ENU：东-北-天</text>
+<text class="ts" x="350" y="220" text-anchor="middle">NED：北-东-地（下）</text>
+<text class="ts" x="350" y="244" text-anchor="middle">原点 = 载体所在位置</text>
+<text class="ts" x="350" y="262" text-anchor="middle">只由经纬度 (φ,λ) 决定</text>
+
+<!-- Body -->
+<rect x="490" y="150" width="160" height="140" rx="12" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.8"/>
+<text class="th" x="570" y="178" text-anchor="middle" fill="#633806">Body 载体坐标系</text>
+<text class="ts" x="570" y="202" text-anchor="middle">固连在设备本体</text>
+<text class="ts" x="570" y="220" text-anchor="middle">x-前 y-右 z-下（右手）</text>
+<text class="ts" x="570" y="244" text-anchor="middle">随载体姿态转动</text>
+<text class="ts" x="570" y="262" text-anchor="middle">陀螺/加计直接测它</text>
+
+<!-- arrows -->
+<line x1="220" y1="220" x2="248" y2="220" stroke="#185FA5" stroke-width="1.5" marker-end="url(#ar)"/>
+<text class="tk" x="234" y="210" text-anchor="middle">经纬度</text>
+<line x1="450" y1="220" x2="488" y2="220" stroke="#185FA5" stroke-width="1.5" marker-end="url(#ar)"/>
+<text class="tk" x="469" y="210" text-anchor="middle">旋转矩阵 R</text>
+
+<!-- bottom note -->
+<rect x="40" y="330" width="610" height="80" rx="10" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.6"/>
+<text class="tk" x="60" y="356" font-weight="700">关键认知</text>
+<text class="ts" x="60" y="378">① 坐标系乱 = 公式全错：每次姿态/位置解算先问「在哪个系里算？」</text>
+<text class="ts" x="60" y="398">② ECEF↔当地水平 只看位置(经纬度)；当地水平↔Body 只看姿态(四元数/旋转矩阵)</text>
+</svg>

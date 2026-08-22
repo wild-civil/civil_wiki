@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 300" font-family="'Segoe UI', 'Microsoft YaHei', Arial, sans-serif">
+  <!-- 背景 -->
+  <rect width="680" height="300" fill="#f8fafc"/>
+  <rect x="0" y="0" width="680" height="300" fill="none" stroke="#cbd5e1"/>
+
+  <!-- 标题 -->
+  <text x="340" y="26" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e293b">test_SINS_trj：一条 966 s 的"航段语言"程序</text>
+
+  <!-- 时间轴刻度 -->
+  <line x1="60" y1="132" x2="620" y2="132" stroke="#475569" stroke-width="1.2"/>
+  <g font-size="10" fill="#64748b" text-anchor="middle">
+    <text x="60" y="150">0</text>
+    <line x1="60" y1="132" x2="60" y2="137" stroke="#475569"/>
+    <text x="172" y="150">200</text>
+    <line x1="172" y1="132" x2="172" y2="137" stroke="#475569"/>
+    <text x="284" y="150">400</text>
+    <line x1="284" y1="132" x2="284" y2="137" stroke="#475569"/>
+    <text x="396" y="150">600</text>
+    <line x1="396" y1="132" x2="396" y2="137" stroke="#475569"/>
+    <text x="508" y="150">800</text>
+    <line x1="508" y1="132" x2="508" y2="137" stroke="#475569"/>
+    <text x="620" y="150">966 s</text>
+    <line x1="620" y1="132" x2="620" y2="137" stroke="#475569"/>
+  </g>
+
+  <!-- 13 个逻辑航段色块（等宽示意，非等比例） -->
+  <!-- 每块宽 43px，起始 x=60+43*i -->
+  <g font-size="9" text-anchor="middle">
+    <!-- 1 uniform 0s -->
+    <rect x="60" y="76" width="43" height="34" fill="#cbd5e1" stroke="#64748b"/><text x="81.5" y="97" fill="#1e293b">匀速</text>
+    <!-- 2 accelerate 10s -->
+    <rect x="103" y="76" width="43" height="34" fill="#86efac" stroke="#16a34a"/><text x="124.5" y="97" fill="#14532d">加速</text>
+    <!-- 3 uniform -->
+    <rect x="146" y="76" width="43" height="34" fill="#cbd5e1" stroke="#64748b"/><text x="167.5" y="97" fill="#1e293b">匀速</text>
+    <!-- 4 coturnleft -->
+    <rect x="189" y="76" width="43" height="34" fill="#fcd34d" stroke="#d97706"/><text x="210.5" y="97" fill="#78350f">左转</text>
+    <!-- 5 uniform -->
+    <rect x="232" y="76" width="43" height="34" fill="#cbd5e1" stroke="#64748b"/><text x="253.5" y="97" fill="#1e293b">匀速</text>
+    <!-- 6 coturnright -->
+    <rect x="275" y="76" width="43" height="34" fill="#fcd34d" stroke="#d97706"/><text x="296.5" y="97" fill="#78350f">右转</text>
+    <!-- 7 uniform -->
+    <rect x="318" y="76" width="43" height="34" fill="#cbd5e1" stroke="#64748b"/><text x="339.5" y="97" fill="#1e293b">匀速</text>
+    <!-- 8 climb -->
+    <rect x="361" y="76" width="43" height="34" fill="#a5f3fc" stroke="#0891b2"/><text x="382.5" y="97" fill="#164e63">爬升</text>
+    <!-- 9 uniform -->
+    <rect x="404" y="76" width="43" height="34" fill="#cbd5e1" stroke="#64748b"/><text x="425.5" y="97" fill="#1e293b">匀速</text>
+    <!-- 10 descent -->
+    <rect x="447" y="76" width="43" height="34" fill="#a5f3fc" stroke="#0891b2"/><text x="468.5" y="97" fill="#164e63">下降</text>
+    <!-- 11 uniform -->
+    <rect x="490" y="76" width="43" height="34" fill="#cbd5e1" stroke="#64748b"/><text x="511.5" y="97" fill="#1e293b">匀速</text>
+    <!-- 12 deaccelerate -->
+    <rect x="533" y="76" width="43" height="34" fill="#fca5a5" stroke="#dc2626"/><text x="554.5" y="97" fill="#7f1d1d">减速</text>
+    <!-- 13 uniform -->
+    <rect x="576" y="76" width="43" height="34" fill="#cbd5e1" stroke="#64748b"/><text x="597.5" y="97" fill="#1e293b">匀速</text>
+  </g>
+
+  <!-- 关键节点标注 -->
+  <g font-size="10" fill="#334155" text-anchor="middle">
+    <text x="81.5" y="66">起步 0→10 m/s</text>
+    <text x="210.5" y="66">左转 90°</text>
+    <text x="296.5" y="66">右转 450°（1.25 圈）</text>
+    <text x="382.5" y="66">爬升 +205.6 m</text>
+    <text x="468.5" y="66">下降 −205.6 m</text>
+    <text x="554.5" y="66">10→0 m/s</text>
+  </g>
+  <line x1="60" y1="70" x2="620" y2="70" stroke="#94a3b8" stroke-width="1"/>
+  <line x1="60" y1="110" x2="620" y2="110" stroke="#94a3b8" stroke-width="1"/>
+
+  <!-- 图例 -->
+  <rect x="60" y="162" width="560" height="34" rx="6" fill="#ffffff" stroke="#cbd5e1"/>
+  <g font-size="9.5" fill="#1e293b">
+    <rect x="72" y="174" width="12" height="12" fill="#cbd5e1" stroke="#64748b"/><text x="90" y="184">匀速</text>
+    <rect x="140" y="174" width="12" height="12" fill="#86efac" stroke="#16a34a"/><text x="158" y="184">加速/减速</text>
+    <rect x="228" y="174" width="12" height="12" fill="#fcd34d" stroke="#d97706"/><text x="246" y="184">协调转弯（滚→转→滚回）</text>
+    <rect x="382" y="174" width="12" height="12" fill="#a5f3fc" stroke="#0891b2"/><text x="400" y="184">爬升/下降（抬头→平飞→低头）</text>
+  </g>
+
+  <!-- 底部说明 -->
+  <text x="340" y="218" text-anchor="middle" font-size="11" fill="#475569">每个色块 = trjsegment 的一次调用；复合段（协调转弯/爬升）内部再展开成 3 个子段 → 共 21 行 wat 表</text>
+  <text x="340" y="238" text-anchor="middle" font-size="11" fill="#475569">wat 行 = [时长, 初速, ω(°/s)×3, a(m/s²)×3]；协调转弯的向心加速度 cf = ω·v，滚转角 = atan(cf/g)</text>
+  <text x="340" y="262" text-anchor="middle" font-size="10" fill="#94a3b8">trjsimu 按 wat 表以 ts=0.01 s（100 Hz）数值积分 → 真值 avp + IMU 读数（96600 步），存为 trj10ms.mat 供 test_SINS / test_DR 复用</text>
+  <text x="340" y="284" text-anchor="middle" font-size="9.5" fill="#cbd5e1">拆解 PSINS ① · 轨迹生成 · assets/航段时间轴.svg（示意，色块非等比例）</text>
+</svg>

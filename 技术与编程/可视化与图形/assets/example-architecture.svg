@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 340"
+     font-family="-apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <marker id="arrow2" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1a73e8"/>
+    </marker>
+  </defs>
+
+  <text x="20" y="30" font-size="16" font-weight="700" fill="#202124">典型数据采集链路（架构节点图示例）</text>
+
+  <!-- 节点：统一尺寸 150x64，圆角，分组 -->
+  <g font-size="13" text-anchor="middle">
+    <!-- 传感器 -->
+    <rect x="20"  y="120" width="150" height="64" rx="12" fill="#e8f0fe" stroke="#1a73e8" stroke-width="2"/>
+    <text x="95"  y="148" font-weight="700" fill="#1a73e8">传感器</text>
+    <text x="95"  y="166" font-size="10" fill="#5f6368">IMU / 气压 / 磁力</text>
+
+    <!-- 主控 MCU -->
+    <rect x="265" y="120" width="150" height="64" rx="12" fill="#e6f4ea" stroke="#188038" stroke-width="2"/>
+    <text x="340" y="148" font-weight="700" fill="#188038">主控 MCU</text>
+    <text x="340" y="166" font-size="10" fill="#5f6368">采集 + 解算</text>
+
+    <!-- 通信 -->
+    <rect x="510" y="120" width="150" height="64" rx="12" fill="#fef7e0" stroke="#b06000" stroke-width="2"/>
+    <text x="585" y="148" font-weight="700" fill="#b06000">通信</text>
+    <text x="585" y="166" font-size="10" fill="#5f6368">BLE / 串口</text>
+  </g>
+
+  <!-- 连线（数据流向） -->
+  <g stroke="#1a73e8" stroke-width="2" marker-end="url(#arrow2)">
+    <line x1="170" y1="152" x2="263" y2="152"/>
+    <line x1="415" y1="152" x2="508" y2="152"/>
+  </g>
+
+  <!-- 侧栏说明 -->
+  <rect x="20" y="230" width="640" height="80" rx="8" fill="#f8f9fa" stroke="#dadce0" stroke-width="1"/>
+  <text x="36" y="256" font-size="12" font-weight="700" fill="#202124">画法要点</text>
+  <text x="36" y="278" font-size="11" fill="#3c4043">• 节点等尺寸、等间距，视觉才有秩序；连线只画数据/控制流向，避免交叉。</text>
+  <text x="36" y="298" font-size="11" fill="#3c4043">• 同一层节点用同色系，层级用颜色区分；箭头方向即流向，用 marker 统一端点。</text>
+</svg>

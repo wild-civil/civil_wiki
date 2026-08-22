@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 500" width="760" height="500" font-family="'Segoe UI','Helvetica Neue',Arial,'Microsoft YaHei',sans-serif">
+  <rect x="0" y="0" width="760" height="500" fill="#ffffff"/>
+
+  <text x="380" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#202124">本项目 PC 端 SIL：真实固件零修改跑通</text>
+  <text x="380" y="54" text-anchor="middle" font-size="12" fill="#5f6368">把 Core/Src 真实 C 源码原样编译到 PC，只替换总线/计时桩</text>
+
+  <!-- step 1 -->
+  <rect x="60" y="80" width="640" height="62" rx="10" fill="#e8f0fe" stroke="#1a73e8" stroke-width="1.6"/>
+  <text x="80" y="105" font-size="13.5" font-weight="700" fill="#174ea6">① 真实固件 C 源码（Core/Src）</text>
+  <text x="80" y="127" font-size="11.5" fill="#5f6368">ins_eskf_15d · ins_sensor_manager · 7 路驱动(icm/bmi/rm/ist/bmp/ms5611/um982) · ins_output · crc16_ccitt</text>
+
+  <!-- arrow -->
+  <path d="M380 142 L380 162" fill="none" stroke="#5f6368" stroke-width="1.8"/>
+  <path d="M380 162 L374 150 M380 162 L386 150" fill="none" stroke="#5f6368" stroke-width="1.8"/>
+
+  <!-- step 2 -->
+  <rect x="60" y="162" width="640" height="56" rx="10" fill="#ffffff" stroke="#5f6368" stroke-width="1.4"/>
+  <text x="80" y="186" font-size="13.5" font-weight="700" fill="#202124">② gcc 编译到 PC（<text x="80" y="186" font-size="13.5" font-weight="700" fill="#c5221f">-DSIM_PC</text>）</text>
+  <text x="80" y="208" font-size="11.5" fill="#5f6368">仅 3 处头需桩化：main.h · stm32h7xx_hal.h · board_spi3_slave.h（-I 顺序覆盖真头）</text>
+
+  <path d="M380 218 L380 238" fill="none" stroke="#5f6368" stroke-width="1.8"/>
+  <path d="M380 238 L374 226 M380 238 L386 226" fill="none" stroke="#5f6368" stroke-width="1.8"/>
+
+  <!-- step 3 stub layer -->
+  <rect x="60" y="238" width="640" height="56" rx="10" fill="#fef7e0" stroke="#f9ab00" stroke-width="1.6"/>
+  <text x="80" y="262" font-size="13.5" font-weight="700" fill="#b06000">③ 桩层替换（port_pc.c + stubs_hal.c）</text>
+  <text x="80" y="284" font-size="11.5" fill="#5f6368">ins_time_us / ins_delay_* / 总线读写函数指针 → 合成数据 + 软件计时；HAL_GPIO/UART/FDCAN 变 no-op</text>
+
+  <path d="M380 294 L380 314" fill="none" stroke="#5f6368" stroke-width="1.8"/>
+  <path d="M380 314 L374 302 M380 314 L386 302" fill="none" stroke="#5f6368" stroke-width="1.8"/>
+
+  <!-- step 4 ESKF -->
+  <rect x="60" y="314" width="640" height="54" rx="10" fill="#e6f4ea" stroke="#34a853" stroke-width="1.6"/>
+  <text x="80" y="337" font-size="13.5" font-weight="700" fill="#137333">④ ESKF 15 维融合（1000 Hz 主循环镜像 main.c）</text>
+  <text x="80" y="358" font-size="11.5" fill="#5f6368">poll → snapshot → predict + update_accel(每帧) → mag/ GNSS / baro(分频) → ins_output_publish</text>
+
+  <path d="M380 368 L380 388" fill="none" stroke="#5f6368" stroke-width="1.8"/>
+  <path d="M380 388 L374 376 M380 388 L386 376" fill="none" stroke="#5f6368" stroke-width="1.8"/>
+
+  <!-- step 5 AA55 -->
+  <rect x="60" y="388" width="640" height="52" rx="10" fill="#fce8e6" stroke="#ea4335" stroke-width="1.6"/>
+  <text x="80" y="411" font-size="13.5" font-weight="700" fill="#c5221f">⑤ AA55 帧 + CRC16-CCITT（HAL_UART_Transmit 桩内逐帧校验）</text>
+  <text x="80" y="431" font-size="11.5" fill="#5f6368">校验断言：8 路 init OK · 0 NaN/Inf · 姿态跟踪真值 · 3680 帧 CRC 全对 → OVERALL PASS</text>
+
+  <text x="380" y="470" text-anchor="middle" font-size="11" fill="#80868b">证据：4 仿真秒 @1kHz，est yaw 0→34.30° vs 真值 34.38°，pitch/roll≈0，qnorm=1.0000</text>
+</svg>

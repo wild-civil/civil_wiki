@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 440" width="720" height="440" font-family="'Segoe UI','Helvetica Neue',Arial,'Microsoft YaHei',sans-serif">
+  <rect x="0" y="0" width="720" height="440" fill="#ffffff"/>
+  <text x="360" y="30" text-anchor="middle" font-size="18" font-weight="700" fill="#202124">验证矩阵：数据真实度 × 执行载体（两个维度要拆开看）</text>
+
+  <text x="195" y="56" text-anchor="middle" font-size="13" fill="#5f6368">PC 上跑（gcc，无硬件）</text>
+  <text x="535" y="56" text-anchor="middle" font-size="13" fill="#5f6368">真板 H743 上跑（Keil AC5）</text>
+
+  <text x="30" y="140" text-anchor="middle" font-size="13" fill="#5f6368">合成数据</text>
+  <rect x="60" y="68" width="270" height="118" rx="10" fill="#e6f4ea" stroke="#34a853" stroke-width="1.4"/>
+  <text x="80" y="92" font-size="15" font-weight="700" fill="#137333">SIL 软件在环（已做）</text>
+  <text x="80" y="116" font-size="12" fill="#188038">合成轨迹 + gcc 编译固件</text>
+  <text x="80" y="136" font-size="12" fill="#188038">抓：高机动长时发散、门限</text>
+  <text x="80" y="156" font-size="12" fill="#188038">（65.4s 已验 1.82°）</text>
+
+  <rect x="390" y="68" width="270" height="118" rx="10" fill="#fef7e0" stroke="#f9ab00" stroke-width="1.4"/>
+  <text x="410" y="92" font-size="15" font-weight="700" fill="#b06000">回放评估 L4（先补）</text>
+  <text x="410" y="116" font-size="12" fill="#b06000">真实数据 + PC 回放，不用板子</text>
+  <text x="410" y="136" font-size="12" fill="#b06000">抓：真实噪声 / 磁扰 / 丢星</text>
+  <text x="410" y="156" font-size="12" fill="#b06000">数据可借 IMU / MTi 模块先录</text>
+
+  <text x="30" y="300" text-anchor="middle" font-size="13" fill="#5f6368">真实数据</text>
+  <rect x="60" y="228" width="270" height="118" rx="10" fill="#e8f0fe" stroke="#1a73e8" stroke-width="1.4"/>
+  <text x="80" y="252" font-size="15" font-weight="700" fill="#174ea6">PIL 处理器在环（样片后）</text>
+  <text x="80" y="276" font-size="12" fill="#1a73e8">真板跑 + 合成/仿真数据激励</text>
+  <text x="80" y="296" font-size="12" fill="#1a73e8">抓：Keil vs gcc 差异、FPU、</text>
+  <text x="80" y="316" font-size="12" fill="#1a73e8">栈深度（1000Hz 浮点）</text>
+
+  <rect x="390" y="228" width="270" height="118" rx="10" fill="#e8f0fe" stroke="#1a73e8" stroke-width="1.4"/>
+  <text x="410" y="252" font-size="15" font-weight="700" fill="#174ea6">HIL 半实物（最后）</text>
+  <text x="410" y="276" font-size="12" fill="#1a73e8">真板 + 真实数据/转台/温箱</text>
+  <text x="410" y="296" font-size="12" fill="#1a73e8">抓：驱动时序、安装误差、</text>
+  <text x="410" y="316" font-size="12" fill="#1a73e8">整机最终精度（MTi-3 真值）</text>
+
+  <path d="M330 128 L383 128" fill="none" stroke="#f9ab00" stroke-width="2"/>
+  <text x="356" y="120" text-anchor="middle" font-size="12" fill="#b06000">加真实数据</text>
+  <path d="M195 186 L195 221" fill="none" stroke="#1a73e8" stroke-width="2"/>
+  <text x="207" y="208" font-size="12" fill="#1a73e8">上真板</text>
+  <path d="M525 186 L525 221" fill="none" stroke="#1a73e8" stroke-width="2"/>
+  <text x="537" y="208" font-size="12" fill="#1a73e8">上真板</text>
+
+  <text x="60" y="388" font-size="13" fill="#5f6368">关键洞察：真实数据回放（右上象限）在 PC 上就能做，不依赖板子——</text>
+  <text x="60" y="410" font-size="13" fill="#5f6368">样片回来前即可用真实噪声 / 磁扰 / 丢星数据先行评估算法鲁棒性。</text>
+</svg>

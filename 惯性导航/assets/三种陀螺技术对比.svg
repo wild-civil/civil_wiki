@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 440" width="680" height="440" role="img">
+<title>三种陀螺技术对比：MEMS / FOG / RLG</title>
+<desc>MEMS 振动陀螺用科里奥利效应；光纤陀螺(FOG)与环形激光陀螺(RLG)用萨格纳克效应。三者精度、成本、体积量级差异巨大。</desc>
+<style>
+.th{font-size:13.5px;font-weight:700;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+.ts{font-size:10.5px;fill:#5F5E5A;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+.lb{font-size:10.5px;font-weight:700;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+</style>
+<defs>
+<marker id="as" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+
+<!-- 标题 -->
+<text class="th" x="340" y="26" text-anchor="middle" fill="#0C447C">三种陀螺技术对比</text>
+
+<!-- 列1 MEMS -->
+<rect x="30" y="44" width="195" height="330" rx="10" fill="#F6F8FB" stroke="#185FA5" stroke-width="1.5"/>
+<text class="th" x="127" y="70" text-anchor="middle" fill="#185FA5">MEMS 振动陀螺</text>
+<!-- 图：小方块+振动 -->
+<rect x="90" y="92" width="34" height="34" rx="5" fill="#FDE9D6" stroke="#854F0B" stroke-width="1.3"/>
+<line x1="72" y1="109" x2="52" y2="109" stroke="#3B6D11" stroke-width="1.8" marker-end="url(#as)"/>
+<line x1="142" y1="109" x2="162" y2="109" stroke="#3B6D11" stroke-width="1.8" marker-end="url(#as)"/>
+<text class="ts" x="127" y="146" text-anchor="middle">质量块振动 + 科里奥利力</text>
+<rect x="52" y="162" width="150" height="196" rx="6" fill="#FFFFFF" stroke="#C9D4E2" stroke-width="1"/>
+<text class="lb" x="62" y="184" fill="#333">精度</text>
+<text class="ts" x="127" y="184" text-anchor="middle" fill="#B5502A">1 ~ 10 °/h（消费级）</text>
+<text class="ts" x="127" y="200" text-anchor="middle" fill="#B5502A">0.1 ~ 1 °/h（工业级）</text>
+<text class="lb" x="62" y="226" fill="#333">成本</text>
+<text class="ts" x="127" y="226" text-anchor="middle">几元 ~ 几十元</text>
+<text class="lb" x="62" y="252" fill="#333">体积 / 功耗</text>
+<text class="ts" x="127" y="252" text-anchor="middle">芯片级，mW 级</text>
+<text class="lb" x="62" y="278" fill="#333">典型应用</text>
+<text class="ts" x="127" y="278" text-anchor="middle">手机 / 飞控 / 汽车 / 本板</text>
+<text class="lb" x="62" y="304" fill="#333">环境耐受</text>
+<text class="ts" x="127" y="304" text-anchor="middle">抗冲击一般，需温度补偿</text>
+<text class="lb" x="62" y="330" fill="#333">随机游走</text>
+<text class="ts" x="127" y="330" text-anchor="middle">0.1 ~ 1 °/√h</text>
+
+<!-- 列2 FOG -->
+<rect x="242" y="44" width="195" height="330" rx="10" fill="#F3F8F1" stroke="#3B6D11" stroke-width="1.5"/>
+<text class="th" x="340" y="70" text-anchor="middle" fill="#3B6D11">FOG 光纤陀螺</text>
+<circle cx="340" cy="112" r="36" fill="none" stroke="#3B6D11" stroke-width="2.2"/>
+<circle cx="340" cy="112" r="26" fill="none" stroke="#3B6D11" stroke-width="1.2"/>
+<circle cx="340" cy="112" r="16" fill="none" stroke="#3B6D11" stroke-width="0.8"/>
+<text class="ts" x="340" y="168" text-anchor="middle">光纤环 + 萨格纳克效应</text>
+<rect x="264" y="182" width="150" height="176" rx="6" fill="#FFFFFF" stroke="#C9D4E2" stroke-width="1"/>
+<text class="lb" x="274" y="204" fill="#333">精度</text>
+<text class="ts" x="340" y="204" text-anchor="middle" fill="#B5502A">0.01 ~ 0.1 °/h</text>
+<text class="lb" x="274" y="232" fill="#333">成本</text>
+<text class="ts" x="340" y="232" text-anchor="middle">千元 ~ 数万元</text>
+<text class="lb" x="274" y="258" fill="#333">体积 / 功耗</text>
+<text class="ts" x="340" y="258" text-anchor="middle">器件级，几 W 级</text>
+<text class="lb" x="274" y="284" fill="#333">典型应用</text>
+<text class="ts" x="340" y="284" text-anchor="middle">航空 / 航海 / 导弹</text>
+<text class="lb" x="274" y="310" fill="#333">环境耐受</text>
+<text class="ts" x="340" y="310" text-anchor="middle">无活动件，可靠</text>
+<text class="lb" x="274" y="336" fill="#333">随机游走</text>
+<text class="ts" x="340" y="336" text-anchor="middle">0.001 ~ 0.01 °/√h</text>
+
+<!-- 列3 RLG -->
+<rect x="454" y="44" width="195" height="330" rx="10" fill="#FBF3F0" stroke="#B5502A" stroke-width="1.5"/>
+<text class="th" x="551" y="70" text-anchor="middle" fill="#B5502A">RLG 环形激光陀螺</text>
+<path d="M551 78 L577 112 L551 146 L525 112 Z" fill="none" stroke="#B5502A" stroke-width="2.2"/>
+<line x1="551" y1="78" x2="551" y2="146" stroke="#B5502A" stroke-width="1" stroke-dasharray="3 3"/>
+<text class="ts" x="551" y="168" text-anchor="middle">环形激光腔 + 萨格纳克效应</text>
+<rect x="476" y="182" width="150" height="176" rx="6" fill="#FFFFFF" stroke="#C9D4E2" stroke-width="1"/>
+<text class="lb" x="486" y="204" fill="#333">精度</text>
+<text class="ts" x="551" y="204" text-anchor="middle" fill="#B5502A">0.001 ~ 0.01 °/h</text>
+<text class="lb" x="486" y="232" fill="#333">成本</text>
+<text class="ts" x="551" y="232" text-anchor="middle">数万 ~ 数十万元</text>
+<text class="lb" x="486" y="258" fill="#333">体积 / 功耗</text>
+<text class="ts" x="551" y="258" text-anchor="middle">较大，几十 W 级</text>
+<text class="lb" x="486" y="284" fill="#333">典型应用</text>
+<text class="ts" x="551" y="284" text-anchor="middle">战略导弹 / 舰船 / 高精度平台</text>
+<text class="lb" x="486" y="310" fill="#333">环境耐受</text>
+<text class="ts" x="551" y="310" text-anchor="middle">无活动件，寿命长</text>
+<text class="lb" x="486" y="336" fill="#333">随机游走</text>
+<text class="ts" x="551" y="336" text-anchor="middle">0.0001 ~ 0.001 °/√h</text>
+
+<!-- 底部横条 -->
+<rect x="30" y="386" width="620" height="40" rx="8" fill="#EEF3F9" stroke="#185FA5" stroke-width="1.1"/>
+<text class="ts" x="340" y="404" text-anchor="middle" fill="#0C447C">零偏稳定性每提升一个数量级，成本大约提升一个数量级 → 选型本质是"精度 vs 成本"的权衡</text>
+<text class="ts" x="340" y="419" text-anchor="middle" fill="#5F5E5A">FOG / RLG 都基于萨格纳克效应（光程差 ∝ 角速度）；MEMS 基于科里奥利效应。物理原理不同 → 精度天花板不同。</text>
+</svg>

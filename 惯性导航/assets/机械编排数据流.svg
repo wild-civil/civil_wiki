@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 430" width="680" height="430" role="img">
+<title>机械编排数据流：IMU → 姿态/速度/位置</title>
+<desc>机械编排（mechanization）把 IMU 的比力和角速度递推出姿态、速度、位置：角速度积分得姿态，比力转导航系加有害加速度得速度，速度积分得位置；姿态矩阵又把比力转到导航系，形成闭环。</desc>
+<style>
+.th{font-size:13.5px;font-weight:700;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+.ts{font-size:10.5px;fill:#5F5E5A;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+.lb{font-size:11px;font-weight:700;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+</style>
+<defs>
+<marker id="af" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+
+<!-- 标题 -->
+<text class="th" x="340" y="24" text-anchor="middle" fill="#0C447C">机械编排（Mechanization）：从 IMU 递推出 姿态 → 速度 → 位置</text>
+
+<!-- IMU 输入 -->
+<rect x="40" y="66" width="170" height="62" rx="10" fill="#F6F8FB" stroke="#185FA5" stroke-width="1.6"/>
+<text class="th" x="125" y="92" text-anchor="middle" fill="#185FA5">IMU 输出（每帧）</text>
+<text class="ts" x="125" y="110" text-anchor="middle">陀螺 ω_b(t)：角速度</text>
+<text class="ts" x="125" y="124" text-anchor="middle">加计 f_b(t)：比力</text>
+
+<!-- ω 上行 → 姿态更新 -->
+<line x1="125" y1="66" x2="125" y2="44" stroke="#5F5E5A" stroke-width="1.4" marker-end="url(#af)"/>
+<line x1="125" y1="44" x2="298" y2="44" stroke="#5F5E5A" stroke-width="1.4" marker-end="url(#af)"/>
+<text class="ts" x="210" y="38" text-anchor="middle" font-size="9">ω_b 积分 → 姿态</text>
+
+<!-- 姿态更新块 -->
+<rect x="303" y="22" width="150" height="56" rx="10" fill="#FBF3F0" stroke="#B5502A" stroke-width="1.6"/>
+<text class="th" x="378" y="46" text-anchor="middle" fill="#B5502A">姿态更新</text>
+<text class="ts" x="378" y="64" text-anchor="middle" font-size="9">q ← q ⊗ rv2q(ω·Δt)</text>
+<text class="ts" x="378" y="78" text-anchor="middle" font-size="9">输出姿态 q / C_b^n</text>
+
+<!-- 姿态矩阵下行 -->
+<line x1="378" y1="78" x2="378" y2="136" stroke="#5F5E5A" stroke-width="1.4" marker-end="url(#af)"/>
+<text class="ts" x="388" y="112" font-size="9">C_b^n（姿态矩阵）</text>
+
+<!-- 比力输入 → 变换块 -->
+<line x1="150" y1="128" x2="298" y2="168" stroke="#5F5E5A" stroke-width="1.4" marker-end="url(#af)"/>
+<text class="ts" x="212" y="152" font-size="9">f_b 比力</text>
+
+<!-- 比力转导航系块 -->
+<rect x="303" y="146" width="150" height="56" rx="10" fill="#F3F8F1" stroke="#3B6D11" stroke-width="1.6"/>
+<text class="th" x="378" y="168" text-anchor="middle" fill="#27500A">比力坐标变换</text>
+<text class="ts" x="378" y="186" text-anchor="middle" font-size="9">f_n = C_b^n · f_b</text>
+<text class="ts" x="378" y="200" text-anchor="middle" font-size="9">body → NED</text>
+
+<line x1="378" y1="202" x2="378" y2="234" stroke="#5F5E5A" stroke-width="1.4" marker-end="url(#af)"/>
+
+<!-- 速度微分方程块 -->
+<rect x="303" y="238" width="150" height="64" rx="10" fill="#FBF3F0" stroke="#B5502A" stroke-width="1.6"/>
+<text class="th" x="378" y="260" text-anchor="middle" fill="#7E3318">速度微分方程</text>
+<text class="ts" x="378" y="278" text-anchor="middle" font-size="9">v̇ = f_n − (2ω_ie+ω_en)×v + g</text>
+<text class="ts" x="378" y="294" text-anchor="middle" font-size="9">补偿"有害加速度"</text>
+
+<line x1="378" y1="302" x2="378" y2="334" stroke="#5F5E5A" stroke-width="1.4" marker-end="url(#af)"/>
+
+<!-- 速度块 -->
+<rect x="303" y="338" width="150" height="56" rx="10" fill="#F3F8F1" stroke="#3B6D11" stroke-width="1.6"/>
+<text class="th" x="378" y="360" text-anchor="middle" fill="#27500A">速度积分</text>
+<text class="ts" x="378" y="378" text-anchor="middle" font-size="9">v ← v + v̇·Δt</text>
+<text class="ts" x="378" y="392" text-anchor="middle" font-size="9">输出 v_n</text>
+
+<!-- 右侧输出 -->
+<line x1="453" y1="366" x2="556" y2="366" stroke="#5F5E5A" stroke-width="1.4" marker-end="url(#af)"/>
+<rect x="560" y="330" width="104" height="72" rx="10" fill="#FDF3E7" stroke="#854F0B" stroke-width="1.6"/>
+<text class="th" x="612" y="352" text-anchor="middle" fill="#854F0B">输出</text>
+<text class="ts" x="612" y="370" text-anchor="middle" font-size="9">姿态 q</text>
+<text class="ts" x="612" y="382" text-anchor="middle" font-size="9">速度 v_n</text>
+<text class="ts" x="612" y="394" text-anchor="middle" font-size="9">位置 pos</text>
+
+<!-- 位置积分（左下） -->
+<rect x="40" y="330" width="200" height="64" rx="10" fill="#FDF3E7" stroke="#854F0B" stroke-width="1.6"/>
+<text class="th" x="140" y="352" text-anchor="middle" fill="#854F0B">位置积分</text>
+<text class="ts" x="140" y="370" text-anchor="middle" font-size="9">pos ← pos + M_pv · v · Δt</text>
+<text class="ts" x="140" y="386" text-anchor="middle" font-size="9">M_pv：经纬度⇄速度换算</text>
+
+<!-- 位置输入箭头 -->
+<line x1="303" y1="366" x2="240" y2="366" stroke="#5F5E5A" stroke-width="1.4" marker-end="url(#af)"/>
+
+<!-- 底部说明 -->
+<text class="ts" x="340" y="422" text-anchor="middle">核心闭环：姿态矩阵 C_b^n 把比力转到导航系 → 速度微分方程 → 速度/位置；姿态靠陀螺积分维持——任一环误差都随积分累积</text>
+</svg>

@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 430" font-family="'Segoe UI','Microsoft YaHei',sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2b6cb0"/>
+    </marker>
+    <marker id="arrR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c53030"/>
+    </marker>
+  </defs>
+
+  <!-- 标题 -->
+  <text x="340" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1a202c">舒勒振荡闭环：失准角 → 速度 → 位置 → 失准角的负反馈环</text>
+  <text x="340" y="50" text-anchor="middle" font-size="12" fill="#4a5568">静基座水平北向通道（牛小骥讲义式 62）· ω<sub>s</sub> = √(g/R)，T<sub>s</sub> ≈ 84.4 min</text>
+
+  <!-- 四个状态块 -->
+  <!-- φ_E 姿态失准角 -->
+  <rect x="40" y="110" width="150" height="70" rx="10" fill="#ebf8ff" stroke="#2b6cb0" stroke-width="2"/>
+  <text x="115" y="138" text-anchor="middle" font-size="13" font-weight="bold" fill="#2b6cb0">姿态失准角 φ_E</text>
+  <text x="115" y="157" text-anchor="middle" font-size="11" fill="#4a5568">俯仰/东向分量</text>
+  <text x="115" y="173" text-anchor="middle" font-size="10" fill="#718096">单位 rad / arcsec</text>
+
+  <!-- δv_N 速度误差 -->
+  <rect x="265" y="110" width="150" height="70" rx="10" fill="#f0fff4" stroke="#2f855a" stroke-width="2"/>
+  <text x="340" y="138" text-anchor="middle" font-size="13" font-weight="bold" fill="#2f855a">速度误差 δv_N</text>
+  <text x="340" y="157" text-anchor="middle" font-size="11" fill="#4a5568">北向分量</text>
+  <text x="340" y="173" text-anchor="middle" font-size="10" fill="#718096">单位 m/s</text>
+
+  <!-- δr_N 位置误差 -->
+  <rect x="490" y="110" width="150" height="70" rx="10" fill="#fffaf0" stroke="#c05621" stroke-width="2"/>
+  <text x="565" y="138" text-anchor="middle" font-size="13" font-weight="bold" fill="#c05621">位置误差 δr_N</text>
+  <text x="565" y="157" text-anchor="middle" font-size="11" fill="#4a5568">北向分量</text>
+  <text x="565" y="173" text-anchor="middle" font-size="10" fill="#718096">单位 m</text>
+
+  <!-- 加计/陀螺误差源 -->
+  <rect x="265" y="270" width="150" height="56" rx="10" fill="#fff5f5" stroke="#c53030" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="340" y="294" text-anchor="middle" font-size="12" font-weight="bold" fill="#c53030">误差源（常值）</text>
+  <text x="340" y="313" text-anchor="middle" font-size="10" fill="#718096">加计零偏 δf_N · 陀螺零偏 δω_E</text>
+
+  <!-- 正向箭头：φ → δv -->
+  <line x1="190" y1="130" x2="258" y2="130" stroke="#2b6cb0" stroke-width="2.4" marker-end="url(#arr)"/>
+  <text x="224" y="122" text-anchor="middle" font-size="11" fill="#2b6cb0" font-weight="bold">+g·φ</text>
+  <text x="224" y="118" text-anchor="middle" font-size="9" fill="#718096">虚假比力</text>
+
+  <!-- δv → δr -->
+  <line x1="415" y1="130" x2="483" y2="130" stroke="#2b6cb0" stroke-width="2.4" marker-end="url(#arr)"/>
+  <text x="449" y="122" text-anchor="middle" font-size="11" fill="#2b6cb0" font-weight="bold">+δv</text>
+  <text x="449" y="118" text-anchor="middle" font-size="9" fill="#718096">积分</text>
+
+  <!-- 反馈回路：δr → φ（下方） -->
+  <path d="M 565,183 C 565,320 115,320 115,187" fill="none" stroke="#c53030" stroke-width="2" stroke-dasharray="7,4" marker-end="url(#arrR)"/>
+  <text x="340" y="352" text-anchor="middle" font-size="11" fill="#c53030" font-weight="bold">反馈：−δv_N / R → 抵消虚假比力（负反馈，舒勒自稳定）</text>
+  <text x="340" y="370" text-anchor="middle" font-size="10" fill="#718096">数学上：δv̈_N + ω_s²·δv_N = −g·δω_E（讲义式 69，简谐振荡）</text>
+
+  <!-- 误差源 → 状态 虚线箭头 -->
+  <line x1="340" y1="266" x2="340" y2="185" stroke="#c53030" stroke-width="1.4" stroke-dasharray="4,3" marker-end="url(#arrR)"/>
+  <line x1="300" y1="266" x2="175" y2="185" stroke="#c53030" stroke-width="1.2" stroke-dasharray="4,3"/>
+
+  <!-- 底部结论 -->
+  <rect x="40" y="388" width="600" height="32" rx="8" fill="#ebf8ff" stroke="#2b6cb0" stroke-width="1"/>
+  <text x="340" y="409" text-anchor="middle" font-size="12" fill="#2b6cb0" font-weight="bold">初始误差 → 有界舒勒振荡（84.4 min 周期）；陀螺零偏 → 线性发散（姿态误差累积 → 比力投影持续错误）</text>
+</svg>

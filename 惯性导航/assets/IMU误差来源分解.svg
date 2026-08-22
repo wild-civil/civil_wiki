@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 440" width="680" height="440" role="img">
+<title>IMU 误差来源分解</title>
+<desc>IMU 误差分两大类：确定性误差（常值零偏/标度/安装/非线性，可通过标定去掉）与随机误差（白噪声/随机游走/马尔可夫，只能统计建模）。</desc>
+<style>
+.th{font-size:13.5px;font-weight:700;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+.ts{font-size:10.5px;fill:#5F5E5A;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+.lb{font-size:11px;font-weight:700;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+</style>
+
+<!-- 根 -->
+<rect x="265" y="18" width="150" height="44" rx="22" fill="#0C447C"/>
+<text class="th" x="340" y="45" text-anchor="middle" fill="#FFFFFF">IMU 误差</text>
+<line x1="340" y1="62" x2="340" y2="84" stroke="#5F5E5A" stroke-width="1.6"/>
+<line x1="170" y1="84" x2="510" y2="84" stroke="#5F5E5A" stroke-width="1.6"/>
+<line x1="170" y1="84" x2="170" y2="104" stroke="#5F5E5A" stroke-width="1.6"/>
+<line x1="510" y1="84" x2="510" y2="104" stroke="#5F5E5A" stroke-width="1.6"/>
+
+<!-- 左：确定性 -->
+<rect x="40" y="104" width="260" height="318" rx="10" fill="#F3F8F1" stroke="#3B6D11" stroke-width="1.6"/>
+<text class="th" x="170" y="128" text-anchor="middle" fill="#27500A">确定性误差（可标定掉）</text>
+<text class="ts" x="170" y="146" text-anchor="middle">同一条件下重现 → 转台/六面法标定后补偿</text>
+
+<rect x="60" y="160" width="220" height="46" rx="6" fill="#FFFFFF" stroke="#3B6D11" stroke-width="1"/>
+<text class="lb" x="72" y="180" fill="#27500A">常值零偏 eb / db</text>
+<text class="ts" x="72" y="196">°/h、µg——静止时"谎报"的固定值</text>
+
+<rect x="60" y="214" width="220" height="46" rx="6" fill="#FFFFFF" stroke="#3B6D11" stroke-width="1"/>
+<text class="lb" x="72" y="234" fill="#27500A">标度因数误差 dKg / dKA</text>
+<text class="ts" x="72" y="250">ppm——满量程的比例偏差</text>
+
+<rect x="60" y="268" width="220" height="46" rx="6" fill="#FFFFFF" stroke="#3B6D11" stroke-width="1"/>
+<text class="lb" x="72" y="288" fill="#27500A">安装 / 交叉耦合 dKgij</text>
+<text class="ts" x="72" y="304">arcsec——轴不正交，一轴泄漏到另一轴</text>
+
+<rect x="60" y="322" width="220" height="46" rx="6" fill="#FFFFFF" stroke="#3B6D11" stroke-width="1"/>
+<text class="lb" x="72" y="342" fill="#27500A">g 灵敏度 / 非线性 Ka2</text>
+<text class="ts" x="72" y="358">µg/g²——受加速度/振动影响的误差</text>
+
+<rect x="60" y="376" width="220" height="34" rx="6" fill="#FFFFFF" stroke="#3B6D11" stroke-width="1"/>
+<text class="lb" x="72" y="397" fill="#27500A">温度漂移 °C</text>
+<text class="ts" x="200" y="397">恒温 / 温度标定</text>
+
+<!-- 右：随机性 -->
+<rect x="380" y="104" width="260" height="318" rx="10" fill="#FBF3F0" stroke="#B5502A" stroke-width="1.6"/>
+<text class="th" x="510" y="128" text-anchor="middle" fill="#7E3318">随机误差（只能统计建模）</text>
+<text class="ts" x="510" y="146" text-anchor="middle">每次都不一样 → 用方差/功率谱描述</text>
+
+<rect x="400" y="160" width="220" height="46" rx="6" fill="#FFFFFF" stroke="#B5502A" stroke-width="1"/>
+<text class="lb" x="412" y="180" fill="#7E3318">白噪声（角/速度随机游走）</text>
+<text class="ts" x="412" y="196">°/√h、µg/√Hz——按 √t 扩散</text>
+
+<rect x="400" y="214" width="220" height="46" rx="6" fill="#FFFFFF" stroke="#B5502A" stroke-width="1"/>
+<text class="lb" x="412" y="234" fill="#7E3318">零偏稳定性（bias instability）</text>
+<text class="ts" x="412" y="250">Allan 曲线平台值，中低频涨落</text>
+
+<rect x="400" y="268" width="220" height="46" rx="6" fill="#FFFFFF" stroke="#B5502A" stroke-width="1"/>
+<text class="lb" x="412" y="288" fill="#7E3318">一阶马尔可夫相关误差</text>
+<text class="ts" x="412" y="304">有记忆的慢变误差（τ 相关时间）</text>
+
+<rect x="400" y="322" width="220" height="46" rx="6" fill="#FFFFFF" stroke="#B5502A" stroke-width="1"/>
+<text class="lb" x="412" y="342" fill="#7E3318">量化噪声 / 随机游走</text>
+<text class="ts" x="412" y="358">LSB 分辨率下限、积分漂移</text>
+
+<rect x="400" y="376" width="220" height="34" rx="6" fill="#FFFFFF" stroke="#B5502A" stroke-width="1"/>
+<text class="lb" x="412" y="397" fill="#7E3318">→ 用 Allan 方差测出来（05 篇）</text>
+
+<!-- 底部小结 -->
+<rect x="40" y="432" width="600" height="0"/>
+<text class="ts" x="340" y="428" text-anchor="middle">标定只能去掉"确定性"；"随机性"没法去掉，只能建模进滤波器（ESKF 的 Q 阵 / bg、ba 状态）</text>
+</svg>

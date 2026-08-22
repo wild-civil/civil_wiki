@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 510" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif">
+  <rect x="0" y="0" width="760" height="510" fill="#ffffff"/>
+
+  <text x="380" y="30" text-anchor="middle" font-size="15" font-weight="700" fill="#202124">MIL → SIL → PIL → HIL：同一份算法，一步步逼近真机</text>
+  <text x="380" y="48" text-anchor="middle" font-size="11" fill="#5f6368">保真度 ↑ · 成本 ↑ · 迭代速度 ↓（每层都与上一层「对拍」等价）</text>
+
+  <defs>
+    <marker id="arw" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#9aa0a6"/>
+    </marker>
+  </defs>
+
+  <g>
+    <rect x="15" y="62" width="170" height="248" rx="10" fill="#ffffff" stroke="#e8710a" stroke-width="2"/>
+    <rect x="70" y="70" width="60" height="26" rx="13" fill="#e8710a"/>
+    <text x="100" y="88" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">MIL</text>
+    <text x="100" y="112" text-anchor="middle" font-size="11" fill="#5f6368">模型在环</text>
+    <line x1="30" y1="124" x2="170" y2="124" stroke="#eceff1"/>
+    <text x="30" y="148" font-size="11" font-weight="700" fill="#e8710a">跑什么</text>
+    <text x="30" y="166" font-size="11" fill="#202124">算法模型（框图）</text>
+    <text x="30" y="182" font-size="11" fill="#202124">如 Simulink</text>
+    <text x="30" y="210" font-size="11" font-weight="700" fill="#e8710a">在哪跑</text>
+    <text x="30" y="228" font-size="11" fill="#202124">PC 建模环境</text>
+    <text x="30" y="256" font-size="11" font-weight="700" fill="#e8710a">验什么</text>
+    <text x="30" y="274" font-size="11" fill="#202124">算法 / 控制律</text>
+    <text x="30" y="290" font-size="11" fill="#202124">本身对不对（无 C）</text>
+  </g>
+
+  <g>
+    <rect x="205" y="62" width="170" height="248" rx="10" fill="#ffffff" stroke="#1a73e8" stroke-width="2"/>
+    <rect x="260" y="70" width="60" height="26" rx="13" fill="#1a73e8"/>
+    <text x="290" y="88" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">SIL</text>
+    <text x="290" y="112" text-anchor="middle" font-size="11" fill="#5f6368">软件在环</text>
+    <line x1="220" y1="124" x2="360" y2="124" stroke="#eceff1"/>
+    <text x="220" y="148" font-size="11" font-weight="700" fill="#1a73e8">跑什么</text>
+    <text x="220" y="166" font-size="11" fill="#202124">真实 C 代码</text>
+    <text x="220" y="182" font-size="11" fill="#202124">（真实固件 .c）</text>
+    <text x="220" y="210" font-size="11" font-weight="700" fill="#1a73e8">在哪跑</text>
+    <text x="220" y="228" font-size="11" fill="#202124">PC 宿主（gcc）</text>
+    <text x="220" y="256" font-size="11" font-weight="700" fill="#1a73e8">验什么</text>
+    <text x="220" y="274" font-size="11" fill="#202124">代码是否忠实</text>
+    <text x="220" y="290" font-size="11" fill="#202124">实现逻辑（无 MCU）</text>
+  </g>
+
+  <g>
+    <rect x="395" y="62" width="170" height="248" rx="10" fill="#ffffff" stroke="#9334e6" stroke-width="2"/>
+    <rect x="450" y="70" width="60" height="26" rx="13" fill="#9334e6"/>
+    <text x="480" y="88" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">PIL</text>
+    <text x="480" y="112" text-anchor="middle" font-size="11" fill="#5f6368">处理器在环</text>
+    <line x1="410" y1="124" x2="550" y2="124" stroke="#eceff1"/>
+    <text x="410" y="148" font-size="11" font-weight="700" fill="#9334e6">跑什么</text>
+    <text x="410" y="166" font-size="11" fill="#202124">同份 C → 目标码</text>
+    <text x="410" y="182" font-size="11" fill="#202124">（编译到芯片）</text>
+    <text x="410" y="210" font-size="11" font-weight="700" fill="#9334e6">在哪跑</text>
+    <text x="410" y="228" font-size="11" fill="#202124">真 MCU（H743）</text>
+    <text x="410" y="256" font-size="11" font-weight="700" fill="#9334e6">验什么</text>
+    <text x="410" y="274" font-size="11" fill="#202124">真芯片上数值 /</text>
+    <text x="410" y="290" font-size="11" fill="#202124">执行时间</text>
+  </g>
+
+  <g>
+    <rect x="585" y="62" width="170" height="248" rx="10" fill="#ffffff" stroke="#188038" stroke-width="2"/>
+    <rect x="640" y="70" width="60" height="26" rx="13" fill="#188038"/>
+    <text x="670" y="88" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">HIL</text>
+    <text x="670" y="112" text-anchor="middle" font-size="11" fill="#5f6368">硬件在环</text>
+    <line x1="600" y1="124" x2="740" y2="124" stroke="#eceff1"/>
+    <text x="600" y="148" font-size="11" font-weight="700" fill="#188038">跑什么</text>
+    <text x="600" y="166" font-size="11" fill="#202124">真MCU + 被控对象</text>
+    <text x="600" y="182" font-size="11" fill="#202124">（实时闭环）</text>
+    <text x="600" y="210" font-size="11" font-weight="700" fill="#188038">在哪跑</text>
+    <text x="600" y="228" font-size="11" fill="#202124">HIL 实时机</text>
+    <text x="600" y="256" font-size="11" font-weight="700" fill="#188038">验什么</text>
+    <text x="600" y="274" font-size="11" fill="#202124">实时性 / 接口 /</text>
+    <text x="600" y="290" font-size="11" fill="#202124">故障注入</text>
+  </g>
+
+  <line x1="188" y1="186" x2="201" y2="186" stroke="#9aa0a6" stroke-width="2" marker-end="url(#arw)"/>
+  <text x="194" y="178" text-anchor="middle" font-size="10" fill="#5f6368">≡</text>
+  <line x1="378" y1="186" x2="391" y2="186" stroke="#9aa0a6" stroke-width="2" marker-end="url(#arw)"/>
+  <text x="384" y="178" text-anchor="middle" font-size="10" fill="#5f6368">≡</text>
+  <line x1="568" y1="186" x2="581" y2="186" stroke="#9aa0a6" stroke-width="2" marker-end="url(#arw)"/>
+  <text x="574" y="178" text-anchor="middle" font-size="10" fill="#5f6368">≡</text>
+
+  <rect x="15" y="326" width="730" height="62" rx="8" fill="#e6f4ea" stroke="#188038" stroke-width="1.5"/>
+  <text x="28" y="346" font-size="12" font-weight="700" fill="#188038">手写 C 的团队：没有现成模型 → 通常跳过 MIL，SIL 即第一步。</text>
+  <text x="28" y="364" font-size="11" fill="#202124">SIL 跑的就是真实固件 C（在 PC 上编译运行）——「在电脑验证固件逻辑」正是 SIL 的标准定义 ✓</text>
+  <text x="28" y="380" font-size="11" fill="#202124">拿到硬件/样片后即可 SIL → PIL（真芯片对拍）→ HIL 一路推下去。</text>
+
+  <rect x="15" y="398" width="730" height="98" rx="8" fill="#f8f9fa" stroke="#dadce0" stroke-width="1.5"/>
+  <text x="28" y="418" font-size="12" font-weight="700" fill="#5f6368">容易晕的三点</text>
+  <text x="28" y="436" font-size="11" fill="#202124">① MIL 验「算法模型」、SIL 验「代码」，是同一算法的两个表示，不是两种算法 —— 算法验过 → 代码验过，</text>
+  <text x="43" y="452" font-size="11" fill="#202124">这是标准认知。</text>
+  <text x="28" y="470" font-size="11" fill="#202124">② SIL 不仿真整块板子：它只把固件 C 在 PC 跑，SPI 时序 / 缓存 / 1000Hz 实时性 仍要 PIL / HIL / 真硅才暴露。</text>
+  <text x="28" y="488" font-size="11" fill="#202124">③ X-Plane / Gazebo / Simulink 大多不跑被测固件，只当「数据源 / 闭环宿主」；被测固件是 DUT（被测对象）。</text>
+</svg>

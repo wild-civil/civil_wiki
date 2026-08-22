@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 380"
+     font-family="-apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif">
+  <!-- 渐变：FR4 介质基板，上下略有深浅，模拟厚度 -->
+  <defs>
+    <linearGradient id="fr4" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0"   stop-color="#d9c2a3"/>
+      <stop offset="1"   stop-color="#c9a978"/>
+    </linearGradient>
+    <marker id="dim" viewBox="0 0 10 10" refX="5" refY="5"
+            markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,5 L10,5 M5,0 L5,10" stroke="#5f6368" stroke-width="1"/>
+    </marker>
+  </defs>
+
+  <text x="20" y="30" font-size="16" font-weight="700" fill="#202124">微带线截面示意（以 FR4 基板为例）</text>
+
+  <!-- 各层（自上而下：阻焊 / 顶层铜走线 / 介质 / 底层地铜） -->
+  <!-- 阻焊层 soldermask -->
+  <rect x="200" y="70"  width="280" height="22" fill="#188038" opacity="0.85"/>
+  <text x="500" y="86"  font-size="12" fill="#3c4043">阻焊层（绿油）</text>
+
+  <!-- 顶层铜走线 trace（W 线宽） -->
+  <rect x="270" y="92"  width="140" height="18" fill="#b87333"/>
+  <text x="500" y="106" font-size="12" fill="#3c4043">顶层铜走线（信号线，宽 W）</text>
+
+  <!-- 介质 FR4（H 厚度） -->
+  <rect x="200" y="110" width="280" height="170" fill="url(#fr4)" stroke="#9c7a45"/>
+  <text x="500" y="200" font-size="12" fill="#3c4043">FR4 介质（厚 H，εr≈4.3）</text>
+
+  <!-- 底层地铜 ground plane -->
+  <rect x="200" y="280" width="280" height="22" fill="#b87333"/>
+  <text x="500" y="296" font-size="12" fill="#3c4043">底层地铜（参考面）</text>
+
+  <!-- 尺寸标注：W（线宽，顶部） -->
+  <g stroke="#5f6368" stroke-width="1">
+    <line x1="270" y1="56" x2="410" y2="56" marker-start="url(#dim)" marker-end="url(#dim)"/>
+    <line x1="270" y1="50" x2="270" y2="92"/>
+    <line x1="410" y1="50" x2="410" y2="92"/>
+  </g>
+  <text x="340" y="50" text-anchor="middle" font-size="11" fill="#5f6368">W</text>
+
+  <!-- 尺寸标注：H（介质厚度，左侧） -->
+  <g stroke="#5f6368" stroke-width="1">
+    <line x1="170" y1="110" x2="170" y2="280" marker-start="url(#dim)" marker-end="url(#dim)"/>
+    <line x1="164" y1="110" x2="200" y2="110"/>
+    <line x1="164" y1="280" x2="200" y2="280"/>
+  </g>
+  <text x="158" y="200" text-anchor="middle" font-size="11" fill="#5f6368" transform="rotate(-90 158 200)">H</text>
+
+  <!-- 电场示意（概念线，非精确） -->
+  <g stroke="#1a73e8" stroke-width="1" opacity="0.5" fill="none">
+    <path d="M340,110 Q340,150 200,150"/>
+    <path d="M340,110 Q340,200 200,200"/>
+    <path d="M340,110 Q340,250 200,250"/>
+  </g>
+  <text x="200" y="350" font-size="11" fill="#5f6368">虚线为信号返回电流/电场耦合概念示意</text>
+</svg>

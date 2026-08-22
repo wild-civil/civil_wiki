@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 360" width="680" height="360" role="img">
+<title>欧拉角万向锁演示</title>
+<desc>三环 gimbal 机构：正常时偏航/俯仰/横滚三轴互相垂直(3自由度)；当俯仰=±90° 时，横滚轴与偏航轴重合，丢失一个自由度，即万向锁。</desc>
+<style>
+.th{font-size:13px;font-weight:700;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+.ts{font-size:10.5px;fill:#5F5E5A;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+.ax{font-size:11px;font-weight:700;font-family:'Segoe UI',Arial,'Microsoft YaHei',sans-serif;}
+</style>
+<defs>
+<marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="#333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+<marker id="ab" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="#185FA5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+<marker id="ag" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="#3B6D11" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+<marker id="ao" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="#B5502A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+
+<!-- 左：正常 -->
+<text class="th" x="180" y="34" text-anchor="middle" fill="#27500A">正常 (pitch ≈ 0°)</text>
+<ellipse cx="180" cy="190" rx="115" ry="34" fill="none" stroke="#185FA5" stroke-width="1.4"/>
+<ellipse cx="180" cy="190" rx="46" ry="96" fill="none" stroke="#3B6D11" stroke-width="1.4"/>
+<ellipse cx="180" cy="190" rx="58" ry="58" fill="none" stroke="#B5502A" stroke-width="1.4"/>
+<!-- 机体方块 -->
+<rect x="160" y="170" width="40" height="40" rx="4" fill="#FDE9D6" stroke="#854F0B" stroke-width="1"/>
+<!-- 轴 -->
+<line x1="180" y1="190" x2="180" y2="78" stroke="#185FA5" stroke-width="2.4" marker-end="url(#ab)"/>
+<line x1="180" y1="190" x2="320" y2="190" stroke="#3B6D11" stroke-width="2.4" marker-end="url(#ag)"/>
+<line x1="180" y1="190" x2="262" y2="262" stroke="#B5502A" stroke-width="2.4" stroke-dasharray="5 4" marker-end="url(#ao)"/>
+<text class="ax" x="186" y="74" fill="#0C447C">Z 偏航 yaw</text>
+<text class="ax" x="324" y="186" fill="#27500A">Y 俯仰 pitch</text>
+<text class="ax" x="266" y="280" fill="#7E3318">X 横滚 roll</text>
+<text class="ts" x="180" y="318" text-anchor="middle">三轴互相垂直 → 3 自由度都可用</text>
+
+<!-- 右：万向锁 -->
+<text class="th" x="500" y="34" text-anchor="middle" fill="#B5502A">万向锁 (pitch = 90°)</text>
+<ellipse cx="500" cy="190" rx="115" ry="34" fill="none" stroke="#185FA5" stroke-width="1.4"/>
+<ellipse cx="500" cy="190" rx="115" ry="34" fill="none" stroke="#3B6D11" stroke-width="1.4" stroke-dasharray="6 4"/>
+<ellipse cx="500" cy="190" rx="56" ry="56" fill="none" stroke="#B5502A" stroke-width="1.4"/>
+<rect x="480" y="170" width="40" height="40" rx="4" fill="#FDE9D6" stroke="#854F0B" stroke-width="1"/>
+<!-- 轴：Z 上，X 也垂直(下) 重合 -->
+<line x1="500" y1="190" x2="500" y2="78" stroke="#185FA5" stroke-width="2.4" marker-end="url(#ab)"/>
+<line x1="500" y1="190" x2="500" y2="300" stroke="#B5502A" stroke-width="2.4" stroke-dasharray="5 4" marker-end="url(#ao)"/>
+<line x1="500" y1="190" x2="640" y2="190" stroke="#3B6D11" stroke-width="2.4" marker-end="url(#ag)"/>
+<text class="ax" x="506" y="74" fill="#0C447C">Z 偏航 yaw</text>
+<text class="ax" x="506" y="318" fill="#7E3318">X 横滚 roll（与 Z 共线!）</text>
+<text class="ax" x="644" y="186" fill="#27500A">Y 俯仰 pitch</text>
+<text class="ts" x="500" y="338" text-anchor="middle" fill="#B5502A">X 与 Z 共线 → yaw/roll 等效，丢失 1 自由度</text>
+
+<!-- 底部 -->
+<rect x="40" y="350" width="600" height="0" />
+</svg>
