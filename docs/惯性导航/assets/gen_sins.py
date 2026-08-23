@@ -242,3 +242,5 @@ from miniplot import miniinsplot, miniavpcmpplot
 miniinsplot(avp_fix, 'fix')
 miniinsplot(avp_free, 'free')
 miniavpcmpplot(trj, [avp_free, avp_fix], ['free', 'fix'])
+# 方案 B：真值 + free + fix 同图三色叠加（黑=Truth，红=free，蓝=fix）
+miniinsplot([avp_free, avp_fix], trj, 'cmp_freefix')

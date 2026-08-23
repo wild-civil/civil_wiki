@@ -142,6 +142,22 @@ gen_sins 实测（966 s，与 test_SINS 同参数 eb=0.01°/h、db=100µg、初�
 2. **水平 vs 垂直解耦**：高度固定对水平误差几乎无影响（936.0 vs 936.0）——垂直通道发散是**独立的**（垂直 Schuler 振荡），不会污染水平；
 3. **垂直通道必须阻尼**：自由模式 966 s 发散到 581.6 m，固定后 10.0 m——这就是 test_SINS 用 `trj.bh` 的原因。
 
+??? note "🎯 free 与 fix 一句话 + 物理本质"
+
+    **一句话**：`free` 和 `fix` 只是 `miniinspure` 里一个开关（`fix_h`）的两种取值——`free` 让高度 `pos(3)` 自由积分，`fix` 每步把 `pos(3)` 钉回初始高度（PSINS 原版钉到 `trj.bh`，即一个带噪声的"气压高度"序列）。**两者唯一差别：垂直通道是否被外部高度源强制固定。**
+
+    **为什么要这个开关（物理本质）**：纯惯导的**垂直通道是开环不稳定的**。一个高度误差 `δh` 会让重力计算失配 `δḡ ≈ −2g·δh/R`（真实重力随高度变化，而惯导假设了固定重力模型），这个失配又产生垂直加速度误差 → 高度误差**指数增长**（垂直 Schuler 振荡，~9 min 包络发散）。水平通道则相反，由 **Schuler 稳定性**保证有界振荡（~84 min 周期）。
+
+    所以 `free` 跑 966 s 垂直发散到 581.6 m，而 `fix` 把垂直"兜住"在 10.0 m；由于垂直/水平耦合在 966 s 内可忽略，水平误差都≈936 m 几乎不变——这恰好说明**垂直发散是独立的物理现象，不是水平解算写错了**。
+
+    下图的**真值 vs free vs fix 同图三色叠加**把这一点画得最直观：
+
+    - 黑线 = 真值（参考基准）；
+    - 红线 = free（高度自由）、蓝线 = fix（高度阻尼）。**红蓝两线在 E-N 投影上几乎重合**——说明水平漂移（~936 m）由初始 yaw 误差主导，高度阻尼管不了水平；
+    - 真正的差别在垂直通道：free 的垂直误差发散到 581.6 m，fix 被兜在 10.0 m。这在左下角的 Position offset 子图（绿色 ΔH 曲线）和 `miniavpcmpplot.png` 里看得最清楚。
+
+    ![真值 vs free vs fix 同图三色叠加](../assets/miniinsplot_cmp_freefix.png)
+
 ## 七、与 PSINS 原版对拍
 
 迷你链路与 PSINS 原版（`inspure`）**同参数确定性对拍**（eb/db 同、随机游走关闭）：
@@ -205,7 +221,11 @@ gen_sins 实测（966 s，与 test_SINS 同参数 eb=0.01°/h、db=100µg、初�
     1. **迷你 trjsimu**：96600 行、末位置 (29.0527°, 105.9853°, 450.0 m)；
     2. **误差注入后解算**：高度自由末点 (-42.4, 935.0, 581.6) m；高度固定 (-42.2, 935.0, 10.0) m——垂直 581.6→10.0、水平不变；
     3. **误差统计**：att RMS (24.4, 22.3, 299.5)″；水平 RMS 345.1 m / 末 935.9 m；垂直 216.1（自由）/ 41.4（固定）。
-    4. **可视化**：脚本运行后会生成三张 PNG：`miniinsplot_fix.png`、`miniinsplot_free.png`、`miniavpcmpplot.png`。`miniavpcmpplot.png` 对应 PSINS 的 `avpcmpplot`，展示 `free`（高度自由）与 `fix`（高度阻尼）的误差曲线对比；`miniinsplot_*.png` 对应 PSINS `insplot(avp,'avp')` 的 6 子图布局。绘图函数零依赖自写：`assets/miniinsplot.m` / `miniavpcmpplot.m`（MATLAB）和 `assets/miniplot.py`（Python）。
+    4. **可视化**：脚本运行后会生成四张 PNG：`miniinsplot_fix.png`、`miniinsplot_free.png`、`miniavpcmpplot.png`、`miniinsplot_cmp_freefix.png`（仓库内 PNG 由 Python 路径生成；MATLAB 版的 `saveas` 默认注释，需手动打开或取消注释后导出）。
+       - `miniavpcmpplot.png` 对应 PSINS 的 `avpcmpplot`，展示 `free`（高度自由）与 `fix`（高度阻尼）的**误差曲线**对比；
+       - `miniinsplot_*.png` 对应 PSINS `insplot(avp,'avp')` 的 6 子图布局；
+       - **`miniinsplot_cmp_freefix.png` 是本篇的核心对比图**：真值 + free + fix **同图三色叠加**——黑线 = 真值（参考基准）、红线 = free（高度自由）、蓝线 = fix（高度阻尼）。**红蓝两线在 E-N 投影上几乎重合**：水平漂移（~936 m）由初始 yaw 误差主导，与是否高度阻尼无关；真正的差别在垂直通道（free 发散到 581.6 m、fix 被兜在 10.0 m），要在左下角 Position offset 子图（绿色 ΔH 曲线）或 `miniavpcmpplot.png` 里才看得清。配色约定在 `assets/miniinsplot.m`（MATLAB）/ `miniplot.py`（Python）的 `solcols`/`sol_lbl` 里统一（真值永远黑线，解算按 free=红、fix=蓝 循环）。
+    绘图函数零依赖自写：`assets/miniinsplot.m` / `miniavpcmpplot.m`（MATLAB）和 `assets/miniplot.py`（Python）。
 
     **🎨 绘图对齐 PSINS 的两个实现注记（复盘用）**：迷你绘图函数刻意不调用 PSINS 的 `insplot`/`avpcmpplot`（背后挂着 `glv`/`myfigure`/`xygo`/`pos2dxyz` 一串闭包），只借鉴其"画什么/怎么摆"的意图、自写零依赖实现。其中两个易忘的细节：
 

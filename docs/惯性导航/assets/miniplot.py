@@ -10,21 +10,30 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 
-def miniinsplot(avp, arg2, ttl=None):
+def miniinsplot(*args):
     """6 子图状态图（对应 insplot(avp,'avp')）。
-    单轨迹模式: miniinsplot(avp, ttl)            -> 生成 miniinsplot_<ttl>.png
-    对比模式:   miniinsplot(dr, truth, ttl)      -> 生成 miniinsplot_<ttl>.png
-                dr: 估计轨迹; truth: 真值轨迹; 轨迹子图叠 蓝(估计)+红(真值)+红星(起点)
+    单轨迹模式:  miniinsplot(avp, ttl)                  -> 生成 miniinsplot_<ttl>.png
+    对比(单解算): miniinsplot(dr, truth, ttl)           -> 轨迹子图叠 红(估计)+黑(真值)+红星(起点)
+    对比(多解算): miniinsplot([s1,s2,...], truth, ttl)  -> 轨迹子图叠 黑(真值)+彩色(各解算)
+    约定（统一）：真值永远画黑线（参考基准）；解算按配色循环（free=红、fix=蓝、…）。
     avp: (N,10) [att3,vn3,pos3,t]
     """
     deg = np.pi / 180
     Re = 6378137.0
-    cmp = isinstance(arg2, np.ndarray)        # 第二参为矩阵 -> 对比模式
-    if cmp:
-        truth = arg2
+    # ---------------- 参数解析 ----------------
+    if len(args) == 2 and isinstance(args[1], str):
+        avp = args[0]; truth = None; ttl = args[1]; iscmp = False; sols = []; labels = []
+    elif len(args) >= 3 and isinstance(args[2], str):
+        truth = args[1]; ttl = args[2]; iscmp = True
+        if isinstance(args[0], (list, tuple)):
+            sols = list(args[0])                 # 多解算：第一参为 list
+        else:
+            sols = [args[0]]                     # 单解算：第一参为矩阵
+        avp = sols[0]                            # 其它 5 个子图以第一解算为准
+        labels = args[3] if len(args) >= 4 else None
     else:
-        truth = None
-        ttl = arg2                            # 单模式：第二参即 ttl
+        raise ValueError('miniinsplot: 参数错误（应为 miniinsplot(avp,ttl) 或 miniinsplot([sols],truth,ttl)）')
+
     t = avp[:, 9]
     lat0, lon0, h0 = avp[0, 6], avp[0, 7], avp[0, 8]
     # 局部坐标 East-right / North-up（与 MATLAB 版一致）
@@ -32,9 +41,17 @@ def miniinsplot(avp, arg2, ttl=None):
     y = (avp[:, 6] - lat0) * Re                  # North（上 / y）
     z = avp[:, 8] - h0
     dxyz = np.column_stack([x, y, z])            # [East, North, Up]
-    if cmp:
-        xt = (truth[:, 7] - lon0) * Re * np.cos(lat0)
-        yt = (truth[:, 6] - lat0) * Re
+
+    # 解算配色与标签（第一解算=红；free/fix 顺序调用即红/蓝）
+    sol_cols = ['r-', 'b-', 'g-', 'm-', 'c-']
+    if labels is None:
+        if len(sols) == 1:
+            labels = ['DR (est)']
+        elif len(sols) == 2:
+            labels = ['free', 'fix']
+        else:
+            labels = [f'sol{k+1}' for k in range(len(sols))]
+    sol_lbl = labels
 
     plt.figure(figsize=(9, 7))
     plt.subplot(3, 2, 1)
@@ -50,16 +67,25 @@ def miniinsplot(avp, arg2, ttl=None):
     plt.xlabel('t / s'); plt.ylabel('(m/s)'); plt.title('Velocity (VE / VN / VU)')
     plt.legend(['VE', 'VN', 'VU'], loc='best')
     plt.subplot(3, 2, (4, 6))
-    plt.plot(0, 0, 'rp')
-    if cmp:
-        plt.plot(x, y, 'b-', label='DR (est)')
-        plt.plot(xt, yt, 'r-', label='Truth')
-        allx = np.concatenate([x, xt]); ally = np.concatenate([y, yt])
+    plt.plot(0, 0, 'rp')                          # 起点红星，不进入 legend
+    if iscmp:
+        handles, labels = [], []
+        xt = (truth[:, 7] - lon0) * Re * np.cos(lat0)
+        yt = (truth[:, 6] - lat0) * Re
+        ht, = plt.plot(xt, yt, 'k-', lw=1.8)       # 真值（黑，参考基准）
+        handles.append(ht); labels.append('Truth')
+        allx = np.concatenate([xt]); ally = np.concatenate([yt])
+        for k, s in enumerate(sols):
+            xs = (s[:, 7] - lon0) * Re * np.cos(lat0)
+            ys = (s[:, 6] - lat0) * Re
+            h, = plt.plot(xs, ys, sol_cols[min(k, len(sol_cols) - 1)])
+            handles.append(h); labels.append(sol_lbl[k])
+            allx = np.concatenate([allx, xs]); ally = np.concatenate([ally, ys])
         mx, my = 0.02 * np.ptp(allx), 0.02 * np.ptp(ally)
         plt.xlim(allx.min() - mx, allx.max() + mx)
         plt.ylim(ally.min() - my, ally.max() + my)
-        plt.title('Trajectory (True vs DR)')
-        plt.legend(loc='best')
+        plt.title('Trajectory (Truth vs solutions)')
+        plt.legend(handles, labels, loc='best')
     else:
         plt.plot(x, y)
         mx, my = 0.02 * np.ptp(x), 0.02 * np.ptp(y)

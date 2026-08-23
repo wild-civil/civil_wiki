@@ -84,6 +84,9 @@ miniinsplot(trj,    'truth');   % 真值轨迹（最像 PSINS test_SINS_trj 的 
 miniinsplot(avp_fix, 'fix');    % 高度阻尼解算轨迹
 miniinsplot(avp_free, 'free');  % 高度自由解算轨迹
 miniavpcmpplot(trj, {avp_free, avp_fix}, {'free','fix'});
+% 方案 B：真值 + free + fix 同图三色叠加（黑=Truth，红=free，蓝=fix）
+miniinsplot({avp_free, avp_fix}, trj, 'cmp_freefix');
+% saveas(gcf, 'miniinsplot_cmp_freefix.png'); close(gcf);
 
 end
 
