@@ -93,5 +93,5 @@ legend(names, 'Location','best');
 % saveas(gcf, 'miniavpcmpplot.png');
 % fprintf('    图已保存: miniavpcmpplot.png\n');
 
-close(gcf);
+% close(gcf);% 是否显示figure
 end

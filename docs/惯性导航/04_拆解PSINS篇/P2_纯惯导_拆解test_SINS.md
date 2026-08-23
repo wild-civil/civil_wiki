@@ -235,5 +235,5 @@ gen_sins 实测（966 s，与 test_SINS 同参数 eb=0.01°/h、db=100µg、初�
 - **科普系列对照**：03 比力方程（insupdate ④）、07 圆锥效应/四元数更新（①⑥）、09 位置微分/误差传播（③⑤ 与全篇）、15 故障注入（误差注入体系）
 - **本篇验证**：`assets/gen_sins.py`（Python）与 `assets/gen_sins.m`（MATLAB）双轨——迷你链路 + 自洽性 + 误差传播 + 与 PSINS 对拍（935.9 vs 936.0 m）；两张 SVG（`机械编排_数据流.svg`、`误差传播_路径.svg`）
 - **上一篇**：[拆解 PSINS ①：test_SINS_trj.m](P1_轨迹生成_拆解test_SINS_trj.md)——数据母版（P1 造数据，本篇消费）
-- **下一篇**：拆解 PSINS ③：test_DR.m（规划中）——航位推算（drupdate），"航向×里程"的第二条独立定位链
+- **下一篇**：[拆解 PSINS ③：test_DR.m](P3_航位推算_拆解test_DR.md)——航位推算（drupdate），"航向×里程"的第二条独立定位链
 - **系列首页**：[惯性导航与惯导解算 · 自学科普系列](../index.md)

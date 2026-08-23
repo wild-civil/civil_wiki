@@ -79,7 +79,7 @@ tags: [MOC, 导航, 惯导, 科普]
 |---|---|---|---|
 | [P1 轨迹生成 · test_SINS_trj.m](04_拆解PSINS篇/P1_轨迹生成_拆解test_SINS_trj.md) | `trjsegment` + `trjsimu`（31 行薄壳） | 航段语言（8 基本+6 复合）/ wat 表 / 正演机数学（att/vn/pos 积分 + IMU 增量反算 + 圆锥/旋转补偿）/ 966 s 轨迹解析 | ✅ 已发布 |
 | [P2 纯惯导 · test_SINS.m](04_拆解PSINS篇/P2_纯惯导_拆解test_SINS.md) | `inspure` + 误差注入体系 | 正演→反演闭环验证、imuerrset/avperrset、机械编排六步、误差传播（Schuler/垂直发散）、迷你链路 vs PSINS 对拍（935.9 vs 936.0 m） | ✅ 已发布 |
-| P3 航位推算 · test_DR.m | `odsimu` + `drupdate` | DR 数学（航向×里程）、安装角/刻度系数、与 SINS 的本质差异 | 规划中 |
+| [P3 航位推算 · test_DR.m](04_拆解PSINS篇/P3_航位推算_拆解test_DR.md) | `odsimu` + `drupdate` | DR 数学（航向×里程）、安装角/刻度系数、与 SINS 的本质差异 | ✅ 已发布 |
 
 ## 学习路线图
 

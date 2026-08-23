@@ -240,6 +240,7 @@ nav:
           - "拆解 PSINS 篇（工业参考逐行走读）":
               - 惯性导航/04_拆解PSINS篇/P1_轨迹生成_拆解test_SINS_trj.md
               - 惯性导航/04_拆解PSINS篇/P2_纯惯导_拆解test_SINS.md
+              - 惯性导航/04_拆解PSINS篇/P3_航位推算_拆解test_DR.md
   - 生活与兴趣:
       - 生活与兴趣/index.md
   - 杂记:

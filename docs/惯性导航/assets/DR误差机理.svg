@@ -1,0 +1,42 @@
+<svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .title { font-family: sans-serif; font-size:16; font-weight:bold; fill:#2d3748; }
+      .txt { font-family: sans-serif; font-size:13; fill:#2d3748; }
+      .lbl { font-family: sans-serif; font-size:11; fill:#718096; }
+      .ins { stroke:#3182ce; stroke-width:2.5; fill:none; }
+      .dr  { stroke:#e53e3e; stroke-width:2.5; fill:none; }
+      .grid { stroke:#e2e8f0; stroke-width:1; }
+      .axis { stroke:#4a5568; stroke-width:1.5; }
+    </style>
+  </defs>
+
+  <!-- 标题 -->
+  <text x="380" y="28" text-anchor="middle" class="title">纯惯导 vs 航位推算：误差增长机理对照</text>
+
+  <!-- 左图：INS 误差（Schuler 振荡） -->
+  <text x="180" y="58" text-anchor="middle" class="txt">纯惯导 INS（P2）</text>
+  <rect x="50" y="70" width="260" height="200" fill="#fff" stroke="#cbd5e0" rx="4"/>
+  <!-- 网格 -->
+  <line x1="70" y1="250" x2="290" y2="250" class="axis"/>
+  <line x1="70" y1="250" x2="70" y2="80" class="axis"/>
+  <text x="180" y="270" text-anchor="middle" class="lbl">时间 t / s</text>
+  <text x="40" y="170" text-anchor="middle" class="lbl" transform="rotate(-90,40,170)">位置误差 / m</text>
+  <!-- Schuler 振荡曲线（示意） -->
+  <path d="M70,165 Q120,220 160,165 T250,165 T290,120" class="ins"/>
+  <text x="230" y="115" text-anchor="middle" class="txt" fill="#3182ce">~84 min Schuler</text>
+  <text x="120" y="235" text-anchor="middle" class="txt" fill="#3182ce">重力杠杆放大</text>
+
+  <!-- 右图：DR 误差（线性增长） -->
+  <text x="570" y="58" text-anchor="middle" class="txt">航位推算 DR（P3）</text>
+  <rect x="440" y="70" width="260" height="200" fill="#fff" stroke="#cbd5e0" rx="4"/>
+  <!-- 网格 -->
+  <line x1="460" y1="250" x2="680" y2="250" class="axis"/>
+  <line x1="460" y1="250" x2="460" y2="80" class="axis"/>
+  <text x="570" y="270" text-anchor="middle" class="lbl">已走路程 S / m</text>
+  <text x="430" y="170" text-anchor="middle" class="lbl" transform="rotate(-90,430,170)">位置误差 / m</text>
+  <!-- 线性增长曲线（示意） -->
+  <line x1="460" y1="250" x2="660" y2="100" class="dr"/>
+  <text x="600" y="120" text-anchor="middle" class="txt" fill="#e53e3e">δp ≈ tan(δψ)·S</text>
+  <text x="520" y="235" text-anchor="middle" class="txt" fill="#e53e3e">航向误差×路程</text>
+</svg>

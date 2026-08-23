@@ -47,7 +47,7 @@ def miniinsplot(avp, ttl):
     print(f'    图已保存: miniinsplot_{ttl}.png')
 
 
-def miniavpcmpplot(trj, avps, names):
+def miniavpcmpplot(trj, avps, names, outname='miniavpcmpplot.png'):
     """真值 vs 多条解算的残差对比图（对应 avpcmpplot）。trj: (N,10) 100Hz；avps: list of (M,10) 双子样"""
     deg = np.pi / 180
     Re = 6378137.0
@@ -94,6 +94,6 @@ def miniavpcmpplot(trj, avps, names):
     plt.title(f'Position error   RMS = {np.mean(pos_rms):.1f} m')
     plt.legend(names, loc='best')
     plt.tight_layout()
-    plt.savefig('miniavpcmpplot.png', dpi=100)
+    plt.savefig(outname, dpi=100)
     plt.close()
-    print('    图已保存: miniavpcmpplot.png')
+    print(f'    图已保存: {outname}')
