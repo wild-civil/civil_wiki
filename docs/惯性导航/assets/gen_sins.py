@@ -238,9 +238,11 @@ print("    高度通道开环不稳定(垂直 Schuler ~9min 周期发散) -> tes
 print("    mini vs PSINS：随机游走/trjsimu 阻尼差异，量级形态一致（对拍数字见 P2 正文）")
 
 print("\n[6] 可视化（迷你 insplot / avpcmpplot，零依赖自写，参考 PSINS 布局）")
-from miniplot import miniinsplot, miniavpcmpplot
+from miniplot import miniinsplot, miniavpcmpplot, miniinsplot3d
 miniinsplot(avp_fix, 'fix')
 miniinsplot(avp_free, 'free')
 miniavpcmpplot(trj, [avp_free, avp_fix], ['free', 'fix'])
 # 方案 B：真值 + free + fix 同图三色叠加（黑=Truth，红=free，蓝=fix）
 miniinsplot([avp_free, avp_fix], trj, 'cmp_freefix')
+# 方案 A：三维轨迹对比（独立图，Z=高度误差×8 放大，破"2D 看不出 free/fix 差别"的困惑）
+miniinsplot3d([avp_free, avp_fix], trj, 'cmp_freefix')

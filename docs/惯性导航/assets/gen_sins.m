@@ -87,6 +87,9 @@ miniavpcmpplot(trj, {avp_free, avp_fix}, {'free','fix'});
 % 方案 B：真值 + free + fix 同图三色叠加（黑=Truth，红=free，蓝=fix）
 miniinsplot({avp_free, avp_fix}, trj, 'cmp_freefix');
 % saveas(gcf, 'miniinsplot_cmp_freefix.png'); close(gcf);
+% 方案 A：三维轨迹对比（独立图，Z=高度误差×8 放大，破"2D 看不出 free/fix 差别"的困惑）
+miniinsplot3d({avp_free, avp_fix}, trj, 'cmp_freefix');
+% saveas(gcf, 'miniinsplot3d_cmp_freefix.png'); close(gcf);
 
 end
 

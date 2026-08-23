@@ -153,3 +153,73 @@ def miniavpcmpplot(trj, avps, names, outname='miniavpcmpplot.png'):
     plt.savefig(outname, dpi=100)
     plt.close()
     print(f'    图已保存: {outname}')
+
+
+def miniinsplot3d(*args):
+    """3D 轨迹对比（独立图；PSINS 无此图，属自写增强，用于把"垂直差异"立起来）。
+    单轨迹:  miniinsplot3d(avp, ttl)                -> Z=高度(相对起点)×ZFAC，仅画一条
+    对比:    miniinsplot3d([s1,s2,...], truth, ttl) -> 真值(黑, Z=0 参考平面) + 各解算(Z=高度误差×ZFAC)
+    设计要点：
+      - 水平通道 Schuler 稳定，free/fix 的 E-N 投影几乎重合 -> 2D 图看不出差别；
+      - 本图 Z 轴 = (估计高度 - 真值高度) × ZFAC，把"垂直通道开环发散"放大到肉眼可见。
+        ZFAC 仅为显示放大，坐标单位仍是 m；真值高度作为参考平面画在 Z=0。
+    avp: (N,10) [att3, vn3, pos3, t]
+    """
+    ZFAC = 8.0
+    deg = np.pi / 180
+    Re = 6378137.0
+    if len(args) == 2 and isinstance(args[1], str):
+        sols = [args[0]]; truth = None; ttl = args[1]; iscmp = False; labels = None
+    elif len(args) >= 3 and isinstance(args[2], str):
+        truth = args[1]; ttl = args[2]; iscmp = True
+        sols = list(args[0]) if isinstance(args[0], (list, tuple)) else [args[0]]
+        labels = args[3] if len(args) >= 4 else None
+    else:
+        raise ValueError('miniinsplot3d: 参数错误（应为 miniinsplot3d(avp,ttl) 或 miniinsplot3d([sols],truth,ttl)）')
+    sol_cols = ['r-', 'b-', 'g-', 'm-', 'c-']
+    if labels is None:
+        if len(sols) == 1:
+            labels = ['DR (est)']
+        elif len(sols) == 2:
+            labels = ['free', 'fix']
+        else:
+            labels = [f'sol{k+1}' for k in range(len(sols))]
+    # 公共原点（E-N 局部坐标；与 miniinsplot 一致）
+    if iscmp:
+        lon0, lat0 = truth[0, 7], truth[0, 6]
+    else:
+        lon0, lat0 = sols[0][0, 7], sols[0][0, 6]
+
+    def enu(a):
+        x = (a[:, 7] - lon0) * Re * np.cos(lat0)   # East（右 / x）
+        y = (a[:, 6] - lat0) * Re                  # North（上 / y）
+        return x, y
+
+    from mpl_toolkits.mplot3d import Axes3D  # noqa: F401
+    fig = plt.figure(figsize=(8.5, 7))
+    ax = fig.add_subplot(111, projection='3d')
+    handles, hlabels = [], []
+    if iscmp:
+        xt, yt = enu(truth)
+        zt = np.zeros_like(xt)
+        h, = ax.plot(xt, yt, zt, 'k-', lw=1.8)     # 真值（黑，Z=0 参考平面）
+        handles.append(h); hlabels.append('Truth')
+        for k, s in enumerate(sols):
+            xs, ys = enu(s)
+            h_truth = np.interp(s[:, 9], truth[:, 9], truth[:, 8])  # 真值高度按时间对齐
+            zs = (s[:, 8] - h_truth) * ZFAC                        # 高度误差 × ZFAC
+            h, = ax.plot(xs, ys, zs, sol_cols[min(k, len(sol_cols) - 1)])
+            handles.append(h); hlabels.append(labels[k])
+    else:
+        x, y = enu(sols[0])
+        z = (sols[0][:, 8] - sols[0][0, 8]) * ZFAC
+        h, = ax.plot(x, y, z, sol_cols[0])
+        handles.append(h); hlabels.append(labels[0])
+    ax.set_xlabel('East / m'); ax.set_ylabel('North / m')
+    ax.set_zlabel(f'Height error x{int(ZFAC)} / m')
+    ax.set_title(f'3D trajectory (Z = height error, x{int(ZFAC)}): {ttl}')
+    ax.legend(handles, hlabels, loc='best')
+    plt.tight_layout()
+    plt.savefig(f'miniinsplot3d_{ttl}.png', dpi=100)
+    plt.close()
+    print(f'    图已保存: miniinsplot3d_{ttl}.png')

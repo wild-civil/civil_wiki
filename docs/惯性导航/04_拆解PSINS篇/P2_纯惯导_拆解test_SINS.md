@@ -158,6 +158,14 @@ gen_sins 实测（966 s，与 test_SINS 同参数 eb=0.01°/h、db=100µg、初�
 
     ![真值 vs free vs fix 同图三色叠加](../assets/miniinsplot_cmp_freefix.png)
 
+    如果还是觉得 2D 图"两条线叠在一起、看不出差别"，下面这张 **3D 轨迹对比** 会把垂直差异直接"立"起来：
+
+    - Z 轴 =（估计高度 − 真值高度）× 8，**仅为显示放大**（坐标单位仍是 m），让垂直通道发散肉眼可见；
+    - 黑线 Truth 躺在 **Z=0 参考平面**上，蓝线 fix 紧贴地面（真实高度误差约 10 m，×8 后约 80 m），红线 free 明显抬升到约 4000–4600 m（对应真实高度误差 500–580 m）；
+    - 一眼可证：**2D 水平投影重合，是因为差别只在垂直；3D 下 free 的"垂直 Schuler 发散"被放大得很明显。**
+
+    ![3D 轨迹对比：真值 vs free vs fix](../assets/miniinsplot3d_cmp_freefix.png)
+
 ## 七、与 PSINS 原版对拍
 
 迷你链路与 PSINS 原版（`inspure`）**同参数确定性对拍**（eb/db 同、随机游走关闭）：
@@ -221,11 +229,12 @@ gen_sins 实测（966 s，与 test_SINS 同参数 eb=0.01°/h、db=100µg、初�
     1. **迷你 trjsimu**：96600 行、末位置 (29.0527°, 105.9853°, 450.0 m)；
     2. **误差注入后解算**：高度自由末点 (-42.4, 935.0, 581.6) m；高度固定 (-42.2, 935.0, 10.0) m——垂直 581.6→10.0、水平不变；
     3. **误差统计**：att RMS (24.4, 22.3, 299.5)″；水平 RMS 345.1 m / 末 935.9 m；垂直 216.1（自由）/ 41.4（固定）。
-    4. **可视化**：脚本运行后会生成四张 PNG：`miniinsplot_fix.png`、`miniinsplot_free.png`、`miniavpcmpplot.png`、`miniinsplot_cmp_freefix.png`（仓库内 PNG 由 Python 路径生成；MATLAB 版的 `saveas` 默认注释，需手动打开或取消注释后导出）。
+    4. **可视化**：脚本运行后会生成五张 PNG：`miniinsplot_fix.png`、`miniinsplot_free.png`、`miniavpcmpplot.png`、`miniinsplot_cmp_freefix.png`、`miniinsplot3d_cmp_freefix.png`（仓库内 PNG 由 Python 路径生成；MATLAB 版的 `saveas` 默认注释，需手动打开或取消注释后导出）。
        - `miniavpcmpplot.png` 对应 PSINS 的 `avpcmpplot`，展示 `free`（高度自由）与 `fix`（高度阻尼）的**误差曲线**对比；
        - `miniinsplot_*.png` 对应 PSINS `insplot(avp,'avp')` 的 6 子图布局；
-       - **`miniinsplot_cmp_freefix.png` 是本篇的核心对比图**：真值 + free + fix **同图三色叠加**——黑线 = 真值（参考基准）、红线 = free（高度自由）、蓝线 = fix（高度阻尼）。**红蓝两线在 E-N 投影上几乎重合**：水平漂移（~936 m）由初始 yaw 误差主导，与是否高度阻尼无关；真正的差别在垂直通道（free 发散到 581.6 m、fix 被兜在 10.0 m），要在左下角 Position offset 子图（绿色 ΔH 曲线）或 `miniavpcmpplot.png` 里才看得清。配色约定在 `assets/miniinsplot.m`（MATLAB）/ `miniplot.py`（Python）的 `solcols`/`sol_lbl` 里统一（真值永远黑线，解算按 free=红、fix=蓝 循环）。
-    绘图函数零依赖自写：`assets/miniinsplot.m` / `miniavpcmpplot.m`（MATLAB）和 `assets/miniplot.py`（Python）。
+       - **`miniinsplot_cmp_freefix.png` 是本篇的核心 2D 对比图**：真值 + free + fix **同图三色叠加**——黑线 = 真值（参考基准）、红线 = free（高度自由）、蓝线 = fix（高度阻尼）。**红蓝两线在 E-N 投影上几乎重合**：水平漂移（~936 m）由初始 yaw 误差主导，与是否高度阻尼无关；真正的差别在垂直通道（free 发散到 581.6 m、fix 被兜在 10.0 m），要在左下角 Position offset 子图（绿色 ΔH 曲线）或 `miniavpcmpplot.png` 里才看得清。
+       - **`miniinsplot3d_cmp_freefix.png` 是 3D 增强图**（独立图，PSINS 原版不画）：Z 轴 =（估计高度 − 真值高度）× 8，仅作显示放大（单位仍是 m）。黑 Truth 在 Z=0 参考面、红线 free 明显抬升、蓝线 fix 紧贴地面——专门用来直观回答"2D 投影里 free/fix 看起来一样"的困惑。配色约定同前（真值永远黑线，解算按 free=红、fix=蓝 循环）。
+    绘图函数零依赖自写：`assets/miniinsplot.m` / `miniavpcmpplot.m` / `miniinsplot3d.m`（MATLAB）和 `assets/miniplot.py`（Python）。
 
     **🎨 绘图对齐 PSINS 的两个实现注记（复盘用）**：迷你绘图函数刻意不调用 PSINS 的 `insplot`/`avpcmpplot`（背后挂着 `glv`/`myfigure`/`xygo`/`pos2dxyz` 一串闭包），只借鉴其"画什么/怎么摆"的意图、自写零依赖实现。其中两个易忘的细节：
 
