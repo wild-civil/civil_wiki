@@ -91,11 +91,13 @@ fprintf('    与 P2 纯惯导对照：P2 误差来自重力杠杆(Schuler 振荡
 
 fprintf('\n[7] 可视化（迷你 insplot / avpcmpplot，零依赖自写，参考 PSINS 布局）\n');
 miniinsplot(trj, 'truth');   % 真值轨迹
-saveas(gcf, 'miniinsplot_truth.png'); close(gcf);
+% saveas(gcf, 'miniinsplot_truth.png'); close(gcf);
 miniinsplot(avp, 'dr');      % 航位推算解算轨迹
 saveas(gcf, 'miniinsplot_dr.png'); close(gcf);
+miniinsplot(avp, trj, 'cmp');  % 真值 vs 估计值 同图叠（对比模式）
+% saveas(gcf, 'miniinsplot_cmp.png'); close(gcf);
 miniavpcmpplot(trj, {avp}, {'dr'});
-saveas(gcf, 'miniavpcmpplot_dr.png'); close(gcf);
+% saveas(gcf, 'miniavpcmpplot_dr.png'); close(gcf);
 
 end
 

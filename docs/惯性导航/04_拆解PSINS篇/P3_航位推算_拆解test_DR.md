@@ -197,9 +197,10 @@ dr.qnb = qupdt(dr.qnb, phim - dr.Cnb'*dr.eth.wnin*nts);
     4. **误差统计**：
         - 分轴/分方向：att RMS (2972.4, 667.8, 3714.9)″；水平位置误差 RMS 149.0 m、末点 313.4 m；垂直 31.7 m（末 68.6 m）。
         - `miniavpcmpplot` 图标题使用的**总口径**：姿态三轴合在一起的 RMS ≈ 2944 arcsec，位置 NEH 三轴合在一起的 RMS ≈ 107.6 m。两种口径都对，只是分母维度不同，读图时不要直接混为一谈。
-    5. **可视化**：生成 `miniinsplot_truth.png`（真值轨迹）、`miniinsplot_dr.png`（DR 解算轨迹）、`miniavpcmpplot_dr.png`（DR vs 真值残差）。
+    5. **可视化**：生成 `miniinsplot_truth.png`（真值轨迹）、`miniinsplot_dr.png`（DR 解算轨迹）、`miniinsplot_cmp.png`（真值 vs DR 同图叠加，新增）、`miniavpcmpplot_dr.png`（DR vs 真值残差）。
+       - `miniinsplot_cmp.png` 是 PSINS 风格的核心对比图：轨迹子图用**蓝线（DR 估计值）叠红线（真值）**，起点红星，一眼可见几何偏差。
 
-    绘图复用 P2 的 `assets/miniinsplot.m` / `miniavpcmpplot.m`（MATLAB）和 `assets/miniplot.py`（Python），具体对齐 PSINS 的注记见 [P2 第十节](P2_纯惯导_拆解test_SINS.md#_10)。仓库里保存的是 MATLAB 版 PNG；如果先跑 Python 再跑 MATLAB，同名 PNG 会被覆盖为后跑的风格。
+    绘图复用 P2 的 `assets/miniinsplot.m` / `miniavpcmpplot.m`（MATLAB）和 `assets/miniplot.py`（Python），具体对齐 PSINS 的注记见 [P2 第十节](P2_纯惯导_拆解test_SINS.md#_10)。本次新增 `miniinsplot` 的**对比模式**（`miniinsplot(dr, truth, 'cmp')`），在轨迹子图同图叠真值与估计；双轨（MATLAB/Python）轨迹朝向统一为 **East-right / North-up**（与 PSINS 一致）。仓库里保存的是 MATLAB 版 PNG。
 
     对不上？先 `git diff docs/惯性导航/assets/gen_dr.py gen_dr.m` 确认脚本没被改过。想和 PSINS 原版对拍：在 MATLAB 里 `addpath(genpath('PSINS目录'))` 后先跑 `test_SINS_trj` 生成 `trj10ms.mat`，再跑 `test_DR`。
 

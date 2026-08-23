@@ -10,16 +10,31 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 
-def miniinsplot(avp, ttl):
-    """单条 avp 的 6 子图状态图（对应 insplot(avp,'avp')）。avp: (N,10) [att3,vn3,pos3,t]"""
+def miniinsplot(avp, arg2, ttl=None):
+    """6 子图状态图（对应 insplot(avp,'avp')）。
+    单轨迹模式: miniinsplot(avp, ttl)            -> 生成 miniinsplot_<ttl>.png
+    对比模式:   miniinsplot(dr, truth, ttl)      -> 生成 miniinsplot_<ttl>.png
+                dr: 估计轨迹; truth: 真值轨迹; 轨迹子图叠 蓝(估计)+红(真值)+红星(起点)
+    avp: (N,10) [att3,vn3,pos3,t]
+    """
     deg = np.pi / 180
     Re = 6378137.0
+    cmp = isinstance(arg2, np.ndarray)        # 第二参为矩阵 -> 对比模式
+    if cmp:
+        truth = arg2
+    else:
+        truth = None
+        ttl = arg2                            # 单模式：第二参即 ttl
     t = avp[:, 9]
     lat0, lon0, h0 = avp[0, 6], avp[0, 7], avp[0, 8]
-    x = (avp[:, 6] - lat0) * Re                 # 北
-    y = (avp[:, 7] - lon0) * Re * np.cos(lat0)  # 东
+    # 局部坐标 East-right / North-up（与 MATLAB 版一致）
+    x = (avp[:, 7] - lon0) * Re * np.cos(lat0)   # East（右 / x）
+    y = (avp[:, 6] - lat0) * Re                  # North（上 / y）
     z = avp[:, 8] - h0
-    dxyz = np.column_stack([x, y, z])
+    dxyz = np.column_stack([x, y, z])            # [East, North, Up]
+    if cmp:
+        xt = (truth[:, 7] - lon0) * Re * np.cos(lat0)
+        yt = (truth[:, 6] - lat0) * Re
 
     plt.figure(figsize=(9, 7))
     plt.subplot(3, 2, 1)
@@ -35,10 +50,25 @@ def miniinsplot(avp, ttl):
     plt.xlabel('t / s'); plt.ylabel('(m/s)'); plt.title('Velocity (VE / VN / VU)')
     plt.legend(['VE', 'VN', 'VU'], loc='best')
     plt.subplot(3, 2, (4, 6))
-    plt.plot(x, y); plt.grid(); plt.axis('equal')
-    plt.xlabel('North / m'); plt.ylabel('East / m'); plt.title('Trajectory (local ENU)')
+    plt.plot(0, 0, 'rp')
+    if cmp:
+        plt.plot(x, y, 'b-', label='DR (est)')
+        plt.plot(xt, yt, 'r-', label='Truth')
+        allx = np.concatenate([x, xt]); ally = np.concatenate([y, yt])
+        mx, my = 0.02 * np.ptp(allx), 0.02 * np.ptp(ally)
+        plt.xlim(allx.min() - mx, allx.max() + mx)
+        plt.ylim(ally.min() - my, ally.max() + my)
+        plt.title('Trajectory (True vs DR)')
+        plt.legend(loc='best')
+    else:
+        plt.plot(x, y)
+        mx, my = 0.02 * np.ptp(x), 0.02 * np.ptp(y)
+        plt.xlim(x.min() - mx, x.max() + mx)
+        plt.ylim(y.min() - my, y.max() + my)
+        plt.title('Trajectory (local ENU)')
+    plt.grid(); plt.xlabel('East / m'); plt.ylabel('North / m')
     plt.subplot(3, 2, 5)
-    plt.plot(t, dxyz); plt.grid()
+    plt.plot(t, dxyz[:, [1, 0, 2]]); plt.grid()   # 对齐 MATLAB dxyz(:,[2,1,3])=[North,East,Up]
     plt.xlabel('t / s'); plt.ylabel('(m)'); plt.title('Position offset from start')
     plt.legend([r'$\Delta N$', r'$\Delta E$', r'$\Delta H$'], loc='best')
     plt.tight_layout()

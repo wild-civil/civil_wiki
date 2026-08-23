@@ -273,4 +273,5 @@ print("\n[7] 可视化（迷你 insplot / avpcmpplot，零依赖自写，参考 
 from miniplot import miniinsplot, miniavpcmpplot
 miniinsplot(trj, 'truth')
 miniinsplot(avp, 'dr')
+miniinsplot(avp, trj, 'cmp')
 miniavpcmpplot(trj, [avp], ['dr'], outname='miniavpcmpplot_dr.png')
