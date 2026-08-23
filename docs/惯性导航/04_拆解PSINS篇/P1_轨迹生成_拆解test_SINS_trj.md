@@ -229,5 +229,5 @@ test_SINS_trj 的 13 个航段调用（展开成 21 行 wat 表，完整表见�
 - **科普系列对照**：03 比力方程（`an−gcc`）、07 姿态更新/圆锥效应（`wm_1/12` 项）、09 位置微分方程（`dpos01`）——全部在 trjsimu 里"原样重现"
 - **本篇验证**：`assets/gen_trj.py`（Python）与 `assets/gen_trj.m`（MATLAB）双轨——wat 表展开 + 解析值（966 s / 286.5 m / 63.7 m / 205.6 m）
 - **上一篇**：[15 多传感器冗余 + FDI](../03_组合导航篇/15_多传感器冗余与FDI.md)——科普系列收官侧；本篇起进入"工业参考拆解"
-- **下一篇**：拆解 PSINS ②：test_SINS.m（规划中）——纯惯导解算（inspure），验证"trjsimu 正演 → insupdate 反演"闭环
+- **下一篇**：[拆解 PSINS ②：test_SINS.m](P2_纯惯导_拆解test_SINS.md)——纯惯导解算（inspure），验证"trjsimu 正演 → insupdate 反演"闭环
 - **系列首页**：[惯性导航与惯导解算 · 自学科普系列](../index.md)

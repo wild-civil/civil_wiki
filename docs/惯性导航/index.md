@@ -73,11 +73,12 @@ tags: [MOC, 导航, 惯导, 科普]
 
 ### Tier 4 · 拆解 PSINS（工业参考逐行走读）→ 📁 04_拆解PSINS篇/
 > 科普 16 篇把原理讲完了，但"工业级参考" PSINS 还蒙着面纱。本系列把核心 demo（19–31 行的"薄壳"）追进 `base/` 库函数逐行拆解：代码在算什么、为什么这么算、对应科普系列哪一章。demo 是数据流入口，肉在库函数里。
+> **配套代码**：每篇配一个**迷你 PSINS** 模块（自包含、MATLAB+Python 双轨、跑同数据与 PSINS 原版对拍）——读者无需 PSINS 也能运行复盘；完整 PSINS 请按作者官网指引下载（建议版本 260705），wiki 不托管第三方代码库。
 
 | 篇 | 拆解对象 | 主题 | 状态 |
 |---|---|---|---|
 | [P1 轨迹生成 · test_SINS_trj.m](04_拆解PSINS篇/P1_轨迹生成_拆解test_SINS_trj.md) | `trjsegment` + `trjsimu`（31 行薄壳） | 航段语言（8 基本+6 复合）/ wat 表 / 正演机数学（att/vn/pos 积分 + IMU 增量反算 + 圆锥/旋转补偿）/ 966 s 轨迹解析 | ✅ 已发布 |
-| P2 纯惯导 · test_SINS.m | `inspure` + 误差注入体系 | 正演→反演闭环验证、imuerrset/avperrset、误差传播对比 | 规划中 |
+| [P2 纯惯导 · test_SINS.m](04_拆解PSINS篇/P2_纯惯导_拆解test_SINS.md) | `inspure` + 误差注入体系 | 正演→反演闭环验证、imuerrset/avperrset、机械编排六步、误差传播（Schuler/垂直发散）、迷你链路 vs PSINS 对拍（935.9 vs 936.0 m） | ✅ 已发布 |
 | P3 航位推算 · test_DR.m | `odsimu` + `drupdate` | DR 数学（航向×里程）、安装角/刻度系数、与 SINS 的本质差异 | 规划中 |
 
 ## 学习路线图
