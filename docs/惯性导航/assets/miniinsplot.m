@@ -1,5 +1,6 @@
 function miniinsplot(varargin)
 % 迷你 insplot（自写零依赖；布局对齐 PSINS insplot(avp,'avp')，不调用 glv/myfigure/xygo/pos2dxyz）
+% 【函数签名 / 参数 / MATLAB 惯用法详解】见 04_拆解PSINS篇/附录_绘图函数与MATLAB惯用法.md
 %  单轨迹模式:  miniinsplot(avp, ttl)                 -> 生成 miniinsplot_<ttl>.png
 %    avp: [att3, vn3, pos3, t]（NED，att=[pitch;roll;yaw]）; ttl: 文件名后缀字符串
 %  对比模式(单解算):  miniinsplot(dr, truth, ttl)     -> 轨迹子图(3,2,[4,6]) 叠 红(估计)+黑(真值)+红星(起点)
@@ -10,6 +11,9 @@ function miniinsplot(varargin)
 deg = pi/180;  Re = 6378137.0;
 
 % ---------------- 参数解析 ----------------
+% nargin  "本次调用传了几个输入参数"
+% varargin 把"多余的所有输入"收进一个 cell 数组
+% iscell(...) 判断输入是不是 cell（用来区分 {s1,s2} 多解算 vs 单个矩阵）
 if nargin==2 && ischar(varargin{2})
     avp = varargin{1};  truth = [];  ttl = varargin{2};  iscmp = false;  sols = {};  labels = {};
 elseif nargin>=3 && ischar(varargin{3})
@@ -28,7 +32,7 @@ end
 t   = avp(:,end);
 lat0 = avp(1,7); lon0 = avp(1,8); h0 = avp(1,9);
 % 度分秒字符串（dddmmss.ss，对齐 PSINS 图例 DMS 格式）
-strdms = @(d) sprintf('%03d%02d%05.2f', floor(abs(d)), floor(rem(abs(d)*60,60)), rem(abs(d)*3600,60));
+strdms = @(d) sprintf('%03d%02d%05.2f', floor(abs(d)), floor(rem(abs(d)*60,60)), rem(abs(d)*3600,60));  % DMS(度分秒) 字符串格式化，对齐 PSINS 图例；@(d) 是匿名函数（无名字、一行写完）
 % 局部坐标（pos2dxyz 对齐：E-N-U；首点为原点）
 xE = (avp(:,8)-lon0)*Re*cos(lat0);   % East（右 / x）
 yN = (avp(:,7)-lat0)*Re;             % North（上 / y）
@@ -41,14 +45,16 @@ if isempty(labels)
     switch length(sols)
         case 1,  sollbl = {'DR (est)'};
         case 2,  sollbl = {'free','fix'};
-        otherwise, sollbl = arrayfun(@(k) sprintf('sol%d',k), 1:length(sols), 'UniformOutput',false);
+        otherwise, sollbl = arrayfun(@(k) sprintf('sol%d',k), 1:length(sols), 'UniformOutput',false);  % arrayfun 把函数逐个作用到 1:N；'UniformOutput',false 表示返回 cell(字符串数组) 而非数值矩阵
     end
 else
     sollbl = labels;
 end
 
-scrsz = get(0,'ScreenSize');   % 对齐 PSINS myfigure：宽屏，轨迹 [4,6] 才显正方形
-figure('Color','w','OuterPosition',[0.02*scrsz(3), 0.05*scrsz(4), 0.9*scrsz(3), 0.85*scrsz(4)]);
+scrsz = get(0,'ScreenSize');   % 0 = MATLAB 的"根图形对象"（就是屏幕）；ScreenSize 返回 [左,下,宽,高] 像素。 对齐 PSINS myfigure：宽屏，轨迹 [4,6] 才显正方形
+% figure('Color','w') 背景设白色，'w'=white（单字母颜色码 r/g/b/c/m/y/k/w）
+% figure('OuterPosition',[0.02*W,0.05*H,0.9*W,0.85*H]) 让图框占到屏幕 90% 宽、85% 高，稍微偏一下。
+figure('Color','w','OuterPosition',[0.02*scrsz(3), 0.05*scrsz(4), 0.9*scrsz(3), 0.85*scrsz(4)]); 
 % (321) pitch / roll
 subplot(3,2,1); plot(t, avp(:,1)/deg, t, avp(:,2)/deg); grid on;
 xlabel('t / s'); ylabel('$\theta / (^{\circ})$','Interpreter','latex'); title('Pitch / Roll'); legend('Pitch','Roll','Location','best');
@@ -59,9 +65,9 @@ xlabel('t / s'); ylabel('$\psi / (^{\circ})$','Interpreter','latex'); title('Yaw
 VG = sqrt(avp(:,4).^2 + avp(:,5).^2);
 subplot(3,2,3); plot(t, [avp(:,4), avp(:,5), avp(:,6), VG]); grid on;
 xlabel('t / s'); ylabel('(m/s)'); title('Velocity'); legend('VE','VN','VU','VG','Location','best');
-% (3,2,[4,6]) 轨迹（E 右 / N 上，对齐 pos2dxyz + PSINS insplot 轨迹朝向）
+% (3,2,[4,6]) 轨迹（E 右 / N 上，对齐 pos2dxyz + PSINS insplot 轨迹朝向） 解释：3×2 网格里，把第 4、6 格合并成一个大面板（底部左右并排，给轨迹图用）
 subplot(3,2,[4,6]); hold on;
-plot(0, 0, 'rp', 'HandleVisibility','off');   % 起点红点，不进入 legend
+plot(0, 0, 'rp', 'HandleVisibility','off');   % 起点红点，不进入 legend。解释：在原点画个红点，HandleVisibility off 让它不进图例。这是个小聪明 hack
 if iscmp
     xE_t = (truth(:,8)-lon0)*Re*cos(lat0);    % 真值 East
     yN_t = (truth(:,7)-lat0)*Re;              % 真值 North

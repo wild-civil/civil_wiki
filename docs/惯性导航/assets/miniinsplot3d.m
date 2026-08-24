@@ -1,5 +1,6 @@
 function miniinsplot3d(varargin)
 % 迷你 3D 轨迹对比（自写零依赖；PSINS 无此图，属自写增强，用于把"垂直差异"立起来）
+% 【函数签名 / 参数 / MATLAB 惯用法详解】见 04_拆解PSINS篇/附录_绘图函数与MATLAB惯用法.md
 %   单轨迹:  miniinsplot3d(avp, ttl)                  -> Z=高度(相对起点)×ZFAC
 %   对比:    miniinsplot3d({s1,s2,...}, truth, ttl)    -> 真值(黑,Z=0 参考面) + 各解算(Z=高度误差×ZFAC)
 % 约定（统一）：真值永远画黑线/参考面；解算按配色循环（free=红、fix=蓝、…）。
@@ -33,7 +34,7 @@ end
 
 if iscmp, lon0 = truth(1,8); lat0 = truth(1,7);
 else,     lon0 = sols{1}(1,8); lat0 = sols{1}(1,7); end
-enu = @(a) deal((a(:,8)-lon0)*Re*cos(lat0), (a(:,7)-lat0)*Re);  % East, North
+enu = @(a) deal((a(:,8)-lon0)*Re*cos(lat0), (a(:,7)-lat0)*Re);  % deal(...) 一次返回多个输出（这里同时返回 East、North 两个向量）；匿名函数写在一行里
 
 figure('Color','w'); hold on; grid on; view(3);
 if iscmp
@@ -44,7 +45,7 @@ if iscmp
     for k = 1:length(sols)
         s = sols{k};
         [xs, ys] = enu(s);
-        h_truth = interp1(truth(:,10), truth(:,9), s(:,10), 'linear', 'extrap');  % 真值高度按时间对齐
+        h_truth = interp1(truth(:,10), truth(:,9), s(:,10), 'linear', 'extrap');  % 按时间把真值高度插值到解算的时间轴上（对齐时间戳）
         zs = (s(:,9) - h_truth) * ZFAC;
         hs(k) = plot3(xs, ys, zs, solcols{min(k,length(solcols))});
     end

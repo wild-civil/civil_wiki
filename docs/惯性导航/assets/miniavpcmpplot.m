@@ -1,5 +1,6 @@
 function miniavpcmpplot(trj, avps, names)
 % 迷你 avpcmpplot（自写零依赖；布局对齐 PSINS avpcmpplot(avp0,varargin) 'avp' 6 面板）
+% 【函数签名 / 参数 / MATLAB 惯用法详解】见 04_拆解PSINS篇/附录_绘图函数与MATLAB惯用法.md
 %   trj : 真值 avp（100 Hz，[att3,vn3,pos3,t]）
 %   avps: cell of 解算 avp（双子样 50 Hz，与 trj 对齐）
 %   names: cell of 字符串（图例，每个解算一个）
@@ -36,7 +37,7 @@ subplot(3,2,2); hold on; grid on;
 for k=1:n
     m = min(size(avps{k},1), size(trj_d,1));
     de = avps{k}(1:m,1:3) - trj_d(1:m,1:3);
-    de(:,3) = mod(de(:,3)+pi, 2*pi) - pi;
+    de(:,3) = mod(de(:,3)+pi, 2*pi) - pi;   % 把 yaw 误差归一到 [-pi, pi]，避免跨 ±180° 时画出巨大跳变（如 179°→-179° 应算 2° 而非 358°）
     h = plot(trj_d(1:m,end), de/dph, 'Color', sol_color{k}, 'LineStyle', sol_style{k}, 'LineWidth', 1.1);
     for j=2:3, h(j).Annotation.LegendInformation.IconDisplayStyle = 'off'; end  % 仅首线入图例
     att_rms(k) = sqrt(mean(de(:).^2))/dph;
@@ -83,7 +84,7 @@ for k=1:n
     dp = avps{k}(1:m,7:9) - trj_d(1:m,7:9);
     dN = dp(:,1)*Re; dE = dp(:,2)*Re*cos(lat0); dH = dp(:,3);
     h = plot(trj_d(1:m,end), [dN, dE, dH], 'Color', sol_color{k}, 'LineStyle', sol_style{k}, 'LineWidth', 1.1);
-    for j=2:3, h(j).Annotation.LegendInformation.IconDisplayStyle = 'off'; end
+    for j=2:3, h(j).Annotation.LegendInformation.IconDisplayStyle = 'off'; end % 图形对象技巧：把每条解算的第 2、3 条线从图例藏起来，让"姿态三维曲线"共用一个图例项
     pos_rms(k) = sqrt(mean([dN, dE, dH].^2, 'all'));
 end
 xlabel('t / s'); ylabel('(m)'); title(sprintf('Position error   RMS = %.1f m', mean(pos_rms)));
