@@ -1,4 +1,4 @@
-function miniavpcmpplot(trj, avps, names)
+function miniavpcmpplot(trj, avps, names, fname)
 % 迷你 avpcmpplot（自写零依赖；布局对齐 PSINS avpcmpplot(avp0,varargin) 'avp' 6 面板）
 % 【函数签名 / 参数 / MATLAB 惯用法详解】见 04_拆解PSINS篇/附录_绘图函数与MATLAB惯用法.md
 %   trj : 真值 avp（100 Hz，[att3,vn3,pos3,t]）
@@ -90,9 +90,11 @@ end
 xlabel('t / s'); ylabel('(m)'); title(sprintf('Position error   RMS = %.1f m', mean(pos_rms)));
 legend(names, 'Location','best');
 
-% 取消下方注释保存为图片
-% saveas(gcf, 'miniavpcmpplot.png');
-% fprintf('    图已保存: miniavpcmpplot.png\n');
+% 可选第 4 参 fname：保存为图片（P4 三解算对比传入；P2/P3 两解算 3 参调用不受影响）
+if nargin >= 4 && ~isempty(fname)
+    saveas(gcf, fname);
+    fprintf('    图已保存: %s\n', fname);
+end
 
 % close(gcf);% 是否显示figure
 end

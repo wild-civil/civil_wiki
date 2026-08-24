@@ -213,5 +213,5 @@ dr.qnb = qupdt(dr.qnb, phim - dr.Cnb'*dr.eth.wnin*nts);
 - **科普系列对照**：03 比力方程（理解 DR 为什么可以避开加计）、09 位置微分/误差传播（`Mpv` 与曲率半径）、[P2 纯惯导拆解](P2_纯惯导_拆解test_SINS.md)（对比误差机理）
 - **本篇验证**：`assets/gen_dr.py`（Python）与 `assets/gen_dr.m`（MATLAB）双轨——迷你 odsimu/drinit/drupdate + 误差传播 + 与 P2 对照；两张 SVG（`DR数据流.svg`、`DR误差机理.svg`）
 - **上一篇**：[拆解 PSINS ②：test_SINS.m](P2_纯惯导_拆解test_SINS.md)——纯惯导解算
-- **下一篇**：拆解 PSINS ④：test_SINS_DR.m（规划中）——纯惯导 + 航位推算组合
+- **下一篇**：[拆解 PSINS ④：test_SINS_DR.m](P4_SINS+DR组合_拆解test_SINS_DR.md)——SINS + DR 组合导航，22 维 KF 自标定（dKod/dpitch/dyaw/dT）
 - **系列首页**：[惯性导航与惯导解算 · 自学科普系列](../index.md)
