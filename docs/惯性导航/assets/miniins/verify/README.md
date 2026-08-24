@@ -4,9 +4,10 @@
 
 | 脚本 | 验证什么 | 当前状态 |
 |---|---|---|
-| `verify_trans.m` | 基础转换模块（9 组：互逆性 / 合成一致性 / 已知值） | M1 已交付 ✅ |
-| `verify_ins.m` | insupdate 机械编排（姿态更新 yaw=90° + 静止比力自洽） | M1 已交付 ✅ |
-| `compare_psins.m` | 与 PSINS 原版同参数对拍（计划，M2 trjsimu 落地后补） | 规划中 |
+| `verify_trans.m` | 基础转换模块（9 组：互逆性 / 合成一致性 / 已知值） | ✅ 全 PASS |
+| `verify_ins.m` | insupdate 机械编排（姿态更新 yaw=90° + 静止比力自洽） | ✅ 全 PASS |
+| `verify_trj.m` | 轨迹生成正演→反演自洽（trjsimu 生成 imu → insupdate 复现 avp） | 🆕 M2 待跑 |
+| `compare_psins.m` | 与 PSINS 原版同参数对拍（计划，需本地 PSINS） | 规划中 |
 
 ## 怎么跑
 
@@ -14,6 +15,7 @@
 cd docs/惯性导航/assets/miniins/verify
 verify_trans        % → VERDICT: ALL PASS
 verify_ins          % → VERDICT: ALL PASS
+verify_trj          % → VERDICT: ALL PASS（M2）
 ```
 
 ## 与 PSINS 的对拍基准（来自拆解系列，供 compare_psins 对照）
