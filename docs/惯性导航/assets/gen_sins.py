@@ -8,7 +8,7 @@
   [注入] 确定性误差：eb=0.01°/h 陀螺零偏、db=100µg 加计零偏、初始姿态误差 [0.5;0.5;5]'
   [解算] 迷你 inspure（nn=2 双子样机械编排：cnscl 圆锥/划桨 + earth + 速度/位置/姿态更新）
   [分析] 解算 vs 真值：姿态/速度/位置误差（Schuler 振荡、水平漂移、高度通道）
-高度阻尼选项：free（自由）/ fix（固定真值高度，= test_SINS 的 trj.bh 作用）
+高度阻尼选项：free（自由）/ fix（固定气压高度 trj.bh = 真值高度+气压噪声）
 教学简化（对拍 PSINS 时允许的差异）：随机游走省略（确定性）、trjsimu 无匀速阻尼。
 """
 import numpy as np
@@ -144,13 +144,14 @@ def askew(v):
     return np.array([[0, -v[2], v[1]], [v[2], 0, -v[0]], [-v[1], v[0], 0]])
 
 # ---------------- 迷你 inspure（nn=2 双子样机械编排） ----------------
-def miniinspure(imu, avp0, fix_h=False):
+def miniinspure(imu, avp0, fix_h=False, bh=None):
     nn = 2
     att, vn, pos = avp0[0:3].copy(), avp0[3:6].copy(), avp0[6:9].copy()
     qnb = a2qua(att)
     len_ = len(imu); m = len_//nn
     avp = np.zeros((m, 10)); ki = 0
     pos0 = pos.copy()
+    bh_d = None if bh is None else bh[1::2]   # 气压高度下采样（与双子样输出对齐）
     for k in range(0, len_-nn+1, nn):
         wm = imu[k:k+nn, 0:3]; vm = imu[k:k+nn, 3:6]
         nts = nn*ts; nts2 = nts/2
@@ -176,7 +177,8 @@ def miniinspure(imu, avp0, fix_h=False):
         # 姿态更新（qupdt2 等效）
         qnb = qmul(rv2q(-wnin*nts), qmul(qnb, rv2q(phim)))
         if fix_h:
-            pos[2] = pos0[2]          # 高度固定（= test_SINS 的 trj.bh 作用）
+            # 高度阻尼：钉到气压高度 trj.bh（真值高度 + 气压噪声）——跟踪真值爬升，仅残留气压误差
+            pos[2] = bh_d[ki] if bh_d is not None else pos0[2]
         att = q2att(qnb)
         avp[ki] = [*att, *vn, *pos, imu[k+1, 6]]
         ki += 1
@@ -193,6 +195,11 @@ print("\n[1] 迷你 trjsimu：966 s 轨迹生成（100 Hz，双子样增量）")
 imu, trj = minitrj(avp0, WAT, ts)
 print(f"    行数 = {len(imu)}（期望 96600），末位置 = ({trj[-1,6]/deg:.4f}°, {trj[-1,7]/deg:.4f}°, {trj[-1,8]:.1f} m)")
 
+# 真值气压高度（= PSINS trj.bh）：真值高度 + 确定性平滑气压误差（便于双轨对拍）
+t_trj = trj[:, 9]
+baro_err = 10.0*np.sin(2*np.pi*0.004*t_trj) + 5.0*np.sin(2*np.pi*0.021*t_trj)   # m
+bh = trj[:, 8] + baro_err                      # 气压高度参考源
+
 print("\n[2] 确定性误差注入（eb=0.01°/h, db=100µg, att err [0.5;0.5;5]', vn 0.1, pos 10m）")
 eb = np.array([0.01, 0.01, 0.01])*dph
 db = np.array([100., 100., 100.])*ug
@@ -203,8 +210,8 @@ att0e = avp0[0:3] + np.array([0.5, 0.5, 5.0])*(deg/60)
 avp0e = np.array([*att0e, 0.1, 0.1, 0.1, avp0[6]+10/Re, avp0[7]+10/(Re*np.cos(avp0[6])), avp0[8]+10])
 
 print("\n[3] 迷你 inspure（nn=2 双子样机械编排）")
-avp_free = miniinspure(imu_e, avp0e, fix_h=False)
-avp_fix  = miniinspure(imu_e, avp0e, fix_h=True)
+avp_free = miniinspure(imu_e, avp0e, fix_h=False, bh=bh)
+avp_fix  = miniinspure(imu_e, avp0e, fix_h=True,  bh=bh)
 Re_h = Re + avp0[8]
 def pos_err_m(dp):
     return np.array([dp[0]*Re_h, dp[1]*Re_h*np.cos(avp0[6]), dp[2]])

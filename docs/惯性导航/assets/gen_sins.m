@@ -6,7 +6,7 @@ function gen_sins()
 %   [注入] 确定性误差：eb=0.01°/h 陀螺零偏、db=100µg 加计零偏、初始姿态误差 [0.5;0.5;5]'
 %   [解算] 迷你 inspure（nn=2 双子样机械编排：cnscl 圆锥/划桨 + earth + 速度/位置/姿态更新）
 %   [分析] 解算 vs 真值：姿态/速度/位置误差（Schuler 振荡、水平漂移、高度通道）
-% 高度阻尼选项：free（自由）/ fix（固定真值高度，= test_SINS 的 trj.bh 作用）
+% 高度阻尼选项：free（自由）/ fix（固定气压高度 trj.bh = 真值高度+气压噪声）
 % 教学简化（对拍 PSINS 时允许的差异）：随机游走省略（确定性）、trjsimu 无匀速阻尼。
 % 无工具箱依赖，运行：gen_sins
 
@@ -52,6 +52,11 @@ fprintf('\n[1] 迷你 trjsimu：966 s 轨迹生成（100 Hz，双子样增量）
 fprintf('    行数 = %d（期望 96600），末位置 = (%.4f°, %.4f°, %.1f m)\n', ...
         size(imu,1), trj(end,7)/deg, trj(end,8)/deg, trj(end,9));
 
+% 真值气压高度（= PSINS trj.bh）：真值高度 + 确定性平滑气压误差（便于双轨对拍）
+t_trj = trj(:,10);
+baro_err = 10.0*sin(2*pi*0.004*t_trj) + 5.0*sin(2*pi*0.021*t_trj);   % m
+bh = trj(:,9) + baro_err;                       % 气压高度参考源
+
 fprintf('\n[2] 确定性误差注入（eb=0.01°/h, db=100µg, att err [0.5;0.5;5]'', vn 0.1, pos 10m）\n');
 eb = [0.01;0.01;0.01]*dph;
 db = [100.;100.;100.]*ug;
@@ -62,8 +67,8 @@ att0e = avp0(1:3) + ([0.5;0.5;5.0]*(deg/60));
 avp0e = [att0e; 0.1;0.1;0.1; avp0(7)+10/Re; avp0(8)+10/(Re*cos(avp0(7))); avp0(9)+10];
 
 fprintf('\n[3] 迷你 inspure（nn=2 双子样机械编排）\n');
-avp_free = miniinspure(imu_e, avp0e, false);
-avp_fix  = miniinspure(imu_e, avp0e, true);
+avp_free = miniinspure(imu_e, avp0e, false, bh);
+avp_fix  = miniinspure(imu_e, avp0e, true,  bh);
 Re_h = Re + avp0(9);
 pe = pos_err_m(avp_free(end,7:9)-trj(end,7:9), avp0, Re_h);
 pf = pos_err_m(avp_fix(end,7:9)-trj(end,7:9),  avp0, Re_h);
@@ -205,12 +210,15 @@ function [imu, avp] = minitrj(avp0, wat, ts)
 end
 
 % ---------------- 迷你 inspure（nn=2 双子样机械编排） ----------------
-function avp = miniinspure(imu, avp0, fix_h)
+function avp = miniinspure(imu, avp0, fix_h, bh)
+    if nargin < 4, bh = []; end
     nn = 2; ts = 0.01;
     att = avp0(1:3); vn = avp0(4:6); pos = avp0(7:9);
     qnb = a2qua(att); pos0 = pos;
     len_ = size(imu,1); m = floor(len_/nn);
     avp = zeros(m, 10); ki = 0;
+    bh_d = [];
+    if ~isempty(bh), bh_d = bh(2:2:end); end
     for k = 1:nn:len_-nn+1
         wm = imu(k:k+1, 1:3);  vm = imu(k:k+1, 4:6);
         nts = nn*ts;  nts2 = nts/2;
@@ -232,7 +240,10 @@ function avp = miniinspure(imu, avp0, fix_h)
         vn = vn1;
         % 姿态更新（qupdt2 等效）
         qnb = qmul(rv2q(-wnin*nts), qmul(qnb, rv2q(phim)));
-        if fix_h, pos(3) = pos0(3); end
+        if fix_h
+            % 高度阻尼：钉到气压高度 trj.bh（真值高度 + 气压噪声）——跟踪真值爬升，仅残留气压误差
+            if ~isempty(bh_d), pos(3) = bh_d(ki+1); else pos(3) = pos0(3); end
+        end
         att = q2att(qnb);
         avp(ki+1,:) = [att; vn; pos; imu(k+1,7)]';
         ki = ki+1;
