@@ -197,10 +197,11 @@ dr.qnb = qupdt(dr.qnb, phim - dr.Cnb'*dr.eth.wnin*nts);
     4. **误差统计**：
         - 分轴/分方向：att RMS (2972.4, 667.8, 3714.9)″；水平位置误差 RMS 149.0 m、末点 313.4 m；垂直 31.7 m（末 68.6 m）。
         - `miniavpcmpplot` 图标题使用的**总口径**：姿态三轴合在一起的 RMS ≈ 2944 arcsec，位置 NEH 三轴合在一起的 RMS ≈ 107.6 m。两种口径都对，只是分母维度不同，读图时不要直接混为一谈。
-    5. **可视化**：生成 `miniinsplot_truth.png`（真值轨迹）、`miniinsplot_dr.png`（DR 解算轨迹）、`miniinsplot_cmp.png`（真值 vs DR 同图叠加，新增）、`miniavpcmpplot_dr.png`（DR vs 真值残差）。
+    5. **可视化**：生成 `miniinsplot_truth.png`（真值轨迹）、`miniinsplot_dr.png`（DR 解算轨迹）、`miniinsplot_cmp.png`（真值 vs DR 同图叠加）、`miniavpcmpplot_dr.png`（DR vs 真值残差）、`miniinsplot3d_cmp_dr.png`（**3D 轨迹对比，新增**）。
        - `miniinsplot_cmp.png` 是 PSINS 风格的核心对比图：轨迹子图用**红线（DR 估计值）叠黑线（真值，参考基准）**，起点红星，一眼可见几何偏差。配色约定与 P2 统一（真值永远黑线）。
+       - `miniinsplot3d_cmp_dr.png`：**黑线=真值躺在 Z=0 参考平面，红线=DR（标签 `DR (est)`）**。注意 DR 的垂直误差很小（末点 68.6 m，×8 后约 550 m），而水平误差才是主角（末点 313 m 发散）——所以这张 3D 图主要展示 **DR 路径在水平面上逐渐"甩开"真值**的过程，Z 轴只有小幅波动。这正是 DR 与 P2 纯惯导（垂直无界发散）的本质区别：**DR 的命门是航向/水平，不是垂直**。该图为 PSINS 原版不画的增强图，Z 放大约定同 P2。
 
-    绘图复用 P2 的 `assets/miniinsplot.m` / `miniavpcmpplot.m`（MATLAB）和 `assets/miniplot.py`（Python），具体对齐 PSINS 的注记见 [P2 第十节](P2_纯惯导_拆解test_SINS.md#_10)。本次新增 `miniinsplot` 的**对比模式**（`miniinsplot(dr, truth, 'cmp')`），在轨迹子图同图叠真值与估计；双轨（MATLAB/Python）轨迹朝向统一为 **East-right / North-up**（与 PSINS 一致）。仓库里保存的是 MATLAB 版 PNG。
+    绘图复用 P2 的 `assets/miniinsplot.m` / `miniavpcmpplot.m` / `miniinsplot3d.m`（MATLAB）和 `assets/miniplot.py`（Python），具体对齐 PSINS 的注记见 [P2 第十节](P2_纯惯导_拆解test_SINS.md#_10) 与 [附录：绘图函数与 MATLAB 惯用法](../04_拆解PSINS篇/附录_绘图函数与MATLAB惯用法.md)。`miniinsplot` 的**对比模式**（`miniinsplot(dr, truth, 'cmp')`）、`miniinsplot3d` 的 3D 对比均双轨可用；双轨（MATLAB/Python）轨迹朝向统一为 **East-right / North-up**（与 PSINS 一致）。仓库内 PNG 由 **Python 路径生成**（本环境 `matlab -batch` 开图崩溃，故 `.m` 的 `saveas` 默认注释，仅作参考/对拍）。
 
     对不上？先 `git diff docs/惯性导航/assets/gen_dr.py gen_dr.m` 确认脚本没被改过。想和 PSINS 原版对拍：在 MATLAB 里 `addpath(genpath('PSINS目录'))` 后先跑 `test_SINS_trj` 生成 `trj10ms.mat`，再跑 `test_DR`。
 

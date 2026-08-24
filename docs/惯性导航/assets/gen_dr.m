@@ -98,6 +98,8 @@ miniinsplot(avp, trj, 'cmp');  % 真值 vs 估计值 同图叠（对比模式）
 % saveas(gcf, 'miniinsplot_cmp.png'); close(gcf);
 miniavpcmpplot(trj, {avp}, {'dr'});
 % saveas(gcf, 'miniavpcmpplot_dr.png'); close(gcf);
+miniinsplot3d({avp}, trj, 'cmp_dr');   % 3D 轨迹对比（DR vs 真值；Z=高度误差×8，与 P2 约定一致）
+% saveas(gcf, 'miniinsplot3d_cmp_dr.png'); close(gcf);
 
 end
 

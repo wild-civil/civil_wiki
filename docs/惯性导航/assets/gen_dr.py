@@ -269,9 +269,11 @@ print("    航向误差 δψ -> 位置误差 ≈ tan(δψ)·S（S=已走路程�
 print("    尺度因子误差 dkod -> 位置误差 ∝ dkod·S -> 同样线性（比例型）")
 print("    与 P2 纯惯导对照：P2 误差来自重力杠杆(Schuler 振荡,随时间) ；DR 误差随路程单调增长")
 
-print("\n[7] 可视化（迷你 insplot / avpcmpplot，零依赖自写，参考 PSINS 布局）")
-from miniplot import miniinsplot, miniavpcmpplot
+print("\n[7] 可视化（迷你 insplot / avpcmpplot / 3D，零依赖自写，参考 PSINS 布局）")
+from miniplot import miniinsplot, miniavpcmpplot, miniinsplot3d
 miniinsplot(trj, 'truth')
 miniinsplot(avp, 'dr')
 miniinsplot(avp, trj, 'cmp')
 miniavpcmpplot(trj, [avp], ['dr'], outname='miniavpcmpplot_dr.png')
+# 3D 轨迹对比（DR vs 真值；Z=高度误差×8，与 P2 的 miniinsplot3d 约定一致）
+miniinsplot3d([avp], trj, 'cmp_dr')
