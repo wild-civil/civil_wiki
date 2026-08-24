@@ -36,9 +36,11 @@ miniins/
 │     insupdate.m      #   机械编排：姿态 / 速度 / 位置更新（逐行注释版）
 │     trjsegment.m     #   轨迹生成：航段语言（8 基本段，M2）
 │     trjsimu.m        #   轨迹正演机：avp → imu 反算（六步，M2）
-│     …                #   （M3-M4 陆续加入：dr / kf …）
+│     drinit.m         #   航位推算：DR 初始化（M3）
+│     drupdate.m       #   航位推算：航向×里程推位置（M3）
+│     …                #   （M4 陆续加入：kf …）
 ├── demos/             # 场景脚本（对标 PSINS demos/）
-├── verify/            # 回归自检：verify_trans / verify_ins / verify_trj（确定性，无工具箱）
+├── verify/            # 回归自检：verify_trans / verify_ins / verify_trj / verify_dr（确定性，无工具箱）
 └── assets/            # 出图
 ```
 
@@ -62,6 +64,6 @@ verify_trj                             % 轨迹生成自洽自检（应全 PASS�
 
 - **M1 ✅**：`trans` 系列 + `earth.m` + `insupdate.m`（纯惯导闭环，逐行注释）
 - **M2 ✅**：轨迹生成（`trjsegment` 航段语言 + `trjsimu` 正演机），`verify_trj` 正演→反演自洽
-- **M3**：航位推算（`drinit` / `drupdate`）
+- **M3 ✅**：航位推算（`drinit` / `drupdate`，航向×里程），`verify_dr` 自洽（Python 预验证通过）
 - **M4**：组合导航 KF（`kfinit` / `kfupdate` / `kffk` / `kffeedback`，15→22 维）
 - **M5**：GNSS 扩展 + 与固件 C SIL 打通

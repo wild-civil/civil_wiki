@@ -56,15 +56,20 @@ switch lower(segtype)
         w = varargin{1}*pi/180;
         seg.wat(end+1,:) = [lasting, seg.vel, 0,-w,0, 0,0,0];
 
-    case 'turnleft'         % 左转：ω 绕 z 轴 +w，向心加速度 a_y=−cf（cf=w·v）
+    case 'turnleft'         % 左转：ω 绕 z 轴 +w，向心加速度 a_y=+cf（cf=w·v）
+        %   推导（2026-08-24 修正）：yaw 增大=从东转北（左转），速度导数
+        %   应为 an=[−cf·sin(yaw); +cf·cos(yaw); 0]（保持 |v|=10、方向转北），
+        %   这要求体轴 at_y=+cf。原写 −cf 导致"航向左转、轨迹右弯"的
+        %   物理矛盾（verify_dr 末点 839 m 暴露；verify_trj 因正演-反演
+        %   自洽被掩盖——和 M2 的双错误抵消同型）。
         w = varargin{1}*pi/180;
         cf = w*seg.vel;                          % 向心加速度 = ω·v（P1 第四节）
-        seg.wat(end+1,:) = [lasting, seg.vel, 0,0,w, 0,-cf,0];
+        seg.wat(end+1,:) = [lasting, seg.vel, 0,0,w, 0,cf,0];
 
-    case 'turnright'        % 右转：ω 绕 z 轴 −w，a_y=+cf
+    case 'turnright'        % 右转：ω 绕 z 轴 −w，a_y=−cf（对称，方向相反）
         w = varargin{1}*pi/180;
         cf = w*seg.vel;
-        seg.wat(end+1,:) = [lasting, seg.vel, 0,0,-w, 0,cf,0];
+        seg.wat(end+1,:) = [lasting, seg.vel, 0,0,-w, 0,-cf,0];
 
     case 'rollleft'         % 左滚转：ω 绕 x 轴 +w（只滚转不转向）
         w = varargin{1}*pi/180;
