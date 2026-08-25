@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 750 480" width="100%" height="100%">
+  <defs>
+    <!-- 箭头定义 -->
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#1a1a1a" />
+    </marker>
+  </defs>
+
+  <style>
+    .bg { fill: #ffffff; }
+    .text-math { font-family: 'Times New Roman', 'Georgia', serif; font-style: italic; font-size: 20px; fill: #1a1a1a; text-anchor: middle; dominant-baseline: middle; }
+    .text-sub { font-size: 13px; font-style: normal; }
+    .text-label { font-family: 'PingFang SC', 'Microsoft YaHei', 'SimSun', sans-serif; font-size: 16px; fill: #1a1a1a; dominant-baseline: middle; }
+    .text-title { font-family: 'PingFang SC', 'Microsoft YaHei', 'SimSun', sans-serif; font-size: 18px; font-weight: bold; fill: #1a1a1a; text-anchor: middle; }
+    .bracket { stroke: #1a1a1a; stroke-width: 2.5; stroke-linecap: square; fill: none; }
+    .line-arrow { stroke: #1a1a1a; stroke-width: 1.5; fill: none; marker-end: url(#arrow); }
+    .line-guide { stroke: #1a1a1a; stroke-width: 1.5; fill: none; }
+  </style>
+
+  <!-- 背景 -->
+  <rect width="100%" height="100%" class="bg" />
+
+  <!-- 左侧公式名 C_1^2 = -->
+  <text x="50" y="118" class="text-math" font-size="22px">C<tspan baseline-shift="sub" class="text-sub">1</tspan><tspan baseline-shift="super" class="text-sub">2</tspan> =</text>
+
+  <!-- 矩阵括号 -->
+  <!-- 左括号 -->
+  <path d="M 105 35 L 85 35 L 85 205 L 105 205" class="bracket" />
+  <!-- 右括号 -->
+  <path d="M 380 35 L 400 35 L 400 205 L 380 205" class="bracket" />
+
+  <!-- 矩阵内部元素 -->
+  <!-- Row 1 -->
+  <text x="150" y="60" class="text-math">cos <tspan font-style="italic">α</tspan></text>
+  <text x="260" y="60" class="text-math">sin <tspan font-style="italic">α</tspan></text>
+  <text x="360" y="60" class="text-math" font-style="normal">0</text>
+
+  <!-- Row 2 -->
+  <text x="150" y="120" class="text-math">−sin <tspan font-style="italic">α</tspan></text>
+  <text x="260" y="120" class="text-math">cos <tspan font-style="italic">α</tspan></text>
+  <text x="360" y="120" class="text-math" font-style="normal">0</text>
+
+  <!-- Row 3 -->
+  <text x="150" y="180" class="text-math" font-style="normal">0</text>
+  <text x="260" y="180" class="text-math" font-style="normal">0</text>
+  <text x="360" y="180" class="text-math" font-style="normal">1</text>
+
+  <!-- 右侧水平箭头与标签（投影关系） -->
+  <!-- Row 1 Arrow -->
+  <line x1="435" y1="60" x2="635" y2="60" class="line-arrow" />
+  <text x="650" y="60" class="text-label"><tspan font-family="Times New Roman" font-style="italic">X</tspan><tspan font-family="Times New Roman" baseline-shift="sub" font-size="12px">2</tspan> 轴上的投影</text>
+
+  <!-- Row 2 Arrow -->
+  <line x1="435" y1="120" x2="635" y2="120" class="line-arrow" />
+  <text x="650" y="120" class="text-label"><tspan font-family="Times New Roman" font-style="italic">Y</tspan><tspan font-family="Times New Roman" baseline-shift="sub" font-size="12px">2</tspan> 轴上的投影</text>
+
+  <!-- Row 3 Arrow -->
+  <line x1="435" y1="180" x2="635" y2="180" class="line-arrow" />
+  <text x="650" y="180" class="text-label"><tspan font-family="Times New Roman" font-style="italic">Z</tspan><tspan font-family="Times New Roman" baseline-shift="sub" font-size="12px">2</tspan> 轴上的投影</text>
+
+  <!-- 底部垂直/折线箭头与标签（单位矢量） -->
+  <!-- Column 3 Guidance line -->
+  <path d="M 570 270 L 360 270 L 360 225" class="line-arrow" />
+  <text x="580" y="270" class="text-label"><tspan font-family="Times New Roman" font-style="italic">Z</tspan><tspan font-family="Times New Roman" baseline-shift="sub" font-size="12px">1</tspan> 轴上的单位 1</text>
+
+  <!-- Column 2 Guidance line -->
+  <path d="M 570 330 L 260 330 L 260 225" class="line-arrow" />
+  <text x="580" y="330" class="text-label"><tspan font-family="Times New Roman" font-style="italic">Y</tspan><tspan font-family="Times New Roman" baseline-shift="sub" font-size="12px">1</tspan> 轴上的单位 1</text>
+
+  <!-- Column 1 Guidance line -->
+  <path d="M 570 390 L 150 390 L 150 225" class="line-arrow" />
+  <text x="580" y="390" class="text-label"><tspan font-family="Times New Roman" font-style="italic">X</tspan><tspan font-family="Times New Roman" baseline-shift="sub" font-size="12px">1</tspan> 轴上的单位 1</text>
+
+  <!-- 图题 -->
+  <text x="375" y="450" class="text-title">图 1.2.2 坐标系 1 和坐标系 2 之间的投影关系</text>
+</svg>

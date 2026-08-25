@@ -43,6 +43,7 @@ gn = [0; 0; -glv.g0];                      % ENU 下重力向下 = −z
 gcc = gn - cross(2*wnie + wnen, vn);       % 重力+哥氏+向心（公式 3.6）
 
 % --- 打包输出 ---
-eth = struct('RMh',RMh, 'RNh',RNh, 'wnie',wnie, 'wnen',wnen, 'wnin',wnin, ...
-             'gn',gn, 'gcc',gcc, 'lat',lat, 'h',h);
+eth = struct('RMh',RMh, 'RNh',RNh, 'clRNh',cl*RNh, 'wnie',wnie, 'wnen',wnen, ...
+             'wnin',wnin, 'gn',gn, 'gcc',gcc, 'lat',lat, 'h',h);
+% clRNh = cosL·RNh（东向位置微分 dlon=dE/clRNh 常用；M4 起 odsimu/drupdate 用它）
 end

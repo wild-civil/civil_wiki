@@ -33,7 +33,10 @@ nts = 2*ts;                                     % 双子样总时长 nts = 2ts
 wm1 = wm(1,:)';  wm2 = wm(2,:)';                % 两个子样的角增量（rad）
 vm1 = vm(1,:)';  vm2 = vm(2,:)';                % 两个子样的速度增量（m/s）
 phim = (wm1 + wm2) + 0.5*cross(wm1, wm2);       % 等效旋转矢量（公式 4.1，圆锥项 ½·wm1×wm2）
-dvbm = (vm1 + vm2) + 0.5*cross(wm1 + wm2, vm1 + vm2); % 等效速度增量（划桨项，公式 4.1）
+% ⚠️ 划桨项用 PSINS 标准形：½·wm1×vm2 + ½·vm1×wm2（M4 对齐 P4 mini_insupdate；
+%    曾写 ½·(wm1+wm2)×(vm1+vm2)，其第二项符号相反（−vm1×wm2），与 PSINS
+%    不一致——M2 自洽测试察觉不到（正演反算同款），M4 对拍 P4 暴露）。
+dvbm = (vm1 + vm2) + 0.5*cross(wm1, vm2) + 0.5*cross(vm1, wm2); % 划桨项（公式 4.1，PSINS 标准）
 
 %% ② 标定：把刻度/零偏误差"洗掉"（公式 4.2；教学默认 Kg=Ka=I、eb=db=0）
 phim = ins.Kg * phim - ins.eb * nts;            % 角增量标定（公式 4.2）
@@ -65,6 +68,8 @@ ins.qnb = qnb1;                                 % 更新后姿态
 ins.vn  = vn1;                                  % 更新后速度
 ins.pos = pos1;                                 % 更新后位置
 ins.eth = eth;                                  % 保存地球参数（后续步骤/绘图可用）
+ins.fn  = fn;                                   % 保存导航系比力（kffk 的 φ-δv 块要用）
+ins.nts = nts;                                  % 保存双子样时长（kffk 离散化要用）
 ins.wib = phim / nts;                           % 陀螺测量角速度（体轴，含补偿后）
 ins.t   = ins.t + nts;                          % 时间推进 nts
 end
