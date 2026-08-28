@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 340" font-family="'Segoe UI', 'Microsoft YaHei', Arial, sans-serif">
+  <!-- 背景 -->
+  <rect width="680" height="340" fill="#f8fafc"/>
+  <rect x="0" y="0" width="680" height="340" fill="none" stroke="#cbd5e1"/>
+
+  <!-- 标题 -->
+  <text x="340" y="26" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e293b">insupdate 机械编排六步：读数 → 导航状态（与 P1 的 trjsimu 互逆）</text>
+
+  <!-- 六步横向流程 -->
+  <!-- ① cnscl -->
+  <rect x="16" y="52" width="104" height="96" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <text x="68" y="74" text-anchor="middle" font-size="12" font-weight="bold" fill="#2563eb">① 圆锥/划桨</text>
+  <text x="68" y="92" text-anchor="middle" font-size="9.5" fill="#475569">cnscl(双子样)</text>
+  <text x="68" y="108" text-anchor="middle" font-size="9" fill="#64748b">wm/vm 增量 →</text>
+  <text x="68" y="120" text-anchor="middle" font-size="9" fill="#64748b">φm = Σwm + 圆锥项</text>
+  <text x="68" y="134" text-anchor="middle" font-size="9" fill="#64748b">（科普 07 圆锥效应）</text>
+  <line x1="120" y1="100" x2="142" y2="100" stroke="#64748b" stroke-width="1.8" marker-end="url(#a)"/>
+
+  <!-- ② 标定 -->
+  <rect x="142" y="52" width="88" height="96" rx="8" fill="#ffffff" stroke="#16a34a" stroke-width="2"/>
+  <text x="186" y="74" text-anchor="middle" font-size="12" font-weight="bold" fill="#16a34a">② 标定</text>
+  <text x="186" y="94" text-anchor="middle" font-size="9.5" fill="#475569">Kg·φm − eb·nts</text>
+  <text x="186" y="110" text-anchor="middle" font-size="9" fill="#64748b">Ka·dvbm − db·nts</text>
+  <text x="186" y="130" text-anchor="middle" font-size="9" fill="#64748b">刻度/零偏补偿</text>
+  <line x1="230" y1="100" x2="252" y2="100" stroke="#64748b" stroke-width="1.8" marker-end="url(#a)"/>
+
+  <!-- ③ 地球参数 -->
+  <rect x="252" y="52" width="104" height="96" rx="8" fill="#ffffff" stroke="#d97706" stroke-width="2"/>
+  <text x="304" y="74" text-anchor="middle" font-size="12" font-weight="bold" fill="#d97706">③ 地球参数</text>
+  <text x="304" y="94" text-anchor="middle" font-size="9.5" fill="#475569">ethupdate(pos,vn)</text>
+  <text x="304" y="110" text-anchor="middle" font-size="9" fill="#64748b">RMh/RNh/wnin/gcc</text>
+  <text x="304" y="130" text-anchor="middle" font-size="9" fill="#64748b">（科普 09 位置微分）</text>
+  <line x1="356" y1="100" x2="378" y2="100" stroke="#64748b" stroke-width="1.8" marker-end="url(#a)"/>
+
+  <!-- ④ 速度 -->
+  <rect x="378" y="52" width="92" height="96" rx="8" fill="#ffffff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="424" y="74" text-anchor="middle" font-size="12" font-weight="bold" fill="#7c3aed">④ 速度</text>
+  <text x="424" y="94" text-anchor="middle" font-size="9.5" fill="#475569">fn=q2mat(q)·fb</text>
+  <text x="424" y="110" text-anchor="middle" font-size="9" fill="#64748b">an = rotv(−wnin)fn</text>
+  <text x="424" y="122" text-anchor="middle" font-size="9" fill="#64748b">+ gcc</text>
+  <text x="424" y="136" text-anchor="middle" font-size="9" fill="#64748b">（科普 03 比力方程）</text>
+  <line x1="470" y1="100" x2="492" y2="100" stroke="#64748b" stroke-width="1.8" marker-end="url(#a)"/>
+
+  <!-- ⑤ 位置 -->
+  <rect x="492" y="52" width="88" height="96" rx="8" fill="#ffffff" stroke="#0891b2" stroke-width="2"/>
+  <text x="536" y="74" text-anchor="middle" font-size="12" font-weight="bold" fill="#0891b2">⑤ 位置</text>
+  <text x="536" y="94" text-anchor="middle" font-size="9.5" fill="#475569">pos += Mpv·vn·nts</text>
+  <text x="536" y="112" text-anchor="middle" font-size="9" fill="#64748b">Mpv 由 RMh/RNh</text>
+  <text x="536" y="126" text-anchor="middle" font-size="9" fill="#64748b">（科普 09）</text>
+  <line x1="580" y1="100" x2="602" y2="100" stroke="#64748b" stroke-width="1.8" marker-end="url(#a)"/>
+
+  <!-- ⑥ 姿态 -->
+  <rect x="602" y="52" width="66" height="96" rx="8" fill="#ffffff" stroke="#dc2626" stroke-width="2"/>
+  <text x="635" y="74" text-anchor="middle" font-size="12" font-weight="bold" fill="#dc2626">⑥ 姿态</text>
+  <text x="635" y="94" text-anchor="middle" font-size="9.5" fill="#475569">q = rv2q(−wnin)</text>
+  <text x="635" y="108" text-anchor="middle" font-size="9" fill="#64748b">⊗ q ⊗</text>
+  <text x="635" y="120" text-anchor="middle" font-size="9" fill="#64748b">rv2q(φm)</text>
+  <text x="635" y="136" text-anchor="middle" font-size="9" fill="#64748b">（科普 07）</text>
+
+  <defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#64748b"/></marker></defs>
+
+  <!-- 输入/输出 -->
+  <text x="68" y="40" text-anchor="middle" font-size="10" fill="#475569">输入：双子样增量 [wm vm]</text>
+  <text x="635" y="40" text-anchor="middle" font-size="10" fill="#475569">输出：att/vn/pos</text>
+
+  <!-- 底部互逆说明 -->
+  <rect x="16" y="166" width="652" height="60" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="30" y="190" font-size="11" font-weight="bold" fill="#334155">与 trjsimu 互逆：</text>
+  <text x="30" y="210" font-size="10.5" fill="#475569">trjsimu（P1）= 从"想要的 att/vn/pos"反算 wm/vm（正演）；insupdate = 从 wm/vm 积分回 att/vn/pos（机械编排）。</text>
+  <text x="30" y="224" font-size="10" fill="#94a3b8">两者共享同一套 eth 模型与 cnscl 补偿 —— 无误差时解算应完美复现真值（迷你链路自洽性已验证）。</text>
+
+  <!-- 底部：误差注入后 -->
+  <rect x="16" y="240" width="652" height="86" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="30" y="262" font-size="11" font-weight="bold" fill="#334155">test_SINS 的完整数据流（误差注入 → 解算 → 误差分析）：</text>
+  <text x="30" y="284" font-size="10.5" fill="#475569">trj10ms.mat（P1 母版）→ imuadderr 注入零偏/随机游走 + avpadderr 注入初始误差 → inspure 纯惯导解算</text>
+  <text x="30" y="300" font-size="10.5" fill="#475569">（高度通道用 trj.bh 固定，= 垂直阻尼）→ avpcmpplot 与真值比较 → 得到误差传播曲线（Schuler 振荡等）</text>
+  <text x="30" y="318" font-size="10" fill="#94a3b8">迷你版（gen_sins）与 PSINS 同参数对拍：水平位置误差末点 935.9 m（PSINS）vs 936.0 m（迷你），量级一致 ✓</text>
+</svg>

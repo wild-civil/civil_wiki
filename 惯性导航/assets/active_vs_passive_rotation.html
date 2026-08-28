@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>主动 vs 被动旋转 · 交互演示</title>
+<style>
+  body {
+    margin: 0;
+    padding: 28px 16px;
+    background: #eef2f7;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Microsoft YaHei", sans-serif;
+  }
+  .rc-page-cap {
+    max-width: 920px;
+    margin: 0 auto 14px auto;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #475569;
+  }
+  .rc-page-cap b { color: #1e293b; }
+
+  .rot-cmp-root {
+    --rc-brand: #7c3aed;
+    --rc-accent: #d97706;
+    --rc-neg: #dc2626;
+    --rc-col1: #059669; /* 第 1 列高亮色 */
+    --rc-text: #1e293b;
+    --rc-text-muted: #64748b;
+    --rc-border: #cbd5e1;
+    --rc-surface: #ffffff;
+    --rc-panel-bg: #f8fafc;
+
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--rc-surface);
+    color: var(--rc-text);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    max-width: 920px;
+    margin: 0 auto;
+    border: 1px solid #e2e8f0;
+  }
+
+  [data-widget-theme="dark"] .rot-cmp-root {
+    --rc-brand: #a78bfa;
+    --rc-accent: #fbbf24;
+    --rc-neg: #f87171;
+    --rc-col1: #34d399;
+    --rc-text: #f1f5f9;
+    --rc-text-muted: #94a3b8;
+    --rc-border: #475569;
+    --rc-surface: #1e293b;
+    --rc-panel-bg: #111827;
+    border-color: #334155;
+  }
+
+  .rc-header { margin-bottom: 16px; text-align: center; }
+  .rc-title { font-size: 18px; font-weight: 700; margin: 0 0 6px 0; }
+  .rc-sub { font-size: 13px; color: var(--rc-text-muted); max-width: 750px; margin: 0 auto; line-height: 1.5; }
+
+  /* 控制面板 */
+  .rc-controls-group {
+    background: var(--rc-panel-bg);
+    border-radius: 10px;
+    padding: 12px 20px;
+    margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    border: 1px solid var(--rc-border);
+  }
+  .rc-control-item { display: flex; align-items: center; gap: 10px; }
+  .rc-control-item label { font-size: 13px; font-weight: 600; white-space: nowrap; }
+  .rc-slider { flex: 1; cursor: pointer; accent-color: var(--rc-brand); }
+  .rc-angle-display { font-size: 14px; font-weight: 700; color: var(--rc-brand); font-variant-numeric: tabular-nums; width: 45px; text-align: right; }
+
+  .rc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 20px; }
+  .rc-panel { 
+    background: var(--rc-surface); 
+    border: 1px solid var(--rc-border); 
+    border-radius: 12px; 
+    padding: 16px; 
+    display: flex; 
+    flex-direction: column;
+  }
+  
+  .rc-panel-header { text-align: center; margin-bottom: 12px; border-bottom: 1px solid var(--rc-border); padding-bottom: 8px; }
+  .rc-panel-title { font-size: 15px; font-weight: 600; margin: 0; }
+  .rc-panel-sub { font-size: 12px; color: var(--rc-text-muted); margin: 4px 0 0 0; }
+
+  .rc-svg-container { position: relative; width: 100%; padding-bottom: 75%; height: 0; }
+  .rc-svg-container svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: block; overflow: visible; }
+
+  /* 矩阵与第1列高亮 */
+  .rc-matrix-section {
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid var(--rc-border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .rc-matrix-title { font-size: 11px; font-weight: 600; color: var(--rc-text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .rc-matrix-container {
+    display: flex;
+    align-items: center;
+    font-family: "Cambria Math", "Times New Roman", serif;
+    font-size: 14px;
+  }
+  .rc-matrix-symbol { font-style: italic; font-size: 15px; margin-right: 6px; font-weight: bold; }
+  .rc-matrix-bracket { font-size: 56px; font-weight: 100; color: var(--rc-text-muted); line-height: 1; }
+  
+  .rc-matrix-wrapper {
+    position: relative;
+    display: inline-block;
+    padding: 2px 4px;
+  }
+  
+  /* 矩阵第一列虚线框 */
+  .rc-col1-highlight {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 32%;
+    height: 94%;
+    background: rgba(5, 150, 105, 0.08);
+    border: 1.5px dashed var(--rc-col1);
+    border-radius: 6px;
+    pointer-events: none;
+  }
+
+  .rc-matrix-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px 10px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+  
+  /* 矩阵元素高亮 */
+  .rc-cell-col1 { color: var(--rc-col1); font-weight: bold; }
+  .rc-cell-x { color: var(--rc-accent); font-weight: bold; }
+  .rc-cell-y { color: var(--rc-brand); font-weight: bold; }
+  .rc-cell-neg { color: var(--rc-neg); font-weight: bold; }
+
+  .rc-formula-bar {
+    font-size: 12px;
+    color: var(--rc-text);
+    font-weight: 600;
+    background: var(--rc-panel-bg);
+    padding: 6px 12px;
+    border-radius: 6px;
+    margin-top: 4px;
+    border: 1px solid var(--rc-border);
+    font-family: monospace;
+  }
+
+  .rc-footer-note { 
+    margin-top: 16px; 
+    font-size: 12px; 
+    color: var(--rc-text-muted); 
+    line-height: 1.6; 
+    background: var(--rc-panel-bg); 
+    padding: 12px 16px; 
+    border-radius: 8px; 
+    border: 1px solid var(--rc-border);
+  }
+  .rc-footer-note b { color: var(--rc-text); }
+</style>
+</head>
+<body>
+
+<div class="rc-page-cap">
+  <b>怎么用：</b>拖动两个滑块——<b>φ</b> 是向量相对旧 X 轴的初始角度，<b>θ</b> 是旋转角。左图<b>向量转</b>（主动旋转，坐标系不动）；右图<b>坐标系转</b>（被动旋转，向量不动）。重点观察两侧矩阵<b>第 1 列（绿框）</b>如何对应「旧 X 轴单位向量」的去向：主动时旧 X 转到 +θ，被动时旧 X 相对新系落在 −θ。当 θ &gt; φ 时，右图 Y′ 投影变负（红线向下）。
+</div>
+
+<div class="rot-cmp-root" data-widget-theme="light">
+  <div class="rc-header">
+    <div class="rc-title">主动 vs 被动旋转对齐视图</div>
+    <div class="rc-sub">结合<b>向量运动（左）</b>与<b>坐标系旋转（右）</b>。注意拖动 <i>θ &gt; φ</i> 时右侧 Y′ 投影变负（红线向下），同时观察矩阵<b>第 1 列（绿框）</b>与基向量去向的对应关系。</div>
+  </div>
+
+  <!-- 控件区域 -->
+  <div class="rc-controls-group">
+    <div class="rc-control-item">
+      <label for="rc-phi-slider">初始向量角 <i>φ</i>:</label>
+      <input type="range" id="rc-phi-slider" class="rc-slider" min="0" max="60" value="20" step="1">
+      <div id="rc-phi-display" class="rc-angle-display">20°</div>
+    </div>
+    <div class="rc-control-item">
+      <label for="rc-theta-slider">旋转角 <i>θ</i>:</label>
+      <input type="range" id="rc-theta-slider" class="rc-slider" min="0" max="75" value="35" step="1">
+      <div id="rc-theta-display" class="rc-angle-display">35°</div>
+    </div>
+  </div>
+
+  <div class="rc-grid">
+    <!-- 左：主动变换 -->
+    <div class="rc-panel">
+      <div class="rc-panel-header">
+        <h3 class="rc-panel-title">① 主动旋转 R(θ)</h3>
+        <p class="rc-panel-sub">坐标系不动，向量逆时针旋转 +θ (夹角变成 φ + θ)</p>
+      </div>
+      
+      <div class="rc-svg-container">
+        <svg viewBox="-30 -140 260 180">
+          <defs>
+            <marker id="rc-arrow-gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="var(--rc-border)"/></marker>
+            <marker id="rc-arrow-brand" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="var(--rc-brand)"/></marker>
+          </defs>
+          
+          <!-- 固定坐标轴 (X, Y) -->
+          <g stroke="var(--rc-border)" stroke-width="1.5">
+            <line x1="0" y1="0" x2="200" y2="0" marker-end="url(#rc-arrow-gray)"/>
+            <line x1="0" y1="20" x2="0" y2="-120" marker-end="url(#rc-arrow-gray)"/>
+          </g>
+          <text x="205" y="4" font-size="11" fill="var(--rc-text-muted)" font-weight="bold">X</text>
+          <text x="-4" y="-125" font-size="11" fill="var(--rc-text-muted)" font-weight="bold">Y</text>
+
+          <!-- 初始向量轨迹 (虚线) -->
+          <line id="rc-act-init-vec" x1="0" y1="0" x2="0" y2="0" stroke="var(--rc-text-muted)" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.6"/>
+          <path id="rc-act-rot-arc" fill="none" stroke="var(--rc-brand)" stroke-width="1.5" stroke-dasharray="2 2"/>
+
+          <!-- 旋转后的主向量 -->
+          <line id="rc-act-main-vec" x1="0" y1="0" x2="0" y2="0" stroke="var(--rc-brand)" stroke-width="2.5" marker-end="url(#rc-arrow-brand)"/>
+          
+          <!-- φ 与 θ 角度弧线 -->
+          <path id="rc-act-phi-arc" fill="none" stroke="var(--rc-text-muted)" stroke-width="1.2"/>
+          <text id="rc-act-phi-lbl" font-size="10" fill="var(--rc-text-muted)">φ</text>
+
+          <path id="rc-act-theta-arc" fill="none" stroke="var(--rc-brand)" stroke-width="1.2"/>
+          <text id="rc-act-theta-lbl" font-size="10" fill="var(--rc-brand)" font-weight="bold">θ</text>
+        </svg>
+      </div>
+
+      <!-- 矩阵 -->
+      <div class="rc-matrix-section">
+        <div class="rc-matrix-title">主动矩阵 R(θ) — 绿框为第 1 列 [e₁ 去向]</div>
+        <div class="rc-matrix-container">
+          <span class="rc-matrix-symbol">R =</span>
+          <span class="rc-matrix-bracket">[</span>
+          <div class="rc-matrix-wrapper">
+            <div class="rc-col1-highlight"></div>
+            <div class="rc-matrix-grid">
+              <span class="rc-cell-col1" id="m1-cos">cosθ</span>
+              <span class="rc-cell-neg" id="m1-msin">-sinθ</span>
+              <span>0</span>
+              
+              <span class="rc-cell-col1" id="m1-sin">sinθ</span>
+              <span class="rc-cell-x" id="m1-cos2">cosθ</span>
+              <span>0</span>
+              
+              <span>0</span>
+              <span>0</span>
+              <span>1</span>
+            </div>
+          </div>
+          <span class="rc-matrix-bracket">]</span>
+        </div>
+        <div id="rc-act-formula" class="rc-formula-bar">v' = [cos(φ+θ), sin(φ+θ)]ᵀ</div>
+      </div>
+    </div>
+
+    <!-- 右：被动变换 -->
+    <div class="rc-panel">
+      <div class="rc-panel-header">
+        <h3 class="rc-panel-title">② 被动旋转 C₁² (方向余弦)</h3>
+        <p class="rc-panel-sub">向量不动，坐标系转 +θ → 相对角 (φ − θ)，当 θ &gt; φ 时 Y' 投影下沉变负</p>
+      </div>
+      
+      <div class="rc-svg-container">
+        <svg viewBox="-40 -120 260 180">
+          <defs>
+            <marker id="rc-arrow-old" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#94a3b8"/></marker>
+            <marker id="rc-arrow-new" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="var(--rc-text)"/></marker>
+            <marker id="rc-arrow-vec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#c026d3"/></marker>
+          </defs>
+
+          <!-- 1. 旧坐标系 (深灰虚线，清晰标注 旧X / 旧Y) -->
+          <g stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="3 3">
+            <line x1="0" y1="0" x2="180" y2="0" marker-end="url(#rc-arrow-old)"/>
+            <line x1="0" y1="15" x2="0" y2="-90" marker-end="url(#rc-arrow-old)"/>
+          </g>
+          <text x="182" y="12" font-size="10" fill="#64748b" font-weight="bold">旧 X</text>
+          <text x="-4" y="-93" font-size="10" fill="#64748b" font-weight="bold">旧 Y</text>
+
+          <!-- 2. 不动的向量 (紫粉色) -->
+          <line id="rc-pas-main-vec" x1="0" y1="0" x2="0" y2="0" stroke="#c026d3" stroke-width="2.5" marker-end="url(#rc-arrow-vec)"/>
+          <text id="rc-pas-vec-lbl" font-size="11" fill="#c026d3" font-weight="bold">v</text>
+
+          <!-- 3. 新坐标系 (旋转 +θ，标注 新X' / 新Y') -->
+          <g id="rc-pas-axes">
+            <g stroke="var(--rc-text)" stroke-width="1.8">
+              <line x1="0" y1="0" x2="200" y2="0" marker-end="url(#rc-arrow-new)"/>
+              <line x1="0" y1="20" x2="0" y2="-110" marker-end="url(#rc-arrow-new)"/>
+            </g>
+            <text x="205" y="4" font-size="11" fill="var(--rc-text)" font-weight="bold">新 X'</text>
+            <text x="-4" y="-115" font-size="11" fill="var(--rc-text)" font-weight="bold">新 Y'</text>
+
+            <!-- 在新坐标系 X'/Y' 上的投影线 -->
+            <g stroke-dasharray="3 3" stroke-width="1.2">
+              <line id="rc-pas-proj-x" x1="0" y1="0" x2="0" y2="0" stroke="var(--rc-accent)"/>
+              <line id="rc-pas-proj-y" x1="0" y1="0" x2="0" y2="0" stroke="var(--rc-brand)"/>
+            </g>
+          </g>
+
+          <!-- 角度标注：φ (旧X到向量) 与 θ (旧X到新X') -->
+          <path id="rc-pas-phi-arc" fill="none" stroke="#64748b" stroke-width="1.2" stroke-dasharray="2 2"/>
+          <text id="rc-pas-phi-lbl" font-size="10" fill="#64748b">φ</text>
+
+          <path id="rc-pas-theta-arc" fill="none" stroke="var(--rc-brand)" stroke-width="1.2"/>
+          <text id="rc-pas-theta-lbl" font-size="10" fill="var(--rc-brand)" font-weight="bold">θ</text>
+        </svg>
+      </div>
+
+      <!-- 矩阵 -->
+      <div class="rc-matrix-section">
+        <div class="rc-matrix-title">被动矩阵 C₁² = R(θ)ᵀ — 绿框为第 1 列 [旧 e₁ 在新系坐标]</div>
+        <div class="rc-matrix-container">
+          <span class="rc-matrix-symbol">C =</span>
+          <span class="rc-matrix-bracket">[</span>
+          <div class="rc-matrix-wrapper">
+            <div class="rc-col1-highlight"></div>
+            <div class="rc-matrix-grid">
+              <span class="rc-cell-col1" id="m2-cos">cosθ</span>
+              <span class="rc-cell-y" id="m2-sin">sinθ</span>
+              <span>0</span>
+              
+              <span class="rc-cell-col1" id="m2-msin">-sinθ</span>
+              <span class="rc-cell-x" id="m2-cos2">cosθ</span>
+              <span>0</span>
+              
+              <span>0</span>
+              <span>0</span>
+              <span>1</span>
+            </div>
+          </div>
+          <span class="rc-matrix-bracket">]</span>
+        </div>
+        <div id="rc-pas-formula" class="rc-formula-bar">v' = [cos(φ−θ), sin(φ−θ)]ᵀ</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rc-footer-note">
+    <b>第一列法则（几何对齐）：</b><br>
+    1. <b>矩阵第 1 列（绿框）</b>永远等于把旧 X 轴单位向量 [1,0,0]ᵀ 喂给矩阵的结果。<br>
+    2. 主动旋转时，旧 X 轴转到 +θ 处 → 第一列是 [cosθ, sinθ]ᵀ；被动旋转时，旧 X 轴相对新系落在 −θ 处 → 第一列是 [cosθ, −sinθ]ᵀ。这正是主动矩阵与被动矩阵互为转置的几何来源。
+  </div>
+
+  <script>
+    (function() {
+      const phiSlider = document.getElementById('rc-phi-slider');
+      const thetaSlider = document.getElementById('rc-theta-slider');
+      const phiDisplay = document.getElementById('rc-phi-display');
+      const thetaDisplay = document.getElementById('rc-theta-display');
+      
+      // 主动
+      const actInitVec = document.getElementById('rc-act-init-vec');
+      const actMainVec = document.getElementById('rc-act-main-vec');
+      const actRotArc = document.getElementById('rc-act-rot-arc');
+      const actPhiArc = document.getElementById('rc-act-phi-arc');
+      const actPhiLbl = document.getElementById('rc-act-phi-lbl');
+      const actThetaArc = document.getElementById('rc-act-theta-arc');
+      const actThetaLbl = document.getElementById('rc-act-theta-lbl');
+      const actFormula = document.getElementById('rc-act-formula');
+
+      // 被动
+      const pasMainVec = document.getElementById('rc-pas-main-vec');
+      const pasVecLbl = document.getElementById('rc-pas-vec-lbl');
+      const pasAxes = document.getElementById('rc-pas-axes');
+      const pasProjX = document.getElementById('rc-pas-proj-x');
+      const pasProjY = document.getElementById('rc-pas-proj-y');
+      const pasPhiArc = document.getElementById('rc-pas-phi-arc');
+      const pasPhiLbl = document.getElementById('rc-pas-phi-lbl');
+      const pasThetaArc = document.getElementById('rc-pas-theta-arc');
+      const pasThetaLbl = document.getElementById('rc-pas-theta-lbl');
+      const pasFormula = document.getElementById('rc-pas-formula');
+
+      // 矩阵
+      const m1Cos = document.getElementById('m1-cos');
+      const m1Cos2 = document.getElementById('m1-cos2');
+      const m1Sin = document.getElementById('m1-sin');
+      const m1Msin = document.getElementById('m1-msin');
+
+      const m2Cos = document.getElementById('m2-cos');
+      const m2Cos2 = document.getElementById('m2-cos2');
+      const m2Sin = document.getElementById('m2-sin');
+      const m2Msin = document.getElementById('m2-msin');
+
+      const r = 120; // 向量长度
+
+      // 跟随系统深浅色主题
+      try {
+        const mq = window.matchMedia('(prefers-color-scheme: dark)');
+        const root = document.querySelector('.rot-cmp-root');
+        const apply = () => root.setAttribute('data-widget-theme', mq.matches ? 'dark' : 'light');
+        apply();
+        if (mq.addEventListener) mq.addEventListener('change', apply);
+      } catch (e) {}
+
+      function polarToSvg(radius, angleDeg) {
+        const rad = angleDeg * (Math.PI / 180);
+        return {
+          x: radius * Math.cos(rad),
+          y: -radius * Math.sin(rad)
+        };
+      }
+
+      function makeArcPath(radius, startDeg, endDeg) {
+        if (startDeg === endDeg) return '';
+        const p1 = polarToSvg(radius, startDeg);
+        const p2 = polarToSvg(radius, endDeg);
+        const largeArc = Math.abs(endDeg - startDeg) > 180 ? 1 : 0;
+        const sweep = endDeg > startDeg ? 0 : 1;
+        return `M ${p1.x} ${p1.y} A ${radius} ${radius} 0 ${largeArc} ${sweep} ${p2.x} ${p2.y}`;
+      }
+
+      function update() {
+        const phi = parseInt(phiSlider.value);
+        const theta = parseInt(thetaSlider.value);
+        phiDisplay.textContent = phi + '°';
+        thetaDisplay.textContent = theta + '°';
+
+        const thetaRad = theta * (Math.PI / 180);
+        const cosT = Math.cos(thetaRad);
+        const sinT = Math.sin(thetaRad);
+
+        // 矩阵填值
+        m1Cos.textContent = cosT.toFixed(2);
+        m1Cos2.textContent = cosT.toFixed(2);
+        m1Sin.textContent = sinT.toFixed(2);
+        m1Msin.textContent = (-sinT).toFixed(2);
+
+        m2Cos.textContent = cosT.toFixed(2);
+        m2Cos2.textContent = cosT.toFixed(2);
+        m2Sin.textContent = sinT.toFixed(2);
+        m2Msin.textContent = (-sinT).toFixed(2);
+
+        // --- 1. 主动旋转视图更新 ---
+        const initP = polarToSvg(r, phi);
+        const actP = polarToSvg(r, phi + theta);
+
+        actInitVec.setAttribute('x2', initP.x);
+        actInitVec.setAttribute('y2', initP.y);
+
+        actMainVec.setAttribute('x2', actP.x);
+        actMainVec.setAttribute('y2', actP.y);
+
+        actRotArc.setAttribute('d', makeArcPath(r, phi, phi + theta));
+        actPhiArc.setAttribute('d', makeArcPath(35, 0, phi));
+        
+        const phiMid = polarToSvg(43, phi / 2);
+        actPhiLbl.setAttribute('x', phiMid.x - 3);
+        actPhiLbl.setAttribute('y', phiMid.y + 3);
+
+        actThetaArc.setAttribute('d', makeArcPath(55, phi, phi + theta));
+        const thetaMid = polarToSvg(65, phi + theta / 2);
+        actThetaLbl.setAttribute('x', thetaMid.x - 3);
+        actThetaLbl.setAttribute('y', thetaMid.y + 3);
+
+        const actX = (Math.cos((phi + theta) * Math.PI / 180)).toFixed(2);
+        const actY = (Math.sin((phi + theta) * Math.PI / 180)).toFixed(2);
+        actFormula.textContent = `v' = [cos(${phi}°+${theta}°), sin(${phi}°+${theta}°)]ᵀ = [${actX}, ${actY}]ᵀ`;
+
+
+        // --- 2. 被动旋转视图更新 ---
+        const pasP = polarToSvg(r, phi);
+        pasMainVec.setAttribute('x2', pasP.x);
+        pasMainVec.setAttribute('y2', pasP.y);
+
+        const lblP = polarToSvg(r + 12, phi);
+        pasVecLbl.setAttribute('x', lblP.x - 4);
+        pasVecLbl.setAttribute('y', lblP.y + 4);
+
+        // 旋转新坐标系 (+theta)
+        pasAxes.setAttribute('transform', `rotate(${-theta})`);
+
+        // 在新坐标系下的投影 (相对角 phi - theta)
+        const relAngleRad = (phi - theta) * (Math.PI / 180);
+        const projX_len = r * Math.cos(relAngleRad);
+        const projY_len = -r * Math.sin(relAngleRad); // SVG Y 轴向上为负
+
+        pasProjX.setAttribute('x2', projX_len);
+        pasProjY.setAttribute('x1', projX_len);
+        pasProjY.setAttribute('y1', 0);
+        pasProjY.setAttribute('x2', projX_len);
+        pasProjY.setAttribute('y2', projY_len);
+
+        if (theta > phi) {
+          pasProjY.setAttribute('stroke', 'var(--rc-neg)');
+        } else {
+          pasProjY.setAttribute('stroke', 'var(--rc-brand)');
+        }
+
+        // 被动图：弧线 φ (旧 X 轴到向量)
+        pasPhiArc.setAttribute('d', makeArcPath(35, 0, phi));
+        const pasPhiMid = polarToSvg(42, phi / 2);
+        pasPhiLbl.setAttribute('x', pasPhiMid.x - 3);
+        pasPhiLbl.setAttribute('y', pasPhiMid.y + 3);
+
+        // 被动图：弧线 θ (旧 X 轴到新 X' 轴)
+        pasThetaArc.setAttribute('d', makeArcPath(55, 0, theta));
+        const pasThetaMid = polarToSvg(63, theta / 2);
+        pasThetaLbl.setAttribute('x', pasThetaMid.x - 3);
+        pasThetaLbl.setAttribute('y', pasThetaMid.y + 3);
+
+        const pasX = Math.cos(relAngleRad).toFixed(2);
+        const pasY = Math.sin(relAngleRad).toFixed(2);
+        pasFormula.textContent = `v' = [cos(${phi}°−${theta}°), sin(${phi}°−${theta}°)]ᵀ = [${pasX}, ${pasY}]ᵀ`;
+      }
+
+      phiSlider.addEventListener('input', update);
+      thetaSlider.addEventListener('input', update);
+      update();
+    })();
+  </script>
+</div>
+
+</body>
+</html>

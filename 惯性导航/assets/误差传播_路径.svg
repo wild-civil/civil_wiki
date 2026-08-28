@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 330" font-family="'Segoe UI', 'Microsoft YaHei', Arial, sans-serif">
+  <!-- 背景 -->
+  <rect width="680" height="330" fill="#f8fafc"/>
+  <rect x="0" y="0" width="680" height="330" fill="none" stroke="#cbd5e1"/>
+
+  <!-- 标题 -->
+  <text x="340" y="26" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e293b">误差传播因果链：注入的误差怎么变成导航误差</text>
+
+  <!-- ============ 第一层：误差注入（源） ============ -->
+  <rect x="20" y="48" width="200" height="86" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="1.6"/>
+  <text x="120" y="68" text-anchor="middle" font-size="12" font-weight="bold" fill="#dc2626">① 误差注入（源头）</text>
+  <text x="120" y="88" text-anchor="middle" font-size="10" fill="#475569">imuadderr：eb=0.01°/h（陀螺零偏）</text>
+  <text x="120" y="102" text-anchor="middle" font-size="10" fill="#475569">db=100µg（加计零偏）</text>
+  <text x="120" y="116" text-anchor="middle" font-size="10" fill="#475569">avpadderr：初始 att [0.5;0.5;5]'</text>
+  <line x1="220" y1="91" x2="248" y2="91" stroke="#dc2626" stroke-width="1.8" marker-end="url(#a)"/>
+
+  <!-- ============ 第二层：解算（放大器） ============ -->
+  <rect x="248" y="48" width="180" height="86" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="1.6"/>
+  <text x="338" y="68" text-anchor="middle" font-size="12" font-weight="bold" fill="#2563eb">② inspure 解算</text>
+  <text x="338" y="88" text-anchor="middle" font-size="10" fill="#475569">比力方程：姿态误差 →</text>
+  <text x="338" y="102" text-anchor="middle" font-size="10" fill="#475569">重力投影错位 → 加速度误差</text>
+  <text x="338" y="116" text-anchor="middle" font-size="10" fill="#475569">积分 → 速度/位置误差</text>
+  <line x1="428" y1="91" x2="456" y2="91" stroke="#2563eb" stroke-width="1.8" marker-end="url(#a)"/>
+
+  <!-- ============ 第三层：误差传播（输出） ============ -->
+  <rect x="456" y="48" width="204" height="86" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.6"/>
+  <text x="558" y="68" text-anchor="middle" font-size="12" font-weight="bold" fill="#16a34a">③ 误差传播（vs 真值）</text>
+  <text x="558" y="88" text-anchor="middle" font-size="10" fill="#475569">水平：Schuler 振荡（84 min 周期）</text>
+  <text x="558" y="102" text-anchor="middle" font-size="10" fill="#475569">位置误差 ~km 级（966 s 末 936 m）</text>
+  <text x="558" y="116" text-anchor="middle" font-size="10" fill="#475569">垂直：开环发散（需 trj.bh 阻尼）</text>
+
+  <defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#64748b"/></marker></defs>
+
+  <!-- ============ 具体链条（放大镜） ============ -->
+  <text x="340" y="160" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e293b">四条主要误差路径（gen_sins 实测 966 s）</text>
+
+  <!-- 路径 1：陀螺零偏 -->
+  <rect x="20" y="172" width="312" height="60" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="34" y="192" font-size="10.5" fill="#1e293b">① 陀螺零偏 eb → 姿态误差线性增长</text>
+  <text x="34" y="208" font-size="10" fill="#64748b">→ 比力投影错 → 水平加速度误差 → 位置误差（Schuler 振荡）</text>
+  <text x="34" y="223" font-size="9.5" fill="#94a3b8">att RMS(yaw) 299.5″ ≈ 初始 5′ 主导；水平末点 935.9 m（PSINS 同 935.9）</text>
+
+  <!-- 路径 2：初始姿态误差 -->
+  <rect x="348" y="172" width="312" height="60" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="362" y="192" font-size="10.5" fill="#1e293b">② 初始 att 误差（yaw 5′ 最大）→ 常值加速度误差</text>
+  <text x="362" y="208" font-size="10" fill="#64748b">→ 速度斜坡 → 位置二次增长（966 s 内主导项）</text>
+  <text x="362" y="223" font-size="9.5" fill="#94a3b8">yaw 5′ ≈ 83 µrad → 966 s 位置误差 ≈ ½·g·ψ·t² ≈ 数百米级</text>
+
+  <!-- 路径 3：加计零偏 -->
+  <rect x="20" y="240" width="312" height="60" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="34" y="260" font-size="10.5" fill="#1e293b">③ 加计零偏 db → 直接速度/位置误差</text>
+  <text x="34" y="276" font-size="10" fill="#64748b">→ 水平：被 Schuler 振荡调制；垂直：推高发散</text>
+  <text x="34" y="291" font-size="9.5" fill="#94a3b8">db=100µg → 966 s 直接位置误差 ≈ ½·db·t² ≈ 460 m（部分被振荡抵消）</text>
+
+  <!-- 路径 4：垂直通道 -->
+  <rect x="348" y="240" width="312" height="60" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="362" y="260" font-size="10.5" fill="#1e293b">④ 高度通道开环不稳定（无阻尼）</text>
+  <text x="362" y="276" font-size="10" fill="#64748b">→ 垂直误差指数/振荡发散：自由 581.6 m（末）vs 固定 10.0 m</text>
+  <text x="362" y="291" font-size="9.5" fill="#94a3b8">test_SINS 用 trj.bh（真值+噪声高度）固定 → 只让水平自由解算</text>
+</svg>
