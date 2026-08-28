@@ -77,13 +77,13 @@ tags: [MOC, 导航, 惯导, 科普]
 
 | 篇 | 拆解对象 | 主题 | 状态 |
 |---|---|---|---|
-| [00 内化蓝图 · Mini-INS 路线图](04_拆解PSINS篇/00_内化蓝图.md) | ——（规划文档） | 为什么内化 / PSINS·Mini-INS·固件三者关系 / 模块落位图 / 公式三件套写作规范 / M1–M5 里程碑 | 🆕 新增 |
-| [00 读码地基 · 数据结构与约定](04_拆解PSINS篇/00_读码地基.md) | `base/` 库结构 + 六大约定 + 数据结构速查 | 代码地图（薄壳 vs 库）/ global glv、att 顺序、pos 单位、列主序、rad、avp 拼接 / trj·imu·ins·kf·dr 字段表 / P2–P4 主循环同构对比 | 🆕 新增 |
-| [P1 轨迹生成 · test_SINS_trj.m](04_拆解PSINS篇/P1_轨迹生成_拆解test_SINS_trj.md) | `trjsegment` + `trjsimu`（31 行薄壳） | 航段语言（8 基本+6 复合）/ wat 表 / 正演机数学（att/vn/pos 积分 + IMU 增量反算 + 圆锥/旋转补偿）/ 966 s 轨迹解析 | ✅ 已发布 |
-| [P2 纯惯导 · test_SINS.m](04_拆解PSINS篇/P2_纯惯导_拆解test_SINS.md) | `inspure` + 误差注入体系 | 正演→反演闭环验证、imuerrset/avperrset、机械编排六步、误差传播（Schuler/垂直发散）、迷你链路 vs PSINS 对拍（935.9 vs 936.0 m） | ✅ 已发布 |
-| [P3 航位推算 · test_DR.m](04_拆解PSINS篇/P3_航位推算_拆解test_DR.md) | `odsimu` + `drupdate` | DR 数学（航向×里程）、安装角/刻度系数、与 SINS 的本质差异 | ✅ 已发布 |
-| [P4 SINS+DR 组合 · test_SINS_DR.m](04_拆解PSINS篇/P4_SINS+DR组合_拆解test_SINS_DR.md) | `etm(ins,22)` + `kffk` dposD 块 + `kffeedback 'v'` | 22 维 KF 状态分解（φ/δv/δr/eb/db/dposD/dinst/dKod/dT）/ 速度闭环 + dKod 自标定 / 与 PSINS 同参数对拍（水平 45.5 vs DR-only 151 m，3.3× 改善）/ 5 个关键坑（状态累积、etm 列主序、R/P0 单位、dKod 必要性、弱可辨识） | ✅ 已发布 |
-| [附录 · 绘图函数与 MATLAB 惯用法](04_拆解PSINS篇/附录_绘图函数与MATLAB惯用法.md) | `miniinsplot` / `miniavpcmpplot` / `miniinsplot3d` | 三个绘图函数的签名/参数/调用模式 + MATLAB 惯用法词典（nargin/varargin/figure/subplot/图例控制/interp1…），配套 `.m` 代码的字典页 | 🆕 新增 |
+| [00 内化蓝图 · Mini-INS 路线图](04_拆解PSINS篇/P系列与总览/00_内化蓝图.md) | ——（规划文档） | 为什么内化 / PSINS·Mini-INS·固件三者关系 / 模块落位图 / 公式三件套写作规范 / M1–M5 里程碑 | 🆕 新增 |
+| [00 读码地基 · 数据结构与约定](04_拆解PSINS篇/P系列与总览/00_读码地基.md) | `base/` 库结构 + 六大约定 + 数据结构速查 | 代码地图（薄壳 vs 库）/ global glv、att 顺序、pos 单位、列主序、rad、avp 拼接 / trj·imu·ins·kf·dr 字段表 / P2–P4 主循环同构对比 | 🆕 新增 |
+| [P1 轨迹生成 · test_SINS_trj.m](04_拆解PSINS篇/P系列与总览/P1_轨迹生成_拆解test_SINS_trj.md) | `trjsegment` + `trjsimu`（31 行薄壳） | 航段语言（8 基本+6 复合）/ wat 表 / 正演机数学（att/vn/pos 积分 + IMU 增量反算 + 圆锥/旋转补偿）/ 966 s 轨迹解析 | ✅ 已发布 |
+| [P2 纯惯导 · test_SINS.m](04_拆解PSINS篇/P系列与总览/P2_纯惯导_拆解test_SINS.md) | `inspure` + 误差注入体系 | 正演→反演闭环验证、imuerrset/avperrset、机械编排六步、误差传播（Schuler/垂直发散）、迷你链路 vs PSINS 对拍（935.9 vs 936.0 m） | ✅ 已发布 |
+| [P3 航位推算 · test_DR.m](04_拆解PSINS篇/P系列与总览/P3_航位推算_拆解test_DR.md) | `odsimu` + `drupdate` | DR 数学（航向×里程）、安装角/刻度系数、与 SINS 的本质差异 | ✅ 已发布 |
+| [P4 SINS+DR 组合 · test_SINS_DR.m](04_拆解PSINS篇/P系列与总览/P4_SINS+DR组合_拆解test_SINS_DR.md) | `etm(ins,22)` + `kffk` dposD 块 + `kffeedback 'v'` | 22 维 KF 状态分解（φ/δv/δr/eb/db/dposD/dinst/dKod/dT）/ 速度闭环 + dKod 自标定 / 与 PSINS 同参数对拍（水平 45.5 vs DR-only 151 m，3.3× 改善）/ 5 个关键坑（状态累积、etm 列主序、R/P0 单位、dKod 必要性、弱可辨识） | ✅ 已发布 |
+| [附录 · 绘图函数与 MATLAB 惯用法](04_拆解PSINS篇/P系列与总览/附录_绘图函数与MATLAB惯用法.md) | `miniinsplot` / `miniavpcmpplot` / `miniinsplot3d` | 三个绘图函数的签名/参数/调用模式 + MATLAB 惯用法词典（nargin/varargin/figure/subplot/图例控制/interp1…），配套 `.m` 代码的字典页 | 🆕 新增 |
 
 ## 学习路线图
 

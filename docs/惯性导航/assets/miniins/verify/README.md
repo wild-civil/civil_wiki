@@ -28,8 +28,8 @@ demo_sins_dr        % 期望：SINS-only ≈345 / DR-only ≈151 / 组合 ≈45.
 
 | 场景 | PSINS 原版 | Mini-INS（期望） | 出处 |
 |---|---|---|---|
-| 纯惯导水平位置误差末点 | 935.9 m | 936.0 m | [P2](04_拆解PSINS篇/P2_纯惯导_拆解test_SINS.md) |
-| SINS+DR 组合水平 RMS | 43.2 m（dkod=1%） | 45.5 m（dkod=5%，轨迹不同） | [P4](04_拆解PSINS篇/P4_SINS+DR组合_拆解test_SINS_DR.md) |
+| 纯惯导水平位置误差末点 | 935.9 m | 936.0 m | [P2](04_拆解PSINS篇/P系列与总览/P2_纯惯导_拆解test_SINS.md) |
+| SINS+DR 组合水平 RMS | 43.2 m（dkod=1%） | 45.5 m（dkod=5%，轨迹不同） | [P4](04_拆解PSINS篇/P系列与总览/P4_SINS+DR组合_拆解test_SINS_DR.md) |
 | SINS+DR：SINS-only / DR-only / 组合 | — | 345 / 151 / 45.5 m（P4 WAT，966 s） | M4 demo_sins_dr |
 
 ## 约定

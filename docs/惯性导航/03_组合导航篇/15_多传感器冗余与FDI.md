@@ -200,5 +200,5 @@ int ins_sensor_manager_poll(ins_sensor_manager_t *m) {
 - **PSINS**：`base/imu/imuerrset.m`——IMU 误差模型（eb/db/刻度/随机游走），软故障注入的原料（`imuadderr` 把误差加进 IMU 数据列）
 - **本项目**：`ins_sensor_manager.h/.c`（`SM_ERR_*` 位掩码 + poll 跳过 = 硬故障隔离）、`ins_eskf_15d.c` 的 `eskf15_update_accel`（gf=0.3 gating = 量测级 FDI）、`ins_sensor_snapshot_t`（三路 IMU 统一快照，表决的时间同步基础）
 - **上一篇**：[14 一致性检验 NEES/NIS](14_一致性检验.md)——单量测"体检"；本篇升级为多源"互相监督"
-- **下一篇**：[拆解 PSINS ①：test_SINS_trj.m](../04_拆解PSINS篇/P1_轨迹生成_拆解test_SINS_trj.md)——开始拆工业参考：轨迹怎么"造"出来
+- **下一篇**：[拆解 PSINS ①：test_SINS_trj.m](../04_拆解PSINS篇/P系列与总览/P1_轨迹生成_拆解test_SINS_trj.md)——开始拆工业参考：轨迹怎么"造"出来
 - **系列首页**：[惯性导航与惯导解算 · 自学科普系列](../index.md)

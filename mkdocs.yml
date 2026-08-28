@@ -240,20 +240,13 @@ nav:
               - 惯性导航/03_组合导航篇/13_松组合vs紧组合.md
               - 惯性导航/03_组合导航篇/14_一致性检验.md
               - 惯性导航/03_组合导航篇/15_多传感器冗余与FDI.md
-          - "滤波算法精读篇（外源开源库逐读）":
+          - "滤波算法精读篇（外部开源库逐读）":
               - 一阶互补滤波分析: 惯性导航/05_滤波算法精读篇/00_一阶互补滤波分析.md
               - Mahony 滤波分析: 惯性导航/05_滤波算法精读篇/01_Mahony滤波分析.md
               - Madgwick 滤波分析: 惯性导航/05_滤波算法精读篇/02_Madgwick滤波分析.md
               - 卡尔曼滤波入门（从1D标量到2D矩阵）: 惯性导航/05_滤波算法精读篇/03_卡尔曼滤波入门.md
               - EKF与ESKF深度对比（PX4 EKF2）: 惯性导航/05_滤波算法精读篇/04_EKF与ESKF深度对比.md
           - "拆解 PSINS 篇（工业参考逐行走读）":
-              - 00 内化蓝图（路线图）: 惯性导航/04_拆解PSINS篇/00_内化蓝图.md
-              - 00 读码地基（数据结构/约定）: 惯性导航/04_拆解PSINS篇/00_读码地基.md
-              - 绘图函数与 MATLAB 惯用法（附录）: 惯性导航/04_拆解PSINS篇/附录_绘图函数与MATLAB惯用法.md
-              - 惯性导航/04_拆解PSINS篇/P1_轨迹生成_拆解test_SINS_trj.md
-              - 惯性导航/04_拆解PSINS篇/P2_纯惯导_拆解test_SINS.md
-              - 惯性导航/04_拆解PSINS篇/P3_航位推算_拆解test_DR.md
-              - 惯性导航/04_拆解PSINS篇/P4_SINS+DR组合_拆解test_SINS_DR.md
               - 逐行拆解（函数级 line-by-line）:
                   - 00 逐行拆解总览: 惯性导航/04_拆解PSINS篇/linebyline/00_逐行拆解总览.md
                   - 00a INS基础概念入门: 惯性导航/04_拆解PSINS篇/linebyline/00a_INSBasics.md
@@ -271,6 +264,14 @@ nav:
                   - 10 kffeedback 误差反馈清零: 惯性导航/04_拆解PSINS篇/linebyline/10_kffeedback.md
                   - 11 Mahony 互补滤波 AHRS: 惯性导航/04_拆解PSINS篇/linebyline/11_Mahony.md
                   - 12 QEAHRS 四元数 EKF: 惯性导航/04_拆解PSINS篇/linebyline/12_QEAHRS.md
+              - "P系列与总览（工业参考拆解）":
+                  - 00 内化蓝图（路线图）: 惯性导航/04_拆解PSINS篇/P系列与总览/00_内化蓝图.md
+                  - 00 读码地基（数据结构/约定）: 惯性导航/04_拆解PSINS篇/P系列与总览/00_读码地基.md
+                  - 绘图函数与 MATLAB 惯用法（附录）: 惯性导航/04_拆解PSINS篇/P系列与总览/附录_绘图函数与MATLAB惯用法.md
+                  - P1 轨迹生成 · test_SINS_trj.m: 惯性导航/04_拆解PSINS篇/P系列与总览/P1_轨迹生成_拆解test_SINS_trj.md
+                  - P2 纯惯导 · test_SINS.m: 惯性导航/04_拆解PSINS篇/P系列与总览/P2_纯惯导_拆解test_SINS.md
+                  - P3 航位推算 · test_DR.m: 惯性导航/04_拆解PSINS篇/P系列与总览/P3_航位推算_拆解test_DR.md
+                  - P4 SINS+DR 组合 · test_SINS_DR.m: 惯性导航/04_拆解PSINS篇/P系列与总览/P4_SINS+DR组合_拆解test_SINS_DR.md
   - 生活与兴趣:
       - 生活与兴趣/index.md
   - 杂记:

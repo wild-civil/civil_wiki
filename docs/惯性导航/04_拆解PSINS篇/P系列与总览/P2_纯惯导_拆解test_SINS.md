@@ -4,7 +4,7 @@
 >
 > **核心交付**：**迷你 inspure**（自包含机械编排，MATLAB+Python 双轨），与 PSINS 原版**同参数对拍**：水平位置误差末点 **935.9 m（PSINS）vs 936.0 m（迷你）**——量级完全一致，差异全是可解释的工程细节。
 >
-> **参考体系**：PSINS `base/base2/inspure.m`（纯惯导框架）、`base/base1/insupdate.m`（机械编排六步）、`base/imu/imuerrset.m`+`imuadderr.m`（传感器误差注入）、`base/base2/avperrset.m`+`avpadderr.m`（初始误差）、`base/base1/bhsimu.m`（高度参考生成）、`base/base2/avpcmpplot.m`（误差画图）；对照科普系列 [03 比力方程](../01_基础篇/03_传感器原理.md)、[07 姿态更新](../02_解算篇/07_姿态更新算法.md)、[09 误差传播](../02_解算篇/09_纯惯导误差传播.md)；以及 P1 的正演机 `trjsimu`。
+> **参考体系**：PSINS `base/base2/inspure.m`（纯惯导框架）、`base/base1/insupdate.m`（机械编排六步）、`base/imu/imuerrset.m`+`imuadderr.m`（传感器误差注入）、`base/base2/avperrset.m`+`avpadderr.m`（初始误差）、`base/base1/bhsimu.m`（高度参考生成）、`base/base2/avpcmpplot.m`（误差画图）；对照科普系列 [03 比力方程](../../01_基础篇/03_传感器原理.md)、[07 姿态更新](../../02_解算篇/07_姿态更新算法.md)、[09 误差传播](../../02_解算篇/09_纯惯导误差传播.md)；以及 P1 的正演机 `trjsimu`。
 
 ## 一、19 行薄壳干了什么
 
@@ -84,7 +84,7 @@ end
 
 ## 四、机械编排核心 insupdate：六步更新（与 P1 互逆）
 
-![insupdate 机械编排六步](../assets/机械编排_数据流.svg)
+![insupdate 机械编排六步](../../assets/机械编排_数据流.svg)
 
 `insupdate`（`base/base1/insupdate.m`）是纯惯导的心脏，每 nn 拍（双子样）执行六步：
 
@@ -125,7 +125,7 @@ $$\mathbf q_{nb}^+ = \mathrm{rv2q}(-\boldsymbol\omega_{in}^n nts) \otimes \mathb
 
 ## 六、误差传播分析：四条路径
 
-![误差传播因果链](../assets/误差传播_路径.svg)
+![误差传播因果链](../../assets/误差传播_路径.svg)
 
 gen_sins 实测（966 s，与 test_SINS 同参数 eb=0.01°/h、db=100µg、初始 [0.5;0.5;5]'）：
 
@@ -157,7 +157,7 @@ gen_sins 实测（966 s，与 test_SINS 同参数 eb=0.01°/h、db=100µg、初�
     - 红线 = free（高度自由）、蓝线 = fix（高度阻尼）。**红蓝两线在 E-N 投影上几乎重合**——说明水平漂移（~936 m）由初始 yaw 误差主导，高度阻尼管不了水平；
     - 真正的差别在垂直通道：free 的垂直误差发散到 581.6 m，fix 被兜在气压噪声附近（RMS ≈ 6.8 m）。这在左下角的 Position offset 子图（绿色 ΔH 曲线）和 `miniavpcmpplot.png` 里看得最清楚。
 
-    ![真值 vs free vs fix 同图三色叠加](../assets/miniinsplot_cmp_freefix.png)
+    ![真值 vs free vs fix 同图三色叠加](../../assets/miniinsplot_cmp_freefix.png)
 
     如果还是觉得 2D 图"两条线叠在一起、看不出差别"，下面这张 **3D 轨迹对比** 会把垂直差异直接"立"起来：
 
@@ -165,7 +165,7 @@ gen_sins 实测（966 s，与 test_SINS 同参数 eb=0.01°/h、db=100µg、初�
     - 黑线 Truth 躺在 **Z=0 参考平面**上，蓝线 fix 紧贴地面（真实高度误差约 6.8 m RMS，×8 后约 54 m），红线 free 明显抬升到约 4000–4600 m（对应真实高度误差 500–580 m）；
     - 一眼可证：**2D 水平投影重合，是因为差别只在垂直；3D 下 free 的"垂直 Schuler 发散"被放大得很明显。**
 
-    ![3D 轨迹对比：真值 vs free vs fix](../assets/miniinsplot3d_cmp_freefix.png)
+    ![3D 轨迹对比：真值 vs free vs fix](../../assets/miniinsplot3d_cmp_freefix.png)
 
 ## 七、与 PSINS 原版对拍
 
@@ -266,4 +266,4 @@ gen_sins 实测（966 s，与 test_SINS 同参数 eb=0.01°/h、db=100µg、初�
 - **本篇验证**：`assets/gen_sins.py`（Python）与 `assets/gen_sins.m`（MATLAB）双轨——迷你链路 + 自洽性 + 误差传播 + 与 PSINS 对拍（935.9 vs 936.0 m）；两张 SVG（`机械编排_数据流.svg`、`误差传播_路径.svg`）
 - **上一篇**：[拆解 PSINS ①：test_SINS_trj.m](P1_轨迹生成_拆解test_SINS_trj.md)——数据母版（P1 造数据，本篇消费）
 - **下一篇**：[拆解 PSINS ③：test_DR.m](P3_航位推算_拆解test_DR.md)——航位推算（drupdate），"航向×里程"的第二条独立定位链
-- **系列首页**：[惯性导航与惯导解算 · 自学科普系列](../index.md)
+- **系列首页**：[惯性导航与惯导解算 · 自学科普系列](../../index.md)

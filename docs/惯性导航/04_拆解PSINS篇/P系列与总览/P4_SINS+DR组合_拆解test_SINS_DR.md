@@ -4,7 +4,7 @@
 >
 > **核心交付**：**迷你 SINS+DR 组合**（自包含、Python 版，MATLAB 版待补），与 PSINS `test_SINS_DR.m` 同参数对拍，**比 DR-only 好 3.3 倍**（水平 RMS 45.5m vs 151m），核心机制（速度闭环 + dKod 自标定）一致。
 >
-> **参考体系**：PSINS `demos/test_SINS_DR.m`（拆解对象，40 行薄壳）、`base/base2/etm.m`（22 维 F 矩阵）、`base/kf/kffk.m`（dposD 块扩展）、`base/kf/kffeedback.m`（'v' 速度闭环）；对照 [P2 纯惯导](P2_纯惯导_拆解test_SINS.md)、[P3 航位推算](P3_航位推算_拆解test_DR.md)、[11 EKF 与 ESKF](../03_组合导航篇/11_EKF与ESKF.md)、[12 观测模型](../03_组合导航篇/12_观测模型.md)。
+> **参考体系**：PSINS `demos/test_SINS_DR.m`（拆解对象，40 行薄壳）、`base/base2/etm.m`（22 维 F 矩阵）、`base/kf/kffk.m`（dposD 块扩展）、`base/kf/kffeedback.m`（'v' 速度闭环）；对照 [P2 纯惯导](P2_纯惯导_拆解test_SINS.md)、[P3 航位推算](P3_航位推算_拆解test_DR.md)、[11 EKF 与 ESKF](../../03_组合导航篇/11_EKF与ESKF.md)、[12 观测模型](../../03_组合导航篇/12_观测模型.md)。
 
 ## 一、整体架构：SINS 主导 + DR 辅助
 

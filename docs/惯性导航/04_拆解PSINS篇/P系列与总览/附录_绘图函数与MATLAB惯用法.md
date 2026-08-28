@@ -271,4 +271,4 @@ python gen_dr.py       # 生成 P3 的 DR 对比图
 
 ---
 
-相关：[← 拆解 PSINS 篇总览](../index.md) · [P2 纯惯导](P2_纯惯导_拆解test_SINS.md)
+相关：[← 拆解 PSINS 篇总览](../../index.md) · [P2 纯惯导](P2_纯惯导_拆解test_SINS.md)
