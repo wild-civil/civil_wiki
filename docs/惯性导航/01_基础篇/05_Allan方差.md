@@ -251,7 +251,7 @@ PSINS `avar` 走"倍增二分"（τ 是 2 的幂），本项目 `allan_dev` 走"
 
 - 上一篇：[04 IMU 误差模型](04_IMU误差模型.md)（零偏/标度/交叉耦合/g 灵敏度/温度漂移；怎么建模、怎么进 ESKF）
 - 下一篇：[06 机械编排方程](../02_解算篇/06_机械编排方程.md)——比力 → 姿态/速度/位置 的递推；ESKF 命名态更新 + 量测更新
-- 数学地基：[矩阵、概率与协方差](../数学基础.md)
+- 数学地基：[矩阵、概率与协方差](../00_前置数学基础/数学基础.md)
 - 外链：[维基 · 艾伦方差](https://zh.wikipedia.org/wiki/艾伦方差) · [IEEE Std 952-2020](https://standards.ieee.org/ieee/952/6996/)（IMU 标定标准）
 - 项目落地：[AHRS 板固件仿真与验证](../../工作与项目/AHRS板固件仿真与验证/)（`verification/metrics/allan.py` 真实工具、`ins_eskf_15d.c` ESKF）
 - 资产：所有出图与脚本 [assets/](../assets/)（`gen_allan_matlab.m` / `gen_allan_py.py` / `allan_curve_matlab.png` / `allan_curve_python.png`）—— 双轨可复现
