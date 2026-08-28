@@ -49,7 +49,7 @@ miniins/
 │     quest.m          #   QUEST / Davenport q-方法（Wahba 最小二乘，M-A）
 │     magsimu.m        #   磁测量仿真（地磁模型 + 硬铁/噪声，M-A）
 │     mahonyupdate.m   #   Mahony PI 互补滤波单步更新（M-A 核心）
-├── demos/             # 场景脚本（demo_sins_dr.m：SINS+DR 组合完整仿真，M4 验收）
+├── demos/             # 场景脚本（demo_sins_dr.m：M4 组合；demo_ahrs.m：M-A 三联图）
 ├── verify/            # 回归自检：verify_trans / verify_ins / verify_trj / verify_dr / verify_ahrs（确定性，无工具箱）
 └── assets/            # 出图
 ```
@@ -86,6 +86,9 @@ verify_ahrs                            % 姿态解算自检（应全 PASS，M-A 
 % —— M4 验收：SINS+DR 组合导航完整仿真（对拍 P4 基准）——
 cd docs/惯性导航/assets/miniins/demos
 demo_sins_dr        % 期望：SINS-only ≈345 m / DR-only ≈151 m / 组合 ≈45.5 m
+
+% —— M-A 验收：姿态解算 AHRS 三联图（静态收敛 + 动态跟踪 + 加速度扰动）——
+demo_ahrs           % 生成 ../assets/demo_ahrs_{static,dynamic,disturb}.png
 ```
 
 ## 里程碑
