@@ -240,6 +240,12 @@ nav:
               - 惯性导航/03_组合导航篇/13_松组合vs紧组合.md
               - 惯性导航/03_组合导航篇/14_一致性检验.md
               - 惯性导航/03_组合导航篇/15_多传感器冗余与FDI.md
+          - "滤波算法精读篇（外源开源库逐读）":
+              - 一阶互补滤波分析: 惯性导航/05_滤波算法精读篇/00_一阶互补滤波分析.md
+              - Mahony 滤波分析: 惯性导航/05_滤波算法精读篇/01_Mahony滤波分析.md
+              - Madgwick 滤波分析: 惯性导航/05_滤波算法精读篇/02_Madgwick滤波分析.md
+              - 卡尔曼滤波入门（从1D标量到2D矩阵）: 惯性导航/05_滤波算法精读篇/03_卡尔曼滤波入门.md
+              - EKF与ESKF深度对比（PX4 EKF2）: 惯性导航/05_滤波算法精读篇/04_EKF与ESKF深度对比.md
           - "拆解 PSINS 篇（工业参考逐行走读）":
               - 00 内化蓝图（路线图）: 惯性导航/04_拆解PSINS篇/00_内化蓝图.md
               - 00 读码地基（数据结构/约定）: 惯性导航/04_拆解PSINS篇/00_读码地基.md
@@ -248,6 +254,23 @@ nav:
               - 惯性导航/04_拆解PSINS篇/P2_纯惯导_拆解test_SINS.md
               - 惯性导航/04_拆解PSINS篇/P3_航位推算_拆解test_DR.md
               - 惯性导航/04_拆解PSINS篇/P4_SINS+DR组合_拆解test_SINS_DR.md
+              - 逐行拆解（函数级 line-by-line）:
+                  - 00 逐行拆解总览: 惯性导航/04_拆解PSINS篇/linebyline/00_逐行拆解总览.md
+                  - 00a INS基础概念入门: 惯性导航/04_拆解PSINS篇/linebyline/00a_INSBasics.md
+                  - 00b 坐标变换与旋转矩阵: 惯性导航/04_拆解PSINS篇/linebyline/00b_CoordRot.md
+                  - 00 glvf 全局常量与单位: 惯性导航/04_拆解PSINS篇/linebyline/00_glvf.md
+                  - 01 earth 地球参数: 惯性导航/04_拆解PSINS篇/linebyline/01_earth.md
+                  - 02 cnscl 圆锥划桨补偿: 惯性导航/04_拆解PSINS篇/linebyline/02_cnscl.md
+                  - 03 insupdate 姿态速度位置三连更新: 惯性导航/04_拆解PSINS篇/linebyline/03_insupdate.md
+                  - 04 insinit 结构体初始化: 惯性导航/04_拆解PSINS篇/linebyline/04_insinit.md
+                  - 05 inspure 纯惯导主循环: 惯性导航/04_拆解PSINS篇/linebyline/05_inspure.md
+                  - 06 drupdate 航位推算: 惯性导航/04_拆解PSINS篇/linebyline/06_drupdate.md
+                  - 07 kfinit(153) 卡尔曼初始化: 惯性导航/04_拆解PSINS篇/linebyline/07_kfinit_153.md
+                  - 08 kffk F阵离散化: 惯性导航/04_拆解PSINS篇/linebyline/08_kffk.md
+                  - 09 kfupdate 五公式实现: 惯性导航/04_拆解PSINS篇/linebyline/09_kfupdate.md
+                  - 10 kffeedback 误差反馈清零: 惯性导航/04_拆解PSINS篇/linebyline/10_kffeedback.md
+                  - 11 Mahony 互补滤波 AHRS: 惯性导航/04_拆解PSINS篇/linebyline/11_Mahony.md
+                  - 12 QEAHRS 四元数 EKF: 惯性导航/04_拆解PSINS篇/linebyline/12_QEAHRS.md
   - 生活与兴趣:
       - 生活与兴趣/index.md
   - 杂记:
