@@ -3,8 +3,8 @@
 // 注意：改用 SVG 输出（非 chtml），无需外部字体文件，可完全离线/本地化。
 window.MathJax = {
   tex: {
-    inlineMath: [["\\(", "\\)"]],
-    displayMath: [["\\[", "\\]"]],
+    inlineMath: [["$", "$"], ["\\(", "\\)"]],
+    displayMath: [["$$", "$$"], ["\\[", "\\]"]],
     processEscapes: true,
     processEnvironments: true,
     // tex-mml-svg.js 本地版不带 boldsymbol 扩展（会懒加载失败 → 整个 MathJax 崩）

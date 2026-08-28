@@ -180,7 +180,31 @@ fprintf('    dT     = %+.4f s（真值 0）', mean(tail(:,22)));
 fprintf(' | eb = %+.3f °/h（真值 %+.2f）', mean(tail(:,10:12))/dph, eb(1)/dph);
 fprintf(' | db = %+.0f µg（真值 %+.0f）\n', mean(tail(:,13:15))/ug, db(1)/ug);
 
-fprintf('\n[7] 可视化：可用 miniinsplot.m / miniavpcmpplot.m（assets/ 下）绘制\n');
+%% ========== 9) 可视化（真值 + 三解 4 色叠加 + 残差 + 3D） ==========
+% 绘图函数在 assets/（miniinsplot / miniavpcmpplot / miniinsplot3d，零依赖自写）
+% 输出 png 存到 assets/（与 gen_sins_dr.py 双轨同名，可对拍）
+plot_dir = fullfile(fileparts(fileparts(mfilename('fullpath'))), '..');
+addpath(plot_dir);
+avp_trj = trj.avp(2:2:2*m, 1:10);               % 真值（奇数拍对齐，与误差统计一致）
+
+% ① 轨迹叠加（真值黑 + SINS-only红 + DR-only蓝 + 组合绿）
+miniinsplot({avp_sins, avp_dr, avp_comb}, avp_trj, 'cmp_sinsdr', ...
+            {'SINS-only','DR-only','Combined'});
+saveas(gcf, fullfile(plot_dir, 'miniinsplot_cmp_sinsdr_m.png')); close(gcf);
+
+% ② 姿态/速度/位置残差对比（真值 vs 三解）——miniavpcmpplot 内部自己做 2:2:end 对齐，传全密度真值
+miniavpcmpplot(trj.avp(1:2*m, 1:10), {avp_sins, avp_dr, avp_comb}, ...
+               {'SINS-only','DR-only','Combined'}, fullfile(plot_dir, 'miniavpcmpplot_sinsdr_m.png'));
+
+% ③ 3D 轨迹对比（真值黑 Z=0 参考面 + 三解，Z=高度误差×8 显示放大）
+try
+    miniinsplot3d({avp_sins, avp_dr, avp_comb}, avp_trj, 'cmp_sinsdr', ...
+                  {'SINS-only','DR-only','Combined'});
+    saveas(gcf, fullfile(plot_dir, 'miniinsplot3d_cmp_sinsdr_m.png')); close(gcf);
+catch
+    fprintf('   （3D 图在 batch 模式可能不可用，已跳过）\n');
+end
+fprintf('\n[7] 可视化完成：miniinsplot_cmp_sinsdr_m / miniavpcmpplot_sinsdr_m / miniinsplot3d_cmp_sinsdr_m（assets/）\n');
 end
 
 %% ========== 局部函数：误差统计（对齐 P4 errstats） ==========

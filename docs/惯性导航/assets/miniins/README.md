@@ -87,6 +87,7 @@ demo_sins_dr        % 期望：SINS-only ≈345 m / DR-only ≈151 m / 组合 �
 - **M1 ✅**：`trans` 系列 + `earth.m` + `insupdate.m`（纯惯导闭环，逐行注释）
 - **M2 ✅**：轨迹生成（`trjsegment` 航段语言 + `trjsimu` 正演机），`verify_trj` 正演→反演自洽
 - **M3 ✅**：航位推算（`drinit` / `drupdate`，航向×里程），`verify_dr` 自洽
-- **M4 🚧**：组合导航 KF（`kfinit`/`kfupdate`/`kffk`/`kffeedback`，22 维 SINS+DR）——
-  代码已对齐 P4 主循环（Python 镜像验证数学正确），**待 MATLAB 跑 `demo_sins_dr` 验收**（期望 345/151/45.5 m）
-- **M5**：GNSS 扩展 + 与固件 C SIL 打通
+- **M4 ✅**：组合导航 KF（`kfinit`/`kfupdate`/`kffk`/`kffeedback`，22 维 SINS+DR）——
+  已对齐 P4 主循环并本机 MATLAB 验证（`demo_sins_dr` 组合 **44.9 m** 对齐 P4 45.5 m，dKod +0.0994 vs +0.1004）；
+  修复两大隐蔽 bug（KF 时间更新推 x 致 267 m → 只推 P；`a2qua` q0 符号），`verify_trans/ins/trj/dr` 全 PASS。
+- **M5**：GNSS 扩展 + 与固件 C SIL 打通（启动首项：统一 `trjsegment` 的 `cf` 符号约定，见 `demos/trjsegment与WAT表生成说明.md` §10）
