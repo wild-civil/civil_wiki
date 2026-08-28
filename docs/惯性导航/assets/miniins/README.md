@@ -44,8 +44,13 @@ miniins/
 │     kfupdate.m       #   卡尔曼滤波更新（时间 + 量测，Joseph，M4）
 │     kffk.m           #   22 维状态转移阵（φ 角 INS15 + DR 扩展 7，M4）
 │     kffeedback.m     #   反馈闭环（'v' 仅速度，M4）
+│     ahrsinit.m       #   Mahony AHRS 初始化（Kp/Ki/wnie/dec，M-A）
+│     triad.m          #   TRIAD 双矢量定姿（Wahba 确定解，M-A）
+│     quest.m          #   QUEST / Davenport q-方法（Wahba 最小二乘，M-A）
+│     magsimu.m        #   磁测量仿真（地磁模型 + 硬铁/噪声，M-A）
+│     mahonyupdate.m   #   Mahony PI 互补滤波单步更新（M-A 核心）
 ├── demos/             # 场景脚本（demo_sins_dr.m：SINS+DR 组合完整仿真，M4 验收）
-├── verify/            # 回归自检：verify_trans / verify_ins / verify_trj / verify_dr（确定性，无工具箱）
+├── verify/            # 回归自检：verify_trans / verify_ins / verify_trj / verify_dr / verify_ahrs（确定性，无工具箱）
 └── assets/            # 出图
 ```
 
@@ -76,6 +81,7 @@ verify_trans                           % 转换模块自检（应全 PASS）
 verify_ins                             % 机械编排自检（应全 PASS）
 verify_trj                             % 轨迹生成自洽自检（应全 PASS）
 verify_dr                              % 航位推算自洽自检（应全 PASS，M4 版）
+verify_ahrs                            % 姿态解算自检（应全 PASS，M-A 版）
 
 % —— M4 验收：SINS+DR 组合导航完整仿真（对拍 P4 基准）——
 cd docs/惯性导航/assets/miniins/demos
@@ -90,4 +96,8 @@ demo_sins_dr        % 期望：SINS-only ≈345 m / DR-only ≈151 m / 组合 �
 - **M4 ✅**：组合导航 KF（`kfinit`/`kfupdate`/`kffk`/`kffeedback`，22 维 SINS+DR）——
   已对齐 P4 主循环并本机 MATLAB 验证（`demo_sins_dr` 组合 **44.9 m** 对齐 P4 45.5 m，dKod +0.0994 vs +0.1004）；
   修复两大隐蔽 bug（KF 时间更新推 x 致 267 m → 只推 P；`a2qua` q0 符号），`verify_trans/ins/trj/dr` 全 PASS。
+- **M-A ✅**：姿态解算 AHRS（`triad`/`quest`/`magsimu`/`mahonyupdate`）——
+  Mahony 互补滤波（准静态门控 + 磁偏角补偿），`verify_ahrs` 6 项全 PASS
+  （TRIAD/QUEST 1e-15、静态收敛 0.0000°、零偏吸收 exyzInt/eb=1.00、动态跟踪 0.025°）；
+  沉淀两个实战坑：磁偏角不补偿 yaw 卡 −dec、水平加速度是幅值门控的原理性盲区（详见 wiki P5）。
 - **M5**：GNSS 扩展 + 与固件 C SIL 打通（启动首项：统一 `trjsegment` 的 `cf` 符号约定，见 `demos/trjsegment与WAT表生成说明.md` §10）

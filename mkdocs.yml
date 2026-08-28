@@ -272,6 +272,7 @@ nav:
                   - P2 纯惯导 · test_SINS.m: 惯性导航/04_拆解PSINS篇/P系列与总览/P2_纯惯导_拆解test_SINS.md
                   - P3 航位推算 · test_DR.m: 惯性导航/04_拆解PSINS篇/P系列与总览/P3_航位推算_拆解test_DR.md
                   - P4 SINS+DR 组合 · test_SINS_DR.m: 惯性导航/04_拆解PSINS篇/P系列与总览/P4_SINS+DR组合_拆解test_SINS_DR.md
+                  - P5 姿态解算 AHRS · Mahony: 惯性导航/04_拆解PSINS篇/P系列与总览/P5_姿态解算_拆解Mahony.md
   - 生活与兴趣:
       - 生活与兴趣/index.md
   - 杂记:
