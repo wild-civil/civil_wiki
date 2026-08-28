@@ -60,7 +60,7 @@ $$\mathbf{i} \times \mathbf{j} = \mathbf{k}, \quad \mathbf{j} \times \mathbf{k} 
 
 ### 1.3 PSINS 用的是哪个？
 
-看 [MahonyUpdate.m](file:///workspace/psins/base/AHRS/MahonyUpdate.m#L38-L40) 的关键代码：
+看 [MahonyUpdate.m](../../assets/psins260314/base/AHRS/MahonyUpdate.m) 的关键代码：
 
 ```matlab
 bxyz = ahrs.Cnb*mag;            % L38: 磁力计从 b 系转到 n 系
@@ -332,7 +332,7 @@ wxyz = ahrs.Cnb'*bxyz;  % n→b（转置）
 
 ### 8.3 代码对照
 
-[MahonyUpdate.m](file:///workspace/psins/base/AHRS/MahonyUpdate.m#L38-L40)（已在第 1.3 节引用）：
+[MahonyUpdate.m](../../assets/psins260314/base/AHRS/MahonyUpdate.m)（已在第 1.3 节引用）：
 
 ```matlab
 bxyz = ahrs.Cnb*mag;             % L38: b→n 投影
@@ -340,7 +340,7 @@ bxyz(1:2) = [0;norm(bxyz(1:2))]; % L39: 清零东向（n系第1分量=东）
 wxyz = ahrs.Cnb'*bxyz;           % L40: n→b 投影（转置）
 ```
 
-[QEAHRSUpdate.m](file:///workspace/psins/base/AHRS/QEAHRSUpdate.m) 里状态量 $\mathbf{q}$ 通过 `q2dcm` 转 $C_b^n$，再用 $C_b^n$ 把 n 系重力 $[0,0,-g]^T$ 投影到 b 系做量测——**全程被动变换**。
+[QEAHRSUpdate.m](../../assets/psins260314/base/AHRS/QEAHRSUpdate.m) 里状态量 $\mathbf{q}$ 通过 `q2dcm` 转 $C_b^n$，再用 $C_b^n$ 把 n 系重力 $[0,0,-g]^T$ 投影到 b 系做量测——**全程被动变换**。
 
 > **代码阅读技巧**：看到 `Cnb * X` 就是 b→n（X 是 b 系量），看到 `Cnb' * X` 就是 n→b（X 是 n 系量）。**矩阵的上下标 + 是否转置**，决定了投影方向。
 
@@ -402,7 +402,7 @@ disp(C * [1;0;0]);   % 应得 [cos(theta); -sin(theta); 0] —— 被动：旧X�
 
 ### 练习 3：PSINS 代码追踪
 
-打开 [MahonyUpdate.m](file:///workspace/psins/base/AHRS/MahonyUpdate.m#L38-L40)，回答：
+打开 [MahonyUpdate.m](../../assets/psins260314/base/AHRS/MahonyUpdate.m)，回答：
 
 1. L38 `ahrs.Cnb*mag` 中 `mag` 是 b 系还是 n 系量？结果 `bxyz` 是 b 系还是 n 系量？
 2. L39 为什么清零第 1 分量？这和"n 系第 1 分量 = 东"有什么关系？

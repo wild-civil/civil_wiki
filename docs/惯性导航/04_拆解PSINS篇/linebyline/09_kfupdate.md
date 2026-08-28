@@ -1,6 +1,6 @@
 # 09_kfupdate 逐行注释 Wiki (PSINS)
 
-> 配套源码: [kfupdate.m](file:///workspace/psins/base/kf/kfupdate.m)
+> 配套源码: [kfupdate.m](../../assets/psins260314/base/kf/kfupdate.m)
 > 所属层级: L3组合导航
 > 前置依赖: 00_glvf / 01_earth / 03_insupdate / 08_kffk + 卡尔曼滤波五公式
 > 学习目标: 读完能独立回答3个问题
@@ -28,12 +28,12 @@ E[w]=0, E[w·wᵀ]=Q;  E[v]=0, E[v·vᵀ]=R;  E[w·vᵀ]=0
 
 | 编号 | 公式名称 | 数学公式 | 源码位置 |
 |:----:|:---------|:---------|:---------|
-| ① | 状态预测（时间更新） | x̂ₖ⁻ = Φ·x̂ₖ₋₁⁺ | [L37](file:///workspace/psins/base/kf/kfupdate.m#L37) 或 [L46](file:///workspace/psins/base/kf/kfupdate.m#L46) |
-| ② | 协方差预测 | Pₖ⁻ = Φ·Pₖ₋₁⁺·Φᵀ + Γ·Q·Γᵀ | [L38](file:///workspace/psins/base/kf/kfupdate.m#L38) 或 [L47](file:///workspace/psins/base/kf/kfupdate.m#L47) |
-| ③ | 量测残差 | rₖ = yₖ − H·x̂ₖ⁻ | [L55](file:///workspace/psins/base/kf/kfupdate.m#L55) |
-| ④ | 卡尔曼增益 | Kₖ = Pₖ⁻·Hᵀ·(H·Pₖ⁻·Hᵀ + R)⁻¹ | [L52-L53](file:///workspace/psins/base/kf/kfupdate.m#L52)+[L69](file:///workspace/psins/base/kf/kfupdate.m#L69) |
-| ⑤a | 状态校正 | x̂ₖ⁺ = x̂ₖ⁻ + Kₖ·rₖ | [L74](file:///workspace/psins/base/kf/kfupdate.m#L74) |
-| ⑤b | 协方差校正 | Pₖ⁺ = Pₖ⁻ − Kₖ·(H·Pₖ⁻·Hᵀ + R)·Kₖᵀ | [L75](file:///workspace/psins/base/kf/kfupdate.m#L75) |
+| ① | 状态预测（时间更新） | x̂ₖ⁻ = Φ·x̂ₖ₋₁⁺ | [L37](../../assets/psins260314/base/kf/kfupdate.m) 或 [L46](../../assets/psins260314/base/kf/kfupdate.m) |
+| ② | 协方差预测 | Pₖ⁻ = Φ·Pₖ₋₁⁺·Φᵀ + Γ·Q·Γᵀ | [L38](../../assets/psins260314/base/kf/kfupdate.m) 或 [L47](../../assets/psins260314/base/kf/kfupdate.m) |
+| ③ | 量测残差 | rₖ = yₖ − H·x̂ₖ⁻ | [L55](../../assets/psins260314/base/kf/kfupdate.m) |
+| ④ | 卡尔曼增益 | Kₖ = Pₖ⁻·Hᵀ·(H·Pₖ⁻·Hᵀ + R)⁻¹ | [L52-L53](../../assets/psins260314/base/kf/kfupdate.m)+[L69](../../assets/psins260314/base/kf/kfupdate.m) |
+| ⑤a | 状态校正 | x̂ₖ⁺ = x̂ₖ⁻ + Kₖ·rₖ | [L74](../../assets/psins260314/base/kf/kfupdate.m) |
+| ⑤b | 协方差校正 | Pₖ⁺ = Pₖ⁻ − Kₖ·(H·Pₖ⁻·Hᵀ + R)·Kₖᵀ | [L75](../../assets/psins260314/base/kf/kfupdate.m) |
 
 注意：协方差校正 PSINS 用的是**Joseph稳定形式**的等价写法 `P⁺ = P⁻ − K·S·Kᵀ`（其中 S=HP⁻Hᵀ+R），而非常规 `(I−KH)P⁻`。前者数值更稳定，保证 P⁺ 半正定。
 
@@ -91,7 +91,7 @@ Pconstrain的处理策略不对称：
 | 12-23 | `% Notes: (1) the Kalman filter stochastic models is...` | 注释：①写出状态/量测方程+Q/R定义；②**Sage-Husa自适应R公式** R=bR₋₁+(1−b)(rrᵀ−HP⁻Hᵀ) 写在注释里！配Rmin/Rmax约束；③fading遗忘因子；④Pmax/Pmin约束 | |
 | 24-25 | `% See also kfinit, kfinit0, kfupdatesq, kffk, kfhk, kfc2d, kffeedback, kfplot, RLS, ekf, ukf.` | 参考函数族：初始化→状态转移→量测矩阵→离散化→反馈→绘图→RLS/EKF/UKF对比 | |
 | 26-29 | `% Copyright(c) 2009-2015...` | 版权：严恭敏，西工大，2012/12/08初版，2013/08/29→2015/04/16→2017/06/01→2018/03/11多轮修订 | |
-| 30-31 | `if nargin==1, TimeMeasBoth = 'T'; end` | ★参数默认值：只传1个参数(kf)→默认'T'纯时间更新。对应 [test_SINS_GPS_153.m:28](file:///workspace/psins/demos/test_SINS_GPS_153.m#L28) 的调用 `kfupdate(kf)` | ★ |
+| 30-31 | `if nargin==1, TimeMeasBoth = 'T'; end` | ★参数默认值：只传1个参数(kf)→默认'T'纯时间更新。对应 [test_SINS_GPS_153.m:28](../../assets/psins260314/demos/test_SINS_GPS_153.m) 的调用 `kfupdate(kf)` | ★ |
 | 32-34 | `elseif nargin==2, TimeMeasBoth = 'B'; end` | 传2个参数(kf+yk)→默认'B'即 Time+Meas 都做。传3个参数就是显式指定了。 | |
 
 ### 第二段①：时间更新 'T' 分支 (L36-L40)
@@ -110,7 +110,7 @@ Pconstrain的处理策略不对称：
 | 行号 | 源码 | 注释 | 重点标记 |
 |------|------|------|----------|
 | 41 | `else` | 进入非'T'分支：即'M'或'B' | |
-| 42-44 | `if TimeMeasBoth=='M'`<br>`kf.xkk_1 = kf.xk;`<br>`kf.Pxkk_1 = kf.Pxk;` | 分支②：仅量测更新。假设时间更新在外部已做过，直接取xk/Pxk作为预测值（k|k-1 ≡ k|k，等价Φ=I）。对应 [test_SINS_GPS_153.m:31](file:///workspace/psins/demos/test_SINS_GPS_153.m#L31) `kfupdate(kf, ins.pos-posGPS, 'M')` | |
+| 42-44 | `if TimeMeasBoth=='M'`<br>`kf.xkk_1 = kf.xk;`<br>`kf.Pxkk_1 = kf.Pxk;` | 分支②：仅量测更新。假设时间更新在外部已做过，直接取xk/Pxk作为预测值（k|k-1 ≡ k|k，等价Φ=I）。对应 [test_SINS_GPS_153.m:31](../../assets/psins260314/demos/test_SINS_GPS_153.m) `kfupdate(kf, ins.pos-posGPS, 'M')` | |
 | 45-48 | `elseif TimeMeasBoth=='B'`<br>`kf.xkk_1=Φ*xk; Pxkk_1=ΦPxkΦ'+ΓQΓ';`<br>`measstop--; measlost++;` | 分支③：先时间更新再量测更新，把L37-L40压缩在此。代码与L37-L40完全一致 | |
 | 49-51 | `else, error('TimeMeasBoth input error!');` | 参数合法性校验，非T/M/B直接报错终止 | |
 | 52 | `kf.Pxykk_1 = kf.Pxkk_1*kf.Hk';` | ★预计算互协方差 P_{xy,k|k-1} = Pₖ⁻·Hᵀ，后面K增益和S都要用，缓存省一次乘法 | ★ |
@@ -158,7 +158,7 @@ Pconstrain的处理策略不对称：
 
 ## 🔍 断点调试建议
 
-**目标脚本**: [test_SINS_GPS_153.m](file:///workspace/psins/demos/test_SINS_GPS_153.m)
+**目标脚本**: [test_SINS_GPS_153.m](../../assets/psins260314/demos/test_SINS_GPS_153.m)
 
 ### 调试1：观察第一次'T'更新后的P阵累积
 1. 在 `kfupdate.m` **L39**（`kf.xk = kf.xkk_1;` 即'T'分支最后一行）设条件断点：

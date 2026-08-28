@@ -1,6 +1,6 @@
 # inspure.m 逐行注释 Wiki (PSINS)
 
-> 配套源码: [inspure.m](file:///workspace/psins/base/base2/inspure.m)
+> 配套源码: [inspure.m](../../assets/psins260314/base/base2/inspure.m)
 > 所属层级: L1纯惯导
 > 前置依赖: 00_glvf / 01_earth / 03_insupdate / 04_insinit
 > 学习目标: 读完能回答3个问题

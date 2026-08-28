@@ -1,6 +1,6 @@
 # earth.m 逐行注释 Wiki (PSINS)
 
-> 配套源码: [earth.m](file:///workspace/psins/base/base1/earth.m)
+> 配套源码: [earth.m](../../assets/psins260314/base/base1/earth.m)
 > 所属层级: L0基础 / L1纯惯导
 > 前置依赖: [glvf.m](00_glvf.md)（必须先读glvf，因为earth依赖glv全局变量）
 > 学习目标: 读完后你应能回答哪3个问题

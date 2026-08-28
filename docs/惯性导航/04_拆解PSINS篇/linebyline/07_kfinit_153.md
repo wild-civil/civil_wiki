@@ -1,7 +1,7 @@
 # 07_kfinit_153 逐行注释 Wiki (PSINS)
 
-> 配套源码: [kfinit.m](file:///workspace/psins/base/kf/kfinit.m)
-> 关联源码: [kfhk.m](file:///workspace/psins/base/kf/kfhk.m) / [kfinit0.m](file:///workspace/psins/base/kf/kfinit0.m) / [kfsetting.m](file:///workspace/psins/base/kf/kfsetting.m) / [etm.m](file:///workspace/psins/base/base2/etm.m)
+> 配套源码: [kfinit.m](../../assets/psins260314/base/kf/kfinit.m)
+> 关联源码: [kfhk.m](../../assets/psins260314/base/kf/kfhk.m) / [kfinit0.m](../../assets/psins260314/base/kf/kfinit0.m) / [kfsetting.m](../../assets/psins260314/base/kf/kfsetting.m) / [etm.m](../../assets/psins260314/base/base2/etm.m)
 > 所属层级: L3 组合导航 SINS/GPS松组合
 > 前置依赖: 00_glvf / 03_insupdate / 08_kffk / 09_kfupdate
 > 学习目标: 读完回答3个问题

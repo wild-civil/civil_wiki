@@ -144,7 +144,7 @@ $$\text{else}: \quad R_{\text{acc}} = \frac{R_{\text{acc},0}}{T_s}$$
 
 > 🧩 **函数作用**：初始化 7 状态 QEKF AHRS。
 >
-> 源码：[QEAHRSInit.m](file:///workspace/psins/base/AHRS/QEAHRSInit.m)
+> 源码：[QEAHRSInit.m](../../assets/psins260314/base/AHRS/QEAHRSInit.m)
 
 | 行号 | 原代码 | 中文注释 | 公式/备注 |
 |---|---|---|---|
@@ -181,7 +181,7 @@ $$\text{else}: \quad R_{\text{acc}} = \frac{R_{\text{acc},0}}{T_s}$$
 
 > 🧩 **函数作用**：一步 QEKF AHRS 更新——构建 $\Phi$/$H$/$R$ → 调 kfupdate → 归一化。
 >
-> 源码：[QEAHRSUpdate.m](file:///workspace/psins/base/AHRS/QEAHRSUpdate.m)
+> 源码：[QEAHRSUpdate.m](../../assets/psins260314/base/AHRS/QEAHRSUpdate.m)
 
 | 行号 | 原代码 | 中文注释 | 公式/备注 |
 |---|---|---|---|
@@ -234,7 +234,7 @@ $$\text{else}: \quad R_{\text{acc}} = \frac{R_{\text{acc},0}}{T_s}$$
 
 ### test_AHRS_QEKF.m 逐行注释
 
-> 源码：[test_AHRS_QEKF.m](file:///workspace/psins/demos/test_AHRS_QEKF.m)
+> 源码：[test_AHRS_QEKF.m](../../assets/psins260314/demos/test_AHRS_QEKF.m)
 
 | 行号 | 原代码 | 中文注释 | 公式/备注 |
 |---|---|---|---|

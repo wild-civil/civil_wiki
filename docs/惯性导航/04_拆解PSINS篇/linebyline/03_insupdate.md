@@ -1,6 +1,6 @@
 # insupdate.m 逐行注释 Wiki (PSINS)
 
-> 配套源码: [insupdate.m](file:///workspace/psins/base/base1/insupdate.m)
+> 配套源码: [insupdate.m](../../assets/psins260314/base/base1/insupdate.m)
 > 所属层级: L1纯惯导
 > 前置依赖: 必须先读 00_glvf.md（四元数/旋转辅助函数）、01_earth.md（地球模型eth）、02_cnscl.md（圆锥划桨补偿）
 > 学习目标: 读完后你应能回答哪3个问题
@@ -601,7 +601,7 @@ fprintf('【退化倍数】3D RMS = %.2f 倍 (原版%.2f → 修改后%.2f)\n', 
 
 $$\mathbf{q} \leftarrow \frac{\mathbf{q}}{\|\mathbf{q}\|} = \frac{\mathbf{q}}{\sqrt{q_0^2+q_1^2+q_2^2+q_3^2}}$$
 
-浮点累积会导致 $\|\mathbf{q}\| \neq 1$，不归一化后续所有旋转计算都会带误差。PSINS 在 [attsyn.m](file:///workspace/psins/base/base1/attsyn.m) 里做归一化（L47），飞控在每次积分后做。
+浮点累积会导致 $\|\mathbf{q}\| \neq 1$，不归一化后续所有旋转计算都会带误差。PSINS 在 [attsyn.m](../../assets/psins260314/base/base1/attsyn.m) 里做归一化（L47），飞控在每次积分后做。
 
 > **快速逆平方根**（飞控嵌入式技巧）：归一化需要算 $1/\sqrt{x}$，经典方法用"魔数"近似（Quake III 源码中的 `0x5f3759df`），一次牛顿迭代即达浮点精度。PSINS 在 MATLAB 里不需要这个（直接 `q/norm(q)`）。
 
@@ -631,7 +631,7 @@ $$\mathbf{q} \leftarrow \frac{\mathbf{q}}{\|\mathbf{q}\|} = \frac{\mathbf{q}}{\s
 | **输入** | 陀螺+加计原始数据 | 机械编排的结果 + 外部量测 |
 | **输出** | 导航解（att, v, pos） | 误差估计（δatt, δv, δpos, 零偏...） |
 | **公式** | $\dot{\mathbf{v}}^n = \mathbf{C}_b^n \mathbf{f} + \mathbf{g}_{cc} - (2\boldsymbol{\omega}_{ie}^n+\boldsymbol{\omega}_{en}^n)\times \mathbf{v}^n$ | $\mathbf{x}_{k+1} = \Phi \mathbf{x}_k$, $\mathbf{K} = \mathbf{P}\mathbf{H}^T(\mathbf{H}\mathbf{P}\mathbf{H}^T+\mathbf{R})^{-1}$ |
-| **PSINS 里** | [insupdate.m](file:///workspace/psins/base/base1/insupdate.m) | [kfupdate.m](file:///workspace/psins/base/kf/kfupdate.m) + [kffeedback.m](file:///workspace/psins/base/kf/kffeedback.m) |
+| **PSINS 里** | [insupdate.m](../../assets/psins260314/base/base1/insupdate.m) | [kfupdate.m](../../assets/psins260314/base/kf/kfupdate.m) + [kffeedback.m](../../assets/psins260314/base/kf/kffeedback.m) |
 
 #### PSINS 的做法：机械编排 + KF 分开
 

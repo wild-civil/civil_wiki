@@ -1,5 +1,5 @@
 # 10_kffeedback.m 逐行注释 Wiki (PSINS)
-> 配套源码: [kffeedback.m](file:///workspace/psins/base/kf/kffeedback.m)
+> 配套源码: [kffeedback.m](../../assets/psins260314/base/kf/kffeedback.m)
 > 所属层级: L3组合导航
 > 前置依赖: 07_kfinit_153 / 08_kffk / 09_kfupdate
 > 学习目标: ①为什么ESKF需要反馈而EKF不用 ②xk里的φδvδp怎么对ins结构体做校正 ③反馈后xk为什么要清零
@@ -112,7 +112,7 @@ $$
 ---
 
 ## 🔍 断点调试建议
-在 [test_SINS_GPS_153.m](file:///workspace/psins/demos/test_SINS_GPS_153.m) **第32行**（`[kf, ins] = kffeedback(kf, ins, 1, 'avp');`）前后分别断点，第一次 GNSS 观测到来（t=1s 附近）抓变量：
+在 [test_SINS_GPS_153.m](../../assets/psins260314/demos/test_SINS_GPS_153.m) **第32行**（`[kf, ins] = kffeedback(kf, ins, 1, 'avp');`）前后分别断点，第一次 GNSS 观测到来（t=1s 附近）抓变量：
 
 | 变量 | Before kffeedback 预期量级 | After kffeedback 预期量级 | 判读结论 |
 |---|---|---|---|
@@ -139,7 +139,7 @@ $$
 
 ## 🎯 配套练习
 
-在 [test_SINS_GPS_153.m](file:///workspace/psins/demos/test_SINS_GPS_153.m) **第32行**把 `kffeedback(kf, ins, 1, 'avp')` 注释掉（但保留前后的 kfupdate），然后：
+在 [test_SINS_GPS_153.m](../../assets/psins260314/demos/test_SINS_GPS_153.m) **第32行**把 `kffeedback(kf, ins, 1, 'avp')` 注释掉（但保留前后的 kfupdate），然后：
 
 1. **跑 300s 仿真**：
    - 子图1画 `avp(:,7:8) - trj.avp(:,7:8)` 经纬度误差曲线

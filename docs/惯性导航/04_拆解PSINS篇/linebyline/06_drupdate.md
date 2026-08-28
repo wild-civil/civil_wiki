@@ -1,6 +1,6 @@
 # 06_drupdate 逐行注释 Wiki (PSINS)
 
-> 配套源码: [drupdate.m](file:///workspace/psins/base/base1/drupdate.m)
+> 配套源码: [drupdate.m](../../assets/psins260314/base/base1/drupdate.m)
 > 所属层级: L2 DR 航位推算
 > 前置依赖: 00_glvf / 01_earth / 03_insupdate / 08_kffk / 09_kfupdate
 > 学习目标: 读完回答3个问题

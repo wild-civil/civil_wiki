@@ -66,7 +66,7 @@ $\Delta\boldsymbol{\phi} = \sum_{j=1}^{N} \mathbf{wm}_j + \sum_{j=1}^{N-1} c_{N,
 
 ### 1.3 在 PSINS 里对应什么
 
-[glvf.m](file:///workspace/psins/base/glvf.m) 第 89-94 行的 `glv.cs` 表：
+[glvf.m](../../assets/psins260314/base/glvf.m) 第 89-94 行的 `glv.cs` 表：
 
 | 子样数 N | `glv.cs` 第 N-1 行                       | 权重含义                              |
 | ----- | -------------------------------------- | --------------------------------- |
@@ -76,7 +76,7 @@ $\Delta\boldsymbol{\phi} = \sum_{j=1}^{N} \mathbf{wm}_j + \sum_{j=1}^{N-1} c_{N,
 | 5     | `[250, 525, 650, 1375, 0]/504`         | 五子样                               |
 | 6     | `[2315, 4558, 7296, 7834, 15797]/4620` | 六子样                               |
 
-**调用流程**（详见 [02\_cnscl.md](02_cnscl.md)）：[cnscl.m](file:///workspace/psins/base/base1/cnscl.m) 取出 `cm = glv.cs(n-1, 1:n-1)' .* wm(1:n-1,:)`，然后 `dphim = sum(cm) × wm(n,:)` 做叉乘，再加到主项 `sum(wm)` 上。
+**调用流程**（详见 [02\_cnscl.md](02_cnscl.md)）：[cnscl.m](../../assets/psins260314/base/base1/cnscl.m) 取出 `cm = glv.cs(n-1, 1:n-1)' .* wm(1:n-1,:)`，然后 `dphim = sum(cm) × wm(n,:)` 做叉乘，再加到主项 `sum(wm)` 上。
 
 **工程意义**：
 
@@ -147,7 +147,7 @@ IMU采样:   |wm|wm|wm|wm|wm|wm|wm|wm|    200Hz
 
 #### PSINS 的特殊单子样模式
 
-[cnscl.m](file:///workspace/psins/base/base1/cnscl.m) 第 33-34 行有个巧妙的 `coneoptimal=2` 模式：
+[cnscl.m](../../assets/psins260314/base/base1/cnscl.m) 第 33-34 行有个巧妙的 `coneoptimal=2` 模式：
 
 ```matlab
 if coneoptimal==2
@@ -169,7 +169,7 @@ if coneoptimal==2
 | **单子样**   | $\Delta\boldsymbol{\theta}$                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | $\dfrac{a^2\omega}{12}(\omega h)^2$           |
 | **优化双子样** | $\Delta\boldsymbol{\theta}_1+\Delta\boldsymbol{\theta}_2+\dfrac{2}{3}\Delta\boldsymbol{\theta}_1 \times \Delta\boldsymbol{\theta}_2$                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | $\dfrac{a^2\omega}{960}(\omega h)^4$          |
 | **优化三子样** | $\Delta\boldsymbol{\theta}_1+\Delta\boldsymbol{\theta}_2+\Delta\boldsymbol{\theta}_3+\dfrac{9}{20}\Delta\boldsymbol{\theta}_1 \times \Delta\boldsymbol{\theta}_3+\dfrac{27}{40}\Delta\boldsymbol{\theta}_2 \times (\Delta\boldsymbol{\theta}_3-\Delta\boldsymbol{\theta}_1)$                                                                                                                                                                                                                                                                                                                                   | $\dfrac{a^2\omega}{204\,120}(\omega h)^6$     |
-| **优化四子样** | $\begin{aligned}\Delta\boldsymbol{\theta}_1+\Delta\boldsymbol{\theta}_2+\Delta\boldsymbol{\theta}_3+\Delta\boldsymbol{\theta}_4 &+\dfrac{214}{315}(\Delta\boldsymbol{\theta}_1 \times \Delta\boldsymbol{\theta}_2+\Delta\boldsymbol{\theta}_3 \times \Delta\boldsymbol{\theta}_4)\\&+\dfrac{46}{105}(\Delta\boldsymbol{\theta}_1 \times \Delta\boldsymbol{\theta}_3+\Delta\boldsymbol{\theta}_2 \times \Delta\boldsymbol{\theta}_4)+\dfrac{54}{105}\Delta\boldsymbol{\theta}_1 \times \Delta\boldsymbol{\theta}_4+\dfrac{214}{315}\Delta\boldsymbol{\theta}_2 \times \Delta\boldsymbol{\theta}_3\end{aligned}$ | $\dfrac{a^2\omega}{82\,575\,360}(\omega h)^8$ |
+| **优化四子样** | $\begin{aligned}&\Delta\boldsymbol{\theta}_1+\Delta\boldsymbol{\theta}_2+\Delta\boldsymbol{\theta}_3+\Delta\boldsymbol{\theta}_4 +\dfrac{214}{315}(\Delta\boldsymbol{\theta}_1 \times \Delta\boldsymbol{\theta}_2+\Delta\boldsymbol{\theta}_3 \times \Delta\boldsymbol{\theta}_4)\\&+\dfrac{46}{105}(\Delta\boldsymbol{\theta}_1 \times \Delta\boldsymbol{\theta}_3+\Delta\boldsymbol{\theta}_2 \times \Delta\boldsymbol{\theta}_4)+\dfrac{54}{105}\Delta\boldsymbol{\theta}_1 \times \Delta\boldsymbol{\theta}_4+\dfrac{214}{315}\Delta\boldsymbol{\theta}_2 \times \Delta\boldsymbol{\theta}_3\end{aligned}$ | $\dfrac{a^2\omega}{82\,575\,360}(\omega h)^8$ |
 
 #### 怎么读这张表？
 
@@ -188,7 +188,7 @@ if coneoptimal==2
 
 #### 和 PSINS 的 glv.cs 对照
 
-你提供的"优化双子样"公式里的 $\frac{2}{3}$ 系数，正好就是 [glvf.m](file:///workspace/psins/base/glvf.m) 第 90 行 `glv.cs(1,:) = [2,0,0,0,0]/3`。三子样公式里的 $\frac{9}{20}$ 和 $\frac{27}{40}$ 对应 `glv.cs(2,:) = [9,27,0,0,0]/20`（注意 $\frac{27}{40} = \frac{27}{20} \times \frac{1}{2}$，PSINS 的实现形式略有展开差异但数学等价）。
+你提供的"优化双子样"公式里的 $\frac{2}{3}$ 系数，正好就是 [glvf.m](../../assets/psins260314/base/glvf.m) 第 90 行 `glv.cs(1,:) = [2,0,0,0,0]/3`。三子样公式里的 $\frac{9}{20}$ 和 $\frac{27}{40}$ 对应 `glv.cs(2,:) = [9,27,0,0,0]/20`（注意 $\frac{27}{40} = \frac{27}{20} \times \frac{1}{2}$，PSINS 的实现形式略有展开差异但数学等价）。
 
 ### 1.7 多子样需要外推吗？
 
@@ -196,7 +196,7 @@ if coneoptimal==2
 
 | 概念                    | 含义                         | 需不需要？                                                            |
 | --------------------- | -------------------------- | ---------------------------------------------------------------- |
-| **多子样补偿**             | 一个更新周期内已采到 N 个点，用这 N 个点算补偿 | ✅ 就是 [cnscl.m](file:///workspace/psins/base/base1/cnscl.m) 的标准做法 |
+| **多子样补偿**             | 一个更新周期内已采到 N 个点，用这 N 个点算补偿 | ✅ 就是 [cnscl.m](../../assets/psins260314/base/base1/cnscl.m) 的标准做法 |
 | **外推（extrapolation）** | 用当前周期数据预测下一周期的角增量          | ❌ 圆锥补偿不需要                                                        |
 | **跨周期补偿**             | 用上一个周期的最后一个子样 + 当前单子样      | ✅ coneoptimal=2 模式，但这叫"回顾"不是"外推"                                 |
 
@@ -343,7 +343,7 @@ $\ddot{x} = -\frac{g_0}{R_e} x + \text{误差源}$
 
 $\boxed{\omega_s = \sqrt{\frac{g_0}{R_e}} \approx 1.241 \times 10^{-3} \text{ rad/s}, \quad T_s = \frac{2\pi}{\omega_s} \approx 84.4 \text{ min}}$
 
-这就是 [glvf.m](file:///workspace/psins/base/glvf.m) 第 47 行 `glv.ws = 1/sqrt(glv.Re/glv.g0)` 的来源。
+这就是 [glvf.m](../../assets/psins260314/base/glvf.m) 第 47 行 `glv.ws = 1/sqrt(glv.Re/glv.g0)` 的来源。
 
 ### 3.3 误差源驱动下的舒勒振荡
 
@@ -415,7 +415,7 @@ $\omega_{\text{虚假}} = K_g \cdot a$
 
 #### g 灵敏度在 PSINS 里对应什么
 
-[glvf.m](file:///workspace/psins/base/glvf.m) 里有三个和 g 灵敏度相关的单位换算：
+[glvf.m](../../assets/psins260314/base/glvf.m) 里有三个和 g 灵敏度相关的单位换算：
 
 | 变量                 | 定义                   | 物理含义                               |
 | ------------------ | -------------------- | ---------------------------------- |
@@ -433,11 +433,11 @@ g 灵敏度可以通过**位置翻转标定**来测：
 2. 陀螺 x 轴朝下（感受 -1g）→ 记录零偏 $\omega_{-1g}$
 3. $K_{g,x} = (\omega_{+1g} - \omega_{-1g}) / 2$
 
-补偿时在 [insupdate.m](file:///workspace/psins/base/base1/insupdate.m) 的零偏项里加一个 $\mathbf{K}_g \cdot \mathbf{f}^b$ 的修正：
+补偿时在 [insupdate.m](../../assets/psins260314/base/base1/insupdate.m) 的零偏项里加一个 $\mathbf{K}_g \cdot \mathbf{f}^b$ 的修正：
 
 $\boldsymbol{\varepsilon}_{\text{总}} = \boldsymbol{\varepsilon}_b + \mathbf{K}_g \cdot \mathbf{f}^b$
 
-PSINS 的 [imuerrset.m](file:///workspace/psins/base/imu/imuerrset.m) 里可以设置 g 灵敏度参数。
+PSINS 的 [imuerrset.m](../../assets/psins260314/base/imu/imuerrset.m) 里可以设置 g 灵敏度参数。
 
 ### ARW vs 零偏：新手最容易混的一对
 
@@ -483,7 +483,7 @@ $f_{out} = K_1 \cdot f + K_2 \cdot f^2 + \cdots$
 
 **为什么振动场景 g² 灵敏度特别致命**：振动虽然是零均值的，但 $f^2$ 永远是正的！所以振动会产生一个**恒定的偏移** $\overline{K_2 \cdot f^2} > 0$，等效成一个加计零偏——这就是"振动整流误差"。
 
-在 PSINS 里，[imuerrset.m](file:///workspace/psins/base/imu/imuerrset.m) 第 102-105 行：
+在 PSINS 里，[imuerrset.m](../../assets/psins260314/base/imu/imuerrset.m) 第 102-105 行：
 
 ```matlab
 if exist('Ka2', 'var')
@@ -491,7 +491,7 @@ if exist('Ka2', 'var')
 end
 ```
 
-对应 [glvf.m](file:///workspace/psins/base/glvf.m) 第 42 行 `glv.ugpg2 = glv.ug/glv.g0^2`。
+对应 [glvf.m](../../assets/psins260314/base/glvf.m) 第 42 行 `glv.ugpg2 = glv.ug/glv.g0^2`。
 
 ### 陀螺 g 灵敏度 vs 加计 g² 灵敏度：对照表
 
@@ -561,7 +561,7 @@ $\delta p = \frac{1}{2} \nabla_b \cdot t^2 = \frac{1}{2} \cdot (10^{-3} \cdot 9.
 | 1 h   | 3.1 m | \~1 m  | 3.2 m | \~5 m  | ≈7 m   |
 | 10 h  | 310 m | \~30 m | 317 m | \~50 m | ≈440 m |
 
-**验证**：跑 PSINS 的 [test\_SINS.m](file:///workspace/psins/demos/test_SINS.m)，把 `imuerr = imuerrset(...)` 里的参数按上面的量级设置，看跑出来的位置误差曲线和上表对得上。
+**验证**：跑 PSINS 的 [test\_SINS.m](../../assets/psins260314/demos/test_SINS.m)，把 `imuerr = imuerrset(...)` 里的参数按上面的量级设置，看跑出来的位置误差曲线和上表对得上。
 
 ***
 
@@ -594,10 +594,10 @@ $\sigma_A^2(\tau) = \frac{1}{2(N-1)} \sum_{k=1}^{N-1} (\bar{x}_{k+1} - \bar{x}_k
 ### 7.4 工程做法
 
 1. IMU 静止采集 24h 数据（至少 6h，越长越好）
-2. 调用 [avar.m](file:///workspace/psins/base/tools/avar.m) 或 [avar2.m](file:///workspace/psins/base/tools/avar2.m) 算 Allan 方差
+2. 调用 [avar.m](../../assets/psins260314/base/tools/avar.m) 或 [avar2.m](../../assets/psins260314/base/tools/avar2.m) 算 Allan 方差
 3. 画双对数图
 4. 从斜率 -1/2 段读 ARW，从底凹点读零偏不稳定性
-5. 对照 [imuerrset.m](file:///workspace/psins/base/imu/imuerrset.m) 的设置看是否一致
+5. 对照 [imuerrset.m](../../assets/psins260314/base/imu/imuerrset.m) 的设置看是否一致
 
 ***
 
@@ -694,7 +694,7 @@ $\omega_{ie}$的**标准读法**：**e 系相对于 i 系的角速度**——下
 
 读完本文件后，再去看 [00\_glvf.md](00_glvf.md) 时，你能把以下符号和本文件的内容对上：
 
-| [glvf.m](file:///workspace/psins/base/glvf.m) 中的变量 | 含义                      | 对应本文件哪节              |
+| [glvf.m](../../assets/psins260314/base/glvf.m) 中的变量 | 含义                      | 对应本文件哪节              |
 | -------------------------------------------------- | ----------------------- | -------------------- |
 | `glv.cs`                                           | 圆锥/划桨补偿系数表              | 第 1-2 节              |
 | `glv.ws`                                           | 舒勒角频率 $\omega_s$        | 第 3 节                |
@@ -755,16 +755,16 @@ T_check = 2*pi/ws_check / 60;        % 应 ≈ 84.4 min
 
 **等等，为什么这里和第 6 节例题（3.1 m）差这么多？**
 
-→ 因为第 6 节用的是 $\varepsilon_b \cdot g \cdot t^2 / 2$，其中 $\varepsilon_b$ 已经是 rad/s 单位；这里如果用"0.01°/h × 1h"作为姿态误差的估计，是**稳态误差**，会偏大。真正的舒勒振荡峰值位置误差 ≈ 3 m（1σ）——**去** **[test\_SINS.m](file:///workspace/psins/demos/test_SINS.m)** **把 eb 改成 0.01°/h 跑一次，画位置误差曲线，看哪个对**。
+→ 因为第 6 节用的是 $\varepsilon_b \cdot g \cdot t^2 / 2$，其中 $\varepsilon_b$ 已经是 rad/s 单位；这里如果用"0.01°/h × 1h"作为姿态误差的估计，是**稳态误差**，会偏大。真正的舒勒振荡峰值位置误差 ≈ 3 m（1σ）——**去** **[test\_SINS.m](../../assets/psins260314/demos/test_SINS.m)** **把 eb 改成 0.01°/h 跑一次，画位置误差曲线，看哪个对**。
 
 ### 练习 4：Allan 曲线读数
 
-用 PSINS 的 [avar.m](file:///workspace/psins/base/tools/avar.m) 跑一段静止 IMU 数据（[data](file:///workspace/psins/data) 目录下的 `lasergyro.imu` 可试）：
+用 PSINS 的 [avar.m](../../assets/psins260314/base/tools/avar.m) 跑一段静止 IMU 数据（[data](../../assets/psins260314/data) 目录下的 `lasergyro.imu` 可试）：
 
 1. 画双对数 Allan 曲线
 2. 在斜率 -1/2 段（τ = 1s 附近）读 ARW，单位 °/√h
 3. 在底凹点（τ ≈ 100-1000s）读零偏不稳定性，单位 °/h
-4. 对照 [imuerrset.m](file:///workspace/psins/base/imu/imuerrset.m) 的设置，看量级是否一致
+4. 对照 [imuerrset.m](../../assets/psins260314/base/imu/imuerrset.m) 的设置，看量级是否一致
 
 ***
 

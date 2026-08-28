@@ -56,7 +56,7 @@ $\mathbf{e}_{\text{acc}} = \begin{bmatrix} 0 \\ 0 \\ 1 \end{bmatrix} \times \beg
 
 $\mathbf{e}_{\text{mag}} = \mathbf{w}^b \times \hat{\mathbf{m}}^b$
 
-**为什么磁力计只修正航向？** PSINS 在 [MahonyUpdate.m](file:///workspace/psins/base/AHRS/MahonyUpdate.m#L39) L39 做了关键一步——把 n 系磁场的东向分量清零：
+**为什么磁力计只修正航向？** PSINS 在 [MahonyUpdate.m](../../assets/psins260314/base/AHRS/MahonyUpdate.m) L39 做了关键一步——把 n 系磁场的东向分量清零：
 
 $\mathbf{b}^n = \begin{bmatrix} 0 \\ \|\mathbf{m}^n_{\text{水平}}\| \\ m^n_z \end{bmatrix}$
 
@@ -159,7 +159,7 @@ $$\mathbf{q} = \text{rv2q}(\boldsymbol{\phi}) = \begin{bmatrix} \cos\left(\frac{
 
 > 🧩 **函数作用**：初始化 Mahony AHRS 结构体，设置 PI 控制器参数。
 >
-> 源码：[MahonyInit.m](file:///workspace/psins/base/AHRS/MahonyInit.m)
+> 源码：[MahonyInit.m](../../assets/psins260314/base/AHRS/MahonyInit.m)
 
 | 行号    | 原代码                                                                                             | 中文注释                                                                              | 公式/备注                                       |
 | ----- | ----------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | ------------------------------------------- |
@@ -196,7 +196,7 @@ $$\mathbf{q} = \text{rv2q}(\boldsymbol{\phi}) = \begin{bmatrix} \cos\left(\frac{
 
 > 🧩 **函数作用**：一步 Mahony AHRS 更新——输入 IMU+磁力计，输出更新后的姿态。
 >
-> 源码：[MahonyUpdate.m](file:///workspace/psins/base/AHRS/MahonyUpdate.m)
+> 源码：[MahonyUpdate.m](../../assets/psins260314/base/AHRS/MahonyUpdate.m)
 
 | 行号 | 原代码 | 中文注释 | 公式/备注 |
 |---|---|---|---|
@@ -252,7 +252,7 @@ $$\mathbf{q} = \text{rv2q}(\boldsymbol{\phi}) = \begin{bmatrix} \cos\left(\frac{
 
 ### test\_AHRS\_Mahony.m 逐行注释
 
-> 源码：[test\_AHRS\_Mahony.m](file:///workspace/psins/demos/test_AHRS_Mahony.m)
+> 源码：[test\_AHRS\_Mahony.m](../../assets/psins260314/demos/test_AHRS_Mahony.m)
 
 | 行号    | 原代码                                                                         | 中文注释                                                                | 公式/备注                                                                                                |
 | ----- | --------------------------------------------------------------------------- | ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |

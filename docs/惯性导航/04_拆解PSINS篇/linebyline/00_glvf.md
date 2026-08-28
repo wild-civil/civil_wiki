@@ -1,6 +1,6 @@
 # glvf.m 逐行注释 Wiki (PSINS)
 
-> 配套源码: [glvf.m](file:///workspace/psins/base/glvf.m)
+> 配套源码: [glvf.m](../../assets/psins260314/base/glvf.m)
 > 所属层级: L0基础
 > 前置依赖: 无（这是整个工具箱第一个要读的文件）
 > 学习目标: 读完后你应能回答哪3个问题

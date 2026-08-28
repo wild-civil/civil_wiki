@@ -1,6 +1,6 @@
 # 08_kffk 逐行注释 Wiki (PSINS)
 
-> 配套源码: [kffk.m](file:///workspace/psins/base/kf/kffk.m)
+> 配套源码: [kffk.m](../../assets/psins260314/base/kf/kffk.m)
 > 所属层级: L3组合导航
 > 前置依赖: 00_glvf / 01_earth / 03_insupdate + 基本卡尔曼滤波概念
 > 学习目标: 读完能独立回答3个问题
@@ -45,7 +45,7 @@ PSINS标准15状态卡尔曼滤波的状态向量定义为：
 - **Mvp = (v̂ⁿ×)·Map + 重力梯度项**：速度→位置耦合块，含重力随高度变化修正
 - **Mpv = diag(1/RMh, 1/(RNh·cosL), 1)**：位置微分运动学块，速度→位置直接积分关系
 
-完整F阵生成由 [etm.m](file:///workspace/psins/base/base2/etm.m) 函数负责，kffk只负责组装+离散化。
+完整F阵生成由 [etm.m](../../assets/psins260314/base/base2/etm.m) 函数负责，kffk只负责组装+离散化。
 
 ### 离散化方法：Φ = exp(F·Δt) ≈ I + F·Δt + ½(F·Δt)²
 
@@ -103,7 +103,7 @@ exp(F·Δt) = Σ (F·Δt)^k / k!  = I + FΔt + (FΔt)²/2! + (FΔt)³/3! + ...
 
 ## 🔍 断点调试建议
 
-**目标脚本**: [test_SINS_GPS_153.m](file:///workspace/psins/demos/test_SINS_GPS_153.m)
+**目标脚本**: [test_SINS_GPS_153.m](../../assets/psins260314/demos/test_SINS_GPS_153.m)
 
 ### 调试步骤：
 1. 打开 `/workspace/psins/demos/test_SINS_GPS_153.m`，在 L27 `kf.Phikk_1 = kffk(ins);` 之前确保 kf.nts = 0.02（默认配置）

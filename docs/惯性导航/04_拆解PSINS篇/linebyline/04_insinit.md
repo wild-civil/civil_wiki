@@ -1,6 +1,6 @@
 # insinit.m 逐行注释 Wiki (PSINS)
 
-> 配套源码: [insinit.m](file:///workspace/psins/base/base1/insinit.m)
+> 配套源码: [insinit.m](../../assets/psins260314/base/base1/insinit.m)
 > 所属层级: L1纯惯导
 > 前置依赖: 00_glvf / 01_earth / 03_insupdate
 > 学习目标: 读完能回答3个问题

@@ -1,6 +1,6 @@
 # cnscl.m 逐行注释 Wiki (PSINS)
 
-> 配套源码: [cnscl.m](file:///workspace/psins/base/base1/cnscl.m)
+> 配套源码: [cnscl.m](../../assets/psins260314/base/base1/cnscl.m)
 > 所属层级: L0基础 / L1纯惯导
 > 前置依赖: 必须先读 00_glvf.md（圆锥补偿系数表glv.cs）、01_earth.md（地球参考系）
 > 学习目标: 读完后你应能回答哪3个问题
