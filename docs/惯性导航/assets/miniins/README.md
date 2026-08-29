@@ -51,6 +51,7 @@ miniins/
 │     mahonyupdate.m   #   Mahony PI 互补滤波单步更新（M-A 核心）
 ├── demos/             # 场景脚本（demo_sins_dr.m：M4 组合；demo_ahrs.m：M-A 三联图）
 ├── verify/            # 回归自检：verify_trans / verify_ins / verify_trj / verify_dr / verify_ahrs（确定性，无工具箱）
+├── c/                 # ★ C 移植版（固件方向，NED+FRD 约定）+ SIL 对拍管线，见 c/README.md
 └── assets/            # 出图
 ```
 
@@ -103,4 +104,9 @@ demo_ahrs           % 生成 ../assets/demo_ahrs_{static,dynamic,disturb}.png
   Mahony 互补滤波（准静态门控 + 磁偏角补偿），`verify_ahrs` 6 项全 PASS
   （TRIAD/QUEST 1e-15、静态收敛 0.0000°、零偏吸收 exyzInt/eb=1.00、动态跟踪 0.025°）；
   沉淀两个实战坑：磁偏角不补偿 yaw 卡 −dec、水平加速度是幅值门控的原理性盲区（详见 wiki P5）。
+- **D0–D3 ✅（试点，2026-08-29）**：C 移植 + SIL 对拍管线（`c/`，机体系改为 **NED+FRD**）——
+  已移植 `ins_math`（四元数/矩阵/NED 欧拉）、`triad`、`mahony`，`sil_run` 一键
+  「生成测试向量 → gcc 编译 → 运行 → 对拍」8 项全 PASS：double 4e-16 量级、
+  float 1.3e-7 量级（float eps 级）。与 MATLAB 版（ENU + PSINS 机体）的换算只需
+  固定适配阵 `P=[0 1 0;1 0 0;0 0 -1]`、`C_NED = P·C_PSINS·P'`。详见 `c/README.md`。
 - **M5**：GNSS 扩展 + 与固件 C SIL 打通（启动首项：统一 `trjsegment` 的 `cf` 符号约定，见 `demos/trjsegment与WAT表生成说明.md` §10）

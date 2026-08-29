@@ -1,0 +1,6 @@
+# C 版构建产物与 SIL 生成数据（均由 make / gen_tv.m 重新生成，不入库）
+build/
+sil/data/
+*.exe
+*.o
+*.a
