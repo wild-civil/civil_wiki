@@ -70,43 +70,46 @@
   <text x="292" y="516" text-anchor="end" font-size="9.5" fill="#5f6368">双 N-MOS</text>
 
   <!-- 共漏竖线（2/5 脚同网络，悬空） -->
-  <path d="M430 450 L430 590" fill="none" stroke="#202124" stroke-width="2"/>
+  <path d="M430 490 L430 590" fill="none" stroke="#202124" stroke-width="2"/>
 
-  <!-- M1 放电 MOS -->
-  <rect x="358" y="500" width="52" height="34" rx="4" fill="#e8f0fe" stroke="#202124" stroke-width="1.6"/>
-  <text x="384" y="521" text-anchor="middle" font-size="11" font-weight="700" fill="#174ea6">M1</text>
-  <text x="384" y="494" text-anchor="middle" font-size="9.5" fill="#5f6368">放电 MOS</text>
-  <line x1="352" y1="500" x2="352" y2="534" stroke="#1a73e8" stroke-width="2.5"/>
-  <!-- M1 体二极管 S1→D（指向右） -->
-  <path d="M370 534 L370 558 L376 558" fill="none" stroke="#202124" stroke-width="1.4"/>
-  <polygon points="376,552 376,564 388,558" fill="#202124"/>
-  <line x1="388" y1="552" x2="388" y2="564" stroke="#202124" stroke-width="1.8"/>
-  <path d="M388 558 L430 558" fill="none" stroke="#202124" stroke-width="1.4"/>
+  <!-- ============ M1 放电 MOS（N-MOS 标准符号：栅极板 + 沟道 + 源极箭头入沟道） ============ -->
+  <text x="368" y="494" text-anchor="middle" font-size="10" font-weight="700" fill="#174ea6">M1 放电</text>
+  <!-- 栅极板（G1，受 OD 驱动） -->
+  <line x1="352" y1="502" x2="352" y2="532" stroke="#1a73e8" stroke-width="2.4"/>
+  <!-- 沟道 -->
+  <line x1="384" y1="502" x2="384" y2="532" stroke="#202124" stroke-width="2"/>
+  <!-- 源极 S1（底）→ B−，箭头朝沟道 = N-MOS 惯例 -->
+  <path d="M384 532 L384 560 L345 560 L345 590" fill="none" stroke="#202124" stroke-width="1.8"/>
+  <polygon points="380,530 388,530 384,523" fill="#202124"/>
+  <!-- 漏极 D1（顶）→ 共漏节点 -->
+  <path d="M384 502 L384 490 L430 490" fill="none" stroke="#202124" stroke-width="1.8"/>
+  <!-- 体二极管（S1→D，阴极朝共漏） -->
+  <path d="M384 560 L424 560" fill="none" stroke="#bdc1c6" stroke-width="1.3"/>
+  <polygon points="424,553 424,567 431,560" fill="#bdc1c6"/>
+  <line x1="431" y1="553" x2="431" y2="567" stroke="#bdc1c6" stroke-width="1.3"/>
 
-  <!-- M2 充电 MOS -->
-  <rect x="450" y="500" width="52" height="34" rx="4" fill="#e8f0fe" stroke="#202124" stroke-width="1.6"/>
-  <text x="476" y="521" text-anchor="middle" font-size="11" font-weight="700" fill="#174ea6">M2</text>
-  <text x="476" y="494" text-anchor="middle" font-size="9.5" fill="#5f6368">充电 MOS</text>
-  <line x1="508" y1="500" x2="508" y2="534" stroke="#1a73e8" stroke-width="2.5"/>
-  <!-- M2 体二极管 S2→D（指向左） -->
-  <path d="M490 534 L490 558 L482 558" fill="none" stroke="#202124" stroke-width="1.4"/>
-  <polygon points="482,552 482,564 470,558" fill="#202124"/>
-  <line x1="470" y1="552" x2="470" y2="564" stroke="#202124" stroke-width="1.8"/>
-  <path d="M470 558 L430 558" fill="none" stroke="#202124" stroke-width="1.4"/>
+  <!-- ============ M2 充电 MOS（镜像） ============ -->
+  <text x="492" y="494" text-anchor="middle" font-size="10" font-weight="700" fill="#174ea6">M2 充电</text>
+  <!-- 栅极板（G2，受 OC 驱动） -->
+  <line x1="508" y1="502" x2="508" y2="532" stroke="#1a73e8" stroke-width="2.4"/>
+  <!-- 沟道 -->
+  <line x1="476" y1="502" x2="476" y2="532" stroke="#202124" stroke-width="2"/>
+  <!-- 源极 S2（底）→ P− -->
+  <path d="M476 532 L476 560 L515 560 L515 590" fill="none" stroke="#202124" stroke-width="1.8"/>
+  <polygon points="472,530 480,530 476,523" fill="#202124"/>
+  <!-- 漏极 D2（顶）→ 共漏节点 -->
+  <path d="M476 502 L476 490 L430 490" fill="none" stroke="#202124" stroke-width="1.8"/>
+  <!-- 体二极管（S2→D，阴极朝共漏） -->
+  <path d="M476 560 L436 560" fill="none" stroke="#bdc1c6" stroke-width="1.3"/>
+  <polygon points="436,553 436,567 429,560" fill="#bdc1c6"/>
+  <line x1="429" y1="553" x2="429" y2="567" stroke="#bdc1c6" stroke-width="1.3"/>
 
-  <!-- MOS 沟道连线 -->
-  <path d="M410 517 L430 517" fill="none" stroke="#202124" stroke-width="1.6"/>
-  <path d="M450 517 L430 517" fill="none" stroke="#202124" stroke-width="1.6"/>
-  <circle cx="430" cy="517" r="3" fill="#202124"/>
-  <circle cx="430" cy="558" r="3" fill="#202124"/>
+  <!-- 共漏节点（2/5 脚内部相连、悬空） -->
+  <circle cx="430" cy="490" r="3" fill="#202124"/>
 
-  <!-- 栅极连线 -->
+  <!-- 栅极连线（OD / OC 已连到栅极板） -->
   <path d="M345 450 L345 517 L352 517" fill="none" stroke="#1a73e8" stroke-width="1.7"/>
   <path d="M515 450 L515 517 L508 517" fill="none" stroke="#1a73e8" stroke-width="1.7"/>
-
-  <!-- 源极连线 -->
-  <path d="M345 590 L345 570 L358 570 L358 534" fill="none" stroke="#202124" stroke-width="1.8"/>
-  <path d="M515 590 L515 570 L502 570 L502 534" fill="none" stroke="#202124" stroke-width="1.8"/>
 
   <!-- 8205A 引脚标注 -->
   <text x="352" y="466" font-size="9.5" font-weight="700" fill="#174ea6">6 G1</text>
