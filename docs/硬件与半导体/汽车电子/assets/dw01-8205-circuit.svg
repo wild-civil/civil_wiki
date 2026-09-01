@@ -1,0 +1,136 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 672" width="800" height="672" font-family="'Segoe UI','Helvetica Neue',Arial,'Microsoft YaHei',sans-serif">
+  <rect x="0" y="0" width="800" height="672" fill="#ffffff"/>
+
+  <text x="400" y="34" text-anchor="middle" font-size="19" font-weight="700" fill="#202124">DW01 + 8205A 单节锂电池保护电路</text>
+  <text x="400" y="58" text-anchor="middle" font-size="12" fill="#5f6368">SOT-23-6 封装 · 双 N-MOS 共漏（Common-Drain）背靠背拓扑</text>
+
+  <!-- ============ 电池 ============ -->
+  <path d="M70 110 L70 170" fill="none" stroke="#c5221f" stroke-width="2"/>
+  <line x1="52" y1="170" x2="88" y2="170" stroke="#202124" stroke-width="3"/>
+  <line x1="62" y1="186" x2="78" y2="186" stroke="#202124" stroke-width="3"/>
+  <line x1="52" y1="202" x2="88" y2="202" stroke="#202124" stroke-width="3"/>
+  <line x1="62" y1="218" x2="78" y2="218" stroke="#202124" stroke-width="3"/>
+  <path d="M70 218 L70 530" fill="none" stroke="#202124" stroke-width="2"/>
+  <text x="70" y="100" text-anchor="middle" font-size="12" font-weight="700" fill="#c5221f">B+</text>
+  <text x="70" y="552" text-anchor="middle" font-size="12" font-weight="700" fill="#202124">B−</text>
+  <text x="96" y="198" font-size="11" fill="#5f6368">单节锂电芯</text>
+  <text x="96" y="214" font-size="11" fill="#5f6368">3.7V / 4.2V</text>
+
+  <!-- ============ B+ / P+ 上轨 ============ -->
+  <path d="M70 110 L730 110 L730 140" fill="none" stroke="#c5221f" stroke-width="2"/>
+  <circle cx="730" cy="140" r="4" fill="#c5221f"/>
+  <text x="730" y="162" text-anchor="middle" font-size="11.5" fill="#c5221f">P+ / OUT+</text>
+
+  <!-- ============ R1 ============ -->
+  <path d="M150 110 L150 150" fill="none" stroke="#c5221f" stroke-width="2"/>
+  <rect x="142" y="150" width="16" height="40" fill="#ffffff" stroke="#c5221f" stroke-width="1.6"/>
+  <text x="166" y="176" font-size="11" fill="#5f6368">R1 100Ω</text>
+
+  <!-- ============ VDD 网络 ============ -->
+  <path d="M150 190 L330 190 L330 230" fill="none" stroke="#c5221f" stroke-width="2"/>
+
+  <!-- ============ VSS 网络 ============ -->
+  <path d="M290 230 L290 205 L110 205 L110 530" fill="none" stroke="#202124" stroke-width="2"/>
+  <circle cx="110" cy="530" r="3.5" fill="#202124"/>
+  <text x="120" y="316" font-size="10" fill="#5f6368">VSS</text>
+
+  <!-- ============ DW01 ============ -->
+  <rect x="250" y="230" width="160" height="140" rx="8" fill="#e8f0fe" stroke="#1a73e8" stroke-width="1.8"/>
+  <text x="330" y="288" text-anchor="middle" font-size="16" font-weight="700" fill="#174ea6">DW01</text>
+  <text x="330" y="308" text-anchor="middle" font-size="10.5" fill="#5f6368">保护 IC · SOT-23-6</text>
+  <text x="290" y="246" text-anchor="middle" font-size="9.5" font-weight="700" fill="#174ea6">6 VSS</text>
+  <text x="330" y="246" text-anchor="middle" font-size="9.5" font-weight="700" fill="#c5221f">5 VDD</text>
+  <text x="370" y="246" text-anchor="middle" font-size="9.5" font-weight="700" fill="#80868b">4 TD</text>
+  <text x="290" y="358" text-anchor="middle" font-size="9.5" font-weight="700" fill="#174ea6">1 OD</text>
+  <text x="330" y="358" text-anchor="middle" font-size="9.5" font-weight="700" fill="#174ea6">2 CS</text>
+  <text x="370" y="358" text-anchor="middle" font-size="9.5" font-weight="700" fill="#174ea6">3 OC</text>
+  <!-- TD 悬空 -->
+  <path d="M370 230 L370 212" fill="none" stroke="#80868b" stroke-width="1.4"/>
+  <text x="376" y="212" font-size="9.5" fill="#80868b">悬空</text>
+
+  <!-- ============ OD / OC / CS 控制信号 ============ -->
+  <path d="M290 370 L290 420 L345 420 L345 450" fill="none" stroke="#1a73e8" stroke-width="1.7"/>
+  <text x="298" y="413" font-size="10" font-weight="700" fill="#1a73e8">OD</text>
+
+  <path d="M370 370 L370 440 L515 440 L515 450" fill="none" stroke="#1a73e8" stroke-width="1.7"/>
+  <text x="400" y="433" font-size="10" font-weight="700" fill="#1a73e8">OC</text>
+
+  <!-- CS：在 OC 竖线处跨线（hop） -->
+  <path d="M330 370 L330 392 L362 392 Q370 380 378 392 L645 392 L645 590" fill="none" stroke="#1a73e8" stroke-width="1.7"/>
+  <rect x="470" y="384" width="50" height="16" fill="#ffffff" stroke="#1a73e8" stroke-width="1.5"/>
+  <text x="495" y="374" text-anchor="middle" font-size="11" fill="#5f6368">R2 1kΩ</text>
+  <text x="336" y="386" font-size="10" font-weight="700" fill="#1a73e8">CS</text>
+
+  <!-- ============ B− 下轨 ============ -->
+  <path d="M70 530 L240 530 L240 620 L345 620 L345 590" fill="none" stroke="#202124" stroke-width="2"/>
+
+  <!-- ============ 8205A ============ -->
+  <rect x="300" y="450" width="260" height="140" rx="8" fill="#ffffff" stroke="#1a73e8" stroke-width="1.8"/>
+  <text x="292" y="500" text-anchor="end" font-size="13" font-weight="700" fill="#174ea6">8205A</text>
+  <text x="292" y="516" text-anchor="end" font-size="9.5" fill="#5f6368">双 N-MOS</text>
+
+  <!-- 共漏竖线（2/5 脚同网络，悬空） -->
+  <path d="M430 450 L430 590" fill="none" stroke="#202124" stroke-width="2"/>
+
+  <!-- M1 放电 MOS -->
+  <rect x="358" y="500" width="52" height="34" rx="4" fill="#e8f0fe" stroke="#202124" stroke-width="1.6"/>
+  <text x="384" y="521" text-anchor="middle" font-size="11" font-weight="700" fill="#174ea6">M1</text>
+  <text x="384" y="494" text-anchor="middle" font-size="9.5" fill="#5f6368">放电 MOS</text>
+  <line x1="352" y1="500" x2="352" y2="534" stroke="#1a73e8" stroke-width="2.5"/>
+  <!-- M1 体二极管 S1→D（指向右） -->
+  <path d="M370 534 L370 558 L376 558" fill="none" stroke="#202124" stroke-width="1.4"/>
+  <polygon points="376,552 376,564 388,558" fill="#202124"/>
+  <line x1="388" y1="552" x2="388" y2="564" stroke="#202124" stroke-width="1.8"/>
+  <path d="M388 558 L430 558" fill="none" stroke="#202124" stroke-width="1.4"/>
+
+  <!-- M2 充电 MOS -->
+  <rect x="450" y="500" width="52" height="34" rx="4" fill="#e8f0fe" stroke="#202124" stroke-width="1.6"/>
+  <text x="476" y="521" text-anchor="middle" font-size="11" font-weight="700" fill="#174ea6">M2</text>
+  <text x="476" y="494" text-anchor="middle" font-size="9.5" fill="#5f6368">充电 MOS</text>
+  <line x1="508" y1="500" x2="508" y2="534" stroke="#1a73e8" stroke-width="2.5"/>
+  <!-- M2 体二极管 S2→D（指向左） -->
+  <path d="M490 534 L490 558 L482 558" fill="none" stroke="#202124" stroke-width="1.4"/>
+  <polygon points="482,552 482,564 470,558" fill="#202124"/>
+  <line x1="470" y1="552" x2="470" y2="564" stroke="#202124" stroke-width="1.8"/>
+  <path d="M470 558 L430 558" fill="none" stroke="#202124" stroke-width="1.4"/>
+
+  <!-- MOS 沟道连线 -->
+  <path d="M410 517 L430 517" fill="none" stroke="#202124" stroke-width="1.6"/>
+  <path d="M450 517 L430 517" fill="none" stroke="#202124" stroke-width="1.6"/>
+  <circle cx="430" cy="517" r="3" fill="#202124"/>
+  <circle cx="430" cy="558" r="3" fill="#202124"/>
+
+  <!-- 栅极连线 -->
+  <path d="M345 450 L345 517 L352 517" fill="none" stroke="#1a73e8" stroke-width="1.7"/>
+  <path d="M515 450 L515 517 L508 517" fill="none" stroke="#1a73e8" stroke-width="1.7"/>
+
+  <!-- 源极连线 -->
+  <path d="M345 590 L345 570 L358 570 L358 534" fill="none" stroke="#202124" stroke-width="1.8"/>
+  <path d="M515 590 L515 570 L502 570 L502 534" fill="none" stroke="#202124" stroke-width="1.8"/>
+
+  <!-- 8205A 引脚标注 -->
+  <text x="352" y="466" font-size="9.5" font-weight="700" fill="#174ea6">6 G1</text>
+  <text x="440" y="466" font-size="9.5" font-weight="700" fill="#80868b">5 D</text>
+  <text x="508" y="466" text-anchor="end" font-size="9.5" font-weight="700" fill="#174ea6">4 G2</text>
+  <text x="338" y="604" text-anchor="end" font-size="9.5" font-weight="700" fill="#174ea6">1 S1</text>
+  <text x="444" y="604" font-size="9.5" font-weight="700" fill="#80868b">2 D</text>
+  <text x="528" y="604" font-size="9.5" font-weight="700" fill="#174ea6">3 S2</text>
+
+  <!-- ============ P− 输出 ============ -->
+  <path d="M515 590 L680 590" fill="none" stroke="#188038" stroke-width="2"/>
+  <circle cx="645" cy="590" r="3.5" fill="#188038"/>
+  <circle cx="680" cy="590" r="4" fill="#188038"/>
+  <text x="680" y="612" text-anchor="middle" font-size="11.5" fill="#188038">P− / OUT−</text>
+
+  <!-- ============ 注释框 ============ -->
+  <rect x="560" y="210" width="210" height="100" rx="6" fill="#fef7e0" stroke="#f9ab00" stroke-width="1.2"/>
+  <text x="572" y="232" font-size="10.5" fill="#5f6368">注：C1（0.1µF）接在 VDD–VSS</text>
+  <text x="572" y="248" font-size="10.5" fill="#5f6368">之间作去耦，图中省略。</text>
+  <text x="572" y="268" font-size="10.5" fill="#5f6368">TD（4 脚）为测试脚，常悬空。</text>
+  <text x="572" y="288" font-size="10.5" fill="#5f6368">共漏节点（2/5 脚）内部相连、</text>
+  <text x="572" y="304" font-size="10.5" fill="#5f6368">对外悬空，两 MOS 靠它背靠背。</text>
+
+  <text x="430" y="636" text-anchor="middle" font-size="9.5" fill="#80868b">2/5 脚 = 共漏节点（内部相连，悬空不外接）</text>
+
+  <text x="400" y="660" text-anchor="middle" font-size="10.5" fill="#5f6368">线色：红 = B+ / VDD / P+　·　黑 = B− / VSS　·　绿 = P−　·　蓝 = OD / OC / CS 控制信号</text>
+</svg>
