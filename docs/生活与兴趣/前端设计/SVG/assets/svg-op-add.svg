@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 210" role="img" aria-label="手术一：加元素 before/after">
+  <title>加元素：复制相近元素并改坐标</title>
+  <desc>左：只有一个模块一。右：复制出模块二，rect 和 text 的 y 都要 +70。</desc>
+  <style>
+    .bg{fill:#ffffff}
+    .cap{fill:#5f6368;font:600 12px sans-serif;text-anchor:middle}
+    .lbl{fill:#1a73e8;font:700 14px sans-serif;text-anchor:middle}
+    .box{fill:#e8f0fe;stroke:#1a73e8;stroke-width:2}
+    .arrow{stroke:#188038;stroke-width:2;fill:none;marker-end:url(#ag)}
+    .note{fill:#188038;font:600 11px sans-serif;text-anchor:middle}
+    @media (prefers-color-scheme: dark){
+      .bg{fill:#16181c}.cap{fill:#9aa0a6}.lbl{fill:#8ab4f8}
+      .box{fill:#1b3a5c;stroke:#4a9eff}.arrow{stroke:#81c995}.note{fill:#81c995}
+    }
+  </style>
+  <rect class="bg" x="0" y="0" width="400" height="210"/>
+  <defs>
+    <marker id="ag" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#188038"/>
+    </marker>
+  </defs>
+  <text class="cap" x="100" y="22">加元素前</text>
+  <text class="cap" x="300" y="22">加元素后（复制 + 改 y）</text>
+  <rect class="box" x="40" y="70" width="120" height="50" rx="10"/>
+  <text class="lbl" x="100" y="101">模块一</text>
+  <rect class="box" x="240" y="70" width="120" height="50" rx="10"/>
+  <text class="lbl" x="300" y="101">模块一</text>
+  <rect class="box" x="240" y="140" width="120" height="50" rx="10"/>
+  <text class="lbl" x="300" y="171">模块二</text>
+  <path class="arrow" d="M160,165 L238,165"/>
+  <text class="note" x="200" y="190">复制并 y +70（rect 与 text 都要改）</text>
+</svg>

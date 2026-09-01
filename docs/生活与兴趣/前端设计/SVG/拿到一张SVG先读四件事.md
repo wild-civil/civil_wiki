@@ -5,6 +5,61 @@ tags: [前端, SVG, 读图, 动手区]
 
 # 拿到一张 SVG 先读四件事
 
+## 0. 先玩一下：拖动滑块改坐标
+
+读图之前，先用一个能动的玩具建立直觉。拖动下面两个滑块，蓝色方块会实时移动——**你改的不是「方块往哪走」，而是它的 `x` / `y` 坐标值**：
+
+<div class='play-wrap'>
+
+<style>
+#play-svg{background:#fafafa;border:1px solid #dadce0;border-radius:8px}
+#play-box{fill:#e8f0fe;stroke:#1a73e8;stroke-width:2}
+.play-row{font:14px sans-serif;color:#202124;margin:6px 0}
+.play-row input{vertical-align:middle}
+#play-hint{font:13px sans-serif;color:#1a73e8;margin-top:4px}
+@media (prefers-color-scheme: dark){
+  #play-svg{background:#1e2024;border-color:#3c4043}
+  #play-box{fill:#1b3a5c;stroke:#4a9eff}
+  .play-row{color:#e8eaed}
+  #play-hint{color:#8ab4f8}
+}
+</style>
+
+<svg id='play-svg' viewBox='0 0 400 240' style='max-width:420px;width:100%;height:auto'>
+  <defs>
+    <pattern id='pgrid' width='20' height='20' patternUnits='userSpaceOnUse'>
+      <path d='M20 0 L0 0 0 20' fill='none' stroke='#e8eaed' stroke-width='1'/>
+    </pattern>
+  </defs>
+  <rect width='400' height='240' fill='url(#pgrid)'/>
+  <rect id='play-box' x='120' y='90' width='80' height='60' rx='8'/>
+</svg>
+
+<div class='play-row'>X（左右）：<input type='range' id='play-x' min='0' max='320' value='120'> <span id='play-xv'></span></div>
+<div class='play-row'>Y（上下）：<input type='range' id='play-y' min='0' max='180' value='90'> <span id='play-yv'></span></div>
+<p id='play-hint'></p>
+
+<script>
+  var box=document.getElementById('play-box');
+  var gx=document.getElementById('play-x'), gy=document.getElementById('play-y');
+  var xv=document.getElementById('play-xv'), yv=document.getElementById('play-yv');
+  var hint=document.getElementById('play-hint');
+  function upd(){
+    var x=+gx.value, y=+gy.value;
+    box.setAttribute('x',x); box.setAttribute('y',y);
+    xv.textContent='x='+x+' → 横向 '+Math.round(x/400*100)+'%';
+    yv.textContent='y='+y+' → 纵向 '+Math.round(y/240*100)+'%';
+    hint.textContent='把 Y 调大，方块往下走 —— 这就是 SVG 的 y 轴朝下';
+  }
+  gx.addEventListener('input',upd); gy.addEventListener('input',upd); upd();
+</script>
+
+</div>
+
+最关键的体感：**方块的坐标被写死在 SVG 里，网格不会因为它移动而跟着动**。这正好呼应后面「坐标是绝对的」——记住这个玩具，后面读图、改图就都有了锚点。
+
+---
+
 改 SVG 之所以让人发怵，很少是因为语法难，而是因为**打开一个几百行的文件，不知道哪一行对应图上的哪个东西**。
 
 这一页给出一套固定的读图顺序。按这个顺序走四步，任何一张 SVG 都能在几分钟内摸清结构，然后才有资格谈"改"。
@@ -240,4 +295,4 @@ SVG 几乎没有缩进规范可言（尤其 AI 生成的），但**分组标签 
 
 ---
 
-相关：[← SVG 动手区](/生活与兴趣/前端设计/SVG/) · [下一步：六种常见手术 →](改图的六种常见手术.md) · [语法字典](../../../技术与编程/可视化与图形/SVG从认识到制作.md)
+相关：[← SVG 动手区](/生活与兴趣/前端设计/SVG/) · [下一步：六种常见手术 →](改图的六种常见手术.md) · [术语速查](SVG术语速查.md) · [语法字典](../../../技术与编程/可视化与图形/SVG从认识到制作.md)

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200" role="img" aria-label="手术五：改文字基线 before/after">
+  <title>改文字：y 是基线，用 dominant-baseline 居中</title>
+  <desc>左：y 设为文字框顶部，文字因基线的关系跑到框外。右：加 dominant-baseline=middle，文字垂直居中在框内。</desc>
+  <style>
+    .bg{fill:#ffffff}
+    .cap{fill:#5f6368;font:600 12px sans-serif;text-anchor:middle}
+    .box{fill:none;stroke:#1a73e8;stroke-width:2}
+    .txt{fill:#202124;font:700 16px sans-serif;text-anchor:middle}
+    .bad{fill:#d93025;font:600 11px sans-serif;text-anchor:middle}
+    .ok{fill:#188038;font:700 11px sans-serif;text-anchor:middle}
+    @media (prefers-color-scheme: dark){
+      .bg{fill:#16181c}.cap{fill:#9aa0a6}.box{stroke:#4a9eff}.txt{fill:#e8eaed}
+      .bad{fill:#ff8a8a}.ok{fill:#81c995}
+    }
+  </style>
+  <rect class="bg" x="0" y="0" width="400" height="200"/>
+  <text class="cap" x="100" y="22">改前（y = 框顶）</text>
+  <text class="cap" x="300" y="22">改后（dominant-baseline=middle）</text>
+  <rect class="box" x="40" y="90" width="120" height="60" rx="6"/>
+  <text class="txt" x="100" y="86">文字</text>
+  <text class="bad" x="100" y="175">y 是基线 → 文字在框外</text>
+  <rect class="box" x="240" y="90" width="120" height="60" rx="6"/>
+  <text class="txt" x="300" y="120" dominant-baseline="middle">文字</text>
+  <text class="ok" x="300" y="175">垂直居中在框内</text>
+</svg>

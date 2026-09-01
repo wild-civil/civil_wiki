@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 210" role="img" aria-label="手术六：抽可复用图元 before/after">
+  <title>抽可复用图元：定义一次，多处 use 引用</title>
+  <desc>左：同一个圆点重复写三遍（冗余）。右：在 defs 里定义一次，三处用 use 引用，改定义即全部生效。</desc>
+  <style>
+    .bg{fill:#ffffff}
+    .cap{fill:#5f6368;font:600 12px sans-serif;text-anchor:middle}
+    .dot{fill:#1a73e8}
+    .doti{fill:#ffffff}
+    .defbox{fill:none;stroke:#5f6368;stroke-width:1.5;stroke-dasharray:5 4}
+    .note{fill:#188038;font:700 11px sans-serif;text-anchor:middle}
+    .def{fill:#5f6368;font:600 11px sans-serif;text-anchor:middle}
+    @media (prefers-color-scheme: dark){
+      .bg{fill:#16181c}.cap{fill:#9aa0a6}.dot{fill:#4a9eff}.doti{fill:#16181c}
+      .defbox{stroke:#9aa0a6}.note{fill:#81c995}.def{fill:#9aa0a6}
+    }
+  </style>
+  <rect class="bg" x="0" y="0" width="400" height="210"/>
+  <text class="cap" x="100" y="22">重复定义（冗余）</text>
+  <text class="cap" x="300" y="22">定义一次 + use 引用</text>
+  <circle class="dot" cx="60" cy="80" r="9"/><circle class="doti" cx="60" cy="80" r="3"/>
+  <circle class="dot" cx="60" cy="130" r="9"/><circle class="doti" cx="60" cy="130" r="3"/>
+  <circle class="dot" cx="60" cy="180" r="9"/><circle class="doti" cx="60" cy="180" r="3"/>
+  <rect class="defbox" x="230" y="55" width="50" height="40" rx="6"/>
+  <text class="def" x="255" y="48">&lt;defs&gt;</text>
+  <circle class="dot" cx="255" cy="75" r="9"/><circle class="doti" cx="255" cy="75" r="3"/>
+  <circle class="dot" cx="320" cy="110" r="9"/><circle class="doti" cx="320" cy="110" r="3"/>
+  <circle class="dot" cx="360" cy="110" r="9"/><circle class="doti" cx="360" cy="110" r="3"/>
+  <circle class="dot" cx="320" cy="160" r="9"/><circle class="doti" cx="320" cy="160" r="3"/>
+  <circle class="dot" cx="360" cy="160" r="9"/><circle class="doti" cx="360" cy="160" r="3"/>
+  <text class="note" x="320" y="200">改 defs 即全部生效</text>
+</svg>
