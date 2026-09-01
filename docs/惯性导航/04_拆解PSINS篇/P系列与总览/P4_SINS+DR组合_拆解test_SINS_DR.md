@@ -8,7 +8,7 @@
 
 ## 一、整体架构：SINS 主导 + DR 辅助
 
-![SINS+DR 组合架构](assets/arch_sins_dr.svg)
+![SINS+DR 组合架构](../../assets/arch_sins_dr.svg)
 
 四个核心机制：
 
@@ -85,16 +85,16 @@ kfplot(xkpk, ...);                              % 22 维状态 + 协方差演化
 
 ## 五、对比图与自标定收敛
 
-![真值+三解算对比](assets/miniinsplot_cmp_sinsdr.png)
+![真值+三解算对比](../../assets/miniinsplot_cmp_sinsdr.png)
 *轨迹对比：Truth（黑）/ SINS-only（红，北向漂 6km）/ DR-only（蓝，尺度漂 150m）/ Combined（绿，紧贴真值）*
 
-![位置+速度+姿态残差](assets/miniavpcmpplot_sinsdr.png)
+![位置+速度+姿态残差](../../assets/miniavpcmpplot_sinsdr.png)
 *残差对比：组合（绿）水平残差 < 50m、垂直 < 30m，远优于 SINS（红）和 DR（蓝）*
 
-![3D 轨迹](assets/miniinsplot3d_cmp_sinsdr.png)
+![3D 轨迹](../../assets/miniinsplot3d_cmp_sinsdr.png)
 *3D 视图：组合解与真值几乎重合*
 
-![22 维自标定收敛](assets/sinsdr_calib.png)
+![22 维自标定收敛](../../assets/sinsdr_calib.png)
 *dKod（尺度）从 0 收敛到 ~0.10（2× 真值）、dpitch/dyaw 弱可辨识、dT 振荡、eb/db 过拟合。**注意**：PSINS 原版同样不收敛 dinst/eb/db（仅 dKod/dT 收敛），这是仅位置量测下弱可辨识的固有现象。*
 
 ## 六、5 个关键坑（易踩死）
@@ -125,7 +125,7 @@ PSINS `poserrset.m` 的约定：`dpos = [dlat_m/Re; dlon_m/Re; dh_m]`。所以 R
 
 | 文件 | 用途 |
 |---|---|
-| [`assets/gen_sins_dr.py`](assets/gen_sins_dr.py) | **迷你 SINS+DR 组合**（自包含 22 维 KF + 仅速度闭环 + Joseph 协方差更新）|
+| [`assets/gen_sins_dr.py`](../../assets/gen_sins_dr.py) | **迷你 SINS+DR 组合**（自包含 22 维 KF + 仅速度闭环 + Joseph 协方差更新）|
 | `assets/gen_sins_dr.m` | MATLAB 镜像版（待补，路线图同 P2/P3 双轨出图）|
 | `assets/arch_sins_dr.svg` | 架构图（4 框 + 锚定虚线 + KF 闭环）|
 | `assets/miniinsplot_cmp_sinsdr.png` | 轨迹对比图 |

@@ -144,15 +144,15 @@ $$
 
 ### 6.1 静态收敛 + 零偏吸收
 
-![静态收敛：3-5° 初始误差，陀螺零偏 50/-30/20 °/h，300 s 后误差归零；下图为积分项/真零偏比值，最终收敛到 1.0](../../../assets/miniins/assets/demo_ahrs_static.png)
+![静态收敛：3-5° 初始误差，陀螺零偏 50/-30/20 °/h，300 s 后误差归零；下图为积分项/真零偏比值，最终收敛到 1.0](../../assets/miniins/assets/demo_ahrs_static.png)
 
 ### 6.2 动态跟踪（转弯 + 滚转）
 
-![动态跟踪：匀速直行 → 左转 2°/s → 滚转 1°/s，稳态误差 0.025° 量级](../../../assets/miniins/assets/demo_ahrs_dynamic.png)
+![动态跟踪：匀速直行 → 左转 2°/s → 滚转 1°/s，稳态误差 0.025° 量级](../../assets/miniins/assets/demo_ahrs_dynamic.png)
 
 ### 6.3 加速度扰动：Mahony 的原理性盲区
 
-![加速度扰动：0.25 m/s² 前向加速 20 s 使 pitch 被拽偏 1.56°；加速结束后 30 s 内回收至 0.008°](../../../assets/miniins/assets/demo_ahrs_disturb.png)
+![加速度扰动：0.25 m/s² 前向加速 20 s 使 pitch 被拽偏 1.56°；加速结束后 30 s 内回收至 0.008°](../../assets/miniins/assets/demo_ahrs_disturb.png)
 
 ## 7. 两个实战坑（调试实录）
 
