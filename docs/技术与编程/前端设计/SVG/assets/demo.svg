@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240" role="img" aria-label="SVG 嵌入示例示意图">
+  <title>嵌入 SVG 示例示意图</title>
+  <desc>用于演示同一个 .svg 文件可以用不同方式嵌入页面（指定宽度 / CSS 响应式）。</desc>
+  <style>
+    .bg{fill:#ffffff}
+    .title{fill:#202124;font:700 16px sans-serif;text-anchor:middle}
+    .box{fill:#e8f0fe;stroke:#1a73e8;stroke-width:2}
+    .lbl{fill:#1a73e8;font:700 14px sans-serif;text-anchor:middle}
+    .note{fill:#5f6368;font:12px sans-serif;text-anchor:middle}
+    .arrow{stroke:#188038;stroke-width:2;fill:none;marker-end:url(#ah)}
+    @media (prefers-color-scheme: dark){
+      .bg{fill:#16181c}.title{fill:#e8eaed}.box{fill:#1b3a5c;stroke:#4a9eff}
+      .lbl{fill:#8ab4f8}.note{fill:#9aa0a6}.arrow{stroke:#81c995}
+    }
+  </style>
+  <rect class="bg" x="0" y="0" width="400" height="240"/>
+  <defs>
+    <marker id="ah" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#188038"/>
+    </marker>
+  </defs>
+  <text class="title" x="200" y="34">SVG 嵌入示例</text>
+  <rect class="box" x="120" y="58" width="160" height="90" rx="10"/>
+  <text class="lbl" x="200" y="90">一个矢量图形</text>
+  <text class="lbl" x="200" y="114">可任意缩放</text>
+  <path class="arrow" d="M200,152 L200,174"/>
+  <text class="note" x="200" y="198">同一个 .svg 文件</text>
+  <text class="note" x="200" y="216">用不同方式嵌入页面</text>
+</svg>
