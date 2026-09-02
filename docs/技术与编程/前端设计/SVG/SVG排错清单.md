@@ -1,5 +1,5 @@
 ---
-category: 生活与兴趣
+category: 技术与编程
 tags: [前端, SVG, 排错, 动手区]
 ---
 
@@ -233,4 +233,4 @@ python -c "import xml.dom.minidom; xml.dom.minidom.parse('你的文件.svg'); pr
 
 ---
 
-相关：[← 亮暗双主题与嵌入](亮暗双主题与MkDocs嵌入.md) · [实战复盘 →](实战_DW01电路图改图复盘.md) · [← SVG 动手区](/生活与兴趣/前端设计/SVG/)
+相关：[← 亮暗双主题与嵌入](亮暗双主题与MkDocs嵌入.md) · [实战复盘 →](实战_DW01电路图改图复盘.md) · [← SVG 动手区](/技术与编程/前端设计/SVG/)

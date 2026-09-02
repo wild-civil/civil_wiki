@@ -1,11 +1,11 @@
 ---
-category: 生活与兴趣
+category: 技术与编程
 tags: [前端, SVG, 术语, 速查]
 ---
 
 # SVG 术语速查
 
-改图时高频出现的属性 / 元素，一词一解，配最小示例。完整语法去 [语法字典](../../技术与编程/可视化与图形/SVG从认识到制作.md)；怎么改去 [SVG 动手区](index.md)。
+改图时高频出现的属性 / 元素，一词一解，配最小示例。完整语法去 [语法字典](../../../技术与编程/可视化与图形/SVG从认识到制作.md)；怎么改去 [SVG 动手区](index.md)。
 
 ## 坐标系
 
@@ -80,4 +80,12 @@ tags: [前端, SVG, 术语, 速查]
 
 ---
 
-相关：[← SVG 动手区](index.md) · [读图四步](拿到一张SVG先读四件事.md) · [六种手术](改图的六种常见手术.md) · [语法字典 →](../../技术与编程/可视化与图形/SVG从认识到制作.md)
+相关：[← SVG 动手区](index.md) · [读图四步](拿到一张SVG先读四件事.md) · [六种手术](改图的六种常见手术.md) · [语法字典 →](../../../技术与编程/可视化与图形/SVG从认识到制作.md)
+
+---
+
+## 外部工具与推荐资源
+
+- [SVG Path Visualizer](https://svg-path-visualizer.netlify.app/) — 把 `path` 的 `d` 数据实时画出来，调坐标时直观看曲线长啥样，排查「path 画歪了」神器。
+- [SVGOMG](https://jakearchibald.github.io/svgomg/) — Jake Archibald 做的 SVG 在线压缩 / 优化器，粘贴 SVG 即可瘦身（删冗余、合并路径、round 坐标），改完图后顺手压一下再发布。
+- [SVG 基础教程（cnblogs）](https://www.cnblogs.com/webhmy/p/9826120.html) — 一篇中文 SVG 入门文章，覆盖元素 / 属性 / 示例，适合作为本文的补充读物。
