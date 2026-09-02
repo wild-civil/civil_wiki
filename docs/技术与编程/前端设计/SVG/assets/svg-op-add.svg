@@ -28,5 +28,5 @@
   <rect class="box" x="240" y="140" width="120" height="50" rx="10"/>
   <text class="lbl" x="300" y="171">模块二</text>
   <path class="arrow" d="M160,165 L238,165"/>
-  <text class="note" x="200" y="190">复制并 y +70（rect 与 text 都要改）</text>
+  <text class="note" x="140" y="188">复制并 y +70（rect 与 text 都要改）</text>
 </svg>

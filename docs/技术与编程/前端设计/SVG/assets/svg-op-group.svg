@@ -22,8 +22,8 @@
   <line class="ln" x1="40" y1="130" x2="130" y2="130"/>
   <rect class="grp" x="230" y="130" width="140" height="80" rx="8"/>
   <text class="note" x="300" y="122">整组 translate(0,60)</text>
-  <rect class="box" x="245" y="145" width="90" height="40" rx="8"/>
-  <text class="lbl" x="290" y="170">标题</text>
-  <line class="ln" x1="245" y1="200" x2="335" y2="200"/>
-  <text class="cap" x="300" y="210">子元素坐标不变</text>
+  <rect class="box" x="255" y="145" width="90" height="40" rx="8"/>
+  <text class="lbl" x="300" y="170">标题</text>
+  <line class="ln" x1="255" y1="200" x2="345" y2="200"/>
+  <text class="cap" x="180" y="200">子元素坐标不变</text>
 </svg>
