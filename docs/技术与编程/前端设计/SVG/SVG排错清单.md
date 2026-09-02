@@ -184,10 +184,27 @@ python -c "import xml.dom.minidom; xml.dom.minidom.parse('你的文件.svg'); pr
 | 现象 | 原因 | 解法 |
 |---|---|---|
 | **图片 404 / 不显示** | 相对路径基准错；或手动做了 URL 编码 | 见 [亮暗双主题与 MkDocs 嵌入](亮暗双主题与MkDocs嵌入.md) §路径与文件名编码 |
+| **裸 `<img src>` 在子页面 404（首页却正常）** | 用裸 HTML `<img src="assets/x.svg">`；MkDocs **只重写 markdown `![](x.svg)` 的链接，不重写裸 HTML 的 `src`**。`use_directory_urls` 默认开启时每篇页变自身目录，子页层级下 `assets/` 解析到错误目录 | 改用 markdown 图片语法 `![alt](assets/x.svg){: style="max-width:680px;width:100%;height:auto"}`，让 MkDocs 按页面深度**自动重写**相对路径（子页→`../assets/...`、首页→`assets/...`），与页面层级彻底解耦 |
 | **构建时告警 "contains a link ... but ... not found"** | 路径写错 | 按告警里的路径去核对 |
 | **本地预览正常，部署后 404** | 文件名大小写不一致（Windows 不敏感，Linux 服务器敏感） | 统一大小写，推荐全小写 |
 | **图太宽撑破页面** | `.svg` 里写死了 `width` | 删掉 `width`/`height`，只留 `viewBox`；或用 `<img style="max-width:100%">` |
 | **链接指向了完全无关的页面** | 见下方说明 | 链接到索引页时用**站点绝对路径** |
+
+!!! warning "在 MkDocs 里引用本地图片，优先用 `![](path)` 而非裸 `<img>`"
+    本站多次踩过这个坑：裸 HTML `<img src="assets/x.svg">` 的 `src` **不会被 MkDocs 重写相对路径**，而 `use_directory_urls`（默认 `true`）会让每篇页面变成自己的目录。结果——
+
+    - 页面在顶级目录（如 `SVG/index.md` → `/SVG/`）时，`assets/` 碰巧解析正确，图显示正常；
+    - 同一张图放在子页面（如 `SVG/改图的六种常见手术.md` → `/SVG/改图的六种常见手术/`）时，`assets/` 被解析到不存在的 `/SVG/改图的六种常见手术/assets/`，直接 404。
+
+    首页正常、子页挂掉，正是这个特征。**正确写法**：
+
+    ````markdown
+    ![图注](assets/x.svg){: style="max-width:680px;width:100%;height:auto"}
+    ````
+
+    MkDocs 会按每篇页面的实际深度**自动重写**路径（子页生成 `../assets/x.svg`、首页生成 `assets/x.svg`），无论页面嵌套多深都不会错；GitHub Pages 子路径部署也安全，无需写死绝对路径。
+
+    样式用 attr_list 的 `{: style="..."}` 携带（Material 默认开启 `attr_list` 扩展），等价原先 `<img>` 上的 `style` 属性。
 
 > **大小写是 Windows 用户的经典坑**：本机预览一切正常（`Demo.svg` 和 `demo.svg` 都能打开），推到 Linux 服务器上就 404。文件命名统一小写可根治。
 

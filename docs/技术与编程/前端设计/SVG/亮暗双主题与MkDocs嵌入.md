@@ -174,10 +174,10 @@ SVG 作为图片引入时，显示尺寸由 `width`/`height` 属性或 CSS 决�
 
 ```markdown
 <!-- 方式一：HTML img 指定宽度（高度自适应） -->
-<img src="assets/demo.svg" width="600" alt="示意图">
+![示意图](assets/demo.svg){: width="600"}
 
 <!-- 方式二：CSS 控制（推荐，响应式） -->
-<img src="assets/demo.svg" style="max-width:100%; height:auto" alt="示意图">
+![示意图](assets/demo.svg){: style="max-width:100%; height:auto"}
 ```
 
 **推荐做法**：`.svg` 文件里**只保留 `viewBox`、删掉 `width`/`height`**，让显示尺寸完全由引用方（CSS）决定。这样同一份文件在窄屏和宽屏都能自适应。

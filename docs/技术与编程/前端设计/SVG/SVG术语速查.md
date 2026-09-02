@@ -30,7 +30,7 @@ tags: [前端, SVG, 术语, 速查]
 | `stroke-linecap` | 端点形状 | `butt` / `round` / `square` |
 | `stroke-linejoin` | 拐角形状 | `miter` / `round` / `bevel` |
 
-<img src='assets/svg-op-attr.svg' style='max-width:400px;width:100%;height:auto' alt='linecap 与 linejoin 对比'>
+![linecap 与 linejoin 对比](assets/svg-op-attr.svg){: style="max-width:400px;width:100%;height:auto"}
 
 *图：同一个折线，`round` 让端点变圆、拐角变柔。*
 
@@ -44,7 +44,7 @@ tags: [前端, SVG, 术语, 速查]
 
 > **`y` 是基线，不是顶部**：`y="48"` 指字母底部那条线。要让文字在框里居中，加 `dominant-baseline="middle"`，再把 `y` 设成框的中心。
 
-<img src='assets/svg-op-text.svg' style='max-width:400px;width:100%;height:auto' alt='文字基线对比'>
+![文字基线对比](assets/svg-op-text.svg){: style="max-width:400px;width:100%;height:auto"}
 
 ## 变换 transform
 
@@ -61,7 +61,7 @@ tags: [前端, SVG, 术语, 速查]
 - `<defs>`：定义区，**不直接显示**，被别处 `url(#id)` 引用；改这里会同时影响所有引用者。
 - `<use href="#id">`：引用 defs 里的定义，改定义即全部生效；引用不能改内部细节。
 
-<img src='assets/svg-op-reuse.svg' style='max-width:400px;width:100%;height:auto' alt='use 复用'>
+![use 复用](assets/svg-op-reuse.svg){: style="max-width:400px;width:100%;height:auto"}
 
 ## 显隐三属性
 

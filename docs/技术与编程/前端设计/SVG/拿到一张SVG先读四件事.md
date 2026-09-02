@@ -116,7 +116,7 @@ tags: [前端, SVG, 读图, 动手区]
 
 先把整张图的结构看一眼，再谈坐标细节：
 
-<img src="assets/svg-anatomy.svg" style="max-width:680px;width:100%;height:auto" alt="SVG 坐标系统与文件结构解剖图">
+![SVG 坐标系统与文件结构解剖图](assets/svg-anatomy.svg){: style="max-width:680px;width:100%;height:auto"}
 
 *左半：`viewBox` 定义的可见范围、x 轴向右、**y 轴朝下**，以及两条坐标铁律；右半：`<defs>` 定义区与 `<g>` 分组分别对应画面上的什么。*
 
