@@ -57,7 +57,8 @@ theme:
 # 插件
 plugins:
   - search                                             # 站内搜索（Material 自带）
-  - roamlinks                                          # Obsidian [[wikilink]] -> 站点链接（自动转换）
+  - roamlinks:                                          # Obsidian [[wikilink]] -> 站点链接（自动转换）
+      ignore_codeblocks: true                            # 代码块 / 数学块 / 示例占位里的 [..] 不当作 wikilink 全局匹配
   - git-revision-date-localized:                       # 每页显示「最后更新时间」
       enable_creation_date: true
       enable_git_follow: false                          # 避免新建页面时间戳诡异告警

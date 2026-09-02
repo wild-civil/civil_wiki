@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 210" role="img" aria-label="手术二：删元素 before/after">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 210" width="400" height="210" role="img" aria-label="手术二：删元素 before/after">
   <title>删元素：删了就留洞，其余不动</title>
   <desc>左：A、B、C 三块。右：删掉 B，A 不动、C 不动，中间留下红色空洞。</desc>
   <style>

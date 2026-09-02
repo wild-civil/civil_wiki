@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200" role="img" aria-label="手术五：改文字基线 before/after">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200" width="400" height="200" role="img" aria-label="手术五：改文字基线 before/after">
   <title>改文字：y 是基线，用 dominant-baseline 居中</title>
   <desc>左：y 设为文字框顶部，文字因基线的关系跑到框外。右：加 dominant-baseline=middle，文字垂直居中在框内。</desc>
   <style>

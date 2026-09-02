@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 470" role="img" aria-label="SVG 坐标系统与文件结构解剖图">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 470" width="680" height="470" role="img" aria-label="SVG 坐标系统与文件结构解剖图">
   <title>SVG 解剖：坐标系与文件结构</title>
   <desc>左半部分展示 viewBox 定义的画布范围，以及 y 轴朝下、坐标绝对这两条核心规则；右半部分展示 SVG 文件的标签层级（defs 定义区、g 分组）如何对应到画面上的视觉元素。</desc>
 

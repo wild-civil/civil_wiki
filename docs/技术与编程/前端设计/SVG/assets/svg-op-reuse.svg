@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 210" role="img" aria-label="手术六：抽可复用图元 before/after">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 210" width="400" height="210" role="img" aria-label="手术六：抽可复用图元 before/after">
   <title>抽可复用图元：定义一次，多处 use 引用</title>
   <desc>左：同一个圆点重复写三遍（冗余）。右：在 defs 里定义一次，三处用 use 引用，改定义即全部生效。</desc>
   <style>

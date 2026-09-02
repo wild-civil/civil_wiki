@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 340" role="img" aria-label="Word 自动重排与 SVG 绝对坐标对比">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 340" width="680" height="340" role="img" aria-label="Word 自动重排与 SVG 绝对坐标对比">
   <title>删掉一个元素后：Word 自动补位 vs SVG 原地留洞</title>
   <desc>左：Word 删除元素 B 后，下方元素 C 自动上移到 B 的位置。右：SVG 删除元素 B 后，C 停留在原坐标不动，B 的位置留下空洞。</desc>
   <style>

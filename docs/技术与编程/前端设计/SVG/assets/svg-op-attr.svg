@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 210" role="img" aria-label="手术三：改描边端点 linecap/linejoin before/after">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 210" width="400" height="210" role="img" aria-label="手术三：改描边端点 linecap/linejoin before/after">
   <title>改属性：linecap 与 linejoin 的可视差异</title>
   <desc>左：默认 butt 端点（平）+ miter 拐角（尖）。右：round 端点（圆）+ round 拐角（柔）。</desc>
   <style>
