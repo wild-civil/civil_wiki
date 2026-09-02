@@ -36,7 +36,7 @@ tags: [MOC, 前端, SVG, 动手区]
 
 **推论**：任何「插入 / 删除」类需求，实际工作量往往是「插入 / 删除 + 重新排版受影响的所有元素」。动手前先数一下会影响多少元素，比直接开改更省时间。
 
-<img src="assets/svg-abs-coords.svg" style="max-width:680px;width:100%;height:auto" alt="Word 自动补位 vs SVG 原地留洞">
+![Word 自动补位 vs SVG 原地留洞](assets/svg-abs-coords.svg){: style="max-width:680px;width:100%;height:auto"}
 
 *图：删掉一个元素后，Word 自动补位、SVG 原地留洞——这就是「坐标绝对」最直观的后果。*
 

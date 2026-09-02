@@ -16,7 +16,7 @@ tags: [前端, SVG, 术语, 速查]
 | `y` 轴方向 | **y 越大越靠下** | 和数学课相反，新手一半的「改反了」源于此 |
 | `width` / `height` | 显示尺寸 | 常与 viewBox 不同，正是「矢量」的含义 |
 
-<img src='assets/svg-abs-coords.svg' style='max-width:680px;width:100%;height:auto' alt='Word 自动补位 vs SVG 原地留洞'>
+![Word 自动补位 vs SVG 原地留洞](assets/svg-abs-coords.svg){: style="max-width:680px;width:100%;height:auto"}
 
 *图：删掉一个元素，Word 自动补位、SVG 原地留洞——坐标写死、没有自动重排。*
 
