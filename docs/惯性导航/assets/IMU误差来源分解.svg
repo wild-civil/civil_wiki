@@ -65,6 +65,6 @@
 <text class="lb" x="412" y="397" fill="#7E3318">→ 用 Allan 方差测出来（05 篇）</text>
 
 <!-- 底部小结 -->
-<rect x="40" y="432" width="600" height="0"/>
-<text class="ts" x="340" y="428" text-anchor="middle">标定只能去掉"确定性"；"随机性"没法去掉，只能建模进滤波器（ESKF 的 Q 阵 / bg、ba 状态）</text>
+<rect x="40" y="452" width="600" height="0"/>
+<text class="ts" x="340" y="438" text-anchor="middle">标定只能去掉"确定性"；"随机性"没法去掉，只能建模进滤波器（ESKF 的 Q 阵 / bg、ba 状态）</text>
 </svg>

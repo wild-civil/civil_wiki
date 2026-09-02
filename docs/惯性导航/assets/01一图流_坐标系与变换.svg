@@ -15,23 +15,23 @@
 <text class="th" x="340" y="26" text-anchor="middle" fill="#0C447C">坐标系四级链路（一图流）</text>
 
 <!-- 四级坐标块 -->
-<rect x="20" y="70" width="140" height="66" rx="10" fill="#F6F8FB" stroke="#185FA5" stroke-width="1.5"/>
+<rect x="20" y="70" width="136" height="66" rx="10" fill="#F6F8FB" stroke="#185FA5" stroke-width="1.5"/>
 <text class="th" x="90" y="95" text-anchor="middle" fill="#185FA5">ECI 惯性系</text>
 <text class="ts" x="90" y="115" text-anchor="middle">牛顿定律真正成立</text>
 <text class="ts" x="90" y="129" text-anchor="middle">(短时 MEMS 不用)</text>
 
 <line x1="160" y1="103" x2="195" y2="103" stroke="#5F5E5A" stroke-width="1.6" marker-end="url(#a1)"/>
-<text class="ts" x="178" y="95" text-anchor="middle" font-size="10">地球自转</text>
+<text class="ts" x="180" y="95" text-anchor="middle" font-size="10">地球自转</text>
 
-<rect x="200" y="70" width="140" height="66" rx="10" fill="#F6F8FB" stroke="#185FA5" stroke-width="1.5"/>
+<rect x="205" y="70" width="130" height="66" rx="10" fill="#F6F8FB" stroke="#185FA5" stroke-width="1.5"/>
 <text class="th" x="270" y="95" text-anchor="middle" fill="#185FA5">ECEF 地心固连</text>
 <text class="ts" x="270" y="115" text-anchor="middle">随地球转、Z 指北极</text>
 <text class="ts" x="270" y="129" text-anchor="middle">GNSS 对接用</text>
 
 <line x1="340" y1="103" x2="375" y2="103" stroke="#5F5E5A" stroke-width="1.6" marker-end="url(#a1)"/>
-<text class="ts" x="358" y="95" text-anchor="middle" font-size="10">经纬度</text>
+<text class="ts" x="359" y="95" text-anchor="middle" font-size="10">经纬度</text>
 
-<rect x="380" y="70" width="140" height="66" rx="10" fill="#F3F8F1" stroke="#3B6D11" stroke-width="1.5"/>
+<rect x="382" y="70" width="133" height="66" rx="10" fill="#F3F8F1" stroke="#3B6D11" stroke-width="1.5"/>
 <text class="th" x="450" y="95" text-anchor="middle" fill="#27500A">当地水平 NED</text>
 <text class="ts" x="450" y="115" text-anchor="middle">z 向下=重力方向</text>
 <text class="ts" x="450" y="129" text-anchor="middle">我们干活的地方 ⭐</text>
