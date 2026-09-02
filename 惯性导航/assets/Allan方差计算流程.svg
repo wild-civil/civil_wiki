@@ -25,37 +25,37 @@
 <text class="ts" x="95" y="100" text-anchor="middle">N 个采样点，间隔 ts</text>
 
 <!-- 箭头 -->
-<line x1="174" y1="106" x2="208" y2="106" stroke="#5F5E5A" stroke-width="1.6" marker-end="url(#ag)"/>
+<line x1="172" y1="106" x2="206" y2="106" stroke="#5F5E5A" stroke-width="1.6" marker-end="url(#ag)"/>
 
 <!-- 第2步：分簇 + 平均 -->
-<rect x="212" y="56" width="170" height="100" rx="8" fill="#FBF3F0" stroke="#B5502A" stroke-width="1.4"/>
+<rect x="210" y="56" width="168" height="100" rx="8" fill="#FBF3F0" stroke="#B5502A" stroke-width="1.4"/>
 <text class="th" x="297" y="78" text-anchor="middle" fill="#B5502A">② 按 τ 分簇取平均</text>
 <!-- 簇 -->
-<rect x="222" y="92" width="34" height="44" fill="#FDE9D6" stroke="#B5502A" stroke-width="1"/>
-<rect x="260" y="92" width="34" height="44" fill="#FDE9D6" stroke="#B5502A" stroke-width="1"/>
-<rect x="298" y="92" width="34" height="44" fill="#FDE9D6" stroke="#B5502A" stroke-width="1"/>
-<rect x="336" y="92" width="34" height="44" fill="#FDE9D6" stroke="#B5502A" stroke-width="1"/>
-<text class="ts" x="225" y="118" text-anchor="middle" fill="#7E3318">簇1</text>
-<text class="ts" x="263" y="118" text-anchor="middle" fill="#7E3318">簇2</text>
-<text class="ts" x="301" y="118" text-anchor="middle" fill="#7E3318">簇3</text>
-<text class="ts" x="339" y="118" text-anchor="middle" fill="#7E3318">簇4</text>
+<rect x="220" y="92" width="34" height="44" fill="#FDE9D6" stroke="#B5502A" stroke-width="1"/>
+<rect x="258" y="92" width="34" height="44" fill="#FDE9D6" stroke="#B5502A" stroke-width="1"/>
+<rect x="296" y="92" width="34" height="44" fill="#FDE9D6" stroke="#B5502A" stroke-width="1"/>
+<rect x="334" y="92" width="34" height="44" fill="#FDE9D6" stroke="#B5502A" stroke-width="1"/>
+<text class="ts" x="239" y="118" text-anchor="middle" fill="#7E3318">簇1</text>
+<text class="ts" x="277" y="118" text-anchor="middle" fill="#7E3318">簇2</text>
+<text class="ts" x="315" y="118" text-anchor="middle" fill="#7E3318">簇3</text>
+<text class="ts" x="352" y="118" text-anchor="middle" fill="#7E3318">簇4</text>
 <text class="ts" x="297" y="150" text-anchor="middle">每 m 个点成一簇 → K=N/m 簇</text>
 
 <!-- 箭头 -->
-<line x1="386" y1="106" x2="420" y2="106" stroke="#5F5E5A" stroke-width="1.6" marker-end="url(#ag)"/>
+<line x1="382" y1="106" x2="415" y2="106" stroke="#5F5E5A" stroke-width="1.6" marker-end="url(#ag)"/>
 
 <!-- 第3步：差分 -->
-<rect x="424" y="56" width="120" height="100" rx="8" fill="#F3F8F1" stroke="#3B6D11" stroke-width="1.4"/>
-<text class="th" x="484" y="78" text-anchor="middle" fill="#3B6D11">③ 相邻簇差分</text>
-<text class="lb" x="436" y="100" fill="#27500A">d_k = ȳ_{k+1} − ȳ_k</text>
-<text class="ts" x="436" y="118">k=1..K-1</text>
-<text class="ts" x="436" y="138">共 K-1 个差</text>
+<rect x="420" y="56" width="120" height="100" rx="8" fill="#F3F8F1" stroke="#3B6D11" stroke-width="1.4"/>
+<text class="th" x="480" y="78" text-anchor="middle" fill="#3B6D11">③ 相邻簇差分</text>
+<text class="lb" x="430" y="100" fill="#27500A">d_k = ȳ_{k+1} − ȳ_k</text>
+<text class="ts" x="432" y="118">k=1..K-1</text>
+<text class="ts" x="432" y="138">共 K-1 个差</text>
 
 <!-- 箭头 -->
-<line x1="548" y1="106" x2="580" y2="106" stroke="#5F5E5A" stroke-width="1.6" marker-end="url(#ag)"/>
+<line x1="545" y1="106" x2="576" y2="106" stroke="#5F5E5A" stroke-width="1.6" marker-end="url(#ag)"/>
 
 <!-- 第4步：方差 -->
-<rect x="584" y="56" width="76" height="100" rx="8" fill="#FDF3E7" stroke="#854F0B" stroke-width="1.4"/>
+<rect x="580" y="56" width="78" height="100" rx="8" fill="#FDF3E7" stroke="#854F0B" stroke-width="1.4"/>
 <text class="th" x="622" y="78" text-anchor="middle" fill="#854F0B">④ Allan 偏差</text>
 <text class="lb" x="595" y="105" fill="#854F0B" font-size="9.5">σ_A(τ) =</text>
 <text class="lb" x="595" y="118" fill="#854F0B" font-size="9.5">√Var(d)/√2</text>
@@ -71,15 +71,15 @@
 <text class="th" x="340" y="284" text-anchor="middle" fill="#0C447C">log-log 画出来就是 Allan 曲线，五段斜率对应不同噪声</text>
 <line x1="60" y1="376" x2="640" y2="376" stroke="#5F5E5A" stroke-width="1.2" marker-end="url(#ag)"/>
 <line x1="60" y1="376" x2="60" y2="296" stroke="#5F5E5A" stroke-width="1.2" marker-end="url(#ag)"/>
-<text class="ts" x="50" y="335" text-anchor="middle" font-size="9.5">log σ</text>
-<text class="ts" x="650" y="378" text-anchor="end" font-size="9.5">log τ →</text>
+<text class="ts" x="43" y="295" text-anchor="middle" font-size="9.5">log σ</text>
+<text class="ts" x="650" y="388" text-anchor="end" font-size="9.5">log τ →</text>
 
 <!-- 示意五段曲线（分段折线） -->
 <polyline points="60,304 110,328 170,348 240,365 340,374 460,373 560,360 640,338" fill="none" stroke="#0C447C" stroke-width="2.2"/>
 
 <!-- 五段标注 -->
-<text class="lb" x="68" y="318" fill="#0C447C" font-size="9.5">QN</text>
-<text class="ts" x="68" y="330" font-size="9">−1</text>
+<text class="lb" x="75" y="310" fill="#0C447C" font-size="9.5">QN</text>
+<text class="ts" x="75" y="328" font-size="9">−1</text>
 
 <text class="lb" x="178" y="338" fill="#27500A" font-size="9.5">ARW</text>
 <text class="ts" x="178" y="350" font-size="9">−1/2</text>

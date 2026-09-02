@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 225" width="400" height="225" role="img" aria-label="手术二：删元素 before/after">
+  <title>删元素：删了就留洞，其余不动</title>
+  <desc>左：A、B、C 三块。右：删掉 B，A 不动、C 不动，中间留下红色空洞。</desc>
+  <style>
+    .bg{fill:#ffffff}
+    .cap{fill:#5f6368;font:600 12px sans-serif;text-anchor:middle}
+    .lbl{fill:#1a73e8;font:700 14px sans-serif;text-anchor:middle}
+    .box{fill:#e8f0fe;stroke:#1a73e8;stroke-width:2}
+    .hole{fill:none;stroke:#d93025;stroke-width:2;stroke-dasharray:6 4}
+    .holelbl{fill:#d93025;font:600 12px sans-serif;text-anchor:middle}
+    .bad{fill:#d93025;font:700 11px sans-serif;text-anchor:middle}
+    @media (prefers-color-scheme: dark){
+      .bg{fill:#16181c}.cap{fill:#9aa0a6}.lbl{fill:#8ab4f8}
+      .box{fill:#1b3a5c;stroke:#4a9eff}.hole{stroke:#ff6b6b}.holelbl{fill:#ff8a8a}.bad{fill:#ff8a8a}
+    }
+  </style>
+  <rect class="bg" x="0" y="0" width="400" height="225"/>
+  <text class="cap" x="100" y="22">删元素前</text>
+  <text class="cap" x="300" y="22">删元素后（删 B）</text>
+  <rect class="box" x="40" y="60" width="120" height="40" rx="8"/>
+  <text class="lbl" x="100" y="86">A</text>
+  <rect class="box" x="40" y="110" width="120" height="40" rx="8"/>
+  <text class="lbl" x="100" y="136">B</text>
+  <rect class="box" x="40" y="160" width="120" height="40" rx="8"/>
+  <text class="lbl" x="100" y="186">C</text>
+  <rect class="box" x="240" y="60" width="120" height="40" rx="8"/>
+  <text class="lbl" x="300" y="86">A</text>
+  <rect class="hole" x="240" y="110" width="120" height="40" rx="8"/>
+  <text class="holelbl" x="300" y="135">空洞</text>
+  <rect class="box" x="240" y="160" width="120" height="40" rx="8"/>
+  <text class="lbl" x="300" y="186">C</text>
+  <text class="bad" x="300" y="215">C 没动，原地留洞</text>
+</svg>

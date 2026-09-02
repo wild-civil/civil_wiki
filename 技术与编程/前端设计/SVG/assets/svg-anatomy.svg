@@ -1,0 +1,149 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 470" width="680" height="470" role="img" aria-label="SVG 坐标系统与文件结构解剖图">
+  <title>SVG 解剖：坐标系与文件结构</title>
+  <desc>左半部分展示 viewBox 定义的画布范围，以及 y 轴朝下、坐标绝对这两条核心规则；右半部分展示 SVG 文件的标签层级（defs 定义区、g 分组）如何对应到画面上的视觉元素。</desc>
+
+  <style>
+    .bg      { fill: #ffffff; }
+    .panel   { fill: #f8f9fa; stroke: #dadce0; stroke-width: 1; }
+    .fg      { fill: #202124; }
+    .fg2     { fill: #5f6368; }
+    .accent  { fill: #1a73e8; }
+    .ln      { stroke: #202124; stroke-width: 1.6; fill: none; }
+    .ln2     { stroke: #5f6368; stroke-width: 1.2; fill: none; }
+    .sa      { stroke: #1a73e8; stroke-width: 2; fill: none; }
+    .dash    { stroke: #9aa0a6; stroke-width: 1.4; stroke-dasharray: 6 4; fill: none; }
+    .elemf   { fill: #e8f0fe; }
+    .arrow   { fill: #5f6368; }
+    .arrowA  { fill: #1a73e8; }
+    .mono    { font-family: "Consolas","SF Mono","Courier New",monospace; font-size: 10.5px; fill: #202124; }
+    .mono2   { font-family: "Consolas","SF Mono","Courier New",monospace; font-size: 10.5px; fill: #5f6368; }
+    .h2      { font-size: 14px; font-weight: 700; fill: #1a73e8;
+               font-family: "Segoe UI","Noto Sans SC","Microsoft YaHei",sans-serif; }
+    .t11     { font-size: 11px; fill: #3c4043;
+               font-family: "Segoe UI","Noto Sans SC","Microsoft YaHei",sans-serif; }
+    .t10     { font-size: 10px; fill: #5f6368;
+               font-family: "Segoe UI","Noto Sans SC","Microsoft YaHei",sans-serif; }
+    .t9      { font-size: 9.5px; fill: #5f6368;
+               font-family: "Segoe UI","Noto Sans SC","Microsoft YaHei",sans-serif; }
+    .accTxt  { font-size: 9.5px; fill: #1a73e8;
+               font-family: "Segoe UI","Noto Sans SC","Microsoft YaHei",sans-serif; }
+    .warn    { font-size: 10px; fill: #c5221f;
+               font-family: "Segoe UI","Noto Sans SC","Microsoft YaHei",sans-serif; }
+
+    @media (prefers-color-scheme: dark) {
+      .bg      { fill: #16181c; }
+      .panel   { fill: #1e2126; stroke: #3c4043; }
+      .fg      { fill: #e8eaed; }
+      .fg2     { fill: #9aa0a6; }
+      .accent  { fill: #8ab4f8; }
+      .ln      { stroke: #e8eaed; }
+      .ln2     { stroke: #9aa0a6; }
+      .sa      { stroke: #8ab4f8; }
+      .dash    { stroke: #5f6368; }
+      .elemf   { fill: #173a5e; }
+      .arrow   { fill: #9aa0a6; }
+      .arrowA  { fill: #8ab4f8; }
+      .mono    { fill: #e8eaed; }
+      .mono2   { fill: #9aa0a6; }
+      .h2      { fill: #8ab4f8; }
+      .t11     { fill: #dadce0; }
+      .t10     { fill: #9aa0a6; }
+      .t9      { fill: #9aa0a6; }
+      .accTxt  { fill: #8ab4f8; }
+      .warn    { fill: #f28b82; }
+    }
+  </style>
+
+  <defs>
+    <marker id="arw" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" class="arrow"/>
+    </marker>
+    <marker id="arwA" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" class="arrowA"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="680" height="470" class="bg"/>
+
+  <text x="340" y="26" text-anchor="middle" class="h2" style="font-size:16px">SVG 解剖：坐标系与文件结构</text>
+
+  <!-- ══════════ 左半部分：画布与坐标 ══════════ -->
+  <text x="24" y="58" class="h2">① 画布与坐标</text>
+
+  <!-- viewBox 可见范围（虚线框） -->
+  <rect x="70" y="104" width="256" height="150" class="dash"/>
+  <text x="198" y="272" text-anchor="middle" class="t9">虚线框 = viewBox 的可见范围，超出部分会被裁掉</text>
+
+  <!-- 原点 -->
+  <circle cx="70" cy="104" r="3.5" class="accent"/>
+  <text x="78" y="98" class="accTxt">(0, 0)</text>
+
+  <!-- x 轴（向右） -->
+  <line x1="70" y1="88" x2="286" y2="88" class="sa" marker-end="url(#arwA)"/>
+  <text x="296" y="91" class="t9">x →</text>
+
+  <!-- y 轴（向下） -->
+  <line x1="56" y1="104" x2="56" y2="228" class="sa" marker-end="url(#arwA)"/>
+  <text x="56" y="244" text-anchor="middle" class="t9">y ↓</text>
+
+  <!-- 示例元素 1：rect -->
+  <rect x="112" y="130" width="78" height="44" rx="5" class="elemf sa"/>
+  <text x="151" y="156" text-anchor="middle" class="t11">rect</text>
+  <text x="151" y="124" text-anchor="middle" class="t9">x=112  y=130</text>
+
+  <!-- 示例元素 2：circle -->
+  <circle cx="256" cy="204" r="21" class="elemf sa"/>
+  <text x="256" y="208" text-anchor="middle" class="t11">circle</text>
+  <text x="256" y="240" text-anchor="middle" class="t9">cx=256  cy=204</text>
+
+  <!-- 坐标规则要点 -->
+  <rect x="24" y="292" width="316" height="150" rx="8" class="panel"/>
+  <text x="40" y="314" class="t11" style="font-weight:700">坐标两条铁律</text>
+
+  <text x="40" y="336" class="t11">1. y 轴朝下</text>
+  <text x="40" y="353" class="t10">上移 = y 减小　下移 = y 加大</text>
+
+  <text x="40" y="378" class="t11">2. 坐标是绝对的</text>
+  <text x="40" y="395" class="t10">删掉一个元素，其余元素纹丝不动,</text>
+  <text x="40" y="410" class="t10">既不会自动补位，也不会自动让位。</text>
+  <text x="40" y="431" class="t10">→ 插入/删除 = 手工重排所有受影响元素</text>
+
+  <!-- ══════════ 右半部分：文件结构 ══════════ -->
+  <text x="368" y="58" class="h2">② 文件结构 → 画面分组</text>
+
+  <!-- 行 1：defs 定义区 -->
+  <text x="368" y="94" class="mono2">&lt;defs&gt;</text>
+  <text x="368" y="110" class="mono2">  &lt;marker id="arw"&gt;</text>
+  <text x="368" y="126" class="mono2">&lt;/defs&gt;</text>
+  <line x1="560" y1="110" x2="592" y2="110" class="ln2" marker-end="url(#arw)"/>
+  <rect x="600" y="92" width="56" height="36" rx="5" class="dash"/>
+  <text x="628" y="114" text-anchor="middle" class="t9">不可见</text>
+  <text x="368" y="146" class="t10">定义区：只被 url(#id) 引用，不直接显示</text>
+
+  <!-- 行 2：g 分组 A -->
+  <text x="368" y="186" class="mono">&lt;g id="box"&gt;</text>
+  <text x="368" y="202" class="mono">  &lt;rect x="20" y="20"&gt;</text>
+  <text x="368" y="218" class="mono">&lt;/g&gt;</text>
+  <line x1="560" y1="202" x2="592" y2="202" class="ln2" marker-end="url(#arw)"/>
+  <rect x="600" y="182" width="56" height="40" rx="5" class="elemf sa"/>
+  <text x="628" y="206" text-anchor="middle" class="t11">组 A</text>
+
+  <!-- 行 3：g 分组 B -->
+  <text x="368" y="258" class="mono">&lt;g id="dot"&gt;</text>
+  <text x="368" y="274" class="mono">  &lt;circle cx="80"&gt;</text>
+  <text x="368" y="290" class="mono">&lt;/g&gt;</text>
+  <line x1="560" y1="274" x2="592" y2="274" class="ln2" marker-end="url(#arw)"/>
+  <circle cx="628" cy="274" r="20" class="elemf sa"/>
+  <text x="628" y="279" text-anchor="middle" class="t11">组 B</text>
+
+  <!-- 底部结构要点 -->
+  <rect x="368" y="312" width="288" height="130" rx="8" class="panel"/>
+  <text x="384" y="334" class="t11" style="font-weight:700">读结构三招</text>
+  <text x="384" y="356" class="t10">· 折叠所有 &lt;g&gt; 看骨架，一眼看清分几块</text>
+  <text x="384" y="376" class="t10">· 绘制顺序 = 层叠顺序：写在后面的盖上面</text>
+  <text x="384" y="396" class="t10">· 套 &lt;g transform&gt; 可整组平移，</text>
+  <text x="400" y="412" class="t10">子元素坐标一个都不用改</text>
+  <text x="384" y="433" class="warn">· 改 &lt;defs&gt; 前先搜 url(#id)，否则静默失效</text>
+</svg>

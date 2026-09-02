@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 220" width="400" height="220" role="img" aria-label="手术四：挪整组 before/after">
+  <title>挪整组：套 g transform 一次带走所有子元素</title>
+  <desc>左：三个元素各自写死坐标。右：把它们包进一个带虚线边界的 g，整体 translate 下移，子元素坐标一个都不用改。</desc>
+  <style>
+    .bg{fill:#ffffff}
+    .cap{fill:#5f6368;font:600 12px sans-serif;text-anchor:middle}
+    .box{fill:#e8f0fe;stroke:#1a73e8;stroke-width:2}
+    .lbl{fill:#1a73e8;font:700 13px sans-serif;text-anchor:middle}
+    .ln{stroke:#1a73e8;stroke-width:2}
+    .grp{fill:none;stroke:#188038;stroke-width:1.5;stroke-dasharray:5 4}
+    .note{fill:#188038;font:700 11px sans-serif;text-anchor:middle}
+    @media (prefers-color-scheme: dark){
+      .bg{fill:#16181c}.cap{fill:#9aa0a6}.box{fill:#1b3a5c;stroke:#4a9eff}
+      .lbl{fill:#8ab4f8}.ln{stroke:#4a9eff}.grp{stroke:#81c995}.note{fill:#81c995}
+    }
+  </style>
+  <rect class="bg" x="0" y="0" width="400" height="220"/>
+  <text class="cap" x="100" y="22">挪整组前（各自坐标）</text>
+  <text class="cap" x="300" y="22">挪整组后（套 g）</text>
+  <rect class="box" x="40" y="70" width="90" height="40" rx="8"/>
+  <text class="lbl" x="85" y="95">标题</text>
+  <line class="ln" x1="40" y1="130" x2="130" y2="130"/>
+  <rect class="grp" x="230" y="130" width="140" height="80" rx="8"/>
+  <text class="note" x="300" y="122">整组 translate(0,60)</text>
+  <rect class="box" x="255" y="145" width="90" height="40" rx="8"/>
+  <text class="lbl" x="300" y="170">标题</text>
+  <line class="ln" x1="255" y1="200" x2="345" y2="200"/>
+  <text class="cap" x="180" y="200">子元素坐标不变</text>
+</svg>

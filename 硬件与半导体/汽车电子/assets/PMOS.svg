@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 160" width="200" height="160">
+  <style>
+    .line { stroke: #1e293b; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+    .thick-line { stroke: #1e293b; stroke-width: 3.5; stroke-linecap: round; }
+    .label { font-family: 'Arial', sans-serif; font-size: 14px; font-weight: bold; fill: #0f172a; text-anchor: middle; }
+    .sub-text { font-family: 'Arial', sans-serif; font-size: 11px; fill: #64748b; text-anchor: middle; }
+    .pin-label { font-family: 'Arial', sans-serif; font-size: 15px; font-weight: bold; fill: #2563eb; }
+    .diode { fill: #1e293b; stroke: #1e293b; stroke-width: 1.5; }
+
+    @media (prefers-color-scheme: dark) {
+      .line, .thick-line { stroke: #cbd5e1; }
+      .label, .sub-text { fill: #e2e8f0; }
+      .pin-label { fill: #93b4f8; }
+      .diode { fill: #cbd5e1; stroke: #cbd5e1; }
+      polygon, circle { fill: #cbd5e1; }
+    }
+  </style>
+
+  <!-- 背景画布 -->
+  <!--<rect width="100%" height="100%" fill="#ffffff"/>-->
+
+  <!-- 栅极 (Gate / G) 结构 -->
+  <path class="line" d="M 30,80 L 70,80" /> <!-- G 引脚延伸线 -->
+  <line class="thick-line" x1="70" y1="50" x2="70" y2="110" /> <!-- 栅极板 Gate Plate -->
+
+  <!-- 绝缘沟道间隔 (Channel Vertical Lines) -->
+  <line class="thick-line" x1="80" y1="45" x2="80" y2="65" />  <!-- 漏极端 D -->
+  <line class="thick-line" x1="80" y1="72" x2="80" y2="88" />  <!-- 衬底/中间端 -->
+  <line class="thick-line" x1="80" y1="95" x2="80" y2="115" /> <!-- 源极端 S -->
+
+  <!-- 引脚与沟道连接 -->
+  <!-- D极连接 (Drain) -->
+  <path class="line" d="M 80,55 L 120,55 L 120,15" />
+  
+  <!-- S极连接 (Source) 及内部衬底相连 -->
+  <path class="line" d="M 80,105 L 120,105 L 120,145" />
+  <path class="line" d="M 80,80 L 120,80 L 120,105" /> <!-- 衬底接到S极 -->
+
+  <!-- PMOS 特征箭头：从内部指向外部 (向右) -->
+  <polygon points="120,80 108,74 108,86" fill="#1e293b" />
+
+  <!-- 体二极管 (Body Diode) - PMOS: 阳极在S(下), 阴极在D(上) -->
+  <path class="line" d="M120,120 L145,120 L145,40 L120,40" /> <!-- 二极管跨接支路 -->
+  <!-- 阴极横线 (Top) -->
+  <line x1="138" y1="72" x2="152" y2="72" class="line" style="stroke-width:2;" />
+  <!-- 阳极三角形 (Bottom to Top) -->
+  <polygon points="145,72 139,84 151,84" class="diode" />
+
+  <!-- 节点圆点 (Junction Dots) -->
+  <circle cx="120" cy="105" r="3" fill="#1e293b" />
+  <circle cx="120" cy="40" r="3" fill="#1e293b" />
+  <circle cx="120" cy="120" r="3" fill="#1e293b" />
+
+  <!-- 文本标注 -->
+  <text x="55" y="75" class="pin-label" text-anchor="end">G</text>
+  <text x="105" y="35" class="pin-label" text-anchor="start">D</text>
+  <text x="105" y="135" class="pin-label" text-anchor="start">S</text>
+
+</svg>

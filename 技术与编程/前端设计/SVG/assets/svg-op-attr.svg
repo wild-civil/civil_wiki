@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 210" width="400" height="210" role="img" aria-label="手术三：改描边端点 linecap/linejoin before/after">
+  <title>改属性：linecap 与 linejoin 的可视差异</title>
+  <desc>左：默认 butt 端点（平）+ miter 拐角（尖）。右：round 端点（圆）+ round 拐角（柔）。</desc>
+  <style>
+    .bg{fill:#ffffff}
+    .cap{fill:#5f6368;font:600 12px sans-serif;text-anchor:middle}
+    .ln{fill:none;stroke:#1a73e8;stroke-width:8}
+    .ln2{fill:none;stroke:#188038;stroke-width:8;stroke-linecap:round;stroke-linejoin:round}
+    .note{fill:#188038;font:700 11px sans-serif;text-anchor:middle}
+    @media (prefers-color-scheme: dark){
+      .bg{fill:#16181c}.cap{fill:#9aa0a6}.ln{stroke:#4a9eff}.ln2{stroke:#81c995}.note{fill:#81c995}
+    }
+  </style>
+  <rect class="bg" x="0" y="0" width="400" height="210"/>
+  <text class="cap" x="100" y="22">改前（butt / miter）</text>
+  <text class="cap" x="300" y="22">改后（round / round）</text>
+  <polyline class="ln" points="40,90 90,50 140,90 190,50"/>
+  <polyline class="ln2" points="240,90 290,50 340,90 390,50"/>
+  <text class="note" x="300" y="170">端点变圆、拐角变柔</text>
+  <text class="note" x="100" y="170">端点齐平、拐角尖</text>
+</svg>

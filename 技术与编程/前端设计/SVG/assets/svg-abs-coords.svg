@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 340" width="680" height="340" role="img" aria-label="Word 自动重排与 SVG 绝对坐标对比">
+  <title>删掉一个元素后：Word 自动补位 vs SVG 原地留洞</title>
+  <desc>左：Word 删除元素 B 后，下方元素 C 自动上移到 B 的位置。右：SVG 删除元素 B 后，C 停留在原坐标不动，B 的位置留下空洞。</desc>
+  <style>
+    .bg{fill:#ffffff}
+    .title{fill:#202124;font:700 14px sans-serif;text-anchor:middle}
+    .lbl{fill:#1a73e8;font:700 15px sans-serif;text-anchor:middle}
+    .box{fill:#e8f0fe;stroke:#1a73e8;stroke-width:2}
+    .hole{fill:none;stroke:#d93025;stroke-width:2;stroke-dasharray:6 4}
+    .holelbl{fill:#d93025;font:600 13px sans-serif;text-anchor:middle}
+    .ok{fill:#188038;font:700 13px sans-serif;text-anchor:middle}
+    .bad{fill:#d93025;font:700 13px sans-serif;text-anchor:middle}
+    .arrow{stroke:#188038;stroke-width:2;fill:none;marker-end:url(#ah)}
+    @media (prefers-color-scheme: dark){
+      .bg{fill:#16181c}.title{fill:#e8eaed}.lbl{fill:#8ab4f8}
+      .box{fill:#1b3a5c;stroke:#4a9eff}
+      .hole{stroke:#ff6b6b}.holelbl{fill:#ff8a8a}
+      .ok{fill:#81c995}.bad{fill:#ff8a8a}.arrow{stroke:#81c995}
+    }
+  </style>
+  <rect class="bg" x="0" y="0" width="680" height="340"/>
+  <defs>
+    <marker id="ah" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#188038"/>
+    </marker>
+  </defs>
+  <text class="title" x="175" y="30">Word 文档：删一个，自动补位</text>
+  <rect class="box" x="115" y="80" width="120" height="42" rx="8"/>
+  <text class="lbl" x="175" y="106">A</text>
+  <rect class="box" x="115" y="150" width="120" height="42" rx="8"/>
+  <text class="lbl" x="175" y="176">C（上移）</text>
+  <path class="arrow" d="M175,124 L175,148"/>
+  <text class="ok" x="175" y="222">✓ 后面的内容自动上移</text>
+  <text class="ok" x="175" y="242">删 B → C 顶上来</text>
+
+  <text class="title" x="505" y="30">SVG：删一个，原地留洞</text>
+  <rect class="box" x="445" y="80" width="120" height="42" rx="8"/>
+  <text class="lbl" x="505" y="106">A</text>
+  <rect class="hole" x="445" y="150" width="120" height="42" rx="8"/>
+  <text class="holelbl" x="505" y="176">空洞（B 被删）</text>
+  <rect class="box" x="445" y="220" width="120" height="42" rx="8"/>
+  <text class="lbl" x="505" y="246">C（不动）</text>
+  <text class="bad" x="505" y="300">✗ C 仍停在老坐标</text>
+  <text class="bad" x="505" y="318">B 的位置留下空洞</text>
+</svg>
