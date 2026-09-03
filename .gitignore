@@ -4,6 +4,13 @@ site/
 # 沙箱 safe-delete 钩子每次 mkdocs build 清理 site/ 时隔离出的副本（非源码，忽略）
 _verify*/
 
+# 本地自检构建产物：mkdocs build -d _bt_xxx（每次换目录以避开 safe-delete 钩子）
+# 约定：验证一律用 _bt_ 前缀目录，构建完不进版本库
+_bt*/
+_bt*.log
+_btbuild.*
+_diag_dir.py
+
 # MkDocs Material 资源缓存
 .material/
 
