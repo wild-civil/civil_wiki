@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>P 矩阵交互演示：同一架飞机，两套坐标标签</title>
+<style>
+  body{ font-family: system-ui, "PingFang SC", "Microsoft YaHei", sans-serif; background:#f5f7fa; color:#1b1f24; margin:0; padding:18px; }
+  @media (prefers-color-scheme: dark){ body{ background:#161a1f; color:#e6e9ee; } }
+  .wrap{ max-width:780px; margin:auto; }
+  h3{ margin:0 0 6px; }
+  .stage{ display:flex; gap:16px; flex-wrap:wrap; }
+  .frame{ border:1px solid #cfd6df; border-radius:12px; background:#fff; padding:10px; flex:1 1 320px; }
+  @media (prefers-color-scheme: dark){ .frame{ border-color:#39424d; background:#1a1e24; } }
+  .cap{ text-align:center; font-weight:700; margin-bottom:4px; }
+  .ctrl{ margin:16px 0 8px; }
+  input[type=range]{ width:100%; }
+  .read{ font-family: ui-monospace, Menlo, Consolas, monospace; font-size:14px; line-height:1.7; }
+  .pe{color:#d23b3b} .pn{color:#2e8b57} .pu{color:#3b6fd2}
+  @media (prefers-color-scheme: dark){ .pe{color:#ff6b6b} .pn{color:#5fd38a} .pu{color:#6f9bff} }
+  code{ background:rgba(127,127,127,.15); padding:1px 6px; border-radius:5px; font-family:ui-monospace,Menlo,Consolas,monospace; }
+  .note{ color:#5a6470; font-size:13px; margin-top:10px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h3>P 矩阵交互演示：同一架飞机，两套坐标标签</h3>
+  <div class="stage">
+    <div class="frame">
+      <div class="cap">ENU（东 / 北 / 天）</div>
+      <svg id="svgL" width="100%" viewBox="0 0 300 240">
+        <g stroke-width="3" fill="none">
+          <line x1="150" y1="170" x2="250" y2="170" stroke="#d23b3b" marker-end="url(#ahL)"/>
+          <line x1="150" y1="170" x2="150" y2="70"  stroke="#2e8b57" marker-end="url(#ahL)"/>
+          <line x1="150" y1="170" x2="192" y2="132" stroke="#3b6fd2" stroke-dasharray="5 4" marker-end="url(#ahL)"/>
+        </g>
+        <circle cx="150" cy="170" r="4" fill="none" stroke="#3b6fd2" stroke-width="1.5"/>
+        <text x="258" y="174" fill="#d23b3b" font-weight="700" text-anchor="middle">E</text>
+        <text x="156" y="64"  fill="#2e8b57" font-weight="700" text-anchor="middle">N</text>
+        <text x="200" y="128" fill="#3b6fd2" font-weight="700" text-anchor="middle">U</text>
+        <g id="acL">
+          <polygon points="150,88 140,116 150,108 160,116" fill="#1f6feb"/>
+          <line x1="150" y1="108" x2="150" y2="170" stroke="#1f6feb"/>
+        </g>
+        <defs>
+          <marker id="ahL" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="context-stroke"/>
+          </marker>
+        </defs>
+      </svg>
+    </div>
+    <div class="frame">
+      <div class="cap">NED（北 / 东 / 下）</div>
+      <svg id="svgR" width="100%" viewBox="0 0 300 240">
+        <g stroke-width="3" fill="none">
+          <line x1="150" y1="170" x2="250" y2="170" stroke="#d23b3b" marker-end="url(#ahR)"/>
+          <line x1="150" y1="170" x2="150" y2="70"  stroke="#2e8b57" marker-end="url(#ahR)"/>
+          <line x1="150" y1="170" x2="192" y2="208" stroke="#3b6fd2" stroke-dasharray="5 4" marker-end="url(#ahR)"/>
+        </g>
+        <text x="258" y="174" fill="#d23b3b" font-weight="700" text-anchor="middle">E</text>
+        <text x="156" y="64"  fill="#2e8b57" font-weight="700" text-anchor="middle">N</text>
+        <text x="200" y="212" fill="#3b6fd2" font-weight="700" text-anchor="middle">D</text>
+        <g id="acR">
+          <polygon points="150,88 140,116 150,108 160,116" fill="#1f6feb"/>
+          <line x1="150" y1="108" x2="150" y2="170" stroke="#1f6feb"/>
+        </g>
+        <defs>
+          <marker id="ahR" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="context-stroke"/>
+          </marker>
+        </defs>
+      </svg>
+    </div>
+  </div>
+
+  <div class="ctrl">
+    <label>机头朝向 θ（从正北向东）：<b id="th">0</b>°</label><br>
+    <input id="slider" type="range" min="0" max="360" value="0" step="1">
+  </div>
+
+  <div class="read">
+    ENU:&nbsp; r = [ <span class="pe">E <b id="eE">0.00</b></span>, <span class="pn">N <b id="eN">1.00</b></span>, <span class="pu">U 0</span> ]<br>
+    NED:&nbsp; r = [ <span class="pn">N <b id="nN">1.00</b></span>, <span class="pe">E <b id="nE">0.00</b></span>, <span class="pu">D 0</span> ]
+    <div class="note">验证 r<sub>NED</sub> = P · r<sub>ENU</sub>，其中 P = [0 1 0; 1 0 0; 0 0 −1]</div>
+  </div>
+
+  <p class="note">拖动滑块：飞机的<b>物理朝向在变</b>，但<b>同一朝向</b>在 ENU 和 NED 下报出的坐标数字按 P 互换（前两个分量对调、第三个取反）。P 本身不是旋转，只是坐标标签的字典。回到 θ=0 时就是文中那张「机头朝北」的静态对照。</p>
+</div>
+
+<script>
+  const slider = document.getElementById('slider');
+  const acL = document.getElementById('acL');
+  const acR = document.getElementById('acR');
+  const th = document.getElementById('th');
+  const eE = document.getElementById('eE'), eN = document.getElementById('eN');
+  const nN = document.getElementById('nN'), nE = document.getElementById('nE');
+  function upd(){
+    const deg = +slider.value;
+    th.textContent = deg;
+    acL.setAttribute('transform', 'rotate(' + deg + ' 150 170)');
+    acR.setAttribute('transform', 'rotate(' + deg + ' 150 170)');
+    const a = deg * Math.PI / 180;
+    const E = Math.sin(a), N = Math.cos(a);
+    eE.textContent = E.toFixed(2); eN.textContent = N.toFixed(2);
+    nN.textContent = N.toFixed(2); nE.textContent = E.toFixed(2);
+  }
+  slider.addEventListener('input', upd);
+  upd();
+</script>
+</body>
+</html>
