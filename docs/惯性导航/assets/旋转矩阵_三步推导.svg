@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 410" width="100%" role="img">
+<title>旋转矩阵的三步推导</title>
+<desc>左：e1 转过 θ 落在 (cosθ, sinθ)，成为矩阵第 1 列。中：e2 转过 θ 落在 (−sinθ, cosθ)，成为矩阵第 2 列。右：任意向量 v=(a,b) 的旋转结果 Rv 等于 a 乘第 1 列加 b 乘第 2 列，几何上是平行四边形求和。</desc>
+<style>
+  .t{font-family:system-ui,"PingFang SC","Microsoft YaHei",sans-serif;font-size:13px;fill:#1b1f24}
+  .ts{font-family:system-ui,"PingFang SC","Microsoft YaHei",sans-serif;font-size:11px;fill:#5a6470}
+  .pn{fill:#f7f9fb;stroke:#cfd6df;stroke-width:1}
+  .ax{stroke:#c3cbd6;stroke-width:1;fill:none}
+  .uc{stroke:#cfd6df;stroke-width:1;fill:none;stroke-dasharray:3 3}
+  .gy{stroke:#8a94a0;stroke-width:1.8;fill:none;stroke-dasharray:5 4}
+  .b1{stroke:#3b6fd2;stroke-width:2.4;fill:none}
+  .b2{stroke:#3b6fd2;stroke-width:1.3;fill:none;stroke-dasharray:4 3}
+  .g1{stroke:#2e8b57;stroke-width:2.4;fill:none}
+  .g2{stroke:#2e8b57;stroke-width:1.3;fill:none;stroke-dasharray:4 3}
+  .r1{stroke:#d23b3b;stroke-width:2.6;fill:none}
+  .arc{stroke-width:1.4;fill:none;stroke-dasharray:3 3}
+  .bk{stroke:#5a6470;stroke-width:1.6;fill:none}
+  @media (prefers-color-scheme: dark){
+    .t{fill:#e6e9ee} .ts{fill:#9aa5b1}
+    .pn{fill:#1a1e24;stroke:#39424d}
+    .ax{stroke:#39424d} .uc{stroke:#39424d}
+    .gy{stroke:#7d8794} .bk{stroke:#9aa5b1}
+    .b1{stroke:#6f9bff} .b2{stroke:#6f9bff}
+    .g1{stroke:#5fd38a} .g2{stroke:#5fd38a}
+    .r1{stroke:#ff6b6b}
+  }
+</style>
+<defs>
+  <marker id="rm" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+</defs>
+
+<text class="t" x="340" y="26" text-anchor="middle" font-weight="600">矩阵凭什么代表旋转 —— 三步推导（θ = 40°，v = (2, 1)）</text>
+
+<text class="t" x="133" y="44" text-anchor="middle">① 第 1 列 = e₁ 的落点</text>
+<text class="t" x="340" y="44" text-anchor="middle">② 第 2 列 = e₂ 的落点</text>
+<text class="t" x="547" y="44" text-anchor="middle">③ Rv = a·列1 + b·列2</text>
+
+<rect class="pn" x="40" y="52" width="186" height="200" rx="10"/>
+<line class="ax" x1="50" y1="192" x2="216" y2="192"/>
+<line class="ax" x1="98" y1="60" x2="98" y2="244"/>
+<circle class="uc" cx="98" cy="192" r="40"/>
+<line class="gy" x1="98" y1="192" x2="138" y2="192"/>
+<path class="arc" stroke="#3b6fd2" d="M138 192 A 40 40 0 0 0 128.6 166.3"/>
+<line class="b1" x1="98" y1="192" x2="128.6" y2="166.3" marker-end="url(#rm)"/>
+<text class="ts" x="146" y="188" fill="#8a94a0">e₁</text>
+<text class="ts" x="146" y="160" fill="#3b6fd2">Re₁</text>
+<text class="ts" x="130" y="180" fill="#3b6fd2">θ</text>
+
+<rect class="pn" x="247" y="52" width="186" height="200" rx="10"/>
+<line class="ax" x1="257" y1="192" x2="423" y2="192"/>
+<line class="ax" x1="305" y1="60" x2="305" y2="244"/>
+<circle class="uc" cx="305" cy="192" r="40"/>
+<line class="gy" x1="305" y1="192" x2="305" y2="152"/>
+<path class="arc" stroke="#2e8b57" d="M305 152 A 40 40 0 0 0 279.3 161.4"/>
+<line class="g1" x1="305" y1="192" x2="279.3" y2="161.4" marker-end="url(#rm)"/>
+<text class="ts" x="316" y="150" fill="#8a94a0">e₂</text>
+<text class="ts" x="264" y="152" fill="#2e8b57">Re₂</text>
+<text class="ts" x="294" y="168" fill="#2e8b57">θ</text>
+
+<rect class="pn" x="454" y="52" width="186" height="200" rx="10"/>
+<line class="ax" x1="464" y1="192" x2="630" y2="192"/>
+<line class="ax" x1="512" y1="60" x2="512" y2="244"/>
+<circle class="uc" cx="512" cy="192" r="40"/>
+<line class="gy" x1="512" y1="192" x2="592" y2="152" marker-end="url(#rm)"/>
+<line class="b2" x1="512" y1="192" x2="573.3" y2="140.6"/>
+<line class="g2" x1="512" y1="192" x2="486.3" y2="161.4"/>
+<line class="g2" x1="573.3" y1="140.6" x2="547.6" y2="109.9"/>
+<line class="b2" x1="486.3" y1="161.4" x2="547.6" y2="109.9"/>
+<line class="r1" x1="512" y1="192" x2="547.6" y2="109.9" marker-end="url(#rm)"/>
+<text class="ts" x="602" y="150" fill="#8a94a0">v</text>
+<text class="ts" x="552" y="104" fill="#d23b3b">Rv</text>
+<text class="ts" x="566" y="133" fill="#3b6fd2">a·列1</text>
+<text class="ts" x="482" y="155" fill="#2e8b57">b·列2</text>
+
+<text class="ts" x="133" y="270" text-anchor="middle">e₁ 转 θ →（cos θ, sin θ）</text>
+<text class="ts" x="340" y="270" text-anchor="middle">e₂ 转 θ →（−sin θ, cos θ）</text>
+<text class="ts" x="547" y="270" text-anchor="middle">按列加权求和 = 平行四边形</text>
+
+<text class="t" x="278" y="333" text-anchor="end">R(θ) =</text>
+<path class="bk" d="M296 300 L288 300 L288 366 L296 366"/>
+<path class="bk" d="M424 300 L432 300 L432 366 L424 366"/>
+<text class="t" x="338" y="322" text-anchor="middle" fill="#3b6fd2">cos θ</text>
+<text class="t" x="338" y="350" text-anchor="middle" fill="#3b6fd2">sin θ</text>
+<text class="t" x="398" y="322" text-anchor="middle" fill="#2e8b57">−sin θ</text>
+<text class="t" x="398" y="350" text-anchor="middle" fill="#2e8b57">cos θ</text>
+<text class="ts" x="338" y="390" text-anchor="middle" fill="#3b6fd2">第 1 列 = Re₁</text>
+<text class="ts" x="398" y="390" text-anchor="middle" fill="#2e8b57">第 2 列 = Re₂</text>
+<text class="ts" x="486" y="326">两列单位长、互相垂直、det = +1</text>
+<text class="ts" x="486" y="346">→ 只能是旋转，没有拉伸也没有镜像</text>
+</svg>

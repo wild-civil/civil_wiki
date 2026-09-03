@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>旋转矩阵交互演示：矩阵凭什么代表旋转</title>
+<style>
+  body{ font-family: system-ui, "PingFang SC", "Microsoft YaHei", sans-serif; background:#f5f7fa; color:#1b1f24; margin:0; padding:18px; }
+  @media (prefers-color-scheme: dark){ body{ background:#161a1f; color:#e6e9ee; } }
+  .wrap{ max-width:820px; margin:auto; }
+  h3{ margin:0 0 4px; font-size:17px; }
+  .sub{ color:#5a6470; font-size:13px; margin-bottom:14px; }
+  @media (prefers-color-scheme: dark){ .sub{ color:#9aa5b1; } }
+  .steps{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
+  .step{ flex:1 1 170px; padding:9px 11px; border:1px solid #cfd6df; border-radius:10px; background:#fff;
+         color:#5a6470; text-align:left; font-size:12.5px; font-family:inherit; cursor:pointer; line-height:1.45; }
+  .step[data-on="1"]{ border-color:#8a94a0; color:#1b1f24; background:#eef2f7; font-weight:600; }
+  @media (prefers-color-scheme: dark){
+    .step{ border-color:#39424d; background:#1a1e24; color:#9aa5b1; }
+    .step[data-on="1"]{ border-color:#7d8794; color:#e6e9ee; background:#252b33; }
+  }
+  .stage{ display:flex; gap:16px; flex-wrap:wrap; align-items:flex-start; }
+  .frame{ border:1px solid #cfd6df; border-radius:12px; background:#fff; padding:10px; flex:0 1 380px; }
+  @media (prefers-color-scheme: dark){ .frame{ border-color:#39424d; background:#1a1e24; } }
+  .panel{ flex:1 1 260px; min-width:260px; }
+  .mat{ background:#fff; border:1px solid #cfd6df; border-radius:12px; padding:14px 16px; }
+  @media (prefers-color-scheme: dark){ .mat{ background:#1a1e24; border-color:#39424d; } }
+  .colwrap{ display:flex; gap:10px; align-items:center; }
+  .col{ display:flex; flex-direction:column; gap:2px; padding:3px 8px; border-radius:7px;
+        font-family:ui-monospace,Menlo,Consolas,monospace; font-size:14px; }
+  .col[data-hi="1"]{ background:rgba(59,111,210,.14); }
+  .read{ font-family:ui-monospace,Menlo,Consolas,monospace; font-size:12.5px; line-height:1.85; margin-top:12px; color:#5a6470; }
+  @media (prefers-color-scheme: dark){ .read{ color:#9aa5b1; } }
+  .ctrl{ display:flex; align-items:center; gap:10px; margin-top:12px; }
+  .ctrl label{ width:86px; font-size:12.5px; color:#5a6470; flex:none; }
+  @media (prefers-color-scheme: dark){ .ctrl label{ color:#9aa5b1; } }
+  .ctrl input[type=range]{ flex:1; min-width:0; }
+  .ctrl .val{ width:74px; text-align:right; font-family:ui-monospace,Menlo,Consolas,monospace; font-size:12.5px; flex:none; }
+  button.act{ font-family:inherit; font-size:12.5px; padding:6px 14px; border:1px solid #cfd6df; border-radius:8px;
+              background:#fff; color:#1b1f24; cursor:pointer; }
+  @media (prefers-color-scheme: dark){ button.act{ border-color:#39424d; background:#1a1e24; color:#e6e9ee; } }
+  .note{ color:#5a6470; font-size:13px; line-height:1.75; margin-top:18px; }
+  @media (prefers-color-scheme: dark){ .note{ color:#9aa5b1; } }
+  .k{ font-family:ui-monospace,Menlo,Consolas,monospace; }
+  code{ background:rgba(127,127,127,.15); padding:1px 6px; border-radius:5px; font-family:ui-monospace,Menlo,Consolas,monospace; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h3>旋转矩阵交互演示：矩阵凭什么代表旋转</h3>
+  <div class="sub">三步走：先看第 1 列，再看第 2 列，最后用「按列加权求和」把任意向量转过去。</div>
+
+  <div class="steps">
+    <button class="step" data-s="1" data-on="1">① 第 1 列 = e₁ 转去哪儿<br><span style="font-weight:400">把 x 轴单位向量送到的地方</span></button>
+    <button class="step" data-s="2">② 第 2 列 = e₂ 转去哪儿<br><span style="font-weight:400">把 y 轴单位向量送到的地方</span></button>
+    <button class="step" data-s="3">③ 合成 Rv = a·列1 + b·列2<br><span style="font-weight:400">任意向量只是按列加权求和</span></button>
+  </div>
+
+  <div class="stage">
+    <div class="frame">
+      <svg id="rms" viewBox="0 0 380 340" width="100%">
+        <defs>
+          <marker id="rma" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </marker>
+        </defs>
+        <g id="rmg"></g>
+      </svg>
+    </div>
+
+    <div class="panel">
+      <div class="mat">
+        <div class="colwrap">
+          <span class="k">R(θ) =</span>
+          <span class="k" style="font-size:26px;line-height:1">[</span>
+          <div class="col" id="rmc1" data-hi="1"><span id="rm11">1.000</span><span id="rm21">0.000</span></div>
+          <div class="col" id="rmc2"><span id="rm12">0.000</span><span id="rm22">1.000</span></div>
+          <span class="k" style="font-size:26px;line-height:1">]</span>
+        </div>
+        <div class="read" id="rmeq"></div>
+      </div>
+
+      <div class="ctrl"><label>θ 转角</label><input type="range" id="rmth" min="0" max="360" step="1" value="40"><span class="val" id="rmthv">40°</span></div>
+      <div class="ctrl"><label>a（x 分量）</label><input type="range" id="rmas" min="-2.5" max="2.5" step="0.5" value="2"><span class="val" id="rmav">2.0</span></div>
+      <div class="ctrl"><label>b（y 分量）</label><input type="range" id="rmbs" min="-2.5" max="2.5" step="0.5" value="1"><span class="val" id="rmbv">1.0</span></div>
+      <div class="ctrl"><label></label><button class="act" id="rmplay">▶ 自动扫一遍 0→360°</button></div>
+    </div>
+  </div>
+
+  <div class="note">
+    <b>怎么读这张图</b><br>
+    1. 灰虚线是「转之前」的基向量 e₁、e₂；蓝 / 绿实线是它们转过 θ 之后的落点。<b>这两个落点，写下来就是矩阵的两列。</b><br>
+    2. 切到第 ③ 步：灰色 v 是原向量，<span style="color:#3b6fd2">蓝色</span>是 a×第 1 列、<span style="color:#2e8b57">绿色</span>是 b×第 2 列，两者首尾相接构成的平行四边形对角线就是 <span style="color:#d23b3b">红色 Rv</span>。<b>矩阵乘向量没有别的含义，就是这一步加权求和。</b><br>
+    3. 盯住右侧读数：无论 θ 怎么变，<code>|Rv|</code> 始终等于 <code>|v|</code>，两列始终单位长且点积为 0、<code>det = +1</code> —— 这说明它只做了旋转，没有拉伸、没有剪切、也没有镜像（det = −1 才是镜像）。
+  </div>
+</div>
+
+<script>
+(function(){
+  var S=40, OX=190, OY=170;
+  var st={th:40, a:2, b:1, step:1, pl:0};
+  var LIGHT = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 0 : 1;
+  var BL = LIGHT ? '#3b6fd2' : '#6f9bff';
+  var GR = LIGHT ? '#2e8b57' : '#5fd38a';
+  var RD = LIGHT ? '#d23b3b' : '#ff6b6b';
+  var GY = LIGHT ? '#8a94a0' : '#7d8794';
+  var TX = LIGHT ? '#5a6470' : '#9aa5b1';
+  var CE = 'var(--x)';
+
+  function X(x){ return OX + x*S; }
+  function Y(y){ return OY - y*S; }
+  function fx(n){ return (n>=0 ? '\u00a0' : '') + n.toFixed(3); }
+
+  function seg(x1,y1,x2,y2,c,w,dash,marker){
+    return '<line x1="'+X(x1)+'" y1="'+Y(y1)+'" x2="'+X(x2)+'" y2="'+Y(y2)+'" stroke="'+c+
+           '" stroke-width="'+w+'" fill="none"'+(dash?' stroke-dasharray="4 3"':'')+
+           (marker?' marker-end="url(#rma)"':'')+'/>';
+  }
+  function arc(a1,a2,c){
+    var r=S, t=a1*Math.PI/180, u=a2*Math.PI/180;
+    var px=X(Math.cos(t)), py=Y(Math.sin(t)), qx=X(Math.cos(u)), qy=Y(Math.sin(u));
+    var la = Math.abs(a2-a1) > 180 ? 1 : 0;
+    return '<path d="M'+px+' '+py+' A'+r+' '+r+' 0 '+la+' 0 '+qx+' '+qy+
+           '" fill="none" stroke="'+c+'" stroke-width="1.4" stroke-dasharray="3 3"/>';
+  }
+  function lab(x,y,s,c){
+    return '<text x="'+x+'" y="'+y+'" font-size="11" fill="'+c+
+           '" font-family="system-ui,\'PingFang SC\',sans-serif" text-anchor="middle">'+s+'</text>';
+  }
+  function off(v){ return v >= 0 ? 1 : -1; }
+
+  function render(){
+    var t = st.th*Math.PI/180, c = Math.cos(t), s = Math.sin(t), g = '', i, j;
+    var GRID = LIGHT ? '#e3e8ef' : '#2b323b';
+    var AX   = LIGHT ? '#c3cbd6' : '#39424d';
+
+    for(i=-4;i<=4;i++) g += '<line x1="'+X(i)+'" y1="'+Y(-3.5)+'" x2="'+X(i)+'" y2="'+Y(3.5)+'" stroke="'+GRID+'" stroke-width="0.5"/>';
+    for(j=-3;j<=3;j++) g += '<line x1="'+X(-4.2)+'" y1="'+Y(j)+'" x2="'+X(4.2)+'" y2="'+Y(j)+'" stroke="'+GRID+'" stroke-width="0.5"/>';
+    g += '<line x1="'+X(-4.2)+'" y1="'+Y(0)+'" x2="'+X(4.2)+'" y2="'+Y(0)+'" stroke="'+AX+'" stroke-width="1"/>';
+    g += '<line x1="'+X(0)+'" y1="'+Y(-3.5)+'" x2="'+X(0)+'" y2="'+Y(3.5)+'" stroke="'+AX+'" stroke-width="1"/>';
+    g += '<circle cx="'+X(0)+'" cy="'+Y(0)+'" r="'+S+'" fill="none" stroke="'+AX+'" stroke-width="1" stroke-dasharray="2 3"/>';
+
+    if(st.step >= 1){
+      g += seg(0,0,1,0,GY,1.6,1,0);
+      g += arc(0, st.th, BL);
+      g += seg(0,0,c,s,BL,2.4,0,1);
+      g += lab(X(c)+16, Y(s)-6, 'Re\u2081', BL);
+      g += lab(X(1)+12, Y(0)+14, 'e\u2081', TX);
+      g += lab(X(c*0.62)+14, Y(s*0.62)+14, '\u03b8', BL);
+    }
+    if(st.step >= 2){
+      g += seg(0,0,0,1,GY,1.6,1,0);
+      g += arc(90, 90+st.th, GR);
+      g += seg(0,0,-s,c,GR,2.4,0,1);
+      g += lab(X(-s)-15, Y(c)-6, 'Re\u2082', GR);
+      g += lab(X(0)+13, Y(1)+4, 'e\u2082', TX);
+    }
+    if(st.step >= 3){
+      var a = st.a, b = st.b, rx = a*c - b*s, ry = a*s + b*c;
+      g += seg(0,0,a,b,GY,1.6,1,1);
+      g += lab(X(a)+off(a)*14, Y(b)+off(b)*14, 'v', TX);
+      g += seg(0,0,a*c,a*s,BL,1.4,1,0);
+      g += seg(a*c,a*s,rx,ry,GR,1.4,1,0);
+      g += seg(0,0,-b*s,b*c,GR,1.4,1,0);
+      g += seg(-b*s,b*c,rx,ry,BL,1.4,1,0);
+      g += seg(0,0,rx,ry,RD,2.6,0,1);
+      g += lab(X(rx)+off(rx)*17, Y(ry)-8, 'Rv', RD);
+      g += lab(X(a*c)+off(a*c)*22, Y(a*s)+off(a*s)*15, 'a\u00b7\u52171', BL);
+      g += lab(X(-b*s)+off(-b*s)*24, Y(b*c)+off(b*c)*15, 'b\u00b7\u52172', GR);
+    }
+
+    document.getElementById('rmg').innerHTML = g;
+    document.getElementById('rm11').textContent = fx(c);
+    document.getElementById('rm21').textContent = fx(s);
+    document.getElementById('rm12').textContent = fx(-s);
+    document.getElementById('rm22').textContent = fx(c);
+    document.getElementById('rmc1').setAttribute('data-hi', (st.step===1||st.step===3) ? '1' : '0');
+    document.getElementById('rmc2').setAttribute('data-hi', (st.step===2||st.step===3) ? '1' : '0');
+
+    var a = st.a, b = st.b, rx = a*c - b*s, ry = a*s + b*c;
+    var lv = Math.sqrt(a*a+b*b), lr = Math.sqrt(rx*rx+ry*ry);
+    var e = '第1列 = R\u00b7e\u2081 = (cos\u03b8, sin\u03b8) = (' + c.toFixed(3) + ', ' + s.toFixed(3) + ')<br>';
+    e += '第2列 = R\u00b7e\u2082 = (\u2212sin\u03b8, cos\u03b8) = (' + (-s).toFixed(3) + ', ' + c.toFixed(3) + ')<br>';
+    e += '列1\u00b7列2 = ' + (c*(-s)+s*c).toFixed(3) + '\u3000|列1| = ' + Math.sqrt(c*c+s*s).toFixed(3) + '<br>';
+    e += 'det R = ' + (c*c + s*s).toFixed(3) + '\u3000(+1 = 旋转，\u22121 = 镜像)<br>';
+    if(st.step === 3){
+      e += 'v = (' + a.toFixed(1) + ', ' + b.toFixed(1) + ')\u3000Rv = (' + rx.toFixed(3) + ', ' + ry.toFixed(3) + ')<br>';
+      e += '|v| = ' + lv.toFixed(3) + '\u3000|Rv| = ' + lr.toFixed(3) + '\u3000\u2192 长度不变';
+    }
+    document.getElementById('rmeq').innerHTML = e;
+  }
+
+  var thS = document.getElementById('rmth');
+  var aS  = document.getElementById('rmas');
+  var bS  = document.getElementById('rmbs');
+
+  thS.oninput = function(){ st.th = +this.value; document.getElementById('rmthv').textContent = st.th + '\u00b0'; render(); };
+  aS.oninput  = function(){ st.a  = +this.value; document.getElementById('rmav').textContent  = st.a.toFixed(1); render(); };
+  bS.oninput  = function(){ st.b  = +this.value; document.getElementById('rmbv').textContent  = st.b.toFixed(1); render(); };
+
+  var bs = document.querySelectorAll('.step');
+  for(var k=0;k<bs.length;k++){
+    bs[k].onclick = function(){
+      for(var m=0;m<bs.length;m++) bs[m].removeAttribute('data-on');
+      this.setAttribute('data-on','1');
+      st.step = +this.getAttribute('data-s');
+      render();
+    };
+  }
+
+  var pb = document.getElementById('rmplay');
+  pb.onclick = function(){
+    if(st.pl){ st.pl = 0; pb.textContent = '\u25b6 自动扫一遍 0\u2192360\u00b0'; return; }
+    st.pl = 1; pb.textContent = '\u25a0 停止';
+    (function loop(){
+      if(!st.pl) return;
+      st.th = (st.th + 2) % 360;
+      thS.value = st.th;
+      document.getElementById('rmthv').textContent = st.th + '\u00b0';
+      render();
+      requestAnimationFrame(loop);
+    })();
+  };
+
+  render();
+})();
+</script>
+</body>
+</html>
