@@ -88,4 +88,5 @@ tags: [前端, SVG, 术语, 速查]
 
 - [SVG Path Visualizer](https://svg-path-visualizer.netlify.app/) — 把 `path` 的 `d` 数据实时画出来，调坐标时直观看曲线长啥样，排查「path 画歪了」神器。
 - [SVGOMG](https://jakearchibald.github.io/svgomg/) — Jake Archibald 做的 SVG 在线压缩 / 优化器，粘贴 SVG 即可瘦身（删冗余、合并路径、round 坐标），改完图后顺手压一下再发布。
+- [SVGDO（中文站）](https://svgdo.com/zh/) — 网页版 SVG 编辑器：粘贴代码或拖入 .svg 即预览，支持选中元素改色 / 翻转旋转、深度压缩、导出 SVG / PNG；画布与代码双向同步、全程浏览器本地处理。wiki 插图要快速微调时首选它，不必开重型软件。
 - [SVG 基础教程（cnblogs）](https://www.cnblogs.com/webhmy/p/9826120.html) — 一篇中文 SVG 入门文章，覆盖元素 / 属性 / 示例，适合作为本文的补充读物。
