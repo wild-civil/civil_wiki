@@ -208,6 +208,20 @@ python -c "import xml.dom.minidom; xml.dom.minidom.parse('你的文件.svg'); pr
 
 > **大小写是 Windows 用户的经典坑**：本机预览一切正常（`Demo.svg` 和 `demo.svg` 都能打开），推到 Linux 服务器上就 404。文件命名统一小写可根治。
 
+!!! note "多图并排：最简单可靠的是「同一段落内多个 inline 图」，别用 flex 容器"
+    要**两张图并排**，最朴素的写法是把两个 markdown 图片语法放在**同一段落**（中间用空格/换行分隔），各占约一半宽度——两个 `<img>` 是行内元素，天然左右排列，不依赖任何 HTML 容器（flex/grid 在 Typora/MkDocs 混合环境不可靠，曾导致 DW01 页两图垂直堆叠）。完整排版说明（含图注写法、为什么要 `display:inline-block`）见 [嵌入页「多图并排与图注」](亮暗双主题与MkDocs嵌入.md#multi-image-side-by-side)：
+
+    ````markdown
+    ![图 A 说明](assets/a.svg){: style="display:inline-block;max-width:380px;width:47%;height:auto;vertical-align:middle" }
+    ![图 B 说明](assets/b.svg){: style="display:inline-block;max-width:380px;width:47%;height:auto;vertical-align:middle" }
+    ````
+
+    - 两图必须**在同一个 markdown 段落**里（段落间空行会断开 → 变垂直）；`width:47%` 给中间留出空隙。
+    - `display:inline-block` 防止主题把 `img` 强制成块级；`vertical-align:middle` 让两图底部对齐。
+    - 即使渲染器不支持 `{: style}` 属性（如部分 Typora 场景），图也会按固有尺寸并排——只是可能偏小。
+    - 需要分图注时，在下方另起一段写合并说明，或用表格/图注段落，别用 `<figure>`+`<figcaption>` 包裹 markdown 图（结构不稳）。
+    - 本站 [实战 DW01 复盘页](实战_DW01电路图改图复盘.md) 曾试过 `<figure markdown>` + flex 容器（产物 HTML 结构正确但实际垂直）与裸 `<img>`（MkDocs 不重写路径 404）两套方案，最终回落到上面的 inline 写法。判断标准：构建后打开产物 HTML，两个 `<img>` 应位于**同一个 `<p>` 内**且 `src` 已被 MkDocs 按页面深度重写。
+
 !!! warning "启用 wikilink 插件后，纯文件名链接会被全局匹配（很隐蔽）"
     许多 MkDocs 站点会装 wikilink 类插件（如 `mkdocs-roamlinks-plugin`），用来支持 `[[双括号]]` 写法。这类插件通常会把**不带目录前缀的纯文件名链接**也纳入"按文件名全局匹配"的逻辑。
 

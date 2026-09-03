@@ -190,6 +190,27 @@ SVG 作为图片引入时，显示尺寸由 `width`/`height` 属性或 CSS 决�
 <svg xmlns="..." viewBox="0 0 920 720" width="920" height="720">
 ```
 
+### 多图并排与图注 {: #multi-image-side-by-side }
+
+想在一行里并排展示两张图（例如对比两个符号的差异），最省事、最稳的写法是**把两个 markdown 图片语法放进同一个段落**——`<img>` 本身是行内元素，天然左右排列，不需要任何 flex / grid 容器：
+
+```markdown
+![图 A 说明](assets/a.svg){: style="display:inline-block;max-width:380px;width:47%;height:auto;vertical-align:middle" }
+![图 B 说明](assets/b.svg){: style="display:inline-block;max-width:380px;width:47%;height:auto;vertical-align:middle" }
+
+*图注：左 = 图 A……；右 = 图 B……。*
+```
+
+要点：
+
+- **两张图必须在同一个 markdown 段落里**——两行之间不要有空行，空行会断开段落，图立刻变回上下堆叠。
+- `width:47%` 让每张约占一行的一半、中间留缝；`display:inline-block` 防止主题把 `img` 强制成块级（块级 = 独占一行 = 又变垂直）；`vertical-align:middle` 让两图对齐。
+- 图注用 markdown 斜体**另起一段**写，**不要**用 `<figure>` + `<figcaption>` 去包 markdown 图片（Typora / MkDocs 双环境下结构不稳）。
+- 为什么不用 flex 容器：`<div style="display:flex" markdown>` + `<figure markdown>` 构建出的 HTML 结构虽正确，但混合预览时仍可能垂直堆叠——实测翻车方案，别再用。
+- 若某个渲染器不支持 `{: style="…"}` 属性（如部分 Typora 场景），图会按 SVG 固有尺寸并排显示（可能偏小），**不会**退回垂直。
+
+实例见 [实战 DW01 复盘页](实战_DW01电路图改图复盘.md) 的 NMOS / PMOS 对照图；症状排查见 [排错清单 →「放进 MkDocs 后的问题」](SVG排错清单.md)。
+
 ---
 
 ## 检查清单
