@@ -759,7 +759,7 @@ T_check = 2*pi/ws_check / 60;        % 应 ≈ 84.4 min
 
 ### 练习 4：Allan 曲线读数
 
-用 PSINS 的 [avar.m](../../assets/psins260314/base/tools/avar.m) 跑一段静止 IMU 数据（[data](../../assets/psins260314/data) 目录下的 `lasergyro.imu` 可试）：
+用 PSINS 的 [avar.m](../../assets/psins260314/base/tools/avar.m) 跑一段静止 IMU 数据（`psins260314/data/` 目录下的 `lasergyro.imu` 可试，该目录无页面请本地浏览）：
 
 1. 画双对数 Allan 曲线
 2. 在斜率 -1/2 段（τ = 1s 附近）读 ARW，单位 °/√h
