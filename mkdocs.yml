@@ -283,6 +283,18 @@ nav:
                   - P3 航位推算 · test_DR.m: 惯性导航/04_拆解PSINS篇/P系列与总览/P3_航位推算_拆解test_DR.md
                   - P4 SINS+DR 组合 · test_SINS_DR.m: 惯性导航/04_拆解PSINS篇/P系列与总览/P4_SINS+DR组合_拆解test_SINS_DR.md
                   - P5 姿态解算 AHRS · Mahony: 惯性导航/04_拆解PSINS篇/P系列与总览/P5_姿态解算_拆解Mahony.md
+              - "PSINS_STM32嵌入式":
+                  - 00 总览与架构: 惯性导航/04_拆解PSINS篇/PSINS_STM32嵌入式/00_总览与架构.md
+                  - 01 中断驱动与数据流: 惯性导航/04_拆解PSINS篇/PSINS_STM32嵌入式/01_中断驱动与数据流.md
+                  - 02 传感器驱动 MPU9250: 惯性导航/04_拆解PSINS篇/PSINS_STM32嵌入式/02_传感器驱动_MPU9250.md
+                  - 03 气压计 MS5611: 惯性导航/04_拆解PSINS篇/PSINS_STM32嵌入式/03_气压计_MS5611.md
+                  - 04 GPS解析与PC命令: 惯性导航/04_拆解PSINS篇/PSINS_STM32嵌入式/04_GPS解析与PC命令.md
+                  - 05 串口输出帧: 惯性导航/04_拆解PSINS篇/PSINS_STM32嵌入式/05_串口输出帧.md
+                  - 06 C与CPP桥接: 惯性导航/04_拆解PSINS篇/PSINS_STM32嵌入式/06_C与CPP桥接.md
+                  - 07 Mahony模式详解: 惯性导航/04_拆解PSINS篇/PSINS_STM32嵌入式/07_Mahony模式详解.md
+                  - 08 SINSGNSS静态组合: 惯性导航/04_拆解PSINS篇/PSINS_STM32嵌入式/08_SINS_GNSS静态组合.md
+                  - 09 SINSGNSS动态组合: 惯性导航/04_拆解PSINS篇/PSINS_STM32嵌入式/09_SINS_GNSS动态组合.md
+                  - 10 H743移植指南: 惯性导航/04_拆解PSINS篇/PSINS_STM32嵌入式/10_H743移植指南.md
   - 生活与兴趣:
       - 生活与兴趣/index.md
       - 硬件&复刻&折腾:
