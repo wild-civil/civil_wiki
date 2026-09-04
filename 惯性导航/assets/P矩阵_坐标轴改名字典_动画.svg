@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 330" font-family="system-ui, sans-serif">
+  <style>
+    :root{ --fg:#1b1f24; --sub:#5a6470; --panel:#f5f7fa; --line:#cfd6df; --e:#d23b3b; --n:#2e8b57; --u:#3b6fd2; --arr:#1f6feb; --hl:#f5a623; }
+    @media (prefers-color-scheme: dark){
+      :root{ --fg:#e6e9ee; --sub:#9aa4b2; --panel:#1a1e24; --line:#39424d; --e:#ff6b6b; --n:#5fd38a; --u:#6f9bff; --arr:#4da3ff; --hl:#ffb74d; }
+    }
+    .fg{ fill: var(--fg); }
+    .sub{ fill: var(--sub); font-size:13px; }
+    .ttl{ fill: var(--fg); font-size:15px; font-weight:700; }
+    .txE{ fill: var(--e); font-weight:700; font-size:15px; }
+    .txN{ fill: var(--n); font-weight:700; font-size:15px; }
+    .txU{ fill: var(--u); font-weight:700; font-size:15px; }
+    .axE{ stroke: var(--e); stroke-width:3; }
+    .axN{ stroke: var(--n); stroke-width:3; }
+    .axU{ stroke: var(--u); stroke-width:2.5; stroke-dasharray:5 4; }
+    .arr{ stroke: var(--arr); fill: none; }
+    .plane{ fill: var(--arr); }
+    .panel{ fill: var(--panel); stroke: var(--line); stroke-width:1.5; }
+    .pbox{ fill: var(--panel); stroke: var(--line); stroke-width:1.5; }
+    .pmat{ fill: var(--fg); font-size:13px; font-weight:700; font-family:ui-monospace,Menlo,Consolas,monospace; }
+    .arrow{ stroke: var(--line); stroke-width:2; fill:none; }
+    .hl{ fill:none; stroke:var(--hl); stroke-width:3; }
+    .hlx{ fill:var(--hl); font-weight:700; font-size:18px; }
+  </style>
+
+  <defs>
+    <marker id="ah2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="context-stroke"/>
+    </marker>
+  </defs>
+
+  <!-- panels -->
+  <rect class="panel" x="24" y="38" width="272" height="252" rx="12"/>
+  <rect class="panel" x="424" y="38" width="272" height="252" rx="12"/>
+  <text class="ttl" x="160" y="60" text-anchor="middle">ENU（东/北/天）· PSINS / MATLAB 体</text>
+  <text class="ttl" x="560" y="60" text-anchor="middle">NED（北/东/下）· 固件 C 体 (FRD)</text>
+
+  <!-- ===== LEFT ENU ===== -->
+  <g>
+    <line class="axE" x1="160" y1="220" x2="250" y2="220" marker-end="url(#ah2)"/>
+    <line class="axN" x1="160" y1="220" x2="160" y2="130" marker-end="url(#ah2)"/>
+    <line class="axU" x1="160" y1="220" x2="202" y2="182" marker-end="url(#ah2)"/>
+    <circle cx="160" cy="220" r="4" fill="none" stroke="var(--u)" stroke-width="1.5"/>
+    <text class="txE" x="256" y="224" text-anchor="middle">E</text>
+    <text class="txN" x="166" y="124" text-anchor="middle">N</text>
+    <text class="txU" x="210" y="178" text-anchor="middle">U</text>
+    <polygon class="plane" points="160,138 150,166 160,158 170,166"/>
+    <line class="arr" x1="160" y1="158" x2="160" y2="220"/>
+    <text class="sub" x="96" y="150">机头朝北</text>
+    <text class="sub" x="40" y="278">ENU:  r = [ E 0,  N +1,  U 0 ]</text>
+  </g>
+
+  <!-- ===== RIGHT NED ===== -->
+  <g>
+    <line class="axN" x1="560" y1="220" x2="560" y2="130" marker-end="url(#ah2)"/>
+    <line class="axE" x1="560" y1="220" x2="650" y2="220" marker-end="url(#ah2)"/>
+    <line class="axU" x1="560" y1="220" x2="602" y2="258" marker-end="url(#ah2)"/>
+    <text class="txN" x="566" y="124" text-anchor="middle">N</text>
+    <text class="txE" x="656" y="224" text-anchor="middle">E</text>
+    <text class="txU" x="610" y="262" text-anchor="middle">D</text>
+    <polygon class="plane" points="560,138 550,166 560,158 570,166"/>
+    <line class="arr" x1="560" y1="158" x2="560" y2="220"/>
+    <text class="sub" x="612" y="150">同一架飞机</text>
+    <text class="sub" x="440" y="278">NED:  r = [ N +1,  E 0,  D 0 ]</text>
+  </g>
+
+  <!-- ===== MIDDLE P ===== -->
+  <rect class="pbox" x="300" y="120" width="120" height="104" rx="10"/>
+  <rect class="pbox" x="300" y="120" width="120" height="104" rx="10" class="hl">
+    <animate attributeName="opacity" dur="2.4s" repeatCount="indefinite" values="0.15;0.9;0.15" keyTimes="0;0.5;1"/>
+  </rect>
+  <text class="ttl" x="360" y="142" text-anchor="middle">P 矩阵</text>
+  <text class="pmat" x="360" y="166" text-anchor="middle">[0 1 0;</text>
+  <text class="pmat" x="360" y="184" text-anchor="middle"> 1 0 0;</text>
+  <text class="pmat" x="360" y="202" text-anchor="middle"> 0 0 −1]</text>
+  <text class="sub" x="360" y="222" text-anchor="middle">交换 1↔2，第3轴取反</text>
+
+  <path class="arrow" d="M292,200 C298,190 298,178 300,172" marker-end="url(#ah2)"/>
+  <path class="arrow" d="M428,172 C430,178 430,190 436,200" marker-end="url(#ah2)"/>
+  <text class="sub" x="360" y="86" text-anchor="middle">动画：高亮依次扫过 北 → 东 → 天（取反）</text>
+  <text class="sub" x="360" y="104" text-anchor="middle">只换坐标标签，物理朝向不变</text>
+
+  <!-- ===== HIGHLIGHT RINGS (sequential) ===== -->
+  <!-- North pair: visible ~0-2s -->
+  <circle class="hl" cx="166" cy="120" r="15">
+    <animate attributeName="opacity" dur="6s" repeatCount="indefinite" values="0;1;1;0;0;0" keyTimes="0;0.04;0.30;0.34;0.97;1"/>
+  </circle>
+  <circle class="hl" cx="566" cy="120" r="15">
+    <animate attributeName="opacity" dur="6s" repeatCount="indefinite" values="0;1;1;0;0;0" keyTimes="0;0.04;0.30;0.34;0.97;1"/>
+  </circle>
+  <!-- East pair: visible ~2-4s -->
+  <circle class="hl" cx="256" cy="224" r="15">
+    <animate attributeName="opacity" dur="6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.30;0.34;0.62;0.66;1"/>
+  </circle>
+  <circle class="hl" cx="656" cy="224" r="15">
+    <animate attributeName="opacity" dur="6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.30;0.34;0.62;0.66;1"/>
+  </circle>
+  <!-- Up/Down pair: visible ~4-6s -->
+  <circle class="hl" cx="210" cy="178" r="15">
+    <animate attributeName="opacity" dur="6s" repeatCount="indefinite" values="0;0;0;1;1;0" keyTimes="0;0.62;0.66;0.70;0.94;1"/>
+  </circle>
+  <circle class="hl" cx="610" cy="262" r="15">
+    <animate attributeName="opacity" dur="6s" repeatCount="indefinite" values="0;0;0;1;1;0" keyTimes="0;0.62;0.66;0.70;0.94;1"/>
+  </circle>
+  <text class="hlx" x="628" y="262" text-anchor="middle">−
+    <animate attributeName="opacity" dur="6s" repeatCount="indefinite" values="0;0;0;1;1;0" keyTimes="0;0.62;0.66;0.70;0.94;1"/>
+  </text>
+
+  <text class="sub" x="360" y="318" text-anchor="middle">ENU+PSINS 体  ↔  NED+FRD：P 只是「坐标轴改名字典」，旋转本身不变。</text>
+</svg>
