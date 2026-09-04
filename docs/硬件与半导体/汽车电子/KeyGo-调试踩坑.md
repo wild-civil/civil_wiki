@@ -184,4 +184,6 @@ flowchart TD
 - [【沁恒 CH582】6 CH582 四种低功耗模式电流测量（eeworld）](https://bbs.eeworld.com.cn/thread-1199068-1-1.html) — 删 PM 例程无关代码、注释串口、万用表实测：Idle 2.42mA / Halt 0.38mA / Sleep 15.45µA / Shutdown 14.42µA，对应本文第 3.4 节(1)。
 - [【BLE 5.3 无线 MCU CH582】13、ble Peripheral 模式下的功耗（eeworld）](https://bbs.eeworld.com.cn/thread-1199173-1-1.html) — 串 F1 两端、去 D1 实测得广播 ≈320µA、连接 ≈250µA；降低功耗策略=减小连接/发包间隔，对应本文第 3.4 节(2)。
 - [CH592F 低功耗场景下的独立看门狗功能（WCH 官方论坛）](https://wch.cn/bbs/thread-159313-1.html) — Shutdown 模式 IWDG 仍可运行，>65s 未喂狗复位；IWDG 用 LSI，勿关 LSI（蓝牙主机例程 CLK_OSC32K=0 需屏蔽关 LSI 段），对应本文第 3.5 节陷阱。
+- [沁恒微 RISC-V 蓝牙芯片低功耗测试（CSDN）](https://blog.csdn.net/weixin_42328389/article/details/154396854) — CH585 四种低功耗模式实测 + BLE 从机开 `HAL_SLEEP` 后广播空闲 ≈8µA、连接态同；附内部 DCDC(`DCDC_ENABLE`)进一步降工作功耗、CH592 休眠 ≈2µA，对应本文第 3 节低功耗路径。
+- [沁恒蓝牙系列MCU低功耗底电流异常问题排查（博客园）](https://www.cnblogs.com/JayWellsBlog/p/17441110.html) — CH57x/58x/59x 休眠底电流异常分级排查：超 ~1µA 多为测试/温度误差；几 µA 查焊接 GND 加焊；几十~上百 µA 为 GPIO 漏电(休眠须上/下拉固定、勿浮空)；~1mA 为唤醒条件不满足陷入 Idle；数 mA 为未进休眠(如 BLE 主机/RF 扫描默认开启)。附关 32K 晶振省电代码，对应本文第 3.2 节 SOP 与第 3.4 节 GPIO 漏电。
 
