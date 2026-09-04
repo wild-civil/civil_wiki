@@ -1,0 +1,283 @@
+*** Using Compiler 'V5.06 update 5 (build 528)', folder: 'D:\Keil_v5\ARM\ARMCC\Bin'
+Rebuild target 'STM32_PSINS'
+compiling main.cpp...
+..\Libraries\CMSIS\Include\arm_math.h(283): warning:  #47-D: incompatible redefinition of macro "PI"  (declared at line 53 of "..\Psinscore\PSINS.h")
+  #define PI					3.14159265358979f
+..\scr\main.cpp(15): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	eb = CVect3(-4.0,1.3,0.0)*
+PS;  // ÍÓÂÝÁãÆ« deg/s
+..\scr\main.cpp(28): warning:  #111-D: statement is unreachable
+  	return 0;
+..\scr\main.cpp(56): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	CVect3 gpspos=
+LH(34.228022,108.880422,422.0), gpsvn=O31;  // JingZhun pos
+..\scr\main.cpp(56): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	CVect3 gpspos=
+LH(34.228022,108.880422,422.0), gpsvn=O31;  // JingZhun pos
+..\scr\main.cpp(65): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  		wm = (*(CVect3*)mpu_Data_value.Gyro*
+PS-eb)*TS;
+..\scr\main.cpp(100): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  		wm = (*(CVect3*)mpu_Data_value.Gyro*
+PS-eb)*TS;
+..\scr\main.cpp: 7 warnings, 0 errors
+compiling stm32f4xx_spi.c...
+compiling stm32f4xx_exti.c...
+compiling stm32f4xx_i2c.c...
+compiling stm32f4xx_tim.c...
+compiling misc.c...
+compiling mpu9250.c...
+..\scr\mpu9250.c(176): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  			mpu_Data_value.Mag[0]=mpu_AD_value.Mag[0]*0.25f*(1.0+(MAG_x_axis-128)/256.0f);
+..\scr\mpu9250.c(184): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  			mpu_Data_value.Mag[1]=mpu_AD_value.Mag[1]*0.25f*(1.0+(MAG_y_axis-128)/256.0f);
+..\scr\mpu9250.c(192): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  			mpu_Data_value.Mag[2]=mpu_AD_value.Mag[2]*0.25f*(1.0+(MAG_z_axis-128)/256.0f);
+..\scr\mpu9250.c: 3 warnings, 0 errors
+compiling usart.c...
+..\scr\usart.c(101): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  		if(outFrame.GPS_delay<1.0)
+..\scr\usart.c(103): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  			if(outFrame.GPS_delay>0.75) outFrame.GPS_delay-=0.75;
+..\scr\usart.c(103): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  			if(outFrame.GPS_delay>0.75) outFrame.GPS_delay-=0.75;
+..\scr\usart.c(104): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  			else if(outFrame.GPS_delay>0.5) outFrame.GPS_delay-=0.5;
+..\scr\usart.c(104): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  			else if(outFrame.GPS_delay>0.5) outFrame.GPS_delay-=0.5;
+..\scr\usart.c(105): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  			else if(outFrame.GPS_delay>0.25) outFrame.GPS_delay-=0.25;
+..\scr\usart.c(105): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  			else if(outFrame.GPS_delay>0.25) outFrame.GPS_delay-=0.25;
+..\scr\usart.c(56): warning:  #177-D: variable "pf"  was declared but never referenced
+  	float Data_F, *pf;
+..\scr\usart.c(59): warning:  #177-D: variable "i"  was declared but never referenced
+  	u8 *pcheck, i;
+..\scr\usart.c: 9 warnings, 0 errors
+compiling stm32f4xx_pwr.c...
+compiling stm32f4xx_dma.c...
+compiling stm32f4xx_usart.c...
+compiling stm32f4xx_gpio.c...
+compiling stm32f4xx_it.c...
+compiling stm32f4xx_rcc.c...
+compiling mcu_init.c...
+compiling ms5611.c...
+assembling startup_stm32f4xx.s...
+compiling stm32f4xx_syscfg.c...
+compiling KFApp.cpp...
+..\Libraries\CMSIS\Include\arm_math.h(283): warning:  #47-D: incompatible redefinition of macro "PI"  (declared at line 53 of "..\Psinscore\PSINS.h")
+  #define PI					3.14159265358979f
+..\Psinscore\KFApp.cpp(14): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	Pmax.Set2(
+PHI(600,600),  fXXX(500),  fdPOS(1e6),  fDPH3(5000),  fMG3(10), fXXX(10),  0.1);
+..\Psinscore\KFApp.cpp(14): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	Pmax.Set2(
+PHI(600,600),  fXXX(500),  fdPOS(1e6),  fDPH3(5000),  fMG3(10), fXXX(10),  0.1);
+..\Psinscore\KFApp.cpp(14): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	Pmax.Set2(
+PHI(600,600),  fXXX(500),  fdPOS(1e6),  fDPH3(5000),  fMG3(10), fXXX(10),  0.1);
+..\Psinscore\KFApp.cpp(14): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	Pmax.Set2(
+PHI(600,600),  
+XXX(500),  
+dPOS(1e6),  
+DPH3(5000),  fMG3(10), fXXX(10),  0.1);
+..\Psinscore\KFApp.cpp(14): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	Pmax.Set2(
+PHI(600,600),  
+XXX(500),  
+dPOS(1e6),  
+DPH3(5000),  fMG3(10), fXXX(10),  0.1);
+..\Psinscore\KFApp.cpp(14): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	Pmax.Set2(
+PHI(600,600),  
+XXX(500),  
+dPOS(1e6),  
+DPH3(5000),  fMG3(10), fXXX(10),  0.1);
+..\Psinscore\KFApp.cpp(15): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	Pmin.Set2(
+PHI(1,10.0),  fXXX(0.01),  fdPOS(0.1),  fDPH3(50.0),  fUG3(500), fXXX(0.01),  0.0001);
+..\Psinscore\KFApp.cpp(15): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	Pmin.Set2(
+PHI(1,10.0),  fXXX(0.01),  fdPOS(0.1),  fDPH3(50.0),  fUG3(500), fXXX(0.01),  0.0001);
+..\Psinscore\KFApp.cpp(15): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	Pmin.Set2(
+PHI(1,10.0),  fXXX(0.01),  fdPOS(0.1),  fDPH3(50.0),  fUG3(500), fXXX(0.01),  0.0001);
+..\Psinscore\KFApp.cpp(15): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	Pmin.Set2(
+PHI(1,10.0),  
+XXX(0.01),  
+dPOS(0.1),  
+DPH3(50.0),  fUG3(500), fXXX(0.01),  0.0001);
+..\Psinscore\KFApp.cpp(15): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	Pmin.Set2(
+PHI(1,10.0),  
+XXX(0.01),  
+dPOS(0.1),  
+DPH3(50.0),  fUG3(500), fXXX(0.01),  0.0001);
+..\Psinscore\KFApp.cpp(15): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	Pmin.Set2(
+PHI(1,10.0),  
+XXX(0.01),  
+dPOS(0.1),  
+DPH3(50.0),  fUG3(500), fXXX(0.01),  0.0001);
+..\Psinscore\KFApp.cpp(16): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	Pk.SetDiag2(
+PHI(600,600),  fXXX(1.0),  fdPOS(200.0),  fDPH3(1000),  fMG3(10.0), fXXX(1.0),  0.01);
+..\Psinscore\KFApp.cpp(16): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	Pk.SetDiag2(
+PHI(600,600),  fXXX(1.0),  fdPOS(200.0),  fDPH3(1000),  fMG3(10.0), fXXX(1.0),  0.01);
+..\Psinscore\KFApp.cpp(16): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	Pk.SetDiag2(
+PHI(600,600),  fXXX(1.0),  fdPOS(200.0),  fDPH3(1000),  fMG3(10.0), fXXX(1.0),  0.01);
+..\Psinscore\KFApp.cpp(16): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	Pk.SetDiag2(
+PHI(600,600),  
+XXX(1.0),  
+dPOS(200.0),  
+DPH3(1000),  fMG3(10.0), fXXX(1.0),  0.01);
+..\Psinscore\KFApp.cpp(16): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	Pk.SetDiag2(
+PHI(600,600),  
+XXX(1.0),  
+dPOS(200.0),  
+DPH3(1000),  fMG3(10.0), fXXX(1.0),  0.01);
+..\Psinscore\KFApp.cpp(16): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	Pk.SetDiag2(
+PHI(600,600),  
+XXX(1.0),  
+dPOS(200.0),  
+DPH3(1000),  fMG3(10.0), fXXX(1.0),  0.01);
+..\Psinscore\KFApp.cpp(17): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	Qt.Set2(
+DPSH3(10.1),  fUGPSHZ3(100.0),  fOOO,  fOO6,	fOOO, 0.0);
+..\Psinscore\KFApp.cpp(17): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	Qt.Set2(
+DPSH3(10.1),  fUGPSHZ3(100.0),  fOOO,  fOO6,	fOOO, 0.0);
+..\Psinscore\KFApp.cpp(17): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	Qt.Set2(
+DPSH3(10.1),  fUGPSHZ3(100.0),  fOOO,  fOO6,	fOOO, 0.0);
+..\Psinscore\KFApp.cpp(30): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	outFrame.Att[0] = att.i/
+EG; outFrame.Att[1] = att.j/DEG; outFrame.Att[2] = CC180C360(att.k)/DEG;
+..\Psinscore\KFApp.cpp(30): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	outFrame.Att[0] = att.i/
+EG; outFrame.Att[1] = att.j/
+EG; outFrame.Att[2] = CC180C360(att.k)/DEG;
+..\Psinscore\KFApp.cpp(30): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	outFrame.Att[0] = att.i/
+EG; outFrame.Att[1] = att.j/
+EG; outFrame.Att[2] = 
+C180C360(att.k)/DEG;
+..\Psinscore\KFApp.cpp(30): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	outFrame.Att[0] = att.i/
+EG; outFrame.Att[1] = att.j/
+EG; outFrame.Att[2] = 
+C180C360(att.k)/
+EG;
+..\Psinscore\KFApp.cpp(33): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	deg = (int)(pos.j/
+EG);
+..\Psinscore\KFApp.cpp(34): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	outFrame.Pos[0] = deg;  outFrame.Pos[1] = pos.j/
+EG-deg;
+..\Psinscore\KFApp.cpp(35): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	deg = (int)(pos.i/
+EG);
+..\Psinscore\KFApp.cpp(36): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	outFrame.Pos[2] = deg;  outFrame.Pos[3] = pos.i/
+EG-deg;
+..\Psinscore\KFApp.cpp: 30 warnings, 0 errors
+compiling system_stm32f4xx.c...
+compiling PSINS.cpp...
+..\Psinscore\PSINS.cpp(272): warning:  #174-D: expression has no effect
+  	
+tacksize();
+..\Psinscore\PSINS.cpp(796): warning:  #111-D: statement is unreachable
+  	case 021: return CMat3(m.e00,m.e02,m.e01, m.e20,m.e22,m.e21, m.e10,m.e12,m.e11); break;
+..\Psinscore\PSINS.cpp(797): warning:  #111-D: statement is unreachable
+  	case 102: return CMat3(m.e11,m.e10,m.e12, m.e01,m.e00,m.e02, m.e21,m.e20,m.e22); break;
+..\Psinscore\PSINS.cpp(798): warning:  #111-D: statement is unreachable
+  	case 120: return CMat3(m.e11,m.e12,m.e10, m.e21,m.e22,m.e20, m.e01,m.e02,m.e00); break;
+..\Psinscore\PSINS.cpp(799): warning:  #111-D: statement is unreachable
+  	case 201: return CMat3(m.e22,m.e20,m.e21, m.e02,m.e00,m.e01, m.e12,m.e10,m.e11); break;
+..\Psinscore\PSINS.cpp(800): warning:  #111-D: statement is unreachable
+  	case 210: return CMat3(m.e22,m.e21,m.e20, m.e12,m.e11,m.e10, m.e02,m.e01,m.e00); break;
+..\Psinscore\PSINS.cpp(820): warning:  #111-D: statement is unreachable
+  	
+tacksize();
+..\Psinscore\PSINS.cpp(820): warning:  #174-D: expression has no effect
+  	
+tacksize();
+..\Psinscore\PSINS.cpp(998): warning:  #177-D: variable "C"  was declared but never referenced
+  		A=D*D-3*F, B=D*F-9*E2, C=F*F-3*D*E2;// Delta=B*B-4*A*C;
+..\Psinscore\PSINS.cpp(1070): warning:  #928-D: incorrect use of va_start
+  	
+a_start(vl, f);
+..\Psinscore\PSINS.cpp(1070): warning:  #928-D: incorrect use of va_start
+  	
+a_start(vl, f);
+..\Psinscore\PSINS.cpp(1117): warning:  #174-D: expression has no effect
+  	
+tacksize();
+..\Psinscore\PSINS.cpp(1132): warning:  #174-D: expression has no effect
+  	
+tacksize();
+..\Psinscore\PSINS.cpp(1204): warning:  #174-D: expression has no effect
+  	
+tacksize();
+..\Psinscore\PSINS.cpp(1516): warning:  #928-D: incorrect use of va_start
+  	
+a_start(vl, f);
+..\Psinscore\PSINS.cpp(1516): warning:  #928-D: incorrect use of va_start
+  	
+a_start(vl, f);
+..\Psinscore\PSINS.cpp(1577): warning:  #174-D: expression has no effect
+  	
+tacksize();
+..\Psinscore\PSINS.cpp(1604): warning:  #174-D: expression has no effect
+  	
+tacksize();
+..\Psinscore\PSINS.cpp(2626): warning:  #174-D: expression has no effect
+  						
+ULL, Ft.SetMat3(6,3,sins.Mpv), Ft.SetMat3(6,6,sins.Mpp);
+..\Psinscore\PSINS.cpp(2629): warning:  #174-D: expression has no effect
+  	if(nnq>=18) 
+ULL;						// 15-17 lever
+..\Psinscore\PSINS.cpp(2630): warning:  #174-D: expression has no effect
+  	if(nnq>=19) 
+ULL;						// 18 dt
+..\Psinscore\PSINS.cpp(2677): warning:  #175-D: subscript out of range
+  		double IdKGzz = 1.0-FBXk.dd[19];
+..\Psinscore\PSINS.cpp(2681): warning:  #175-D: subscript out of range
+  		CMat3 IdKGz(1.0,0.0,-FBXk.dd[19], 0.0,1.0,-FBXk.dd[20], 0.0,0.0,1.0-FBXk.dd[21]);
+..\Psinscore\PSINS.cpp(2681): warning:  #175-D: subscript out of range
+  		CMat3 IdKGz(1.0,0.0,-FBXk.dd[19], 0.0,1.0,-FBXk.dd[20], 0.0,0.0,1.0-FBXk.dd[21]);
+..\Psinscore\PSINS.cpp(2681): warning:  #175-D: subscript out of range
+  		CMat3 IdKGz(1.0,0.0,-FBXk.dd[19], 0.0,1.0,-FBXk.dd[20], 0.0,0.0,1.0-FBXk.dd[21]);
+..\Psinscore\PSINS.cpp(2689): warning:  #175-D: subscript out of range
+  		CMat3 IdKA(1.0-FBXk.dd[28],            0.0,           0.0,
+..\Psinscore\PSINS.cpp(2690): warning:  #175-D: subscript out of range
+  			          -FBXk.dd[29],1.0-FBXk.dd[31],           0.0,
+..\Psinscore\PSINS.cpp(2690): warning:  #175-D: subscript out of range
+  			          -FBXk.dd[29],1.0-FBXk.dd[31],           0.0,
+..\Psinscore\PSINS.cpp(2691): warning:  #175-D: subscript out of range
+  					  -FBXk.dd[30],   -FBXk.dd[32],1.0-FBXk.dd[33]);
+..\Psinscore\PSINS.cpp(2691): warning:  #175-D: subscript out of range
+  					  -FBXk.dd[30],   -FBXk.dd[32],1.0-FBXk.dd[33]);
+..\Psinscore\PSINS.cpp(2691): warning:  #175-D: subscript out of range
+  					  -FBXk.dd[30],   -FBXk.dd[32],1.0-FBXk.dd[33]);
+..\Psinscore\PSINS.cpp(3447): warning:  #161-D: unrecognized #pragma
+  #pragma message("  PSINS_AHRS_MEMS")
+..\Psinscore\PSINS.cpp(3519): warning:  #174-D: expression has no effect
+..\Psinscore\PSINS.cpp(3513): warning:  #550-D: variable "mx"  was set but never used
+  	double q0, q1, q2, q3, wx, wy, wz, fx, fy, fz, mx, my, mz, h11, h12, h21, h22; 
+..\Psinscore\PSINS.cpp(3513): warning:  #550-D: variable "my"  was set but never used
+  	double q0, q1, q2, q3, wx, wy, wz, fx, fy, fz, mx, my, mz, h11, h12, h21, h22; 
+..\Psinscore\PSINS.cpp(3513): warning:  #550-D: variable "mz"  was set but never used
+  	double q0, q1, q2, q3, wx, wy, wz, fx, fy, fz, mx, my, mz, h11, h12, h21, h22; 
+..\Psinscore\PSINS.cpp: 36 warnings, 0 errors
+linking...
+Program Size: Code=74640 RO-data=1096 RW-data=312 ZI-data=71592  
+"..\Output\psins.axf" - 0 Error(s), 85 Warning(s).
+Build Time Elapsed:  00:00:05
