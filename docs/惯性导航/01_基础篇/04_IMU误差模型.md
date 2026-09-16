@@ -255,6 +255,16 @@ mvg = markov1(imuerr.sqg.*sqrt(imuerr.taug/2), imuerr.taug, ts, m);
 drift(:,1:3) = drift(:,1:3) + mvg*ts;
 ```
 
+**在"构造 F 阵"这一步，一阶马尔可夫长这样**（状态方程 $\dot\varepsilon=-\frac{1}{\tau}\varepsilon+w_\varepsilon$ 进 KF 的 F 阵 = 对角块 $M_{\epsilon\epsilon}=M_{\nabla\nabla}=\mathrm{diag}(-1/\tau)$）——你的 Mini-INS `kffk.m`（M4）正是这么填的：
+
+```matlab
+% Mini-INS: core/kffk.m —— eb/db 一阶马尔可夫（τ = 1e4 s ≈ 2.78 h）
+F(10:12,10:12) = diag([-1e-4, -1e-4, -1e-4]);   % eb 陀螺零偏
+F(13:15,13:15) = diag([-1e-4, -1e-4, -1e-4]);   % db 加计零偏
+```
+
+$-\frac{1}{\tau}$ 是"松弛项"：$\tau$ 越大零偏越稳、该项越接近 0（$\tau\to\infty$ 时退化为随机游走 $\dot\varepsilon=0$）。**三种实现对照**：PSINS 原版 `kffk` 的 15 态零偏块是 **O**（纯随机游走、漂移由 Q 驱动，见 [linebyline 08](../04_拆解PSINS篇/linebyline/08_kffk.md)）；本项目固件 `ins_eskf_15d.c` 同样是随机游走（F 内 $\dot\delta b=0$，Qd 注入 `bg=1e-8`、`ba=1e-7` 乘 dt）——三者短航时（$\ll 2.78\,\text{h}$）几乎无差别，马尔可夫的松弛项在长时间 / 重对准中略稳。
+
 ### 5. 误差怎么进 ESKF 的 Q 阵
 
 把上面四种误差对号入座，看它们各进滤波器哪块：
@@ -348,7 +358,7 @@ PSINS 的 `imuadderr` 是"误差→数据"的正向通道，固件的 ESKF 是"�
 
 - 上一篇：[03 传感器原理](03_传感器原理.md)（比力 / 角速度 / 误差单位速查）
 - 下一篇：[05 Allan 方差](05_Allan方差.md) —— 5 种噪声指纹（QN·ARW·BI·RRW·RR）、读 log-log 曲线、从实测数据"测出"本节所有随机参数、定 ESKF 的 Q 阵
-- 数学地基：[矩阵、概率与协方差](../00_前置数学基础/数学基础.md)（随机过程、方差、协方差）
+- 数学地基：[矩阵、概率与协方差](../00_前置数学基础/03_数学基础.md)（随机过程、方差、协方差）
 - 外链：[维基 · 卡尔曼滤波](https://zh.wikipedia.org/wiki/卡尔曼滤波) · [维基 · Allan 方差](https://zh.wikipedia.org/wiki/艾伦方差) · [维基 · 加速度计](https://zh.wikipedia.org/wiki/加速度计)
 - 项目落地：[AHRS 板固件仿真与验证](../../工作与项目/AHRS板固件仿真与验证/)（`ins_eskf_15d.c` / `ins_thermal.h` 真实实现）
 - 系列首页：[惯性导航与惯导解算 · 自学科普系列](../index.md)
