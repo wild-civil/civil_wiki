@@ -1,0 +1,930 @@
+下面两份笔记按你要求的“导数那篇”的格式来写：定义 → 推导 → 几何/直觉 → 课程里用在哪 → 常见坑。目标是**复习 + 直接对接 Kalman/组合导航**。
+
+---
+
+# 第一部分：概率统计基础（高斯 / 条件分布 / 协方差传播）
+
+> 卡尔曼滤波的全部假设可以压缩成一句话：  
+> **状态和噪声都是高斯随机向量，且系统是线性的。**  
+> 于是“预测 + 观测”就是“两个高斯相乘”，结果仍是高斯。  
+> 这一部分就是把这句话拆开讲透。
+
+---
+
+## 1. 随机变量与概率分布
+
+### 1.1 随机变量
+
+随机变量 \(X\) 是从样本空间到实数的映射：
+
+\[
+X:\Omega\to\mathbb R.
+\]
+
+离散型用概率质量函数 \(p(x)=P(X=x)\)；连续型用概率密度函数 \(f(x)\)，满足
+
+\[
+f(x)\ge 0,\qquad \int_{-\infty}^{\infty}f(x)\,dx=1.
+\]
+
+### 1.2 期望
+
+\[
+\mathbb E[X]=\int_{-\infty}^{\infty}x f(x)\,dx.
+\]
+
+期望是线性算子：
+
+\[
+\mathbb E[aX+bY+c]=a\mathbb E[X]+b\mathbb E[Y]+c.
+\]
+
+注意：**期望的线性不要求独立**，这是后面协方差传播的基础。
+
+### 1.3 方差与协方差
+
+\[
+\operatorname{Var}(X)=\mathbb E[(X-\mathbb E X)^2]=\mathbb E[X^2]-(\mathbb E X)^2.
+\]
+
+\[
+\operatorname{Cov}(X,Y)=\mathbb E[(X-\mathbb E X)(Y-\mathbb E Y)].
+\]
+
+性质：
+
+\[
+\operatorname{Cov}(X,X)=\operatorname{Var}(X),
+\]
+
+\[
+\operatorname{Cov}(aX+b,cY+d)=ac\operatorname{Cov}(X,Y),
+\]
+
+\[
+\operatorname{Var}(X+Y)=\operatorname{Var}(X)+\operatorname{Var}(Y)+2\operatorname{Cov}(X,Y).
+\]
+
+若 \(X,Y\) 独立，则 \(\operatorname{Cov}(X,Y)=0\)。  
+但反过来不成立：**不相关 ≠ 独立**，只有高斯情形下二者等价。
+
+---
+
+## 2. 随机向量与协方差矩阵
+
+### 2.1 随机向量
+
+设
+
+\[
+x=[x_1,x_2,\dots,x_n]^T\in\mathbb R^n.
+\]
+
+均值向量：
+
+\[
+\mu=\mathbb E[x]=[\mathbb E x_1,\dots,\mathbb E x_n]^T.
+\]
+
+协方差矩阵：
+
+\[
+\Sigma=\operatorname{Cov}(x)=\mathbb E[(x-\mu)(x-\mu)^T].
+\]
+
+展开：
+
+\[
+\Sigma=
+\begin{bmatrix}
+\operatorname{Var}(x_1)&\operatorname{Cov}(x_1,x_2)&\cdots\\
+\operatorname{Cov}(x_2,x_1)&\operatorname{Var}(x_2)&\cdots\\
+\vdots&\vdots&\ddots
+\end{bmatrix}.
+\]
+
+### 2.2 协方差矩阵的性质
+
+1. 对称：\(\Sigma=\Sigma^T\)。
+2. 半正定：对任意 \(a\in\mathbb R^n\)，
+
+\[
+a^T\Sigma a=\operatorname{Var}(a^T x)\ge 0.
+\]
+
+3. 若 \(x\) 各分量线性无关，则 \(\Sigma\) 正定，\(\Sigma\succ 0\)，可逆。
+4. 对角元是各分量方差；非对角元反映相关性。
+
+### 2.3 线性变换的均值与协方差
+
+设
+
+\[
+y=Ax+b,\qquad A\in\mathbb R^{m\times n},\ b\in\mathbb R^m.
+\]
+
+则
+
+\[
+\mathbb E[y]=A\mu+b,
+\]
+
+\[
+\operatorname{Cov}(y)
+=
+\mathbb E[(y-\mathbb E y)(y-\mathbb E y)^T]
+=
+A\Sigma A^T.
+\]
+
+推导：
+
+\[
+y-\mathbb E y=A(x-\mu).
+\]
+
+于是
+
+\[
+\operatorname{Cov}(y)
+=
+\mathbb E[A(x-\mu)(x-\mu)^T A^T]
+=
+A\,\mathbb E[(x-\mu)(x-\mu)^T]\,A^T
+=
+A\Sigma A^T.
+\]
+
+**这就是卡尔曼滤波里 \(P^-=FPF^T+Q\) 的来源。**
+
+---
+
+## 3. 多维高斯分布
+
+### 3.1 定义
+
+若 \(x\in\mathbb R^n\) 的密度为
+
+\[
+p(x)=
+\frac{1}{(2\pi)^{n/2}|\Sigma|^{1/2}}
+\exp\left(
+-\frac12(x-\mu)^T\Sigma^{-1}(x-\mu)
+\right),
+\]
+
+则称
+
+\[
+x\sim\mathcal N(\mu,\Sigma).
+\]
+
+其中：
+
+- \(\mu\) 是均值；
+- \(\Sigma\) 是协方差；
+- \(|\Sigma|\) 是行列式；
+- 指数项里的二次型
+
+\[
+(x-\mu)^T\Sigma^{-1}(x-\mu)
+\]
+
+是马氏距离平方。
+
+### 3.2 几何意义
+
+- \(\Sigma\) 的特征向量给出高斯“椭球”的主轴方向；
+- 特征值给出各轴方差；
+- 等概率面是椭球：
+
+\[
+(x-\mu)^T\Sigma^{-1}(x-\mu)=c^2.
+\]
+
+- 若 \(\Sigma=\sigma^2 I\)，则各分量独立同分布，等概率面是球面。
+
+### 3.3 高斯的重要性质
+
+1. **线性变换仍高斯**：
+
+\[
+x\sim\mathcal N(\mu,\Sigma)
+\Rightarrow
+Ax+b\sim\mathcal N(A\mu+b,A\Sigma A^T).
+\]
+
+2. **边缘分布仍高斯**：
+
+\[
+\begin{bmatrix}x\\y\end{bmatrix}
+\sim\mathcal N\left(
+\begin{bmatrix}\mu_x\\\mu_y\end{bmatrix},
+\begin{bmatrix}\Sigma_{xx}&\Sigma_{xy}\\
+\Sigma_{yx}&\Sigma_{yy}\end{bmatrix}
+\right),
+\]
+
+则
+
+\[
+x\sim\mathcal N(\mu_x,\Sigma_{xx}),\qquad
+y\sim\mathcal N(\mu_y,\Sigma_{yy}).
+\]
+
+3. **条件分布仍高斯**（下一节详细推导）。
+
+4. **不相关等价于独立**：高斯向量中，若 \(\Sigma_{xy}=0\)，则 \(x,y\) 独立。
+
+---
+
+## 4. 分块高斯与条件分布（卡尔曼更新核心）
+
+### 4.1 分块高斯
+
+设
+
+\[
+\begin{bmatrix}x\\y\end{bmatrix}
+\sim\mathcal N\left(
+\begin{bmatrix}\mu_x\\\mu_y\end{bmatrix},
+\begin{bmatrix}\Sigma_{xx}&\Sigma_{xy}\\
+\Sigma_{yx}&\Sigma_{yy}\end{bmatrix}
+\right),
+\]
+
+其中 \(\Sigma_{yx}=\Sigma_{xy}^T\)，\(\Sigma_{yy}\succ 0\)。
+
+### 4.2 条件分布公式
+
+在给定 \(y\) 的条件下，\(x\) 的条件分布为
+
+\[
+x\mid y\sim\mathcal N(\mu_{x|y},\Sigma_{x|y}),
+\]
+
+其中
+
+\[
+\mu_{x|y}=\mu_x+\Sigma_{xy}\Sigma_{yy}^{-1}(y-\mu_y),
+\]
+
+\[
+\Sigma_{x|y}=\Sigma_{xx}-\Sigma_{xy}\Sigma_{yy}^{-1}\Sigma_{yx}.
+\]
+
+### 4.3 推导
+
+令
+
+\[
+\tilde x=x-\mu_x,\qquad \tilde y=y-\mu_y.
+\]
+
+考虑估计
+
+\[
+\hat x=\mu_x+K(y-\mu_y),
+\]
+
+其中 \(K\) 待定。误差为
+
+\[
+e=x-\hat x=\tilde x-K\tilde y.
+\]
+
+要求误差与 \(y\) 正交（线性最小均方误差意义下最优）：
+
+\[
+\mathbb E[e(y-\mu_y)^T]=0.
+\]
+
+即
+
+\[
+\mathbb E[(\tilde x-K\tilde y)\tilde y^T]=0.
+\]
+
+展开：
+
+\[
+\Sigma_{xy}-K\Sigma_{yy}=0
+\Rightarrow
+K=\Sigma_{xy}\Sigma_{yy}^{-1}.
+\]
+
+于是
+
+\[
+\mu_{x|y}=\mu_x+\Sigma_{xy}\Sigma_{yy}^{-1}(y-\mu_y).
+\]
+
+误差协方差：
+
+\[
+\operatorname{Cov}(e)
+=
+\mathbb E[(\tilde x-K\tilde y)(\tilde x-K\tilde y)^T].
+\]
+
+展开：
+
+\[
+=\Sigma_{xx}-K\Sigma_{yx}-\Sigma_{xy}K^T+K\Sigma_{yy}K^T.
+\]
+
+代入 \(K=\Sigma_{xy}\Sigma_{yy}^{-1}\)：
+
+\[
+=\Sigma_{xx}-\Sigma_{xy}\Sigma_{yy}^{-1}\Sigma_{yx}.
+\]
+
+这就是条件协方差。
+
+### 4.4 与卡尔曼更新的对应
+
+卡尔曼更新本质就是“给定观测 \(z\)，求状态 \(x\) 的条件高斯”。对应关系：
+
+| 条件高斯 | 卡尔曼 |
+|---|---|
+| \(x\) | 状态 \(x_k\) |
+| \(y\) | 观测 \(z_k\) |
+| \(\mu_x\) | \(\hat x_k^-\) |
+| \(\Sigma_{xx}\) | \(P_k^-\) |
+| \(\mu_y\) | \(H_k\hat x_k^-\) |
+| \(\Sigma_{yy}\) | \(H_kP_k^-H_k^T+R_k\) |
+| \(\Sigma_{xy}\) | \(P_k^-H_k^T\) |
+| \(K=\Sigma_{xy}\Sigma_{yy}^{-1}\) | \(K_k=P_k^-H_k^T(H_kP_k^-H_k^T+R_k)^{-1}\) |
+| \(\mu_{x|y}\) | \(\hat x_k^+\) |
+| \(\Sigma_{x|y}\) | \(P_k^+\) |
+
+把表里右列代入左列，直接得到卡尔曼五个方程。
+
+---
+
+## 5. 协方差传播
+
+### 5.1 线性传播
+
+设
+
+\[
+x_{k}=F_{k-1}x_{k-1}+w_{k-1},
+\]
+
+其中
+
+\[
+w_{k-1}\sim\mathcal N(0,Q_{k-1}),
+\]
+
+且 \(w_{k-1}\) 与 \(x_{k-1}\) 独立。
+
+则
+
+\[
+\hat x_k^-=F_{k-1}\hat x_{k-1}^+,
+\]
+
+\[
+P_k^-=F_{k-1}P_{k-1}^+F_{k-1}^T+Q_{k-1}.
+\]
+
+推导：
+
+\[
+x_k-\hat x_k^-
+=
+F_{k-1}(x_{k-1}-\hat x_{k-1}^+)+w_{k-1}.
+\]
+
+两项独立，协方差相加：
+
+\[
+P_k^-
+=
+F_{k-1}P_{k-1}^+F_{k-1}^T+Q_{k-1}.
+\]
+
+### 5.2 非线性传播
+
+若
+
+\[
+x_k=f(x_{k-1})+w_{k-1},
+\]
+
+在 \(\hat x_{k-1}^+\) 处一阶展开：
+
+\[
+f(x_{k-1})\approx f(\hat x_{k-1}^+)+F_{k-1}(x_{k-1}-\hat x_{k-1}^+),
+\]
+
+其中
+
+\[
+F_{k-1}=\left.\frac{\partial f}{\partial x}\right|_{\hat x_{k-1}^+}.
+\]
+
+于是同样有
+
+\[
+P_k^-=F_{k-1}P_{k-1}^+F_{k-1}^T+Q_{k-1}.
+\]
+
+这就是 EKF 的预测步。
+
+### 5.3 观测传播
+
+若
+
+\[
+z_k=H_kx_k+v_k,\qquad v_k\sim\mathcal N(0,R_k),
+\]
+
+则
+
+\[
+z_k\sim\mathcal N(H_k\hat x_k^-,H_kP_k^-H_k^T+R_k).
+\]
+
+新息：
+
+\[
+\tilde z_k=z_k-H_k\hat x_k^-.
+\]
+
+其协方差：
+
+\[
+S_k=H_kP_k^-H_k^T+R_k.
+\]
+
+卡尔曼增益：
+
+\[
+K_k=P_k^-H_k^TS_k^{-1}.
+\]
+
+---
+
+## 6. 课程里用在哪
+
+- **ESKF 15 维状态**：\(\delta x\sim\mathcal N(0,P)\)，\(P\) 是 \(15\times15\) 协方差。
+- **预测**：\(P^-=FPF^T+Q\)。
+- **更新**：\(K=PH^T(HPH^T+R)^{-1}\)。
+- **条件高斯**：卡尔曼更新的本质。
+- **协方差传播**：IMU 误差、GNSS 噪声如何进入状态协方差。
+- **一致性检验**：新息应服从 \(\mathcal N(0,S)\)，可用于判断滤波是否发散。
+
+---
+
+## 7. 常见坑
+
+1. **把不相关当独立**：只有高斯才等价。
+2. **忘记 \(Q,R\) 对称正定**：否则协方差会失去正定性。
+3. **混淆方差与协方差**：标量时是方差，向量时是矩阵。
+4. **条件公式里 \(\Sigma_{yy}\) 不可逆**：观测冗余或完全相关时会出现，需要伪逆或降维。
+5. **数值上直接算 \(P^-=FPF^T+Q\)**：长时间可能失去对称性，工程上用 Joseph 形式或平方根滤波。
+
+---
+
+# 第二部分：随机过程与噪声建模（白噪声 / GM / 随机游走 / Allan）
+
+> IMU 的零偏不是常数，而是随机过程。  
+> 卡尔曼滤波里的 \(Q\) 阵不是拍脑袋，而是由 Allan 方差标定出来的。  
+> 这一部分讲清楚：噪声从哪来、怎么建模、怎么进 \(Q\)。
+
+---
+
+## 1. 随机过程定义
+
+随机过程是一族随机变量：
+
+\[
+\{X(t),t\in T\}.
+\]
+
+- \(t\) 离散：随机序列 \(\{X_k\}\)。
+- \(t\) 连续：连续时间随机过程。
+
+固定 \(t\)，\(X(t)\) 是随机变量；  
+固定一个样本，\(X(t)\) 是一条样本轨道。
+
+### 1.1 均值函数
+
+\[
+\mu_X(t)=\mathbb E[X(t)].
+\]
+
+### 1.2 自相关函数
+
+\[
+R_X(t_1,t_2)=\mathbb E[X(t_1)X(t_2)].
+\]
+
+### 1.3 自协方差函数
+
+\[
+C_X(t_1,t_2)=\mathbb E[(X(t_1)-\mu_X(t_1))(X(t_2)-\mu_X(t_2))].
+\]
+
+---
+
+## 2. 平稳性与遍历性
+
+### 2.1 严平稳
+
+任意有限维分布对时间平移不变。
+
+### 2.2 宽平稳
+
+1. 均值为常数：
+
+\[
+\mu_X(t)=\mu.
+\]
+
+2. 自相关只依赖时间差：
+
+\[
+R_X(t_1,t_2)=R_X(\tau),\qquad \tau=t_2-t_1.
+\]
+
+### 2.3 遍历性
+
+时间平均等于集合平均：
+
+\[
+\lim_{T\to\infty}\frac{1}{T}\int_0^T X(t)\,dt=\mathbb E[X].
+\]
+
+工程上才能用一段数据估计统计量。
+
+---
+
+## 3. 功率谱密度
+
+宽平稳过程的自相关 \(R_X(\tau)\) 与功率谱密度 \(S_X(\omega)\) 是傅里叶变换对：
+
+\[
+S_X(\omega)=\int_{-\infty}^{\infty}R_X(\tau)e^{-j\omega\tau}\,d\tau,
+\]
+
+\[
+R_X(\tau)=\frac{1}{2\pi}\int_{-\infty}^{\infty}S_X(\omega)e^{j\omega\tau}\,d\omega.
+\]
+
+这就是**维纳–辛钦定理**。
+
+物理意义：
+
+- \(S_X(\omega)\) 描述各频率成分的功率；
+- 白噪声的 \(S_X(\omega)\) 是常数；
+- IMU 噪声的 Allan 方差与 \(S_X(\omega)\) 有对应关系。
+
+---
+
+## 4. 白噪声
+
+### 4.1 定义
+
+连续时间白噪声 \(w(t)\) 满足
+
+\[
+\mathbb E[w(t)]=0,
+\]
+
+\[
+R_w(\tau)=\mathbb E[w(t)w(t+\tau)]=q\delta(\tau),
+\]
+
+其中 \(\delta(\tau)\) 是狄拉克函数，\(q\) 是噪声强度。
+
+功率谱：
+
+\[
+S_w(\omega)=q,\qquad \forall\omega.
+\]
+
+即所有频率功率相同，故称“白”。
+
+### 4.2 离散白噪声
+
+\[
+w_k\sim\mathcal N(0,Q),
+\]
+
+\[
+\mathbb E[w_k]=0,\qquad
+\mathbb E[w_kw_j^T]=Q\delta_{kj}.
+\]
+
+不同时刻不相关。
+
+### 4.3 连续白噪声到离散
+
+若连续系统
+
+\[
+\dot x=Fx+Gw,
+\]
+
+其中 \(w\) 是强度为 \(Q_c\) 的连续白噪声，则离散化：
+
+\[
+x_{k+1}=F_dx_k+w_k,
+\]
+
+\[
+F_d\approx I+F\Delta t+\frac{(F\Delta t)^2}{2!}+\cdots,
+\]
+
+\[
+Q_d\approx GQ_cG^T\Delta t.
+\]
+
+更精确：
+
+\[
+Q_d=\int_0^{\Delta t}e^{F\tau}GQ_cG^Te^{F^T\tau}\,d\tau.
+\]
+
+**这就是卡尔曼滤波里 \(Q\) 阵的来源。**
+
+---
+
+## 5. 随机游走
+
+### 5.1 定义
+
+离散随机游走：
+
+\[
+x_k=x_{k-1}+w_{k-1},\qquad w_{k-1}\sim\mathcal N(0,Q).
+\]
+
+展开：
+
+\[
+x_k=x_0+\sum_{i=0}^{k-1}w_i.
+\]
+
+均值：
+
+\[
+\mathbb E[x_k]=x_0.
+\]
+
+方差：
+
+\[
+\operatorname{Var}(x_k)=kQ.
+\]
+
+方差随时间线性增长。
+
+### 5.2 连续形式
+
+\[
+\dot x=w(t),
+\]
+
+\(w(t)\) 是白噪声。
+
+则
+
+\[
+x(t)=x(0)+\int_0^tw(s)\,ds.
+\]
+
+这就是**维纳过程**（布朗运动）。
+
+### 5.3 课程对应
+
+- 陀螺零偏、加计零偏常用随机游走建模：
+
+\[
+\dot b=w_b.
+\]
+
+- 姿态误差、速度误差中的随机驱动项也是随机游走型。
+- 对应 \(Q\) 阵中的 bias 部分。
+
+---
+
+## 6. 高斯–马尔可夫过程
+
+### 6.1 一阶高斯–马尔可夫过程
+
+连续形式：
+
+\[
+\dot x=-\frac{1}{T_c}x+w,
+\]
+
+其中：
+
+- \(T_c\) 是相关时间；
+- \(w\) 是白噪声，强度 \(q\)。
+
+离散形式：
+
+\[
+x_k=e^{-\Delta t/T_c}x_{k-1}+w_{k-1},
+\]
+
+\[
+\operatorname{Var}(w_{k-1})
+=
+\frac{qT_c}{2}\left(1-e^{-2\Delta t/T_c}\right).
+\]
+
+### 6.2 性质
+
+- 自相关：
+
+\[
+R_x(\tau)=\sigma^2e^{-|\tau|/T_c}.
+\]
+
+- 功率谱：
+
+\[
+S_x(\omega)=\frac{2\sigma^2T_c}{1+\omega^2T_c^2}.
+\]
+
+- \(T_c\to\infty\)：退化为随机游走。
+- \(T_c\to0\)：退化为白噪声。
+
+### 6.3 课程对应
+
+- IMU 零偏常用一阶高斯–马尔可夫建模：
+
+\[
+\dot b=-\frac{1}{T_c}b+w_b.
+\]
+
+- 比纯随机游走更真实，因为零偏不会无限漂移。
+- 状态增广时把 \(b\) 放进状态向量，卡尔曼滤波同时估计。
+
+---
+
+## 7. Allan 方差与 IMU 噪声建模
+
+### 7.1 为什么要 Allan 方差
+
+IMU 静止时采集数据，用 Allan 方差可以分离不同噪声类型：
+
+- 角度随机游走 ARW
+- 速度随机游走 VRW
+- 零偏不稳定性
+- 速率随机游走
+- 量化噪声
+
+### 7.2 定义
+
+对陀螺输出 \(\omega(t)\)，取采样间隔 \(\tau_0\)，聚类时间 \(\tau=m\tau_0\)。
+
+计算每段平均：
+
+\[
+\bar\omega_k(\tau)=\frac{1}{\tau}\int_{t_k}^{t_k+\tau}\omega(t)\,dt.
+\]
+
+Allan 方差：
+
+\[
+\sigma_A^2(\tau)
+=
+\frac{1}{2}
+\left\langle
+(\bar\omega_{k+1}(\tau)-\bar\omega_k(\tau))^2
+\right\rangle.
+\]
+
+Allan 标准差：
+
+\[
+\sigma_A(\tau)=\sqrt{\sigma_A^2(\tau)}.
+\]
+
+### 7.3 双对数曲线斜率
+
+在 \(\log\sigma_A(\tau)\) vs \(\log\tau\) 图上：
+
+| 噪声类型 | 斜率 | 含义 |
+|---|---|---|
+| 量化噪声 | \(-1\) | ADC 量化 |
+| 角度随机游走 | \(-1/2\) | 白噪声积分 |
+| 零偏不稳定性 | \(0\) | 1/f 噪声 |
+| 速率随机游走 | \(+1/2\) | 白噪声积分再积分 |
+| 速率斜坡 | \(+1\) | 确定性漂移 |
+
+### 7.4 参数提取
+
+- ARW：
+
+\[
+\sigma_A(\tau)=\frac{N}{\sqrt{\tau}},
+\]
+
+\(N\) 是角度随机游走系数。
+
+- 零偏不稳定性：曲线最低点对应 \(\sigma_A\)。
+
+- 速率随机游走：斜率 \(+1/2\) 段对应 \(K\)。
+
+### 7.5 与卡尔曼 \(Q\) 的关系
+
+- ARW 对应陀螺白噪声，进入 \(Q\) 的姿态部分。
+- VRW 对应加计白噪声，进入 \(Q\) 的速度部分。
+- 零偏不稳定性、速率随机游走对应 bias 随机游走，进入 \(Q\) 的 bias 部分。
+
+于是
+
+\[
+Q=
+\begin{bmatrix}
+Q_{\text{姿态}}&0&0\\
+0&Q_{\text{速度}}&0\\
+0&0&Q_{\text{bias}}
+\end{bmatrix}.
+\]
+
+---
+
+## 8. 课程里用在哪
+
+- **IMU 噪声建模**：ARW、VRW、bias 随机游走。
+- **\(Q\) 阵定标**：Allan 方差 → 连续噪声强度 → 离散 \(Q_d\)。
+- **零偏估计**：把 bias 增广进状态，用一阶 GM 或随机游走建模。
+- **组合导航滤波**：GNSS 噪声用白噪声建模，进入 \(R\)。
+- **一致性检验**：新息协方差应与 \(S=HPH^T+R\) 匹配。
+- **仿真**：用随机游走、GM 过程生成 IMU 仿真数据。
+
+---
+
+## 9. 常见坑
+
+1. **把 bias 当常数**：实际是随机过程，必须建模。
+2. **\(Q\) 拍脑袋给**：应该由 Allan 方差标定。
+3. **混淆连续噪声强度与离散 \(Q\)**：差一个 \(\Delta t\) 或积分。
+4. **忘记相关时间**：一阶 GM 退化为随机游走会低估长期漂移。
+5. **Allan 方差采样不够**：曲线不平滑，参数提取不准。
+6. **\(R\) 与 \(Q\) 量纲不匹配**：状态和观测单位要统一。
+
+---
+
+## 10. 两部分的连接：从噪声到卡尔曼
+
+完整链路：
+
+1. IMU 静止采集数据；
+2. Allan 方差分析 → 提取 ARW、VRW、bias 参数；
+3. 建立连续噪声模型：
+
+\[
+\dot b=w_b,\qquad w_b\sim\mathcal N(0,Q_c);
+\]
+
+4. 离散化：
+
+\[
+Q_d\approx GQ_cG^T\Delta t;
+\]
+
+5. 构建 15 维误差状态方程：
+
+\[
+\dot{\delta x}=F\delta x+Gw;
+\]
+
+6. 卡尔曼预测：
+
+\[
+P^-=FPF^T+Q_d;
+\]
+
+7. GNSS 观测更新：
+
+\[
+K=PH^T(HPH^T+R)^{-1};
+\]
+
+8. 反馈校正 → 闭环组合导航。
+
+---
+
+## 11. 一句话总结
+
+- **概率统计**：卡尔曼滤波是“高斯条件期望”的递推，核心是条件高斯公式和协方差传播。
+- **随机过程**：IMU 噪声不是白噪声，而是随机游走 / 一阶 GM；\(Q\) 阵由 Allan 方差标定。
+- **两者合起来**：\(P^-=FPF^T+Q\) 和 \(K=PH^T(HPH^T+R)^{-1}\) 才不是凭空公式，而是有明确物理和统计意义的。
+
+如果你愿意，下一步我可以继续按同样格式写：
+
+1. **最小二乘与正交投影 → 卡尔曼滤波完整推导**；
+2. **四元数姿态更新与圆锥补偿**；
+3. **15 维 INS 误差方程逐项推导**；
+4. **GNSS/INS 松组合 EKF 完整模型**。
