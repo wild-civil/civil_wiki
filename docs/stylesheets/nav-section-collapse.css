@@ -29,3 +29,20 @@
 .md-nav__item--section > .md-nav__link {
   font-weight: 700;
 }
+
+/* 3) 隐藏左侧主导航里「当前页」下那条重复的「单页目录」行。
+ *
+ * 背景：处于某篇文章时，Material 会在左侧主导航的该条目下再渲染一份
+ * 「本页目录（TOC）」，其折叠开关 <label for=__toc> 的标题 = 文章标题，
+ * 与紧邻的文章链接看起来一模一样（用户会误以为出现了重复条目/多个汉堡）。
+ * 它只在窄屏（抽屉式导航）下有意义；本站在此场景下用户可直接看右侧目录，
+ * 故隐藏之，避免与文章条目混淆。
+ *
+ * 只针对主导航内的 __toc 开关（右侧 .md-sidebar--secondary 的目录无此 id），
+ * 右侧（宽屏）目录与 toc.follow 高亮行为完全不受影响。 */
+.md-nav__item--active > label.md-nav__link[for="__toc"],
+.md-nav__item--active > input.md-nav__toggle#__toc,
+.md-nav__item--active > nav.md-nav--secondary {
+  display: none !important;
+}
+
