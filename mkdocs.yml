@@ -54,6 +54,10 @@ theme:
     - search.suggest           # 搜索联想
     - search.highlight         # 搜索结果高亮
 
+# 自定义样式：让激活状态的分区标题（如「嵌硬 · 硬件与半导体」）也显示折叠箭头并可点击折叠
+extra_css:
+  - stylesheets/nav-section-collapse.css
+
 # 插件
 plugins:
   - search                                             # 站内搜索（Material 自带）
@@ -100,6 +104,7 @@ markdown_extensions:
 # 自定义样式与脚本
 extra_css:
   - stylesheets/extra.css
+  - stylesheets/nav-section-collapse.css
 extra_javascript:
   - javascripts/mathjax.js
   - javascripts/mathjax/tex-mml-svg.js   # 本地化 MathJax（SVG 输出，无需外部字体；不再走 cdnjs CDN）

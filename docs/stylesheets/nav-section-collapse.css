@@ -1,0 +1,21 @@
+/*
+ * 让「激活状态的分区标题」也能折叠并显示箭头
+ * ---------------------------------------------------------------
+ * 背景：启用 navigation.sections 后，Material 把处于激活状态（当前正在阅读其下某页）
+ * 的分区标题渲染为 .md-nav__item--section，并通过主题 CSS 把它的可折叠 <label>
+ * （内含折叠箭头 .md-nav__icon）设为 display:none + pointer-events:none，
+ * 于是激活分区（如「嵌硬 · 硬件与半导体」）看起来没有三角、也无法点击折叠。
+ *
+ * 其余嵌套分组（如「硬件设计」）未带 --section 类，因此正常显示箭头、可折叠。
+ * 本文件仅覆盖激活分区的两条规则，使分区标题与嵌套分组行为一致：
+ *   - 显示折叠箭头
+ *   - 恢复点击折叠
+ * 非激活状态本来就是普通嵌套项（带 --nested），箭头本就可见，不受此文件影响。
+ */
+/* 折叠 <label> 是 .md-nav__link.md-nav__container 的子元素（孙节点），
+   故必须用后代选择器（而非直接子选择器）才能命中它 */
+.md-nav__item--section .md-nav__link[for] {
+  display: inline-flex;
+  pointer-events: auto;
+  cursor: pointer;
+}
