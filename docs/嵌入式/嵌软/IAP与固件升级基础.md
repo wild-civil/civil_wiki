@@ -1,7 +1,7 @@
 ---
 title: IAP 与固件升级基础
 date: 2026-09-02
-tags: [嵌入式, 固件, IAP, OTA, 基础, 教程]
+tags: [嵌入式, 固件, IAP, ISP, OTA, DFU, 基础, 教程]
 ---
 
 > 范围：通用（Cortex-M / RISC-V 都覆盖）· 结合本项目 **CH582M（KeyGo BLE OTA）** 与 **STM32H743（AHRS 板）** 实例
@@ -18,6 +18,17 @@ tags: [嵌入式, 固件, IAP, OTA, 基础, 教程]
 
 > ⚠️ 很多人（包括一些 AI 回答）把 IAP / ISP / OTA 写成三选一，这是不准确的说法。正确关系是：**ISP 是厂测工具，IAP 是运行期自升级能力，OTA 是 IAP 的无线实现方式。**
 
+**先把这一族缩写摆齐**（后面第 1.5 节逐个展开）：
+
+| 缩写 | 全称 | 一句话本质 | 归属 |
+|------|------|-----------|------|
+| **ISP** | In-System Programming | 芯片**进特殊模式**，用**外部工具**烧 Flash | 编程方式（厂测/开发） |
+| **IAP** | In-Application Programming | 芯片**跑着自己程序**，把新程序写进自己 Flash | 编程方式（运行期） |
+| **ICP** | In-Circuit Programming | 用**调试口**（SWD/JTAG）经调试器烧录 | ISP 的调试器路线 |
+| **OTA** | Over-The-Air | **无线**把固件送过来 | IAP 的传输通道 |
+| **DFU** | Device Firmware Upgrade | **USB** 标准的固件升级协议 | IAP/ISP 的 USB 通道 |
+| **FOTA** | Firmware OTA | 整包固件 OTA（对应 SOTA/DOTA） | OTA 的细分叫法 |
+
 ## 1. 为什么需要 IAP
 
 | 场景 | 没有 IAP 会怎样 | 有 IAP 怎么做 |
@@ -31,6 +42,88 @@ tags: [嵌入式, 固件, IAP, OTA, 基础, 教程]
 
 - **KeyGo（CH582M BLE 钥匙）**：手机 App 通过 BLE 把新固件推给钥匙，钥匙自己写 Flash 完成升级——典型的 **IAP + OTA**。
 - **AHRS 板（STM32H743）**：调试期走 SWD（ISP 思路），但量产后若要做现场固件维护，同样需要 IAP（经 UART/CAN/以太网等通道）。
+
+## 1.5 一次讲清：ISP / ICP / IAP / OTA / DFU / FOTA 到底啥关系
+
+这六个词老被混着用，因为它们是**从三个不同维度**切出来的名字。**先抓住两个正交问题，就不会乱**：
+
+1. **谁在写 Flash？** —— 是芯片里一个“专门负责烧录的小程序”在写（**ISP**），还是**已经在运行的应用程序自己**在写（**IAP**）？
+2. **固件从哪来？** —— 外部烧录器 / **有线**（UART、USB、CAN）/ **无线**（BLE、Wi-Fi、蜂窝）。
+
+**OTA 只是在第 2 问上回答了“无线”。** 所以它和 ISP、IAP 都不在一个维度上——这也是 AI 最容易讲错的地方。
+
+### 1.5.1 ISP —— In-System Programming（在系统编程）
+
+指**不必把芯片从板子上拆下来**，就能通过预留的接口把程序写进 Flash（对应的是要把芯片焊下来插到编程器上的老办法）。触发方式通常是一种**“进入特殊模式”**：
+
+- **芯片厂 BootROM**：例如 CH582M 上电时 BOOT 引脚/串口握手，进入 WCH 出厂固化的 ISP 引导；STM32 则是 BOOT0/BOOT1 选择 System Memory 里的 ROM Bootloader。
+- **调试器路线（常叫 ICP，In-Circuit Programming）**：STM32 的 SWD/JTAG、CH582M 的 WCH-Link 两线调试。你平时在 Keil/MRS 里点“Download”，走的其实就是这条。
+- **免调试器路线**：WCH 的 ISP 工具（串口/USB）、STM32 的 `STM32CubeProgrammer`（UART/USB/DFU）。
+
+> ✅ **属于谁**：芯片/板卡的**制造、出厂烧录、实验室开发、返修**。它的前提是“你能碰到设备、能接线/进模式”。
+> ⚠️ **为什么不用于现场升级**：设备装到车上/墙里以后，你没法给它上电拉 BOOT0、也没法插调试器——这正是 IAP 存在的理由。
+
+### 1.5.2 IAP —— In-Application Programming（在应用编程）
+
+**由正在运行的应用程序（或其常驻的 Bootloader）自己去擦写 Flash。** 因为写 Flash 的“工具”是芯片内部代码，所以**不需要外部烧录器**，固件可以从任何能传数据的通道送进来（UART/USB/CAN/网口/无线）。
+
+- 关键：它需要**Bootloader 常驻** + **Flash 分区**（见第 2 节），升级能力是“烧进芯片里”的。
+- 它是**运行期**行为，设备可以装在现场、无人值守地自己升级。
+
+### 1.5.3 那么 ISP 和 IAP 到底怎么区分
+
+| 对比项 | ISP | IAP |
+|--------|-----|-----|
+| **谁擦写 Flash** | 芯片内固定的引导程序（BootROM）/ 外部调试器 | **运行中的应用自己**（含常驻 Bootloader） |
+| **典型触发** | 上电拉 BOOT 脚、SWD 连接、串口握手 | 应用判断“有新固件”后主动进入升级流程 |
+| **需要外部设备吗** | **需要**（烧录器/调试器/串口线） | **不需要**（只要有数据通道） |
+| **典型场景** | 出厂烧录、开发调试、返修 | 现场/远程升级已部署的设备 |
+| **你控不控得住** | 需要物理接触 | 设备在线即可 |
+
+> 💡 一句话记：**ISP 是“从外面灌进去”，IAP 是“从里面自己更新”。** 你手上 **CH582M 那 24 KB 出厂 BootLoader** 就是 ISP 的载体（USB/串口下载），而我们自己写的 **BLE OTA Bootloader** 是 IAP 的载体——**两者同名“Bootloader”，但完全不是一回事**。
+
+### 1.5.4 OTA —— Over-The-Air（空中升级）
+
+**OTA 是“传输通道”维度：固件通过无线链路送达。** 它本来是从**电信/手机**行业借来的词（手机基带固件、运营商推送），嵌入式里通常就是 **BLE OTA / Wi-Fi OTA / 蜂窝（NB-IoT、Cat.1、4G/5G）OTA**。
+
+- OTA **本身不等于 IAP**：如果设备是“收到固件 → 存到外部 Flash → 重新进 ISP 模式刷”，那它就没有真正跑 IAP；反之 OTA 要真正落地，**最终一定由 IAP 完成写 Flash**。
+- 细分叫法：**FOTA（Firmware OTA）** = 升级整个固件包；**SOTA（Software OTA）** = 只升级应用/配置文件；**DOTA（Data OTA）** = 只下发数据/参数。
+- **KeyGo 就是 FOTA over BLE**：手机 App 通过 GATT 分包推整包固件，钥匙端 IAP 写入。
+
+### 1.5.5 DFU 与 UDS —— “跑在通道上的协议”
+
+一旦通道定了，还得定**“怎么分块、怎么应答、怎么确认”**，于是有了一系列**协议**（协议是通道之上的规矩）：
+
+- **DFU（Device Firmware Upgrade）**：USB-IF 的**标准固件升级协议**，STM32 系列内置支持，`STM32CubeProgrammer` 可以直接用。属于**有线**通道。
+- **UDS（ISO 14229）**：**汽车 ECU 刷写的标准**，用 `0x34`（请求下载）/`0x36`（传数据）/`0x37`（退出传输）等服务经 CAN/DoIP 刷写，和 **OBD 诊断**是同一套体系。
+- **YMODEM/XMODEM**：最简单的串口文件传输协议，产线常用。
+- 无线侧则多用**厂商自定义的 GATT OTA 服务**（KeyGo/CH582M 这类）或 **HTTP/MQTT 分块下载**。
+
+> 📌 **串起来的完整说法**（以你两个项目为例）：
+> - **KeyGo** = 手机 App →（**OTA**，BLE 无线）→ 厂商 **GATT OTA 协议**分包 → 钥匙端 **IAP**（Bootloader 写 Flash、校验、跳转）。
+> - **AHRS 板** = 开发期用 **ICP**（SWD + 调试器）或 **ISP**（串口/USB + CubeProgrammer）；量产后要做现场维护，则加 **IAP**，通道可选 UART（YMODEM）/CAN（UDS）/以太网（HTTP）。
+
+### 1.5.6 一图看懂它们的位置
+
+```mermaid
+flowchart LR
+    subgraph W["谁在写 Flash"]
+        ISP["ISP<br/>芯片内引导 / 外部烧录器"]
+        IAP["IAP<br/>运行中的应用自己写"]
+    end
+    subgraph C["固件从哪来（通道）"]
+        ICPx["ICP: SWD/JTAG 调试器"]
+        UART["UART / USB(DFU) / CAN(UDS)"]
+        OTAx["OTA: BLE / Wi-Fi / 蜂窝"]
+    end
+    ICPx --> ISP
+    UART --> ISP
+    UART --> IAP
+    OTAx --> IAP
+```
+
+**读法**：左边是“谁在写”，右边是“固件走哪条路”。同一根线可以指向 ISP 或 IAP——**取决于设备是进了特殊模式（ISP），还是应用自己在写（IAP）**。而 OTA 永远只能连到 IAP 这一侧：无线场景下设备无人值守，不可能“人工进 ISP 模式”。
+
 
 ## 2. 核心架构：Bootloader + App 两段式
 
@@ -183,12 +276,13 @@ __DSB(); __ISB();
 
 （写给同样拿 AI 回答当起点的同学——下面几条是本项目视角下必须补或改的）
 
-1. **“IAP/ISP/OTA 三选一”是错的**：OTA 是 IAP 的无线通道，不是并列机制（见开头）。
-2. **`VTOR` 不是通用写法**：只适用于 Cortex-M。RISC-V（CH582M）用 `mtvec` + 厂商机制，别照抄。
-3. **只提 CRC32 不够**：量产/联网设备必须验签（ECDSA/RSA）+ 防回滚，否则等于给后门留口子。KeyGo 已用 HMAC-SHA256 做认证，OTA 应一脉相承。
-4. **漏了 H7 的 Cache 失效**：在 F1/F4 验证过的跳转代码搬到 H743 会 HardFault，跳前必清 ICache/DCache。
-5. **“24 KB BootLoader”别误会**：CH582M 那 24 KB 是出厂 ISP 用的，不是你的 BLE OTA Bootloader。
-6. **单区升级“断电变砖”是真风险**：给了“双区/外部 Flash/BFB2 原子切换”三条出路，别只讲单区。
+1. **“IAP/ISP/OTA 三选一”是错的**：OTA 是 IAP 的无线通道，不是并列机制（见第 1.5 节两个正交维度）。
+2. **OTA ≠ IAP**：无线传输只是“固件怎么来”，最终写 Flash 还得靠 IAP；反过来，IAP 也可以走有线（UART/USB/CAN）。
+3. **`VTOR` 不是通用写法**：只适用于 Cortex-M。RISC-V（CH582M）用 `mtvec` + 厂商机制，别照抄。
+4. **只提 CRC32 不够**：量产/联网设备必须验签（ECDSA/RSA）+ 防回滚，否则等于给后门留口子。KeyGo 已用 HMAC-SHA256 做认证，OTA 应一脉相承。
+5. **漏了 H7 的 Cache 失效**：在 F1/F4 验证过的跳转代码搬到 H743 会 HardFault，跳前必清 ICache/DCache。
+6. **“24 KB BootLoader”别误会**：CH582M 那 24 KB 是出厂 ISP 用的，不是你的 BLE OTA Bootloader。
+7. **单区升级“断电变砖”是真风险**：给了“双区/外部 Flash/BFB2 原子切换”三条出路，别只讲单区。
 
 ## 参考链接
 
