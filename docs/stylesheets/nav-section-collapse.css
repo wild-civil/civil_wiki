@@ -1,21 +1,31 @@
 /*
- * 让「激活状态的分区标题」也能折叠并显示箭头
- * ---------------------------------------------------------------
- * 背景：启用 navigation.sections 后，Material 把处于激活状态（当前正在阅读其下某页）
- * 的分区标题渲染为 .md-nav__item--section，并通过主题 CSS 把它的可折叠 <label>
- * （内含折叠箭头 .md-nav__icon）设为 display:none + pointer-events:none，
- * 于是激活分区（如「嵌硬 · 硬件与半导体」）看起来没有三角、也无法点击折叠。
+ * 让所有导航分组都能折叠（含「当前所在/激活」的分组）。
  *
- * 其余嵌套分组（如「硬件设计」）未带 --section 类，因此正常显示箭头、可折叠。
- * 本文件仅覆盖激活分区的两条规则，使分区标题与嵌套分组行为一致：
- *   - 显示折叠箭头
- *   - 恢复点击折叠
- * 非激活状态本来就是普通嵌套项（带 --nested），箭头本就可见，不受此文件影响。
+ * 背景：
+ *  - 关闭 navigation.sections 后，非激活分组变回 md-nav__item--nested，
+ *    自带折叠箭头、默认可折叠 —— 这是期望行为。
+ *  - 但 Material 仍会给「当前所在分组」的祖先 <li> 加上
+ *    md-nav__item--section 类，并用 CSS
+ *      .md-nav__item--section > .md-nav__link > [for] { display:none }
+ *    把它的折叠箭头（<label for=__nav_x>）藏掉，导致该分组点不开/收不回。
+ *  - 这里用 !important 强制该箭头可见且可点击，实现「全部可折叠」。
+ *
+ * 另外：关掉 navigation.sections 后，分组标题失去了原生 --section 的
+ * 加粗观感，这里用 CSS 还原，保留原有的视觉层级。
  */
-/* 折叠 <label> 是 .md-nav__link.md-nav__container 的子元素（孙节点），
-   故必须用后代选择器（而非直接子选择器）才能命中它 */
-.md-nav__item--section .md-nav__link[for] {
-  display: inline-flex;
-  pointer-events: auto;
+
+/* 1) 强制当前激活分组的折叠箭头可见、可点击（覆盖 Material 的 display:none） */
+.md-nav__item--section .md-nav__link[for],
+.md-nav__item--section > .md-nav__link > [for] {
+  display: inline-flex !important;
+  pointer-events: auto !important;
   cursor: pointer;
+}
+
+/* 2) 还原分组标题加粗（对应原生 --section 的 font-weight:700）。
+ *    直接子 .md-nav__link 即 .md-nav__container（分组标题容器），
+ *    同时覆盖 --nested 与 --section 两种情况。 */
+.md-nav__item--nested > .md-nav__link,
+.md-nav__item--section > .md-nav__link {
+  font-weight: 700;
 }
