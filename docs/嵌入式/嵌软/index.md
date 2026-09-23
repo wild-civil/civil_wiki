@@ -21,6 +21,10 @@ graph LR
 | 沁恒 WCH | CH582M | 🚧 学习中 | RISC-V + BLE 5.3 |
 | Nordic | nRF52840 / nRF5340 | ⏳ 计划中 | ARM Cortex-M + BLE 5.3/5.4 |
 
+## 基础概念
+
+- [IAP 与固件升级基础](IAP与固件升级基础.md) — IAP/ISP/OTA 区别、Bootloader+App 架构、跳转流程、校验安全、CH582M 与 STM32H743 实战对照
+
 ## 笔记目录
 
 - [CH582M 特性与概览](BLE%20MCU&SOC/WCH/CH58(2)3M/CH582M%20特性与概览.md) — 核心规格、外设速查、系列选型对比

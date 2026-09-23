@@ -212,6 +212,7 @@ nav:
                   - AD24 多层板实操: EDA/Altium Designer/AD24 多层板实操.md
       - 嵌软:
           - 嵌入式/嵌软/index.md
+          - IAP 与固件升级基础: 嵌入式/嵌软/IAP与固件升级基础.md
           - "BLE MCU&SOC":
               - 嵌入式/嵌软/BLE MCU&SOC/index.md
               - WCH:
