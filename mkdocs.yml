@@ -211,17 +211,17 @@ nav:
                   - 快捷键速查: EDA/Altium Designer/快捷键速查.md
                   - AD24 多层板实操: EDA/Altium Designer/AD24 多层板实操.md
       - 嵌软:
-          - 硬件与半导体/嵌入式开发/index.md
+          - 嵌入式/嵌软/index.md
           - "BLE MCU&SOC":
-              - 硬件与半导体/嵌入式开发/BLE MCU&SOC/index.md
+              - 嵌入式/嵌软/BLE MCU&SOC/index.md
               - WCH:
-                  - 硬件与半导体/嵌入式开发/BLE MCU&SOC/WCH/index.md
+                  - 嵌入式/嵌软/BLE MCU&SOC/WCH/index.md
                   - "CH58(2)3M":
-                      - 硬件与半导体/嵌入式开发/BLE MCU&SOC/WCH/CH58(2)3M/index.md
-                      - 硬件与半导体/嵌入式开发/BLE MCU&SOC/WCH/CH58(2)3M/CH582M 特性与概览.md
-                      - 硬件与半导体/嵌入式开发/BLE MCU&SOC/WCH/CH58(2)3M/CH582M Flash 存储与 SNV 详解.md
-                      - 硬件与半导体/嵌入式开发/BLE MCU&SOC/WCH/CH58(2)3M/CH582M DataFlash 地址偏移实践.md
-                      - 硬件与半导体/嵌入式开发/BLE MCU&SOC/WCH/CH58(2)3M/CH582M 低功耗与BLE唤醒.md
+                      - 嵌入式/嵌软/BLE MCU&SOC/WCH/CH58(2)3M/index.md
+                      - 嵌入式/嵌软/BLE MCU&SOC/WCH/CH58(2)3M/CH582M 特性与概览.md
+                      - 嵌入式/嵌软/BLE MCU&SOC/WCH/CH58(2)3M/CH582M Flash 存储与 SNV 详解.md
+                      - 嵌入式/嵌软/BLE MCU&SOC/WCH/CH58(2)3M/CH582M DataFlash 地址偏移实践.md
+                      - 嵌入式/嵌软/BLE MCU&SOC/WCH/CH58(2)3M/CH582M 低功耗与BLE唤醒.md
   - 机械与动力:
       - 机械与动力/index.md
       - 发动机二冲程与四冲程: 机械与动力/发动机-二冲程与四冲程.md
