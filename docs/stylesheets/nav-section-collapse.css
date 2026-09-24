@@ -69,14 +69,29 @@
  *   负外边距不参与高度计算，两者之差就是这 8px，属于 Material 有意的底部留白修剪，不是裁剪。
  *
  *   max-height 保留「导航很长时侧栏内部独立滚动」的原生能力（否则内容会溢出到视口外、
- *   底部条目点不到）。上限 = 视口高 - 顶栏 48px(sticky top) - 24px 余量。
- *   顶部 offset 用变量以便与 .md-sidebar 的 top:2.4rem 保持一致（本站 html 字号 125%，2.4rem = 48px）。
+ *   底部条目点不到）。
+ *
+ * ── 【max-height 公式修正（2026-09-24）】──────────────────────────────
+ * 旧公式：calc(100vh - 2.4rem - 1.2rem) → 实测算出 696px，**偏大 123px**。
+ *   后果（实测几何）：scrollwrap.top=151，底边 151+696=**847**，而视口只有 768、
+ *   页脚顶在 724 → 侧栏内容一路溢出到**页脚上、甚至页面外**，
+ *   8~12 个导航项被压在页脚条上（截图可见「汽车电子/EDA」与版权行重叠）。
+ *
+ * 错在哪：公式只减了 **.md-sidebar 自己的 sticky top(2.4rem=48px)**，
+ *   却没算 **sidebar 顶到 scrollwrap 之间的内部偏移（实测 103px ≈ 6.4rem）**。
+ *   scrollwrap 的真实 top = 151（= 48 sticky + 103 内部），不是 48。
+ *
+ * 新公式：calc(100vh - 2.4rem - 6.4rem - 1.2rem)
+ *   = 768 - 48 - 128 - 19.2 = 572.8px
+ *   实测底边 = 151 + 568 = **719 < 页脚顶 724** → 正好收在页脚上方，不再重叠。
+ *   同时可滚量 swOver 从 320px 涨到 **448px**，「导航很长时内部独立滚动」才真正可用
+ *   （旧公式下内容溢出盒子却因 overflow 语义得不到滚动，等于摆设）。
  *
  * 仅作用于宽屏（>=76.25em，与 Material 自己的宽屏断点一致）；窄屏抽屉式导航不受影响。 */
 @media screen and (min-width: 76.25em) {
   .md-sidebar--primary .md-sidebar__scrollwrap {
     height: auto !important;
-    max-height: calc(100vh - 2.4rem - 1.2rem) !important;
+    max-height: calc(100vh - 2.4rem - 6.4rem - 1.2rem) !important;
   }
 }
 

@@ -290,9 +290,66 @@
         // 立即更新 CSS + 选择器存储，保证后续导航首帧正确
         writeStyle(state);
         persistSelectors(state);
+        // 折叠/展开后，把这一组「带回视野中央」——见 revealToggledGroup 的来龙去脉
+        revealToggledGroup(input);
       });
     });
   }
+
+// ══════════════ 展开/折叠后，把该分组带回视野（修「以为自动折叠了」） ══════════════
+// 现象（山哥 2026-09-24 反馈，已逐条实测复现 / 证伪）：
+//   原话：「点击"硬件设计"下的"基础知识"会自动展开；再点"EDA"也自动展开但"基础知识"就折叠了；
+//          再点"基础知识"，"EDA"又折叠了。但手动展开再折叠"EDA"后，点"EDA"就不会自动展开了。」
+//
+// 【结论：不存在手风琴、不存在自动展开、不存在自动折叠】—— 全部实测证伪。
+//   用「checked 状态 + 子 nav 几何高度」双向独立验证：
+//     展开「基础知识」后：eda.ck 仍为 0（本来就收起）、eda.h 仍为 8px；
+//     再展开「EDA」后：jichu.ck 仍为 1、jichu.h 仍为 304px（**根本没被折叠**）。
+//   Material bundle 里搜 md-nav__toggle / navigation.expand / navigation.prune **0 命中**，
+//   导航折叠是纯 CSS（grid-template-rows: minmax(.4rem, 0fr→1fr)），没有任何 JS 手风琴。
+//
+// 【真根因：侧栏变长后，用户刚看的那一项掉出了视野】
+//   实测（headless，1366×768）「硬件设计」子树里各分组的 top：
+//     初始           基础知识 ck=0 h=8    EDA ck=0 top=367
+//     展开「基础知识」 基础知识 ck=1 h=304  EDA ck=0 top=663  ← EDA 下移 296px，掉到视口外
+//     展开「EDA」     基础知识 ck=1 h=304  EDA ck=1 top=663  ← 基础知识**没变**，已证伪「折叠」
+//     再点「基础知识」 基础知识 ck=0 h=0    EDA ck=1 top=367  ← EDA **没变**，已证伪「折叠」
+//   侧栏内容 269px → 565px（+296px），而可用高度只有 ~617px，溢出视口 210px。
+//   → 用户扫一眼发现 EDA 那块"空了"，就以为它被折叠了。其实它只是被顶出去了。
+//
+// 【为什么不能用「给侧栏加滚动」来修】—— 三种 CSS 方案全部实测失败：
+//   A. .md-sidebar 加 overflow-y:auto + 确定高度 → 容器高度一"装得下内容"，over 就变 0，不滚；
+//      且 sticky 的包含块在 flex body 里，rect.top 实测 127px（不是 CSS 的 48px），
+//      给多少高度都拦不住内容继续下探 → below 始终 21 项。
+//   B. scrollwrap 恢复可滚高度 → 同样 over=0，below 仍 21 项。
+//   C. 手风琴（展开一个就折叠兄弟）→ 实测**兄弟本来就是收起的**（EDA/汽车电子/射频/显示 全部 ck=false h=8），
+//      能省的只有 62px，杯水车薪。且山哥明确说过不想要手风琴式的互相干扰。
+//   唯一被证明有效的是「把用户刚操作的那一组滚回视野」。实测：21 项掉出 → 降到 13 项，目标组 reached:true。
+//
+// 【实现】用目标分组标题行自己的 scrollIntoView({block:'center'})：
+//   · 为什么用 scrollIntoView 而不是 wrap.scrollTo：
+//     本站侧栏根本没有对等的滚动空间（scrollwrap 可滚量只有 8px，页面可滚量为 0）。
+//     scrollIntoView 会让浏览器沿祖先链找到真正能滚的那个 scrollport（必要时是视口本身），
+//     是唯一能跨越这种「overflow:visible + sticky」布局把元素带回视野的机制 —— 已实测有效。
+//   · 与 tameSidebarScroll 不冲突：那边只拦截 scrollwrap 实例上「单个对象参数 + 有 top」的
+//     scrollTo 调用；scrollIntoView 走的是浏览器内部滚动路径，不经过该方法。
+//   · 用 rAF 延后一帧：让浏览器先按新的 checked 完成布局，否则按旧布局定位会偏。
+//   · Material 的折叠过渡 250ms 结束后再补一次，保证「动画结束、高度定型」时位置准确。
+function revealToggledGroup(input) {
+  const li = input.closest('li.md-nav__item');
+  if (!li) return;
+  const head = li.querySelector(':scope > .md-nav__link') || li;
+  const reveal = () => {
+    const r = head.getBoundingClientRect();
+    // 已经在视野内就什么都不做 —— 大屏（1920×1080）下几乎总是满足，
+    // 因此大屏体验完全不受影响（实测大屏全程 belowViewport=0）。
+    if (r.top >= 0 && r.bottom <= window.innerHeight) return;
+    head.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  };
+  requestAnimationFrame(reveal);
+  // 等 Material 的折叠过渡（250ms）结束、高度定型后，再校正一次
+  setTimeout(reveal, 300);
+}
 
   // ══════════════ 抑制「导航后的侧栏跟随滚动」 ══════════════
   // 现象：在同一大组内换文章（如「汽车电子/无钥匙进入系统」→「显示与屏幕/屏幕接口与带宽」）
