@@ -1,5 +1,27 @@
-// nav_fold_memory.js —— 记住用户在左侧导航里手动展开/收起的「分组」，
-// 直到用户切换到别的大组（顶部 tab / 顶层分类）才恢复默认。
+// nav_fold_memory.js —— 记住用户在左侧导航里手动展开/收起的「分组」，全站共享一份。
+//
+// ══════════════ 关于「记忆范围」的重大修正（2026-09-24）══════════════
+// 【曾经的错误设计】记忆按「URL 首段」分区，并配了「切到别的大组就恢复默认」的行为。
+//   前提假设是「docs 顶层目录名 == nav 顶层分组名」。这个假设在**多入口**站点上不成立。
+//
+// 【实测证据（headless 探针）】本站的侧栏里，**同一个 <li>** 被判成了多个分区：
+//     「硬件设计与半导体」这一组，在侧栏里同时以三种前缀出现——
+//         /硬件与半导体/硬件设计/…            （45 条，从「嵌硬」分组进入）
+//         /EDA/嘉立创EDA/…                    （14 条，从 EDA 分组进入）
+//         /嵌入式/嵌硬 · 硬件与半导体/EDA/…    （  9 条，从顶部 tab 进入）
+//   三者指向同一份 HTML（mkdocs 按「从哪个入口点进来」生成不同相对路径），
+//   但它们**首段不同** → 同一个分组的展开状态被劈进 navfold:硬件与半导体 / navfold:EDA /
+//   navfold:嵌入式 三个互不相干的 key 里。
+//   用户实际感受就是：展开「硬件设计」→ 点「显示与屏幕」的文章（URL 首段变
+//   「硬件与半导体」→ 读到空 key）→ 硬件设计莫名收起；再点 EDA 的文章
+//   （URL 首段变回「嵌入式」→ 读到记忆）→ 硬件设计又展开。
+//
+// 【现状设计】记忆**全站共享一份**，key 是常量，与 URL 完全无关。
+//   · 手风琴的分组名（组内第 i 个分组）本身就是全站唯一的，天然无歧义；
+//   · key 恒定 → 「多入口导致记忆分裂」这类 bug 从结构上不可能再发生；
+//   · 首帧内联脚本也因此不再需要 decodeURIComponent 算分区（它本来就没有 DOM 可依赖）。
+//   代价：不再「切换顶层大组自动重置」。实测本站各顶层大组下的分组名互不重叠，
+//   故该差异在实际使用中无可感影响。若将来确需重置，按大组过滤即可，无需改 key 结构。
 //
 // ══════════════ 为什么要有「CSS 提前量」这一层 ══════════════
 // 最初只做了 JS 版：在 Material 渲染完之后用 document$ 回调覆写 checked。
@@ -37,23 +59,14 @@
     return '/';
   }
 
-  // ── 顶层大组标识（= 记忆分区 key）───────────────────────
-  // 关键：**key 必须能在「首帧前」算出来**，否则无法消除闪烁。
-  // 原因：消除闪烁靠的是 overrides/main.html 里内联的 <style> 提前量脚本，
-  //       而那个脚本在 <head> 里同步执行 —— 此时 DOM 还没解析，拿不到 tab 文字。
-  //       唯一两边都能算、且算得出同一个值的东西 = **URL 首段**。
-  // 事实支撑：docs/ 下的顶层目录名与 nav 顶层分组名一一对应
-  //       （工作与项目 / 技术与编程 / 嵌入式 / 阅读与学习 / 生活与兴趣 / 杂记），
-  //       所以「URL 首段」== 运行时看到的「顶层分组名」。
-  // 细节：pathname 里是非 ASCII 时是百分号编码的，须 decodeURIComponent 归一。
-  // 边界：站点根页（README.md → `/`）没有首段 → 'home'，单页无分组，记忆本就不参与。
-  function currentTab() {
-    const segs = location.pathname.split('/').filter(Boolean);
-    return segs.length ? decodeURIComponent(segs[0]) : 'home';
-  }
-
+  // ── 记忆键：全站唯一，与 URL 无关 ───────────────────────
+  // 历史教训：曾用「URL 首段」当分区键（decodeURIComponent(location.pathname.split('/')[0])），
+  //   在**多入口**站点上同一分组会以不同前缀出现，导致记忆被劈成多份（详见文件头【重大修正】）。
+  // 现在改为常量：整个站点共用一份分组展开状态。
+  //   好处之一：首帧内联脚本（overrides/main.html）也能用同一个常量，不必依赖 DOM 或 URL。
+  const TAB = 'site';
   function storeKey() {
-    return STORE_PREFIX + currentTab();
+    return STORE_PREFIX + TAB;
   }
 
   function loadState() {
@@ -210,7 +223,7 @@
   // 因此这里把走树得到的**选择器字符串**存下来，首帧原样重放，零算术。
   const SEL_PREFIX = 'navfold-sel:';
   function selStoreKey() {
-    return SEL_PREFIX + currentTab();
+    return SEL_PREFIX + TAB;
   }
   function loadSelMap() {
     try {
