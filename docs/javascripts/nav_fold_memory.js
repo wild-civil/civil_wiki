@@ -82,21 +82,50 @@
     return 'n' + parts.join('.');
   }
 
-  // 结构键 → CSS 结构选择器（与页面深度无关）
-  //   n4.2 → 「左栏顶层 ul 的第 4 个 li」>「其 nav 里 ul 的第 2 个 li」
-  // ⚠️ 第一层必须用 `.md-sidebar--primary nav.md-nav--primary > ul.md-nav__list`
-  //    直接子选择器锚定。早期写成 `.md-sidebar--primary ul.md-nav__list`（无 >），
-  //    会命中 sidebar 里**所有**层级的 ul → 一条规则匹配到 5 个跨分组的 li，
-  //    既误伤别的大组、又让「首帧提前量」形同虚设。
-  // 用 :nth-of-type 而非 :nth-child：nav 列表里会穿插 label.md-nav__title 等非 li 节点。
-  function keyToSelector(key) {
-    const parts = key.replace(/^n/, '').split('.').filter(Boolean);
-    if (!parts.length) return null;
+  // ══════════════ 关于「元素寻址」的重大修正（2026-09-24）══════════════
+  // 【历史 bug】早期版本把 __nav_N 的编号直接当作 DOM 的 :nth-of-type 序号来拼选择器：
+  //     n4.1.2 → ... > li.md-nav__item:nth-of-type(4) > nav > ul > li:nth-of-type(1)
+  //                                          > nav > ul > li:nth-of-type(2)
+  //   **这是错的**。Material 的 __nav_N 编号 = nav 树里的「节点序号」（从 1 开始，
+  //   把「分组自己的落地页」也算作一个子节点），而 DOM 里那个落地页并不会渲染成
+  //   一个独立的带 toggle 的 <li>（它被吸收为分组自身的链接）。
+  //   实测（本站「嵌入式 > 嵌硬」下）：
+  //         __nav_4_1_2  → 内部 ul 的第 1 个 li   （显示与屏幕）
+  //         __nav_4_1_3  → 内部 ul 的第 2 个 li   （射频与天线）
+  //   于是 :nth-of-type(2) 命中的是「射频与天线」而不是「显示与屏幕」——
+  //   整套「首帧提前量」CSS 一直在折叠/隐藏**错误的组**（且静默无报错）。
+  //
+  // 【正解】不再用编号做算术。改为：**运行时遍历真实 DOM，逐级记录 :nth-of-type**，
+  //   得到「验证过的选择器」，然后把这个选择器本身写进 CSS。
+  //   选择器与页面深度无关（它就是真实结构路径），所以跨页仍然稳定。
+  //   代价：首次记录需要 DOM 可用（apply() 时必然满足）。
+  //
+  //   buildSelectorFor(li)：从某分组的 <li> 向上走到 sidebar 根，逐级数 :nth-of-type。
+  function buildSelectorFor(li) {
+    if (!li) return null;
+    const anchor = document.querySelector('.md-sidebar--primary nav.md-nav--primary');
+    if (!anchor || !anchor.contains(li)) return null;
+    const chain = [];
+    let cur = li;
+    while (cur && cur !== anchor) {
+      if (cur.tagName === 'LI' && cur.classList.contains('md-nav__item')) {
+        const parent = cur.parentElement;
+        let n = 0;
+        for (const sib of parent.children) {
+          if (sib.tagName !== 'LI' || !sib.classList.contains('md-nav__item')) continue;
+          n += 1;
+          if (sib === cur) break;
+        }
+        chain.unshift(n);
+      }
+      cur = cur.parentElement;
+    }
+    if (!chain.length) return null;
+    // 顶层用「nav.md-nav--primary 的 ul.md-nav__list」锚定，其余层用「父 li > nav > ul」
     let sel = '.md-sidebar--primary nav.md-nav--primary > ul.md-nav__list';
-    parts.forEach((p, i) => {
-      const n = parseInt(p, 10);
-      if (!n || n < 1) return;
-      sel += (i === 0 ? '' : ' > nav.md-nav > ul.md-nav__list') + ` > li.md-nav__item:nth-of-type(${n})`;
+    chain.forEach((n, i) => {
+      sel += (i === 0 ? '' : ' > nav.md-nav > ul.md-nav__list') +
+             ` > li.md-nav__item:nth-of-type(${n})`;
     });
     return sel;
   }
@@ -136,10 +165,17 @@
     return key.split('.')[0] === memo.split('.')[0];
   }
 
-  // ── 把「收起」的键写成 CSS（这是消除闪烁的关键）──────────
-  // 每条规则折叠「该分组的嵌套 nav」，并同步隐藏它的折叠箭头状态由原生 checkbox 负责。
-  // 注意：只写「收起」的规则。展开是 Material 默认行为，不需要 CSS 干预——
-  //       少写一半规则，也避免和 Material 的 active-path 展开逻辑打架。
+  // ── 把记忆写成 CSS（这是消除闪烁的关键）────────────────
+  // 两个方向都要写：
+  //   · 收起（state=false）：display:none，让首帧就不显示这个分组
+  //   · 展开（state=true） ：强制展开 + transition:none。
+  //     为什么必须写「展开」？非激活路径上的分组在 Material 里默认收起；
+  //     若首帧脚本不表态，观感就是「先收起、再被 JS 改 checked 后动画展开」——
+  //     那 .25s 过渡正是山哥看到的「折叠再展开」。transition:none 用于掐掉它。
+  // 属性集取自实测（桌面 grid 布局 / 窄屏 flex 布局，两者通用）：
+  //   grid-template-rows → 桌面展开所需；transform:none → 窄屏展开所需；互不干扰。
+  // 选择器一律由 buildSelectorFor() 从真实 DOM 走出（见上文【重大修正】），
+  // 不再对 __nav_N 编号做任何算术。
   function writeStyle(state) {
     let el = document.getElementById(STYLE_ID);
     if (!el) {
@@ -148,19 +184,64 @@
       document.head.appendChild(el);
     }
     const rules = [];
-    Object.keys(state).forEach((k) => {
-      if (state[k] === false) {
-        const sel = keyToSelector(k);
-        if (sel) rules.push(`${sel} > nav.md-nav { display: none !important; }`);
+    navToggles().forEach((input) => {
+      const key = normalizeId(input.id);
+      if (!key || !Object.prototype.hasOwnProperty.call(state, key)) return;
+      if (!inSameTopGroup(input, key)) return;
+      const li = input.closest('li.md-nav__item');
+      const sel = buildSelectorFor(li);
+      if (!sel) return;
+      if (state[key] === false) {
+        rules.push(`${sel} > nav.md-nav { display: none !important; }`);
+      } else {
+        rules.push(
+          `${sel} > nav.md-nav { grid-template-rows: minmax(.4rem, 1fr) !important;` +
+          ` opacity: 1 !important; visibility: visible !important;` +
+          ` transform: none !important; transition: none !important; }`
+        );
+        rules.push(`${sel} > nav.md-nav > .md-nav__list { overflow: visible !important; }`);
       }
     });
     el.textContent = rules.join('\n');
   }
 
-  // 结构键 → 归一化前缀，用于「CSS 里的规则是否属于当前大组」判断
-  function stateKeysForCurrentTab() {
-    const state = loadState();
-    return state;
+  // ── 持久化「验证过的选择器」，供 overrides/main.html 首帧脚本重放 ────────
+  // 首帧脚本在 <head> 同步执行，DOM 尚不存在，无法现场走树；
+  // 因此这里把走树得到的**选择器字符串**存下来，首帧原样重放，零算术。
+  const SEL_PREFIX = 'navfold-sel:';
+  function selStoreKey() {
+    return SEL_PREFIX + currentTab();
+  }
+  function loadSelMap() {
+    try {
+      return JSON.parse(localStorage.getItem(selStoreKey()) || '{}');
+    } catch (e) {
+      return {};
+    }
+  }
+  function saveSelMap(m) {
+    try {
+      localStorage.setItem(selStoreKey(), JSON.stringify(m));
+    } catch (e) {
+      /* 静默降级 */
+    }
+  }
+  function persistSelectors(state) {
+    const map = loadSelMap();
+    let dirty = false;
+    navToggles().forEach((input) => {
+      const key = normalizeId(input.id);
+      if (!key || !Object.prototype.hasOwnProperty.call(state, key)) return;
+      if (!inSameTopGroup(input, key)) return;
+      const li = input.closest('li.md-nav__item');
+      const sel = buildSelectorFor(li);
+      if (!sel) return;
+      if (map[key] !== sel) {
+        map[key] = sel;
+        dirty = true;
+      }
+    });
+    if (dirty) saveSelMap(map);
   }
 
   function apply() {
@@ -178,6 +259,8 @@
     });
     // 关键：把记忆同步成 CSS，供「下次导航时首帧直接正确」
     writeStyle(state);
+    // 并把「本次走树得到的、已验证的选择器」持久化，供 <head> 首帧脚本原样重放
+    persistSelectors(state);
   }
 
   function bind() {
@@ -191,8 +274,9 @@
         const state = loadState();
         state[key] = input.checked;
         saveState(state);
-        // 立即更新 CSS，保证后续导航首帧正确
+        // 立即更新 CSS + 选择器存储，保证后续导航首帧正确
         writeStyle(state);
+        persistSelectors(state);
       });
     });
   }
