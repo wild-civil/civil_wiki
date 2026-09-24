@@ -4,6 +4,49 @@
   {{ super() }}
   <link rel="preload" href="{{ 'stylesheets/NotoSansSC-UI-subset.woff' | url }}" as="font" type="font/woff" crossorigin>
 
+  {# ── 导航折叠记忆：首帧提前量（内联，同步执行于 <head>）─────────────────
+     为什么必须内联、必须放在 head：
+       常规做法是在 extra_javascript 里用 JS 在 document$ 回调中改 checked，
+       但 extra_javascript 是 defer 加载的 —— 实测要 180ms 才执行，
+       而 Material 首帧在 ~110ms 就画完了。结果用户会看到「先展开、再收起」的抖动。
+       只有**内联在 <head> 里同步执行**的脚本，才能赶在首次绘制之前生效。
+     它做什么：读 localStorage 里记录的「已收起的分组」，把折叠规则写成 CSS 注入。
+       选择器用结构路径（:nth-of-type 逐级定位）而非 #__nav_N —— 后者会随页面深度平移。
+     键的取法：URL 首段（decodeURIComponent）。这与 nav_fold_memory.js 的 key 规则一致；
+       docs 下的顶层目录名与 nav 顶层分组名一一对应，故两边算出来是同一个 key。
+     注：这里只处理「收起」，展开是 Material 默认行为；state 为空时本脚本不产生任何规则。
+  #}
+  <script>
+  (function () {
+    try {
+      var segs = location.pathname.split('/').filter(Boolean);
+      var seg = segs.length ? decodeURIComponent(segs[0]) : 'home';
+      var raw = localStorage.getItem('navfold:' + seg);
+      if (!raw) return;
+      var state = JSON.parse(raw) || {};
+      var out = [];
+      Object.keys(state).forEach(function (k) {
+        if (state[k] !== false) return;
+        var parts = k.replace(/^n/, '').split('.').filter(Boolean);
+        if (!parts.length) return;
+        var sel = '.md-sidebar--primary nav.md-nav--primary > ul.md-nav__list';
+        for (var i = 0; i < parts.length; i++) {
+          var n = parseInt(parts[i], 10);
+          if (!n || n < 1) return;
+          sel += (i === 0 ? '' : ' > nav.md-nav > ul.md-nav__list') +
+                 ' > li.md-nav__item:nth-of-type(' + n + ')';
+        }
+        out.push(sel + ' > nav.md-nav { display: none !important; }');
+      });
+      if (!out.length) return;
+      var st = document.createElement('style');
+      st.id = 'nav-fold-memory-style';
+      st.textContent = out.join('\n');
+      (document.head || document.documentElement).appendChild(st);
+    } catch (e) { /* localStorage 不可用 / JSON 损坏 → 静默降级，交给主脚本 */ }
+  })();
+  </script>
+
   {% if config.site_url and page %}
   {# Open Graph / Twitter Card 社交分享卡片（博客改造 item 8）#}
   <meta property="og:type" content="website">
