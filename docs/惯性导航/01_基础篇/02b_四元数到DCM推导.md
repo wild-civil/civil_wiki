@@ -14,27 +14,36 @@ $$\text{轴角}(\mathbf u,\theta) \;\xrightarrow{\text{四元数编码}}\; \bold
 
 ## 1. 轴角 ↔ 四元数
 
-单位四元数与"单位轴 $\mathbf u=(u_x,u_y,u_z)$、转角 $\theta$"的对应：
+设单位四元数为：
 
-$$q_0=\cos\frac{\theta}{2},\qquad (q_1,q_2,q_3)=\sin\frac{\theta}{2}\,\mathbf u$$
+
+$$q = q_0 + q_1 i + q_2 j + q_3 k, \quad \|q\| = 1$$
+
+
+它与旋转轴 $\mathbf{u} = (u_x, u_y, u_z)$（单位向量）和旋转角 $\theta$ 的关系为:
+
+$$q_0 = \cos\frac{\theta}{2}, \quad 
+\begin{pmatrix} q_1 \\ q_2 \\ q_3 \end{pmatrix} = \sin\frac{\theta}{2} \begin{pmatrix} u_x \\ u_y \\ u_z \end{pmatrix}$$
 
 反过来 $\mathbf u=\dfrac{(q_1,q_2,q_3)}{\sin(\theta/2)}$，且 $\sin\frac{\theta}{2}=\sqrt{q_1^2+q_2^2+q_3^2}$（因 $\|\boldsymbol q\|=1$）。
 
 ## 2. Rodrigues 旋转公式（轴角 → 矩阵）
 
-绕单位轴 $\mathbf u$ 转 $\theta$ 的旋转矩阵：
+对于绕单位轴 $\mathbf{u}$ 旋转 $\theta$ 角度的旋转，其旋转矩阵为：
 
 $$R = I + \sin\theta\,K + (1-\cos\theta)\,K^2$$
 
-其中 $K$ 是 $\mathbf u$ 的叉积（反对称）矩阵：
+其中 $I$ 是 $3\times3$ 单位矩阵，$K$ 是 $\mathbf{u}$ 的叉积矩阵（反对称阵）：
 
-$$K=\begin{bmatrix}0&-u_z&u_y\\ u_z&0&-u_x\\ -u_y&u_x&0\end{bmatrix},\qquad K^2=\mathbf u\mathbf u^T-I\quad(\|\mathbf u\|=1)$$
+$$K=\begin{bmatrix}0&-u_z&u_y\\ u_z&0&-u_x\\ -u_y&u_x&0\end{bmatrix}$$
+
+并且有性质 $K^2 = \mathbf{u}\mathbf{u}^T - I$（因为 $\|\mathbf{u}\|=1$）。
 
 ## 3. 半角代换：把一切都换成 $q$
 
 目标：消去 $\theta$ 和 $\mathbf u$，只留四元数分量。
 
-- $\sin\theta = 2\sin\frac{\theta}{2}\cos\frac{\theta}{2} = 2q_0\,\sqrt{q_1^2+q_2^2+q_3^2}$
+- $$\sin\theta = 2\sin\frac{\theta}{2}\cos\frac{\theta}{2} = 2 q_0 \sqrt{q_1^2+q_2^2+q_3^2} \quad (\text{注意 } \sqrt{q_1^2+q_2^2+q_3^2} = \sin\frac{\theta}{2})$$
 - $\mathbf u = \dfrac{(q_1,q_2,q_3)}{\sin(\theta/2)}$
 
 **先处理 $\sin\theta\,K$**：把 $\sin\theta$ 里的 $\sin\frac{\theta}{2}$ 和 $\mathbf u$ 分母里的 $\sin\frac{\theta}{2}$ 约掉：

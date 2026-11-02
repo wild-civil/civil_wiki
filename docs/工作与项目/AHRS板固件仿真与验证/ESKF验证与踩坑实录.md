@@ -97,3 +97,5 @@ Phase 2 用 MEX/Simulink 把固件 C 包起来与 MATLAB 参考逐拍对拍，�
 ---
 
 相关：[验证矩阵与真实数据回放](验证矩阵与真实数据回放.md) · [MATLAB ESKF 算法验证（Phase 1）](MATLAB_ESKF算法验证.md) · [PC 端 SIL 实战](SIL_PC实战.md)
+
+→ 下一篇：[VTOL 降落几何与轨迹结尾（为什么合成轨迹"机头朝天"）](VTOL降落几何与轨迹结尾.md)

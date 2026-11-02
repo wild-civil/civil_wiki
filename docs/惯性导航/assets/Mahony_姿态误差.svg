@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 320" width="680" height="320" font-family="-apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif">
+  <style>
+    .ax   { stroke-width: 2; fill: none; }
+    .vec  { stroke-width: 3.5; fill: none; }
+    .lbl  { font-size: 16px; font-weight: 700; }
+    .sub  { font-size: 13px; fill: #555; }
+    .dash { stroke-width: 1.4; stroke-dasharray: 4 3; fill: none; }
+    .title{ font-size: 15px; font-weight: 700; fill: #222; }
+    .box  { fill: #f7f9fe; stroke: #ccd2dc; }
+  </style>
+
+  <defs>
+    <marker id="ah-red"   viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#d32f2f"/></marker>
+    <marker id="ah-blue"  viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#1565c0"/></marker>
+    <marker id="ah-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#2e7d32"/></marker>
+  </defs>
+
+  <!-- ===== 左：Mahony 误差 = 叉积 ===== -->
+  <text x="24" y="30" class="title">① 叉积＝姿态误差（角度 + 旋转轴）</text>
+
+  <g>
+    <circle cx="180" cy="220" r="3.5" fill="#333"/>
+    <!-- 估计重力方向 â（红） -->
+    <line x1="180" y1="220" x2="266" y2="134" class="vec" stroke="#d32f2f" marker-end="url(#ah-red)"/>
+    <!-- 实测重力方向 b̂（蓝，角度稍偏） -->
+    <line x1="180" y1="220" x2="306" y2="152" class="vec" stroke="#1565c0" marker-end="url(#ah-blue)"/>
+    <!-- 旋转轴 a×b：垂直纸面向外 ⊙ -->
+    <circle cx="180" cy="250" r="7" stroke="#2e7d32" stroke-width="3" fill="none"/>
+    <circle cx="180" cy="250" r="2.5" fill="#2e7d32"/>
+    <text x="192" y="254" class="lbl" fill="#2e7d32">a×b（旋转轴）</text>
+  </g>
+  <text x="270" y="130" class="lbl" fill="#d32f2f">â（估计）</text>
+  <text x="310" y="148" class="lbl" fill="#1565c0">b̂（实测）</text>
+  <text x="80"  y="200" class="sub" fill="#333">θ（小角）</text>
+  <path d="M 212 220 A 32 32 0 0 1 219 202" class="dash" stroke="#888"/>
+  <line x1="232" y1="220" x2="262" y2="200" class="dash" stroke="#888"/>
+
+  <text x="24" y="300" class="sub">|â×b̂| = sinθ ≈ θ ⇒ 模长 = 误差角；方向 = 旋转轴。绕它转 θ 就把 â 掰向 b̂。</text>
+
+  <!-- ===== 右：为什么不用点积——敏感度对比 ===== -->
+  <text x="390" y="30" class="title">② θ=0.01 rad 时"谁看得见误差"</text>
+
+  <!-- 基线 -->
+  <line x1="412" y1="120" x2="640" y2="120" class="ax" stroke="#999"/>
+
+  <!-- 点积：cos≈1-θ²/2，变化极小 -->
+  <text x="412" y="102" class="sub" fill="#555">点积 cosθ ≈ 1 − θ²/2</text>
+  <rect x="412" y="112" width="3" height="8" fill="#e5b0b0"/>
+  <text x="430" y="130" class="sub" fill="#c0392b">变化 ≈ 5×10⁻⁵（几乎分不清）</text>
+
+  <!-- 叉积：sinθ≈θ，线性 -->
+  <text x="412" y="172" class="sub" fill="#555">叉积 sinθ ≈ θ</text>
+  <rect x="412" y="182" width="150" height="10" fill="#2e7d32"/>
+  <text x="430" y="210" class="sub" fill="#2e7d32">变化 ≈ 1×10⁻²（线性，立现）</text>
+
+  <text x="390" y="300" class="sub">误差信号要"看得见"：叉积在 0° 附近斜率是 1，点积斜率是 0 —— 所以 Mahony 用叉积。</text>
+</svg>

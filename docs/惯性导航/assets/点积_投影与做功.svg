@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 320" width="680" height="320" font-family="-apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif">
+  <style>
+    .ax   { stroke-width: 2; fill: none; }
+    .vec  { stroke-width: 3.5; fill: none; }
+    .lbl  { font-size: 16px; font-weight: 700; }
+    .sub  { font-size: 13px; fill: #555; }
+    .dash { stroke-width: 1.4; stroke-dasharray: 4 3; fill: none; }
+    .title{ font-size: 15px; font-weight: 700; fill: #222; }
+  </style>
+
+  <defs>
+    <marker id="ah-gray"  viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#888"/></marker>
+    <marker id="ah-red"   viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#d32f2f"/></marker>
+    <marker id="ah-blue"  viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#1565c0"/></marker>
+  </defs>
+
+  <!-- ===== 左：投影（影子） ===== -->
+  <text x="24" y="30" class="title">① 点积 = 投影（影子）</text>
+
+  <!-- b 沿基线 -->
+  <line x1="110" y1="260" x2="330" y2="260" class="ax" stroke="#999" marker-end="url(#ah-gray)"/>
+  <line x1="120" y1="260" x2="300" y2="260" class="vec" stroke="#1565c0" marker-end="url(#ah-blue)"/>
+  <text x="304" y="264" class="lbl" fill="#1565c0">b</text>
+
+  <!-- a -->
+  <line x1="120" y1="260" x2="258" y2="120" class="vec" stroke="#d32f2f" marker-end="url(#ah-red)"/>
+  <text x="262" y="114" class="lbl" fill="#d32f2f">a</text>
+
+  <!-- 投影虚线/影 -->
+  <line x1="258" y1="120" x2="258" y2="260" class="dash" stroke="#888"/>
+  <line x1="120" y1="260" x2="258" y2="260" class="vec" stroke="#e57373" stroke-width="6" fill="none" opacity=".55"/>
+  <text x="128" y="282" class="sub" fill="#c0392b">投影 = |a|cosθ（a·b/|b|）</text>
+
+  <!-- 夹角 θ -->
+  <path d="M 156 260 A 36 36 0 0 1 168 234" class="dash" stroke="#888"/>
+  <text x="148" y="234" class="lbl" fill="#333">θ</text>
+
+  <text x="24" y="306" class="sub">a 在 b 方向上的"影子"：方向对得多，贡献就大；垂直时影子为 0。</text>
+
+  <!-- ===== 右：三种方向关系（做功） ===== -->
+  <text x="390" y="30" class="title">② 方向一致性 → 做功的正负</text>
+
+  <!-- 同向 cos=+1 -->
+  <text x="392" y="72" class="sub">同向 cosθ=+1</text>
+  <line x1="392" y1="104" x2="456" y2="104" class="vec" stroke="#2e7d32" marker-end="url(#ah-blue)"/>
+  <path d="M 456 120 L 456 154" class="dash" stroke="#999"/>
+  <line x1="392" y1="156" x2="456" y2="156" class="vec" stroke="#2e7d32" marker-end="url(#ah-blue)"/>
+  <text x="458" y="118" class="sub" fill="#2e7d32">F ∥ s → 正功</text>
+
+  <!-- 垂直 cosθ=0 -->
+  <text x="500" y="72" class="sub">垂直 cosθ=0</text>
+  <line x1="500" y1="104" x2="556" y2="104" class="vec" stroke="#1565c0" marker-end="url(#ah-blue)"/>
+  <line x1="556" y1="104" x2="556" y2="158" class="vec" stroke="#d32f2f" marker-end="url(#ah-red)"/>
+  <text x="560" y="118" class="sub" fill="#c0392b">F ⊥ s → 零功</text>
+
+  <!-- 反向 cosθ=-1 -->
+  <text x="596" y="72" class="sub">反向 cosθ=−1</text>
+  <line x1="596" y1="104" x2="660" y2="104" class="vec" stroke="#d32f2f" marker-end="url(#ah-red)"/>
+  <path d="M 660 120 L 660 154" class="dash" stroke="#999"/>
+  <line x1="596" y1="156" x2="660" y2="156" class="vec" stroke="#1565c0" marker-end="url(#ah-blue)"/>
+  <text x="470" y="118" class="sub" fill="#c0392b">F ⟂ s →</text>
+  <text x="470" y="134" class="sub" fill="#c0392b">负功</text>
+
+  <text x="390" y="300" class="sub">W = F·s = |F||s|cosθ：方向越对做功越多，垂直白费劲（提着箱子水平走）。</text>
+</svg>

@@ -15,6 +15,11 @@ function ins = insupdate(ins, wm, vm, ts)
 %   ⑤ 位置更新         p⁺ = p⁻ + Mpv·(vn⁻+vn⁺)/2·nts  (公式 4.4)
 %   ⑥ 姿态更新         qnb⁺ = rv2q(−wnin·nts) ⊗ qnb⁻ ⊗ rv2q(φm)  (公式 4.5)
 %
+%     陀螺角增量  wm ──→ ①圆锥补偿 ──→ ②标定 ──┐
+%                                            ├──→ ③地球参数 ──→ ④速度更新 ──→ ⑤位置更新
+%    加计速度增量 vm ──→ ①划桨补偿 ──→ ②标定 ──┘                     ↓
+%                                                              ⑥姿态更新 ←─────┘
+%
 % ─── 新手备注 ───────────────────────────────────────────────────────
 %   · ①②是"预处理"（补偿/标定），③是"查表"，④⑤⑥是"积分"；
 %   · ④ = 科普 03 的比力方程 f = a − g（fn 转导航系、加 gcc 得运动
@@ -43,7 +48,7 @@ phim = ins.Kg * phim - ins.eb * nts;            % 角增量标定（公式 4.2�
 dvbm = ins.Ka * dvbm - ins.db * nts;            % 速度增量标定（公式 4.2）
 
 %% ③ 地球参数更新（公式 3.1–3.6）
-eth = earth(ins.pos, ins.vn);               % 曲率半径/wnin/gcc（随位置每步更新）
+eth = earth(ins.pos, ins.vn);               % 曲率半径/wnin/gcc（随位置每步更新）[每步从零重建 earth()，用起点 pos/vn,PSINS是ethupdate() 增量更新，用中点外推 pos01/vn01]
 
 %% ④ 速度更新：比力方程（公式 4.3）
 fn   = qmulv(ins.qnb, dvbm) / nts;          % 比力转导航系（Δv/nts = 平均比力 f）

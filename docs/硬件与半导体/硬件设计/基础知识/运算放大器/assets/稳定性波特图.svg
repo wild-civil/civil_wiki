@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 400" width="100%" role="img">
+  <title>运放环路稳定性：开环增益与 1/β 的交点决定相位裕度</title>
+  <desc>上图为增益波特图：开环增益 A(f) 随频率下降，与水平的 1/β（噪声增益）线相交，交点处环路增益为 1。下图为相位曲线，交点对应的相位与 -180 度的差值即相位裕度，本例约 45 度。</desc>
+
+  <text x="340" y="26" text-anchor="middle" font-family="sans-serif" font-size="14" fill="currentColor">环路稳定性：交点频率决定相位裕度</text>
+
+  <line x1="60" y1="70" x2="620" y2="70" stroke="currentColor" stroke-width="0.5" opacity="0.35"/>
+  <line x1="60" y1="150" x2="620" y2="150" stroke="currentColor" stroke-width="0.5" opacity="0.35"/>
+  <line x1="60" y1="190" x2="620" y2="190" stroke="currentColor" stroke-width="1"/>
+  <line x1="60" y1="50" x2="60" y2="190" stroke="currentColor" stroke-width="1"/>
+  <text x="52" y="74" text-anchor="end" font-family="sans-serif" font-size="10" fill="currentColor">120</text>
+  <text x="52" y="154" text-anchor="end" font-family="sans-serif" font-size="10" fill="currentColor">40</text>
+  <text x="52" y="194" text-anchor="end" font-family="sans-serif" font-size="10" fill="currentColor">0 dB</text>
+  <text x="30" y="120" text-anchor="middle" font-family="sans-serif" font-size="11" fill="currentColor">增益</text>
+
+  <path d="M60,70 H130 L410,150 L550,190" fill="none" stroke="var(--md-primary-fg-color)" stroke-width="2"/>
+  <text x="150" y="60" font-family="sans-serif" font-size="11" fill="var(--md-primary-fg-color)">开环增益 A(f)</text>
+
+  <line x1="60" y1="170" x2="620" y2="170" stroke="currentColor" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="612" y="164" text-anchor="end" font-family="sans-serif" font-size="11" fill="currentColor">1/β（噪声增益）</text>
+
+  <circle cx="480" cy="170" r="4" fill="currentColor"/>
+  <line x1="480" y1="170" x2="480" y2="317" stroke="currentColor" stroke-width="0.75" stroke-dasharray="4 3"/>
+  <text x="492" y="184" font-family="sans-serif" font-size="10" fill="currentColor">交点：环路增益 = 1</text>
+
+  <line x1="60" y1="250" x2="620" y2="250" stroke="currentColor" stroke-width="1"/>
+  <line x1="60" y1="295" x2="620" y2="295" stroke="currentColor" stroke-width="0.5" opacity="0.35"/>
+  <line x1="60" y1="340" x2="620" y2="340" stroke="currentColor" stroke-width="1"/>
+  <line x1="60" y1="240" x2="60" y2="350" stroke="currentColor" stroke-width="1"/>
+  <text x="52" y="254" text-anchor="end" font-family="sans-serif" font-size="10" fill="currentColor">0°</text>
+  <text x="52" y="299" text-anchor="end" font-family="sans-serif" font-size="10" fill="currentColor">-90°</text>
+  <text x="52" y="344" text-anchor="end" font-family="sans-serif" font-size="10" fill="currentColor">-180°</text>
+  <text x="30" y="295" text-anchor="middle" font-family="sans-serif" font-size="11" fill="currentColor">相位</text>
+
+  <path d="M60,250 H130 L410,295 L550,340" fill="none" stroke="var(--md-primary-fg-color)" stroke-width="2"/>
+  <circle cx="480" cy="317" r="4" fill="currentColor"/>
+
+  <line x1="480" y1="317" x2="480" y2="356" stroke="currentColor" stroke-width="0.75"/>
+  <line x1="480" y1="356" x2="560" y2="356" stroke="currentColor" stroke-width="0.75" marker-end="url(#arrow2)"/>
+  <line x1="560" y1="356" x2="560" y2="340" stroke="currentColor" stroke-width="0.75" opacity="0.5"/>
+  <text x="500" y="378" font-family="sans-serif" font-size="11" fill="currentColor">相位裕度 ≈ 45°</text>
+
+  <text x="340" y="396" text-anchor="middle" font-family="sans-serif" font-size="10" fill="currentColor">频率（对数）</text>
+
+  <defs>
+    <marker id="arrow2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+</svg>

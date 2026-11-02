@@ -13,7 +13,7 @@
 </defs>
 
 <!-- 标题 -->
-<text class="th" x="340" y="24" text-anchor="middle" fill="#0C447C">机械编排（Mechanization）：从 IMU 递推出 姿态 → 速度 → 位置</text>
+<text class="th" x="340" y="12" text-anchor="middle" fill="#0C447C">机械编排（Mechanization）：从 IMU 递推出 姿态 → 速度 → 位置</text>
 
 <!-- IMU 输入 -->
 <rect x="40" y="66" width="170" height="62" rx="10" fill="#F6F8FB" stroke="#185FA5" stroke-width="1.6"/>
@@ -28,9 +28,9 @@
 
 <!-- 姿态更新块 -->
 <rect x="303" y="22" width="150" height="56" rx="10" fill="#FBF3F0" stroke="#B5502A" stroke-width="1.6"/>
-<text class="th" x="378" y="46" text-anchor="middle" fill="#B5502A">姿态更新</text>
-<text class="ts" x="378" y="64" text-anchor="middle" font-size="9">q ← q ⊗ rv2q(ω·Δt)</text>
-<text class="ts" x="378" y="78" text-anchor="middle" font-size="9">输出姿态 q / C_b^n</text>
+<text class="th" x="378" y="43" text-anchor="middle" fill="#B5502A">姿态更新</text>
+<text class="ts" x="378" y="60" text-anchor="middle" font-size="9">q ← q ⊗ rv2q(ω·Δt)</text>
+<text class="ts" x="378" y="74" text-anchor="middle" font-size="9">输出姿态 q / C_b^n</text>
 
 <!-- 姿态矩阵下行 -->
 <line x1="378" y1="78" x2="378" y2="136" stroke="#5F5E5A" stroke-width="1.4" marker-end="url(#af)"/>
@@ -38,13 +38,13 @@
 
 <!-- 比力输入 → 变换块 -->
 <line x1="150" y1="128" x2="298" y2="168" stroke="#5F5E5A" stroke-width="1.4" marker-end="url(#af)"/>
-<text class="ts" x="212" y="152" font-size="9">f_b 比力</text>
+<text class="ts" x="200" y="162" font-size="9">f_b 比力</text>
 
 <!-- 比力转导航系块 -->
 <rect x="303" y="146" width="150" height="56" rx="10" fill="#F3F8F1" stroke="#3B6D11" stroke-width="1.6"/>
-<text class="th" x="378" y="168" text-anchor="middle" fill="#27500A">比力坐标变换</text>
-<text class="ts" x="378" y="186" text-anchor="middle" font-size="9">f_n = C_b^n · f_b</text>
-<text class="ts" x="378" y="200" text-anchor="middle" font-size="9">body → NED</text>
+<text class="th" x="378" y="166" text-anchor="middle" fill="#27500A">比力坐标变换</text>
+<text class="ts" x="378" y="183" text-anchor="middle" font-size="9">f_n = C_b^n · f_b</text>
+<text class="ts" x="378" y="198" text-anchor="middle" font-size="9">body → NED</text>
 
 <line x1="378" y1="202" x2="378" y2="234" stroke="#5F5E5A" stroke-width="1.4" marker-end="url(#af)"/>
 
@@ -58,9 +58,9 @@
 
 <!-- 速度块 -->
 <rect x="303" y="338" width="150" height="56" rx="10" fill="#F3F8F1" stroke="#3B6D11" stroke-width="1.6"/>
-<text class="th" x="378" y="360" text-anchor="middle" fill="#27500A">速度积分</text>
-<text class="ts" x="378" y="378" text-anchor="middle" font-size="9">v ← v + v̇·Δt</text>
-<text class="ts" x="378" y="392" text-anchor="middle" font-size="9">输出 v_n</text>
+<text class="th" x="378" y="358" text-anchor="middle" fill="#27500A">速度积分</text>
+<text class="ts" x="378" y="375" text-anchor="middle" font-size="9">v ← v + v̇·Δt</text>
+<text class="ts" x="378" y="389" text-anchor="middle" font-size="9">输出 v_n</text>
 
 <!-- 右侧输出 -->
 <line x1="453" y1="366" x2="556" y2="366" stroke="#5F5E5A" stroke-width="1.4" marker-end="url(#af)"/>

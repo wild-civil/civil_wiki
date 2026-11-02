@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 250" width="100%" role="img">
+  <title>运放负反馈框图</title>
+  <desc>负反馈系统框图：输入经求和节点送入开环增益 A，输出经反馈系数 β 回到求和节点负端。闭环增益 A/(1+Aβ)，当 Aβ 远大于 1 时约等于 1/β，由外围电阻决定而与开环增益 A 几乎无关。</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <text x="340" y="26" text-anchor="middle" font-family="sans-serif" font-size="14" fill="currentColor">负反馈：闭环增益由反馈网络决定</text>
+
+  <circle cx="90" cy="110" r="24" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="75" y="104" text-anchor="middle" font-family="sans-serif" font-size="13" fill="currentColor">+</text>
+  <text x="75" y="130" text-anchor="middle" font-family="sans-serif" font-size="13" fill="currentColor">−</text>
+
+  <line x1="20" y1="110" x2="62" y2="110" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="18" y="98" font-family="sans-serif" font-size="12" fill="currentColor">v<tspan font-size="9" dy="3">i</tspan></text>
+
+  <rect x="150" y="88" width="130" height="44" rx="4" fill="none" stroke="var(--md-primary-fg-color)" stroke-width="1.5"/>
+  <text x="215" y="106" text-anchor="middle" font-family="sans-serif" font-size="13" fill="var(--md-primary-fg-color)">A</text>
+  <text x="215" y="124" text-anchor="middle" font-family="sans-serif" font-size="11" fill="currentColor">开环增益</text>
+  <line x1="114" y1="110" x2="146" y2="110" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <line x1="280" y1="110" x2="470" y2="110" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="482" y="115" font-family="sans-serif" font-size="12" fill="currentColor">v<tspan font-size="9" dy="3">o</tspan></text>
+  <circle cx="400" cy="110" r="3.5" fill="currentColor"/>
+
+  <path d="M400,110 V200 H280" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <rect x="170" y="178" width="110" height="44" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="225" y="196" text-anchor="middle" font-family="sans-serif" font-size="13" fill="currentColor">β</text>
+  <text x="225" y="214" text-anchor="middle" font-family="sans-serif" font-size="11" fill="currentColor">反馈系数</text>
+  <path d="M170,200 H90 V134" fill="none" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <text x="340" y="240" text-anchor="middle" font-family="sans-serif" font-size="12" fill="currentColor">Aβ ≫ 1 时，闭环增益 ≈ 1/β，与开环增益 A 几乎无关</text>
+</svg>

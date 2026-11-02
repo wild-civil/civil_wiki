@@ -24,3 +24,9 @@ Reference
 
 # 
 .workbuddy
+
+# 临时调试产物与草稿（2026-11-02：8830 文件 / 573MB，勿入库）
+temp/
+
+# 根目录 scratch 清单
+惯性导航文档列表.txt

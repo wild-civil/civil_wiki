@@ -49,7 +49,7 @@ for k = 1:N
 end
 attE = attE(1:ki, :) / deg;  ratE = ratE(1:ki, :);  tt = tt(1:ki);
 
-f = figure('Visible', 'off', 'Position', [100 100 900 560]);
+f = figure('Visible', 'on', 'Position', [100 100 900 560]);
 subplot(211), plot(tt, attE(:,1), 'r', tt, attE(:,2), 'g', tt, attE(:,3), 'b', 'LineWidth', 1.2);
 grid on; xlabel('t (s)'); ylabel('att error (deg)');
 title('Static: attitude error convergence (init 3-5 deg, gyro bias 50/-30/20 deg/h)');
@@ -58,8 +58,8 @@ subplot(212), plot(tt, ratE(:,1), 'r', tt, ratE(:,2), 'g', tt, ratE(:,3), 'b', '
 grid on; xlabel('t (s)'); ylabel('exyzInt / true bias');
 title('Bias absorption: integral term / true gyro bias (converges to 1)');
 legend('x', 'y', 'z', 'Location', 'southeast');
-print(f, '-dpng', '-r150', fullfile(outdir, 'demo_ahrs_static.png'));
-close(f);
+% print(f, '-dpng', '-r150', fullfile(outdir, 'demo_ahrs_static.png'));
+% close(f);
 fprintf('[1] static  : final att err = [%.4f %.4f %.4f] deg | exyzInt/eb = [%.2f %.2f %.2f]\n', ...
         attE(end,1), attE(end,2), attE(end,3), ratE(end,1), ratE(end,2), ratE(end,3));
 
@@ -90,7 +90,7 @@ attD = attD(1:ki, :) / deg;  errD = errD(1:ki, :) / deg;  tt2 = tt2(1:ki);
 idx = tt2 >= 20;                                          % 跳过静止段
 maxD = max(abs(errD(idx, :)));
 
-f = figure('Visible', 'off', 'Position', [100 100 900 560]);
+f = figure('Visible', 'on', 'Position', [100 100 900 560]);
 subplot(211), plot(tt2, attD(:,1), 'r', tt2, attD(:,2), 'g', tt2, attD(:,3), 'b', 'LineWidth', 1.2);
 grid on; xlabel('t (s)'); ylabel('true att (deg)');
 title('Dynamic: true attitude (straight -> yaw turn 2 deg/s -> roll 1 deg/s)');
@@ -99,8 +99,8 @@ subplot(212), plot(tt2, errD(:,1), 'r', tt2, errD(:,2), 'g', tt2, errD(:,3), 'b'
 grid on; xlabel('t (s)'); ylabel('att error (deg)');
 title('Attitude error during maneuvers (steady-state max < 0.1 deg)');
 legend('pitch', 'roll', 'yaw', 'Location', 'northwest');
-print(f, '-dpng', '-r150', fullfile(outdir, 'demo_ahrs_dynamic.png'));
-close(f);
+% print(f, '-dpng', '-r150', fullfile(outdir, 'demo_ahrs_dynamic.png'));
+% close(f);
 fprintf('[2] dynamic : steady-state max err = [%.4f %.4f %.4f] deg\n', maxD(1), maxD(2), maxD(3));
 
 %% ========== 图3：加速度扰动（水平加速对门控不可见） ==========
@@ -127,16 +127,16 @@ errB = errB(1:ki) / deg;  a2 = a2(1:ki);  tt3 = tt3(1:ki);
 pk   = max(abs(errB(tt3 >= 22 & tt3 <= 40)));
 rec  = max(abs(errB(tt3 >= 70)));
 
-f = figure('Visible', 'off', 'Position', [100 100 900 560]);
+f = figure('Visible', 'on', 'Position', [100 100 900 560]);
 subplot(211), plot(tt3, a2, 'k', 'LineWidth', 1.4);
 grid on; xlabel('t (s)'); ylabel('forward speed (m/s)');
 title('Disturbance: 0.25 m/s^2 forward accel during t=20-40 s');
 subplot(212), plot(tt3, errB, 'r', 'LineWidth', 1.2);
 grid on; xlabel('t (s)'); ylabel('pitch error (deg)');
 title('Pitch pulled by horizontal accel (gating blind: |||f||-g| is 2nd-order small)');
-print(f, '-dpng', '-r150', fullfile(outdir, 'demo_ahrs_disturb.png'));
-close(f);
+% print(f, '-dpng', '-r150', fullfile(outdir, 'demo_ahrs_disturb.png'));
+% close(f);
 fprintf('[3] disturb : pitch peak %.2f deg | recovered to %.3f deg (t>70 s)\n', pk, rec);
 fprintf('%s\n', repmat('=', 1, 66));
-fprintf('figures -> %s\n', outdir);
+% fprintf('figures -> %s\n', outdir);
 end

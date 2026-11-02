@@ -85,8 +85,8 @@
 <text class="t" x="338" y="350" text-anchor="middle" fill="#3b6fd2">sin θ</text>
 <text class="t" x="398" y="322" text-anchor="middle" fill="#2e8b57">−sin θ</text>
 <text class="t" x="398" y="350" text-anchor="middle" fill="#2e8b57">cos θ</text>
-<text class="ts" x="338" y="390" text-anchor="middle" fill="#3b6fd2">第 1 列 = Re₁</text>
-<text class="ts" x="398" y="390" text-anchor="middle" fill="#2e8b57">第 2 列 = Re₂</text>
+<text class="ts" x="320" y="390" text-anchor="middle" fill="#3b6fd2">第 1 列 = Re₁</text>
+<text class="ts" x="405" y="390" text-anchor="middle" fill="#2e8b57">第 2 列 = Re₂</text>
 <text class="ts" x="486" y="326">两列单位长、互相垂直、det = +1</text>
 <text class="ts" x="486" y="346">→ 只能是旋转，没有拉伸也没有镜像</text>
 </svg>
