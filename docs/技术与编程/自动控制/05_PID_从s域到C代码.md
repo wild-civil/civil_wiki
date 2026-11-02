@@ -232,6 +232,13 @@ float u = pid_update(&pid, ref, meas);
 
 > 提示：4）积分钳位；5）避免微分冲击，代价是设定值变化时没有微分预判；7）等幅振荡时的增益与周期。
 
+## 在线调参 / 仿真（外部工具）
+
+- **[ControlMePlease](https://controlmeplease.com/)**：单页的“质量-弹簧-阻尼 + PID”仿真器。可调 $m/c/k$、$K_p/K_i/K_d$、目标值、输出限幅；微分带一阶滤波（$N=100$，$T_s=1$ ms），积分在饱和时会暂停。适合快速感受三个增益的手感。
+- **[Control Theory Simulator](https://cool-koala.github.io/Control-Theory-Simulator/)**：MIT 开源的 Vite + React 仿真器，内置 99 个控制器原型；支持阶跃 / 正弦 / 方波、执行器饱和、死区、时延、摩擦、噪声，带质量块动画和波形。适合横向对比不同控制器。
+
+> 这两个是外部站点，不在本站维护；如果后续做站内 PID Lab，会把最常用的“质量-弹簧-阻尼 + PID”搬进来，便于离线练习。
+
 ## 关联与延伸
 
 - 上一篇：[稳定性与根轨迹](04_稳定性与根轨迹.md)
