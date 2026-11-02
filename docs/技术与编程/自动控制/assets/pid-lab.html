@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PID Lab · 质量-弹簧-阻尼</title>
+<style>
+  :root {
+    --bg: #f6f8fa;
+    --card: #ffffff;
+    --text: #1f2328;
+    --muted: #5f5e5a;
+    --line: #d8dee4;
+    --blue: #185fa5;
+    --orange: #d85a30;
+    --green: #1d9e75;
+    --grid: #e5e7eb;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 14px/1.55 system-ui, -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 22px 20px 32px; }
+  header h1 { margin: 0 0 4px; font-size: 24px; letter-spacing: .2px; }
+  header p { margin: 0 0 14px; color: var(--muted); font-size: 13px; }
+  .layout { display: grid; grid-template-columns: 320px minmax(0, 1fr); gap: 20px; align-items: start; }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 11px 14px 12px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, .04);
+  }
+  .card h2 {
+    margin: 0 0 6px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  label.row { display: block; margin: 8px 0 2px; font-size: 13px; }
+  label.row output {
+    float: right;
+    font-variant-numeric: tabular-nums;
+    color: var(--blue);
+    font-weight: 600;
+  }
+  input[type="range"] {
+    width: 100%;
+    margin: 4px 0 0;
+    accent-color: var(--blue);
+  }
+  label.check { display: flex; gap: 8px; align-items: center; margin: 10px 0; font-size: 13px; }
+  .buttons { display: flex; gap: 8px; }
+  button {
+    flex: 1;
+    border: 1px solid var(--line);
+    background: #fff;
+    color: var(--text);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font: inherit;
+    cursor: pointer;
+  }
+  button:hover { border-color: var(--blue); color: var(--blue); }
+  button.primary { background: var(--blue); border-color: var(--blue); color: #fff; }
+  button.primary:hover { opacity: .9; color: #fff; }
+  .presets { display: flex; gap: 8px; margin-top: 10px; }
+  .presets button { flex: 1; font-size: 13px; }
+  .metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-bottom: 14px; }
+  .metric {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 10px 12px;
+  }
+  .metric span { display: block; font-size: 12px; color: var(--muted); }
+  .metric strong { display: block; margin-top: 2px; font-size: 18px; font-variant-numeric: tabular-nums; }
+  .plot-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 8px;
+  }
+  canvas { display: block; width: 100%; height: 420px; }
+  .hint { margin: 10px 2px 0; color: var(--muted); font-size: 12px; }
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>PID Lab · 质量-弹簧-阻尼</h1>
+    <p>拖动滑块，实时看位置与控制力的响应。原创站内仿真器；<strong>不是</strong>外部站点的复制。</p>
+  </header>
+
+  <div class="layout">
+    <aside>
+      <section class="card">
+        <h2>被控对象</h2>
+        <label class="row">质量 m (kg) <output id="mVal">1.00</output>
+          <input id="m" type="range" min="0.2" max="5" step="0.1" value="1">
+        </label>
+        <label class="row">阻尼 c (N·s/m) <output id="cVal">1.20</output>
+          <input id="c" type="range" min="0" max="5" step="0.1" value="1.2">
+        </label>
+        <label class="row">刚度 k (N/m) <output id="kVal">1.00</output>
+          <input id="k" type="range" min="0.1" max="10" step="0.1" value="1">
+        </label>
+      </section>
+
+      <section class="card">
+        <h2>PID 参数</h2>
+        <label class="row">Kp <output id="kpVal">1.50</output>
+          <input id="kp" type="range" min="0" max="30" step="0.05" value="1.5">
+        </label>
+        <label class="row">Ki (1/s) <output id="kiVal">0.80</output>
+          <input id="ki" type="range" min="0" max="20" step="0.05" value="0.8">
+        </label>
+        <label class="row">Kd (s) <output id="kdVal">0.30</output>
+          <input id="kd" type="range" min="0" max="5" step="0.01" value="0.3">
+        </label>
+      </section>
+
+      <section class="card">
+        <h2>目标与限制</h2>
+        <label class="row">目标位置 (m) <output id="targetVal">1.00</output>
+          <input id="target" type="range" min="0.2" max="2" step="0.05" value="1">
+        </label>
+        <label class="row">最大推力 Fmax (N) <output id="fmaxVal">10.0</output>
+          <input id="fmax" type="range" min="0.5" max="20" step="0.5" value="10">
+        </label>
+        <label class="check"><input id="filterD" type="checkbox" checked> 微分一阶滤波（τd = 50 ms）</label>
+        <label class="check"><input id="antiWindup" type="checkbox" checked> 抗积分饱和（积分钳位）</label>
+      </section>
+
+      <section class="card">
+        <div class="buttons">
+          <button id="run" class="primary">暂停</button>
+          <button id="reset">重置</button>
+        </div>
+        <div class="presets">
+          <button data-preset="p">P</button>
+          <button data-preset="pi">PI</button>
+          <button data-preset="pid">PID</button>
+        </div>
+      </section>
+    </aside>
+
+    <main>
+      <div class="metrics">
+        <div class="metric"><span>超调</span><strong id="mOver">—</strong></div>
+        <div class="metric"><span>调节时间（±2%）</span><strong id="mTs">—</strong></div>
+        <div class="metric"><span>当前静差</span><strong id="mErr">—</strong></div>
+        <div class="metric"><span>最大推力</span><strong id="mF">—</strong></div>
+      </div>
+      <div class="plot-card">
+        <canvas id="plot"></canvas>
+      </div>
+      <p class="hint">位置 x(t) 蓝线；控制力 F(t) 橙线；灰色虚线为目标值。窗口 10 s，仿真步长 1 ms；力轴自动缩放。</p>
+    </main>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  const $ = (id) => document.getElementById(id);
+  const canvas = $("plot");
+  const ctx = canvas.getContext("2d");
+  const DT = 0.001;
+  const WINDOW = 10;
+  const warmup = parseFloat(new URLSearchParams(location.search).get("warmup") || "0");
+
+  const params = {
+    m: 1, c: 1.2, k: 1,
+    target: 1,
+    kp: 1.5, ki: 0.8, kd: 0.3,
+    fmax: 10,
+    tauD: 0.05,
+    filterD: true,
+    antiWindup: true
+  };
+
+  const sim = {
+    x: 0, v: 0, i: 0, d: 0, xPrev: 0, inited: false,
+    t: 0, t0: 0, history: [], stepCount: 0,
+    maxX: 0, maxF: 0, lastOut: 0,
+    running: true
+  };
+
+  function resetSim() {
+    sim.x = 0; sim.v = 0; sim.i = 0; sim.d = 0;
+    sim.xPrev = 0; sim.inited = false;
+    sim.t = 0; sim.t0 = 0;
+    sim.history = []; sim.stepCount = 0;
+    sim.maxX = 0; sim.maxF = 0; sim.lastOut = 0;
+  }
+
+  function resetMetrics() {
+    sim.t0 = sim.t;
+    sim.maxX = sim.x;
+    sim.maxF = 0;
+    sim.lastOut = sim.t;
+    sim.history = [];
+  }
+
+  function step() {
+    const e = params.target - sim.x;
+    const p = params.kp * e;
+
+    sim.i += params.ki * DT * e;
+
+    if (!sim.inited) { sim.xPrev = sim.x; sim.inited = true; }
+    const dRaw = -params.kd * (sim.x - sim.xPrev) / DT;
+    const alpha = params.filterD ? (params.tauD / (params.tauD + DT)) : 0;
+    sim.d = params.filterD ? (alpha * sim.d + (1 - alpha) * dRaw) : dRaw;
+    sim.xPrev = sim.x;
+
+    if (params.antiWindup) {
+      const iMin = -params.fmax - p - sim.d;
+      const iMax =  params.fmax - p - sim.d;
+      if (sim.i < iMin) sim.i = iMin;
+      if (sim.i > iMax) sim.i = iMax;
+    }
+
+    let F = p + sim.i + sim.d;
+    if (F >  params.fmax) F =  params.fmax;
+    if (F < -params.fmax) F = -params.fmax;
+
+    const a = (F - params.c * sim.v - params.k * sim.x) / params.m;
+    sim.v += a * DT;
+    sim.x += sim.v * DT;
+    sim.t += DT;
+
+    sim.maxX = Math.max(sim.maxX, sim.x);
+    sim.maxF = Math.max(sim.maxF, Math.abs(F));
+
+    const band = Math.max(0.02 * Math.abs(params.target), 1e-4);
+    if (Math.abs(params.target - sim.x) > band) sim.lastOut = sim.t;
+
+    sim.stepCount++;
+    if (sim.stepCount % 5 === 0) {
+      sim.history.push({ t: sim.t, x: sim.x, F: F });
+      if (sim.history.length > 8000) sim.history.shift();
+    }
+  }
+
+  function resize() {
+    const dpr = window.devicePixelRatio || 1;
+    const w = canvas.clientWidth || 800;
+    const h = 420;
+    const cw = Math.floor(w * dpr);
+    const ch = Math.floor(h * dpr);
+    if (canvas.width !== cw || canvas.height !== ch) {
+      canvas.width = cw;
+      canvas.height = ch;
+      canvas.style.height = h + "px";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+  }
+
+  function draw() {
+    resize();
+    const w = canvas.clientWidth || 800;
+    ctx.clearRect(0, 0, w, 420);
+
+    const L = 56, R = 18;
+    const pTop = 24, pBot = 210;
+    const fTop = 266, fBot = 392;
+
+    const tEnd = Math.max(sim.t, WINDOW);
+    const tStart = tEnd - WINDOW;
+    const X = (t) => L + (t - tStart) / WINDOW * (w - L - R);
+    const pMax = Math.max(1.5, Math.ceil(params.target * 1.2 * 10) / 10);
+    const PY = (x) => pBot - (Math.max(0, Math.min(pMax, x)) / pMax) * (pBot - pTop);
+    const fDisp = Math.max(0.5, Math.min(params.fmax, Math.ceil(sim.maxF * 1.2 * 10) / 10));
+    const FY = (F) => fTop + (fDisp - F) / (2 * fDisp) * (fBot - fTop);
+
+    // vertical grid
+    ctx.strokeStyle = "#e5e7eb";
+    ctx.lineWidth = 1;
+    for (let s = Math.ceil(tStart); s <= tEnd; s++) {
+      const x = X(s);
+      ctx.beginPath();
+      ctx.moveTo(x, pTop);
+      ctx.lineTo(x, fBot);
+      ctx.stroke();
+    }
+
+    // position grid + labels
+    ctx.fillStyle = "#5f5e5a";
+    ctx.font = "11px system-ui, sans-serif";
+    ctx.textAlign = "right";
+    for (const v of [0, pMax / 3, 2 * pMax / 3, pMax]) {
+      const y = PY(v);
+      ctx.beginPath();
+      ctx.moveTo(L, y);
+      ctx.lineTo(w - R, y);
+      ctx.stroke();
+      ctx.fillText(v.toFixed(1), L - 8, y + 4);
+    }
+
+    // target line
+    const yt = PY(params.target);
+    ctx.setLineDash([5, 4]);
+    ctx.strokeStyle = "#888780";
+    ctx.beginPath();
+    ctx.moveTo(L, yt);
+    ctx.lineTo(w - R, yt);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // position curve
+    ctx.strokeStyle = "#185fa5";
+    ctx.lineWidth = 2.2;
+    ctx.beginPath();
+    let first = true;
+    for (const pt of sim.history) {
+      if (pt.t < tStart) continue;
+      const x = X(pt.t), y = PY(pt.x);
+      if (first) { ctx.moveTo(x, y); first = false; }
+      else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+
+    // force panel grid
+    ctx.strokeStyle = "#e5e7eb";
+    ctx.lineWidth = 1;
+    for (const v of [-fDisp, 0, fDisp]) {
+      const y = FY(v);
+      ctx.beginPath();
+      ctx.moveTo(L, y);
+      ctx.lineTo(w - R, y);
+      ctx.stroke();
+      ctx.fillStyle = "#5f5e5a";
+      ctx.textAlign = "right";
+      ctx.fillText(v.toFixed(1), L - 8, y + 4);
+    }
+
+    // force curve
+    ctx.strokeStyle = "#d85a30";
+    ctx.lineWidth = 1.8;
+    ctx.beginPath();
+    first = true;
+    for (const pt of sim.history) {
+      if (pt.t < tStart) continue;
+      const x = X(pt.t), y = FY(pt.F);
+      if (first) { ctx.moveTo(x, y); first = false; }
+      else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+
+    // panel labels
+    ctx.fillStyle = "#333333";
+    ctx.font = "12px system-ui, sans-serif";
+    ctx.textAlign = "left";
+    ctx.fillText("位置 x (m)", L, 16);
+    ctx.fillText("控制力 F (N)", L, fTop - 12);
+
+    // x ticks
+    ctx.fillStyle = "#5f5e5a";
+    ctx.font = "11px system-ui, sans-serif";
+    ctx.textAlign = "center";
+    for (let s = Math.ceil(tStart / 2) * 2; s <= tEnd; s += 2) {
+      ctx.fillText(s.toFixed(0), X(s), fBot + 16);
+    }
+
+    // metrics
+    const target = params.target;
+    const err = Math.abs(target - sim.x);
+    const os = (target > 1e-6 && sim.maxX > target) ? ((sim.maxX - target) / target * 100) : 0;
+    const band = Math.max(0.02 * Math.abs(target), 1e-4);
+    let tsText = "—";
+    if (Math.abs(target - sim.x) <= band && sim.t - sim.t0 > 0.5) {
+      const d = sim.lastOut - sim.t0;
+      if (d > 0) tsText = d.toFixed(2) + " s";
+    }
+    $("mOver").textContent = os.toFixed(1) + " %";
+    $("mTs").textContent = tsText;
+    $("mErr").textContent = err.toFixed(3) + " m";
+    $("mF").textContent = sim.maxF.toFixed(2) + " N";
+  }
+
+  function bindRange(id, key) {
+    const el = $(id), out = $(id + "Val");
+    const update = () => {
+      params[key] = parseFloat(el.value);
+      out.textContent = params[key].toFixed(key === "fmax" ? 1 : 2);
+      if (key === "m" || key === "c" || key === "k") resetSim();
+      if (key === "target") resetMetrics();
+    };
+    el.addEventListener("input", update);
+    update();
+  }
+
+  ["m", "c", "k", "kp", "ki", "kd", "target", "fmax"].forEach((id) => bindRange(id, id));
+  $("filterD").addEventListener("change", (e) => { params.filterD = e.target.checked; });
+  $("antiWindup").addEventListener("change", (e) => { params.antiWindup = e.target.checked; });
+
+  $("run").addEventListener("click", () => {
+    sim.running = !sim.running;
+    $("run").textContent = sim.running ? "暂停" : "继续";
+  });
+  $("reset").addEventListener("click", () => {
+    resetSim();
+    sim.running = true;
+    $("run").textContent = "暂停";
+  });
+
+  const presets = { p: [1, 0, 0], pi: [1, 0.5, 0], pid: [1.5, 0.8, 0.3] };
+  document.querySelectorAll("[data-preset]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const v = presets[btn.dataset.preset];
+      ["kp", "ki", "kd"].forEach((id, i) => {
+        const el = $(id);
+        el.value = v[i];
+        params[id] = v[i];
+        $(id + "Val").textContent = v[i].toFixed(2);
+      });
+    });
+  });
+
+  function frame() {
+    if (sim.running) {
+      for (let i = 0; i < 16; i++) step();
+    }
+    draw();
+    requestAnimationFrame(frame);
+  }
+
+  resetSim();
+  if (warmup > 0) {
+    for (let i = 0; i < warmup / DT; i++) step();
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
