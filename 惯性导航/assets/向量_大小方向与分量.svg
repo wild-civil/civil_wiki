@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 320" width="680" height="320" font-family="-apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif">
+  <style>
+    .ax   { stroke-width: 2; fill: none; }
+    .vec  { stroke-width: 3.5; fill: none; }
+    .lbl  { font-size: 16px; font-weight: 700; }
+    .sub  { font-size: 13px; fill: #555; }
+    .dash { stroke-width: 1.4; stroke-dasharray: 4 3; fill: none; }
+    .title{ font-size: 15px; font-weight: 700; fill: #222; }
+  </style>
+
+  <defs>
+    <marker id="ah-gray"  viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#888"/></marker>
+    <marker id="ah-red"   viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#d32f2f"/></marker>
+    <marker id="ah-blue"  viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#1565c0"/></marker>
+    <marker id="ah-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#2e7d32"/></marker>
+  </defs>
+
+  <!-- ===== 左：有大小、有方向 ===== -->
+  <text x="24" y="30" class="title">① 向量 = 大小 |v| ＋ 方向 θ</text>
+
+  <!-- 坐标轴 -->
+  <line x1="110" y1="250" x2="330" y2="250" class="ax" stroke="#999" marker-end="url(#ah-gray)"/>
+  <line x1="150" y1="290" x2="150" y2="80"  class="ax" stroke="#999" marker-end="url(#ah-gray)"/>
+  <text x="334" y="254" class="sub" fill="#777">x</text>
+  <text x="130" y="76"  class="sub" fill="#777">y</text>
+
+  <!-- 向量 v（红） -->
+  <line x1="150" y1="250" x2="310" y2="130" class="vec" stroke="#d32f2f" marker-end="url(#ah-red)"/>
+  <text x="316" y="126" class="lbl" fill="#d32f2f">v</text>
+
+  <!-- 分量虚线 -->
+  <line x1="310" y1="130" x2="310" y2="250" class="dash" stroke="#888"/>
+  <line x1="150" y1="250" x2="310" y2="250" class="dash" stroke="#e0a0a0"/>
+  <text x="238" y="242" class="sub" fill="#c0392b">vx</text>
+  <text x="316" y="190" class="sub" fill="#777">vy</text>
+
+  <!-- 夹角 θ -->
+  <path d="M 196 250 A 46 46 0 0 1 208 216" class="dash" stroke="#888"/>
+  <text x="184" y="216" class="lbl" fill="#333">θ</text>
+
+  <!-- 模长标注 -->
+  <text x="228" y="178" class="lbl" fill="#d32f2f">|v|</text>
+
+  <text x="24" y="300" class="sub">速度 = "120 km/h 朝东"：大小和方向缺一不可。数值相同但方向不同 → 是两个不同的物理量。</text>
+
+  <!-- ===== 右：向量 = 坐标系里的三个数字 ===== -->
+  <text x="410" y="30" class="title">② 向量 = 坐标系里的三个数字 (a₁,a₂,a₃)</text>
+
+  <g>
+    <circle cx="505" cy="255" r="3.5" fill="#333"/>
+    <!-- X 轴 -->
+    <line x1="505" y1="255" x2="600" y2="255" class="ax" stroke="#d32f2f" marker-end="url(#ah-red)"/>
+    <!-- Y 轴 -->
+    <line x1="505" y1="255" x2="505" y2="183" class="ax" stroke="#1565c0" marker-end="url(#ah-blue)"/>
+    <!-- Z 轴 -->
+    <line x1="505" y1="255" x2="526" y2="234" class="ax" stroke="#2e7d32" marker-end="url(#ah-green)"/>
+  </g>
+  <text x="606" y="259" class="lbl" fill="#d32f2f">X</text>
+  <text x="486" y="178" class="lbl" fill="#1565c0">Y</text>
+  <text x="530" y="230" class="lbl" fill="#2e7d32">Z</text>
+
+  <!-- 向量 a -->
+  <line x1="505" y1="255" x2="621" y2="162" class="vec" stroke="#d32f2f" marker-end="url(#ah-red)"/>
+  <text x="616" y="152" class="lbl" fill="#d32f2f">a</text>
+
+  <!-- 分量盒（虚线棱） -->
+  <line x1="621" y1="162" x2="526" y2="162" class="dash" stroke="#888"/>   <!-- a1 棱 X 向 -->
+  <line x1="621" y1="162" x2="621" y2="234" class="dash" stroke="#888"/>   <!-- a2 棱 Y 向 -->
+  <line x1="621" y1="162" x2="600" y2="183" class="dash" stroke="#888"/>   <!-- a3 棱 Z 向 -->
+  <text x="560" y="156" class="sub" fill="#c0392b">a₁</text>
+  <text x="626" y="202" class="sub" fill="#c0392b">a₂</text>
+  <text x="606" y="180" class="sub" fill="#2e7d32">a₃</text>
+
+  <text x="410" y="300" class="sub">同一个物理向量，换一套坐标系，三个数字全变 —— 惯导的第一步永远是先定坐标系。</text>
+</svg>

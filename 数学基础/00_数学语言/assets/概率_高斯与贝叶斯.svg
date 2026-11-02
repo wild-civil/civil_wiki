@@ -1,0 +1,34 @@
+<svg viewBox="0 0 680 300" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>高斯分布与贝叶斯更新</title>
+  <desc>左图是高斯分布及 68-95-99.7 区间，右图是先验、似然到后验的贝叶斯更新流程。</desc>
+  <text x="40" y="32" fill="#333333" font-size="15">概率的两个核心画面</text>
+  <text x="40" y="56" fill="#5f5e5a" font-size="13">高斯分布：68 / 95 / 99.7</text>
+  <line x1="80" y1="240" x2="330" y2="240" stroke="#333333" stroke-width="1"/>
+  <line x1="80" y1="240" x2="80" y2="60" stroke="#333333" stroke-width="1"/>
+  <path d="M80 238 C150 238 160 80 205 80 C250 80 260 238 330 238" fill="#cfe3f7" stroke="#185fa5" stroke-width="2.5"/>
+  <line x1="155" y1="120" x2="155" y2="240" stroke="#888780" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="205" y1="80" x2="205" y2="240" stroke="#888780" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="255" y1="120" x2="255" y2="240" stroke="#888780" stroke-width="1" stroke-dasharray="4 4"/>
+  <text x="146" y="258" fill="#5f5e5a" font-size="12">μ−σ</text>
+  <text x="200" y="258" fill="#5f5e5a" font-size="12">μ</text>
+  <text x="251" y="258" fill="#5f5e5a" font-size="12">μ+σ</text>
+  <text x="176" y="200" fill="#185fa5" font-size="13">68%</text>
+  <text x="40" y="282" fill="#888780" font-size="12">95% 落在 μ±2σ，99.7% 落在 μ±3σ；多维时等高线是椭圆</text>
+  <text x="380" y="56" fill="#5f5e5a" font-size="13">贝叶斯更新：先验 → 后验</text>
+  <rect x="400" y="76" width="240" height="44" rx="8" fill="#e6f1fb" stroke="#185fa5" stroke-width="1.5"/>
+  <text x="520" y="103" fill="#185fa5" font-size="13" text-anchor="middle">先验 P(A)</text>
+  <line x1="520" y1="120" x2="520" y2="146" stroke="#333333" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="530" y="138" fill="#5f5e5a" font-size="12">观测到 B</text>
+  <rect x="400" y="146" width="240" height="44" rx="8" fill="#faeedc" stroke="#ba7517" stroke-width="1.5"/>
+  <text x="520" y="173" fill="#ba7517" font-size="13" text-anchor="middle">× 似然 P(B|A)</text>
+  <line x1="520" y1="190" x2="520" y2="216" stroke="#333333" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="530" y="208" fill="#5f5e5a" font-size="12">归一化</text>
+  <rect x="400" y="216" width="240" height="44" rx="8" fill="#e1f5ee" stroke="#1d9e75" stroke-width="1.5"/>
+  <text x="520" y="243" fill="#1d9e75" font-size="13" text-anchor="middle">后验 P(A|B)</text>
+  <text x="400" y="286" fill="#5f5e5a" font-size="12">P(A|B) ∝ P(B|A) · P(A)</text>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#333333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+</svg>

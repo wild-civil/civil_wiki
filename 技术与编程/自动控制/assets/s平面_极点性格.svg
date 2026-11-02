@@ -1,0 +1,35 @@
+<svg viewBox="0 0 680 380" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>s 平面上的极点位置与对应时间响应</title>
+  <desc>左半平面实极点对应单调衰减，左半共轭复极点对应衰减振荡，虚轴极点对应等幅振荡，右半平面极点对应发散。</desc>
+  <rect x="40" y="50" width="180" height="280" fill="#e8f5e9"/>
+  <rect x="220" y="50" width="180" height="280" fill="#fdecea"/>
+  <line x1="40" y1="190" x2="400" y2="190" stroke="#333333" stroke-width="1.5"/>
+  <line x1="220" y1="50" x2="220" y2="330" stroke="#333333" stroke-width="1.5"/>
+  <text x="386" y="212" fill="#333333" font-size="14">σ</text>
+  <text x="228" y="64" fill="#333333" font-size="14">jω</text>
+  <text x="58" y="74" fill="#2e7d32" font-size="13">LHP 稳定</text>
+  <text x="300" y="74" fill="#c62828" font-size="13">RHP 不稳定</text>
+  <circle cx="150" cy="190" r="5" fill="#2e7d32"/>
+  <text x="150" y="214" fill="#2e7d32" font-size="12" text-anchor="middle">−a</text>
+  <circle cx="300" cy="190" r="5" fill="#c62828"/>
+  <text x="300" y="214" fill="#c62828" font-size="12" text-anchor="middle">+a</text>
+  <circle cx="220" cy="120" r="5" fill="#f9a825"/>
+  <circle cx="220" cy="260" r="5" fill="#f9a825"/>
+  <text x="230" y="116" fill="#8a6d00" font-size="12">jω₀</text>
+  <text x="230" y="270" fill="#8a6d00" font-size="12">−jω₀</text>
+  <circle cx="165" cy="140" r="5" fill="#1565c0"/>
+  <circle cx="165" cy="240" r="5" fill="#1565c0"/>
+  <text x="432" y="66" fill="#333333" font-size="14">极点位置 → 时间响应</text>
+  <circle cx="438" cy="96" r="5" fill="#2e7d32"/>
+  <text x="454" y="94" fill="#333333" font-size="12">左半实轴 p = −a</text>
+  <text x="454" y="112" fill="#5f5e5a" font-size="12">单调衰减 e^(−at)</text>
+  <circle cx="438" cy="146" r="5" fill="#1565c0"/>
+  <text x="454" y="144" fill="#333333" font-size="12">左半共轭对 −σ ± jω_d</text>
+  <text x="454" y="162" fill="#5f5e5a" font-size="12">衰减振荡</text>
+  <circle cx="438" cy="196" r="5" fill="#f9a825"/>
+  <text x="454" y="194" fill="#333333" font-size="12">虚轴 p = ±jω₀</text>
+  <text x="454" y="212" fill="#5f5e5a" font-size="12">等幅振荡（临界）</text>
+  <circle cx="438" cy="246" r="5" fill="#c62828"/>
+  <text x="454" y="244" fill="#333333" font-size="12">右半实轴 p = +a</text>
+  <text x="454" y="262" fill="#5f5e5a" font-size="12">单调发散（不稳定）</text>
+</svg>

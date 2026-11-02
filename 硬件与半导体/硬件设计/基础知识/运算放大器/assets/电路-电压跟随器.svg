@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 190" width="100%" role="img">
+  <title>电压跟随器电路</title>
+  <desc>运放输出端直接反馈到反相输入端，信号接同相输入端，闭环增益为 1，用于阻抗隔离与驱动。</desc>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <text x="210" y="26" text-anchor="middle" font-family="sans-serif" font-size="13" fill="currentColor">电压跟随器　u<tspan font-size="9" dy="3">o</tspan> = u<tspan font-size="9" dy="3">i</tspan>（增益 1）</text>
+
+  <path d="M150,60 V140 L240,100 Z" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="166" y="76" text-anchor="middle" font-family="sans-serif" font-size="13" fill="currentColor">+</text>
+  <text x="166" y="130" text-anchor="middle" font-family="sans-serif" font-size="13" fill="currentColor">−</text>
+
+  <line x1="30" y1="80" x2="150" y2="80" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar)"/>
+  <text x="26" y="70" font-family="sans-serif" font-size="12" fill="currentColor">u<tspan font-size="9" dy="3">i</tspan></text>
+
+  <line x1="240" y1="100" x2="370" y2="100" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar)"/>
+  <text x="376" y="96" font-family="sans-serif" font-size="12" fill="currentColor">u<tspan font-size="9" dy="3">o</tspan></text>
+  <circle cx="340" cy="100" r="3.5" fill="currentColor"/>
+
+  <path d="M340,100 V150 H110 V120 H150" fill="none" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar)"/>
+  <text x="200" y="170" text-anchor="middle" font-family="sans-serif" font-size="11" fill="currentColor">输出全部反馈到反相端</text>
+</svg>

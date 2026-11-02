@@ -1,0 +1,15 @@
+<svg viewBox="0 0 680 300" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>IP 代码结构示意</title>
+  <desc>IP 后两位数字：第一位为防尘与防固体等级 0-6，第二位为防水等级 0-8 及 9/9K；X 表示该项未测试或未标注。</desc>
+  <text x="40" y="92" fill="#333333" font-size="44" font-family="monospace">IP</text>
+  <text x="120" y="92" fill="#185fa5" font-size="44" font-family="monospace">6</text>
+  <text x="176" y="92" fill="#ba7517" font-size="44" font-family="monospace">8</text>
+  <rect x="40" y="130" width="270" height="76" rx="8" fill="#e6f1fb" stroke="#185fa5" stroke-width="1.5"/>
+  <text x="58" y="162" fill="#185fa5" font-size="15">第一位数字：防尘 / 防固体</text>
+  <text x="58" y="186" fill="#333333" font-size="13">挡灰尘与异物，等级 0–6</text>
+  <rect x="350" y="130" width="290" height="76" rx="8" fill="#faeedc" stroke="#ba7517" stroke-width="1.5"/>
+  <text x="368" y="162" fill="#ba7517" font-size="15">第二位数字：防水</text>
+  <text x="368" y="186" fill="#333333" font-size="13">滴水 → 喷水 → 浸水，等级 0–8 及 9/9K</text>
+  <rect x="40" y="225" width="600" height="50" rx="8" fill="#f1efe8" stroke="#888780" stroke-width="1"/>
+  <text x="58" y="252" fill="#333333" font-size="14">X 出现在哪一位 = 那一项没测 / 没标（不代表 0 级，就是没有数据）</text>
+</svg>

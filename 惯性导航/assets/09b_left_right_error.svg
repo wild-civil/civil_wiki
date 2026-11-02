@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 340" width="100%">
+  <title>Left vs right error frame</title>
+  <desc>左误差：误差活在导航系，绕世界固定轴旋转，修正 q &lt;- dq_L * q。右误差：误差活在载体系，绕载体固定轴旋转，修正 q &lt;- q * dq_R。本固件用右不变。</desc>
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#E24B4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <text x="40" y="28" font-family="sans-serif" font-size="14" font-weight="500" fill="#2C2C2A">左误差 vs 右误差：误差向量 delta theta 活在哪个坐标系？</text>
+
+  <rect x="40" y="44" width="290" height="256" rx="12" fill="#F1EFE8" stroke="#B4B2A9" stroke-width="0.5"/>
+  <text x="185" y="66" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="500" fill="#2C2C2A">Left error · 教科书</text>
+  <text x="185" y="84" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#5F5E5A">误差活在 导航系 (NED)</text>
+
+  <line x1="150" y1="230" x2="150" y2="140" stroke="#185FA5" stroke-width="2"/>
+  <line x1="150" y1="230" x2="205" y2="230" stroke="#185FA5" stroke-width="2"/>
+  <line x1="150" y1="230" x2="183" y2="150" stroke="#BA7517" stroke-width="2"/>
+  <line x1="150" y1="230" x2="178" y2="248" stroke="#BA7517" stroke-width="2"/>
+  <text x="146" y="134" font-family="sans-serif" font-size="11" fill="#185FA5">Z_w</text>
+  <text x="188" y="148" font-family="sans-serif" font-size="11" fill="#BA7517">Z_b</text>
+
+  <path d="M135 150 A15 15 0 0 1 165 150" fill="none" stroke="#E24B4A" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="150" y="126" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#A32D2D">delta theta</text>
+
+  <rect x="120" y="262" width="130" height="22" rx="6" fill="#FCEBEB" stroke="#F09595" stroke-width="0.5"/>
+  <text x="185" y="277" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#501313">q &lt;- dq_L * q</text>
+  <text x="185" y="296" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#5F5E5A">绕「世界固定轴」旋转</text>
+
+  <rect x="350" y="44" width="290" height="256" rx="12" fill="#F1EFE8" stroke="#B4B2A9" stroke-width="0.5"/>
+  <text x="495" y="66" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="500" fill="#2C2C2A">Right error · Sola / 本固件</text>
+  <text x="495" y="84" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#5F5E5A">误差活在 载体系 (body)</text>
+
+  <line x1="460" y1="230" x2="460" y2="140" stroke="#185FA5" stroke-width="2"/>
+  <line x1="460" y1="230" x2="515" y2="230" stroke="#185FA5" stroke-width="2"/>
+  <line x1="460" y1="230" x2="493" y2="150" stroke="#BA7517" stroke-width="2"/>
+  <line x1="460" y1="230" x2="488" y2="248" stroke="#BA7517" stroke-width="2"/>
+  <text x="456" y="134" font-family="sans-serif" font-size="11" fill="#185FA5">Z_w</text>
+  <text x="498" y="148" font-family="sans-serif" font-size="11" fill="#BA7517">Z_b</text>
+
+  <path d="M478 150 A15 15 0 0 1 508 150" fill="none" stroke="#E24B4A" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="493" y="126" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#A32D2D">delta theta</text>
+
+  <rect x="430" y="262" width="130" height="22" rx="6" fill="#E6F1FB" stroke="#85B7EB" stroke-width="0.5"/>
+  <text x="495" y="277" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#042C53">q &lt;- q * dq_R</text>
+  <text x="495" y="296" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#5F5E5A">绕「载体固定轴」旋转</text>
+
+  <text x="40" y="326" font-family="sans-serif" font-size="12" fill="#5F5E5A">本固件输入（陀螺 omega、加计 a）都在载体系 -&gt; 误差天然活在载体系 -&gt; 选右不变（右乘 dq、H=+skew(h)、F(theta,theta)=-Wx）。</text>
+</svg>

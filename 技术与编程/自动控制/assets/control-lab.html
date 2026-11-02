@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PID 实验台 · 蓝图风格（功能复刻）</title>
+<style>
+  :root {
+    --ink: #000;
+    --paper: #fff;
+    --mono: "Lucida Console", "Courier New", monospace;
+    --ui: Inter, "Segoe UI", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+    --hand: "Segoe Print", "Comic Sans MS", "KaiTi", cursive;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body { margin: 0; overflow: hidden; background: var(--paper); color: var(--ink); font-family: var(--ui); }
+
+  /* ---------- left panel ---------- */
+  .panel {
+    position: fixed; left: 18px; top: 14px; z-index: 30; width: 220px;
+    max-height: calc(100vh - 28px); overflow-y: auto; overscroll-behavior: contain;
+    background: rgba(255, 255, 255, .94);
+    padding: 8px 10px 10px;
+    border-radius: 10px;
+  }
+  body.drawer-open .panel { max-height: calc(100vh - min(58vh, 470px) - 22px); }
+  .panel::-webkit-scrollbar { width: 6px; }
+  .panel::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
+
+  .lever { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--ink); margin-bottom: 8px; }
+  .lever button {
+    border: 0; border-right: 1px solid var(--ink); background: #fff;
+    font-family: var(--ui); font-size: 11px; padding: 5px 0; cursor: pointer;
+  }
+  .lever button:last-child { border-right: 0; }
+  .lever button.active { background: var(--ink); color: #fff; font-weight: 700; }
+
+  .nf {
+    display: grid; grid-template-columns: 84px 78px auto; gap: 6px;
+    align-items: center; margin: 4px 0; font-size: 13px;
+  }
+  .nf > span:first-child { white-space: nowrap; }
+  .nf input, .nf select {
+    width: 78px; height: 24px; border: 1px solid var(--ink); background: #fff; color: var(--ink);
+    font-family: var(--mono); font-size: 12px; padding: 1px 4px; border-radius: 0;
+  }
+  .nf.small { grid-template-columns: 84px 62px auto; }
+  .nf.small input { width: 62px; }
+  .nf small { font-size: 10px; color: #333; }
+  .help {
+    display: inline-grid; place-items: center; width: 11px; height: 11px;
+    border: 1px solid var(--ink); border-radius: 50%; font-size: 8px; margin-left: 3px; cursor: help; vertical-align: 1px;
+  }
+  .group-title {
+    font-size: 11px; color: #555; margin: 9px 0 3px; letter-spacing: .06em;
+    border-top: 1px solid #eee; padding-top: 6px;
+  }
+  .row-line { display: flex; align-items: center; gap: 5px; font-size: 12px; margin: 3px 0; flex-wrap: wrap; }
+  .row-line label { display: flex; align-items: center; gap: 4px; cursor: pointer; }
+  .row-line input[type="number"] {
+    width: 52px; height: 22px; border: 1px solid var(--ink); font-family: var(--mono); font-size: 11px; padding: 1px 3px;
+  }
+  .unit { font-size: 10px; color: #333; }
+  .readout { display: grid; grid-template-columns: 76px auto; gap: 4px; font-size: 10px; margin: 1px 0; }
+  .readout span { color: #555; font-family: var(--ui); }
+  .readout strong { font-weight: 600; font-family: var(--mono); }
+  .wd-toggle {
+    border: 0; background: #fff; font-family: var(--mono); font-size: 11px; cursor: pointer;
+    padding: 0; text-decoration: underline dotted;
+  }
+  .buttons {
+    display: flex; gap: 8px; margin: 8px 0 0;
+    position: sticky; bottom: -10px; background: rgba(255, 255, 255, .96); padding: 6px 0 4px;
+  }
+  .buttons button {
+    border: 1px solid var(--ink); background: #fff; color: var(--ink);
+    font-family: var(--ui); font-size: 14px; padding: 7px 16px; cursor: pointer; border-radius: 0;
+  }
+  .buttons .start { background: var(--ink); color: #fff; }
+
+  /* ---------- transfer card ---------- */
+  .transfer { position: fixed; top: 0; left: 50%; transform: translateX(-50%); z-index: 25; width: 900px; max-width: 92vw; }
+  .tag {
+    width: 112px; margin: 0 auto; background: var(--ink); color: #fff; text-align: center;
+    font-size: 14px; padding: 5px 0 4px; clip-path: polygon(9px 0, calc(100% - 9px) 0, 100% 100%, 0 100%); letter-spacing: .06em;
+  }
+  .transfer svg { display: block; width: 100%; height: auto; }
+  .transfer text { font-family: var(--mono); font-size: 12px; fill: #000; }
+  .transfer .sig { font-family: var(--ui); font-size: 14px; }
+
+  /* ---------- road scene ---------- */
+  .road-scene { position: fixed; inset: 0; z-index: 1; overflow: hidden; background: #fff; }
+  .road-scene svg { display: block; width: 100%; height: 100%; }
+  .road-surface { fill: #fcfcfc; }
+  .road-line { stroke: #000; stroke-width: 1.5; }
+  .road-dots { opacity: .3; }
+  .dist-zone { fill: #000; opacity: .07; stroke: #000; stroke-width: 1; stroke-dasharray: 6 4; }
+  .imp-mark { stroke: #c62828; stroke-width: 2; }
+  .sign-text { font-family: var(--hand); font-style: italic; font-size: 25px; }
+  .cube-face { fill: #fff; stroke: #000; stroke-width: 1.5; }
+  .cube-top { fill: #f7f7f7; stroke: #000; stroke-width: 1.5; }
+  #cube { cursor: grab; }
+  #cube.dragging { cursor: grabbing; }
+
+  /* ---------- controller / top right ---------- */
+  .controller {
+    position: fixed; right: 56px; top: 50%; transform: translateY(-50%);
+    z-index: 22; width: 70px; height: 70px; border: 1.5px solid var(--ink); border-radius: 50%;
+    background: #fff; display: grid; place-items: center; font-size: 12px; cursor: pointer; user-select: none;
+  }
+  .controller-menu {
+    position: fixed; right: 56px; top: calc(50% + 42px); z-index: 24; background: #fff;
+    border: 1px solid var(--ink); display: none; min-width: 108px;
+  }
+  .controller-menu.open { display: block; }
+  .controller-menu button {
+    display: block; width: 100%; border: 0; border-bottom: 1px solid #eee; background: #fff;
+    text-align: left; padding: 7px 12px; font-family: var(--ui); font-size: 13px; cursor: pointer;
+  }
+  .controller-menu button:last-child { border-bottom: 0; }
+  .controller-menu button:hover { background: #f3f3f3; }
+  .controller-menu button.active { font-weight: 700; }
+  .top-right {
+    position: fixed; right: 20px; top: 14px; z-index: 30; display: flex; gap: 14px; align-items: center; font-size: 12px; color: #333;
+  }
+  .top-right .lang.active { font-weight: 700; color: #000; }
+  .avatar { width: 22px; height: 22px; border: 1.5px solid var(--ink); border-radius: 50%; display: grid; place-items: center; font-size: 10px; }
+
+  /* ---------- tabs / drawer ---------- */
+  .tabs { position: fixed; right: 24px; bottom: 12px; z-index: 50; display: flex; gap: 14px; }
+  .tabs button {
+    border: 0; padding: 0; background: transparent; color: #000; font-family: var(--ui);
+    font-size: 16px; font-weight: 500; line-height: 1; white-space: nowrap; cursor: pointer;
+  }
+  .tabs button.active { font-weight: 850; }
+  body.drawer-open .tabs { bottom: calc(min(58vh, 470px) - 36px); right: 64px; }
+  body.drawer-open .tabs button { font-size: 13px; }
+
+  .drawer {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; height: min(58vh, 470px);
+    background: #fff; border-top: 1px solid var(--ink); transform: translateY(100%); transition: transform .28s ease;
+    display: flex; flex-direction: column;
+  }
+  .drawer.open { transform: translateY(0); }
+  .drawer-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 20px; border-bottom: 1px solid #eee; font-size: 14px;
+  }
+  .drawer-head button { border: 0; background: transparent; font-size: 22px; line-height: 1; cursor: pointer; }
+  .drawer-body { flex: 1; min-height: 0; padding: 4px 12px 8px; }
+  .drawer-body svg { display: block; width: 100%; height: 100%; }
+  .hint { position: fixed; left: 18px; bottom: 10px; z-index: 20; color: #888; font-size: 11px; max-width: 260px; }
+
+  @media (max-width: 900px) {
+    .panel { width: 198px; }
+    .nf { grid-template-columns: 72px 66px auto; font-size: 12px; }
+    .nf input, .nf select { width: 66px; }
+    .transfer { width: 94vw; }
+    .tabs { gap: 8px; }
+    .tabs button { font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+
+<aside class="panel">
+  <div class="lever" id="lever">
+    <button data-mode="mck" class="active">m c k</button>
+    <button data-mode="zwn">ζ ωn</button>
+    <button data-mode="pole">极点</button>
+  </div>
+
+  <div id="mckFields">
+    <label class="nf"><span>质量 m</span><input id="m" type="number" value="1" min="0.1" max="100" step="0.1"><small>kg</small></label>
+    <label class="nf"><span>阻尼 c<span class="help" title="阻力与速度成正比：f = c·v">?</span></span><input id="c" type="number" value="0.5" min="0" max="100" step="0.1"><small>N·s/m</small></label>
+    <label class="nf"><span>刚度 k<span class="help" title="k 越大越硬；k=0 时弹簧消失">?</span></span><input id="k" type="number" value="1" min="0" max="500" step="0.1"><small>N/m</small></label>
+  </div>
+
+  <div id="zwnFields" style="display:none">
+    <label class="nf"><span>阻尼比 ζ<span class="help" title="ζ=1 临界阻尼；ζ&lt;1 欠阻尼会振荡">?</span></span><input id="zeta" type="number" value="0.25" min="0" max="5" step="0.05"><small></small></label>
+    <label class="nf"><span>频率 ωₙ</span><input id="wn" type="number" value="1" min="0.01" max="50" step="0.05"><small>rad/s</small></label>
+    <div class="readout"><span>ωd / Td</span><strong><button class="wd-toggle" id="wdBtn">0.968 rad/s</button></strong></div>
+  </div>
+
+  <div id="poleFields" style="display:none">
+    <label class="nf small"><span>极点 p1 实</span><input id="p1re" type="number" value="-0.25" step="0.05"><small></small></label>
+    <label class="nf small"><span>极点 p1 虚</span><input id="p1im" type="number" value="0.968" step="0.05"><small></small></label>
+    <div class="readout"><span>p2（共轭）</span><strong id="p2Out">−0.25 ∓ j0.968</strong></div>
+  </div>
+
+  <div class="group-title">目标与输出</div>
+  <label class="nf"><span>目标</span><input id="target" type="number" value="10" min="0.1" max="100" step="0.5"><small>m</small></label>
+  <label class="nf"><span>输出</span>
+    <select id="output">
+      <option value="x">位移 x</option>
+      <option value="v">速度 v</option>
+      <option value="F">力 F(t)</option>
+    </select><small></small>
+  </label>
+
+  <div class="group-title">控制器</div>
+  <label class="nf"><span>Kp</span><input id="kp" type="number" value="10" min="0" max="200" step="0.1"><small></small></label>
+  <label class="nf"><span>Ki</span><input id="ki" type="number" value="1" min="0" max="100" step="0.1"><small></small></label>
+  <label class="nf"><span>Kd<span class="help" title="微分项，放大噪声；带一阶滤波 N=100">?</span></span><input id="kd" type="number" value="0" min="0" max="20" step="0.1"><small></small></label>
+
+  <div class="group-title">限制与运行</div>
+  <label class="nf"><span>限幅<span class="help" title="-1 不限幅；否则限制在 ±限幅，饱和时暂停积分">?</span></span><input id="limit" type="number" value="-1" min="-1" max="2000" step="1"><small>N</small></label>
+  <label class="nf"><span>时间 t<span class="help" title="-1 持续运行；曲线只保留近 30 s">?</span></span><input id="time" type="number" value="-1" min="-1" max="300" step="1"><small>s</small></label>
+  <label class="nf"><span>环路频率<span class="help" title="控制环路运行频率（Hz），决定仿真步长">?</span></span><input id="freq" type="number" value="1000" min="10" max="5000" step="10"><small>Hz</small></label>
+
+  <div class="group-title">扰动 D(t)</div>
+  <div class="row-line">
+    <label><input type="checkbox" id="stepOn">阶跃</label>
+    <input id="stepA" type="number" value="2" step="0.5" title="幅值 N"><span class="unit">N @</span>
+    <input id="stepPos" type="number" value="5" step="0.5" title="位置 m"><span class="unit">m</span>
+  </div>
+  <div class="row-line">
+    <label><input type="checkbox" id="impOn">脉冲</label>
+    <input id="impA" type="number" value="5" step="0.5" title="幅值 N"><span class="unit">N @</span>
+    <input id="impPos" type="number" value="3" step="0.5" title="位置 m"><span class="unit">m</span>
+  </div>
+  <div class="row-line">
+    <label><input type="checkbox" id="rndOn">随机</label>
+    <span class="unit">均值</span><input id="rndMean" type="number" value="0" step="0.1">
+    <span class="unit">方差</span><input id="rndVar" type="number" value="0.5" step="0.1">
+  </div>
+
+  <div class="group-title">读数</div>
+  <div class="readout"><span>阻尼比 ζ</span><strong id="zetaOut">0.250</strong></div>
+  <div class="readout"><span>频率 ωₙ</span><strong id="wnOut">1.000 rad/s</strong></div>
+  <div class="readout"><span>上升时间</span><strong id="trOut">—</strong></div>
+  <div class="readout"><span>调节时间</span><strong id="tsOut">—</strong></div>
+  <div class="readout"><span>超调量</span><strong id="mpOut">—</strong></div>
+  <div class="readout"><span>动能 EK</span><strong id="ekOut">0.000 J</strong></div>
+  <div class="readout"><span>势能 EU</span><strong id="euOut">0.000 J</strong></div>
+
+  <div class="buttons">
+    <button id="start" class="start">Start</button>
+    <button id="reset">Reset</button>
+  </div>
+</aside>
+
+<section class="transfer">
+  <div class="tag">传递函数</div>
+  <svg viewBox="0 0 900 150" aria-label="闭环传递函数框图">
+    <defs>
+      <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M2 1L8 5L2 9" fill="none" stroke="#000" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </marker>
+    </defs>
+    <text class="sig" x="10" y="80">R(s)</text>
+    <line x1="52" y1="76" x2="100" y2="76" stroke="#000" stroke-width="1.3" marker-end="url(#arr)"/>
+    <circle cx="118" cy="76" r="13" fill="#fff" stroke="#000" stroke-width="1.3"/>
+    <text x="105" y="62">+</text><text x="105" y="95">−</text>
+    <line x1="131" y1="76" x2="168" y2="76" stroke="#000" stroke-width="1.3" marker-end="url(#arr)"/>
+    <rect x="168" y="48" width="214" height="56" fill="#fff" stroke="#000" stroke-width="1.3"/>
+    <text id="cLabel" x="275" y="81" text-anchor="middle">(10s + 1)/s</text>
+    <line x1="382" y1="76" x2="426" y2="76" stroke="#000" stroke-width="1.3" marker-end="url(#arr)"/>
+    <rect x="426" y="48" width="224" height="56" fill="#fff" stroke="#000" stroke-width="1.3"/>
+    <text id="pLabel" x="538" y="81" text-anchor="middle">1/(s² + 0.5s + 1)</text>
+    <line x1="650" y1="76" x2="696" y2="76" stroke="#000" stroke-width="1.3" marker-end="url(#arr)"/>
+    <text class="sig" x="706" y="81">X(s)</text>
+    <circle cx="690" cy="76" r="2.5" fill="#000"/>
+    <polyline points="690,76 690,132 118,132 118,90" fill="none" stroke="#000" stroke-width="1.3" marker-end="url(#arr)"/>
+  </svg>
+</section>
+
+<section class="road-scene" aria-label="road scene">
+  <svg id="scene" viewBox="0 0 1400 760" preserveAspectRatio="xMidYMid slice" aria-label="block moving along a road">
+    <defs>
+      <pattern id="roadDots" width="52" height="42" patternUnits="userSpaceOnUse">
+        <circle cx="10" cy="8" r="1.1" fill="#000"/><circle cx="31" cy="21" r="0.9" fill="#000"/>
+        <circle cx="44" cy="34" r="1.2" fill="#000"/><circle cx="18" cy="33" r="0.8" fill="#000"/>
+        <circle cx="39" cy="5" r="1.0" fill="#000"/>
+      </pattern>
+    </defs>
+    <rect width="1400" height="760" fill="#fff"/>
+
+    <polygon class="road-surface" points="-100,707 1500,127 1500,233 -100,813"/>
+    <polygon class="road-dots" points="-100,707 1500,127 1500,233 -100,813" fill="url(#roadDots)"/>
+    <line class="road-line" x1="-100" y1="707" x2="1500" y2="127"/>
+    <line class="road-line" x1="-100" y1="813" x2="1500" y2="233"/>
+
+    <polygon id="stepZone" class="dist-zone" points="0,0 0,0 0,0 0,0" style="display:none"/>
+    <line id="impZone" class="imp-mark" x1="0" y1="0" x2="0" y2="0" style="display:none"/>
+
+    <line x1="1180" y1="296" x2="1338" y2="414" stroke="#000" stroke-width="1.2" stroke-dasharray="8 6"/>
+
+    <line x1="560" y1="448" x2="560" y2="521" stroke="#000" stroke-width="3"/>
+    <g transform="translate(560,412) rotate(-20)">
+      <rect x="-104" y="-42" width="208" height="66" fill="#fff" stroke="#000" stroke-width="1.6"/>
+      <text class="sign-text" x="0" y="2" text-anchor="middle">Road Settings</text>
+    </g>
+
+    <g id="flag" transform="translate(1180,296) scale(0.92)">
+      <ellipse cx="0" cy="0" rx="18" ry="6" fill="#8b5a2b"/>
+      <line x1="0" y1="0" x2="0" y2="-72" stroke="#b8860b" stroke-width="3"/>
+      <polygon points="0,-72 40,-57 0,-42" fill="#d9534f" stroke="#000" stroke-width="1"/>
+    </g>
+
+    <g id="cube" transform="translate(150,669)">
+      <polygon class="cube-face" points="-30,-60 30,-60 30,0 -30,0"/>
+      <polygon class="cube-top" points="-30,-60 -10,-80 50,-80 30,-60"/>
+      <polygon class="cube-face" points="30,-60 50,-80 50,-20 30,0"/>
+    </g>
+  </svg>
+</section>
+
+<div class="controller" id="controller">控制器</div>
+<div class="controller-menu" id="controllerMenu">
+  <button data-mode="pid" class="active">闭环 PID</button>
+  <button data-mode="pi">闭环 PI</button>
+  <button data-mode="pd">闭环 PD</button>
+  <button data-mode="p">闭环 P</button>
+  <button data-mode="open">开环</button>
+</div>
+
+<div class="top-right">
+  <span>更多</span>
+  <span class="lang">ENG</span>
+  <span class="lang active">中文</span>
+  <span class="avatar">N</span>
+</div>
+
+<nav class="tabs">
+  <button data-tab="time" class="active">Time Response</button>
+  <button data-tab="bode">Bode Plot</button>
+  <button data-tab="pz">Pole-Zero</button>
+  <button data-tab="phase">Phase</button>
+</nav>
+
+<section class="drawer" id="drawer">
+  <div class="drawer-head">
+    <span id="drawerTitle">响应曲线</span>
+    <button id="closeDrawer" aria-label="关闭">×</button>
+  </div>
+  <div class="drawer-body">
+    <svg id="chart" viewBox="0 0 1000 340" preserveAspectRatio="xMidYMid meet"></svg>
+  </div>
+</section>
+
+<div class="hint">功能复刻：三种参数输入、扰动 D(t)、开环可拖物块、四项读数、四个响应页签。</div>
+
+<script>
+(function () {
+  "use strict";
+
+  const $ = (id) => document.getElementById(id);
+
+  const state = {
+    mode: "mck",
+    m: 1, c: 0.5, k: 1,
+    zeta: 0.25, wn: 1,
+    p1re: -0.25, p1im: 0.968,
+    target: 10,
+    output: "x",
+    kp: 10, ki: 1, kd: 0,
+    limit: -1, time: -1, freq: 1000,
+    closed: true,
+    ctrl: "pid",
+    step: { on: false, A: 2, pos: 5 },
+    imp: { on: false, A: 5, pos: 3 },
+    rnd: { on: false, mean: 0, var: 0.5 },
+    showTd: false
+  };
+
+  let sim = {
+    x: 0, v: 0, i: 0, d: 0, ePrev: 0, t: 0, history: [],
+    running: false, finished: false, maxX: 0, lastOut: 0,
+    rise: -1, impFired: false, impUntil: -1
+  };
+  let activeTab = "time";
+  let drawerOpen = false;
+  let frame = 0;
+
+  const num = (id, def) => { const v = parseFloat($(id).value); return Number.isFinite(v) ? v : def; };
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const fmt = (v) => { const s = Number(v).toFixed(3).replace(/\.?0+$/, ""); return s === "-0" ? "0" : s; };
+
+  /* ---------- parameter sync ---------- */
+  function fromMC() {
+    state.zeta = (state.k > 0 && state.m > 0) ? state.c / (2 * Math.sqrt(state.k * state.m)) : 0;
+    state.wn = state.m > 0 ? Math.sqrt(Math.max(state.k, 0) / state.m) : 0;
+    const disc = state.c * state.c - 4 * state.m * state.k;
+    if (disc < 0) {
+      state.p1re = -state.c / (2 * state.m);
+      state.p1im = Math.sqrt(-disc) / (2 * state.m);
+    } else {
+      const s = Math.sqrt(disc);
+      state.p1re = (-state.c + s) / (2 * state.m);
+      state.p1im = 0;
+    }
+    if (state.mode === "mck") {
+      $("zeta").value = state.zeta.toFixed(3);
+      $("wn").value = state.wn.toFixed(3);
+      $("p1re").value = state.p1re.toFixed(3);
+      $("p1im").value = state.p1im.toFixed(3);
+    }
+  }
+  function fromZW() {
+    state.c = 2 * state.zeta * state.wn * state.m;
+    state.k = state.wn * state.wn * state.m;
+    fromMC();
+  }
+  function fromPole() {
+    const a = state.p1re, b = state.p1im;
+    state.c = -2 * a * state.m;
+    state.k = (a * a + b * b) * state.m;
+    fromMC();
+  }
+
+  function readAll() {
+    state.target = Math.max(0.1, num("target", 10));
+    state.output = $("output").value;
+    state.kp = Math.max(0, num("kp", 10));
+    state.ki = Math.max(0, num("ki", 1));
+    state.kd = Math.max(0, num("kd", 0));
+    state.limit = num("limit", -1);
+    state.time = num("time", -1);
+    state.freq = clamp(num("freq", 1000), 10, 5000);
+    state.step.on = $("stepOn").checked; state.step.A = num("stepA", 2); state.step.pos = num("stepPos", 5);
+    state.imp.on = $("impOn").checked; state.imp.A = num("impA", 5); state.imp.pos = num("impPos", 3);
+    state.rnd.on = $("rndOn").checked; state.rnd.mean = num("rndMean", 0); state.rnd.var = Math.max(0, num("rndVar", 0.5));
+    if (state.mode === "mck") {
+      state.m = Math.max(0.1, num("m", 1));
+      state.c = Math.max(0, num("c", 0.5));
+      state.k = Math.max(0, num("k", 1));
+      fromMC();
+    } else if (state.mode === "zwn") {
+      state.zeta = Math.max(0, num("zeta", 0.25));
+      state.wn = Math.max(0.01, num("wn", 1));
+      fromZW();
+    } else {
+      state.p1re = num("p1re", -0.25);
+      state.p1im = num("p1im", 0.968);
+      fromPole();
+    }
+  }
+
+  function updateDerived() {
+    const wd = state.wn * Math.sqrt(Math.max(1 - state.zeta * state.zeta, 0));
+    const Td = wd > 1e-6 ? 2 * Math.PI / wd : Infinity;
+    $("zetaOut").textContent = state.zeta.toFixed(3);
+    $("wnOut").textContent = state.wn.toFixed(3) + " rad/s";
+    $("wdBtn").textContent = state.showTd
+      ? (isFinite(Td) ? Td.toFixed(3) + " s" : "—")
+      : wd.toFixed(3) + " rad/s";
+    $("p2Out").textContent = state.p1im === 0
+      ? fmt(state.p1re)
+      : fmt(state.p1re) + " ∓ j" + fmt(Math.abs(state.p1im));
+  }
+
+  function updateLabels() {
+    const ct = [];
+    if (state.kd) ct.push((Math.abs(state.kd - 1) < 1e-9 ? "" : fmt(state.kd)) + "s²");
+    if (state.kp) ct.push((Math.abs(state.kp - 1) < 1e-9 ? "" : fmt(state.kp)) + "s");
+    if (state.ki) ct.push(fmt(state.ki));
+    $("cLabel").textContent = "(" + (ct.join(" + ") || "0") + ")/s";
+    const dt = [];
+    if (state.m) dt.push((Math.abs(state.m - 1) < 1e-9 ? "" : fmt(state.m)) + "s²");
+    if (state.c) dt.push((Math.abs(state.c - 1) < 1e-9 ? "" : fmt(state.c)) + "s");
+    if (state.k) dt.push(fmt(state.k));
+    $("pLabel").textContent = "1/(" + (dt.join(" + ") || "0") + ")";
+  }
+
+  function setMode(mode) {
+    state.mode = mode;
+    document.querySelectorAll("#lever button").forEach((b) => b.classList.toggle("active", b.dataset.mode === mode));
+    $("mckFields").style.display = mode === "mck" ? "" : "none";
+    $("zwnFields").style.display = mode === "zwn" ? "" : "none";
+    $("poleFields").style.display = mode === "pole" ? "" : "none";
+    if (mode === "mck") { $("m").value = state.m; $("c").value = state.c; $("k").value = state.k; }
+    if (mode === "zwn") { $("zeta").value = state.zeta.toFixed(3); $("wn").value = state.wn.toFixed(3); }
+    if (mode === "pole") { $("p1re").value = state.p1re.toFixed(3); $("p1im").value = state.p1im.toFixed(3); }
+    updateDerived(); updateLabels();
+  }
+
+  /* ---------- simulation ---------- */
+  function gauss() {
+    let u = 0, v = 0;
+    while (u === 0) u = Math.random();
+    while (v === 0) v = Math.random();
+    return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+  }
+
+  function resetSim() {
+    sim = {
+      x: 0, v: 0, i: 0, d: 0, ePrev: 0, t: 0, history: [],
+      running: false, finished: false, maxX: 0, lastOut: 0,
+      rise: -1, impFired: false, impUntil: -1
+    };
+    $("start").textContent = "Start";
+    updateScene(); updateReadouts();
+    if (drawerOpen) render();
+  }
+
+  function step() {
+    const Ts = 1 / state.freq;
+    const e = state.closed ? (state.target - sim.x) : state.target;
+
+    const pTerm = state.kp * e;
+    const iNew = sim.i + state.ki * Ts * e;
+    const dRaw = state.kd * (e - sim.ePrev) / Ts;
+    const alpha = 0.01 / (0.01 + Ts);
+    const dNew = alpha * sim.d + (1 - alpha) * dRaw;
+
+    const uUnsat = pTerm + iNew + dNew;
+    let iNext = iNew;
+    if (state.limit >= 0 && ((uUnsat > state.limit && e > 0) || (uUnsat < -state.limit && e < 0))) iNext = sim.i;
+
+    let u = pTerm + iNext + dNew;
+    if (state.limit >= 0) u = clamp(u, -state.limit, state.limit);
+
+    let D = 0;
+    if (state.step.on && sim.x >= state.step.pos) D += state.step.A;
+    if (state.imp.on) {
+      if (!sim.impFired && sim.x >= state.imp.pos) { sim.impFired = true; sim.impUntil = sim.t + 0.08; }
+      if (sim.t < sim.impUntil) D += state.imp.A;
+    }
+    if (state.rnd.on) D += state.rnd.mean + Math.sqrt(state.rnd.var) * gauss();
+
+    const F = u + D;
+    const a = (F - state.c * sim.v - state.k * sim.x) / state.m;
+    sim.v += a * Ts;
+    sim.x += sim.v * Ts;
+
+    sim.i = iNext; sim.d = dNew; sim.ePrev = e; sim.t += Ts;
+    sim.maxX = Math.max(sim.maxX, sim.x);
+
+    const band = Math.max(0.02 * Math.abs(state.target), 1e-4);
+    if (sim.rise < 0 && state.closed && sim.x >= 0.9 * state.target) sim.rise = sim.t;
+    if (Math.abs(state.target - sim.x) > band) sim.lastOut = sim.t;
+
+    if (sim.history.length === 0 || sim.t - sim.history[sim.history.length - 1].t >= 5 * Ts) {
+      sim.history.push({ t: sim.t, x: sim.x, v: sim.v, F: F });
+      while (sim.history.length && sim.t - sim.history[0].t > 30) sim.history.shift();
+    }
+
+    if (state.time > 0 && sim.t >= state.time) {
+      sim.running = false; sim.finished = true; $("start").textContent = "Start";
+    }
+  }
+
+  function roadY(x) { return 760 - 0.3625 * (x + 100); }
+
+  function updateScene() {
+    const q = clamp(sim.x / state.target, -0.05, 1.1);
+    const px = 150 + q * 970;
+    $("cube").setAttribute("transform", "translate(" + px.toFixed(1) + "," + roadY(px).toFixed(1) + ")");
+
+    const zone = $("stepZone");
+    if (state.step.on) {
+      zone.style.display = "";
+      const x0 = 150 + clamp(state.step.pos / state.target, 0, 1) * 970;
+      const x1 = 1500;
+      zone.setAttribute("points",
+        x0.toFixed(1) + "," + (roadY(x0) - 53).toFixed(1) + " " +
+        x1 + "," + (roadY(x1) - 53).toFixed(1) + " " +
+        x1 + "," + (roadY(x1) + 53).toFixed(1) + " " +
+        x0.toFixed(1) + "," + (roadY(x0) + 53).toFixed(1));
+    } else zone.style.display = "none";
+
+    const imp = $("impZone");
+    if (state.imp.on) {
+      imp.style.display = "";
+      const xi = 150 + clamp(state.imp.pos / state.target, 0, 1) * 970;
+      imp.setAttribute("x1", xi.toFixed(1)); imp.setAttribute("y1", (roadY(xi) - 46).toFixed(1));
+      imp.setAttribute("x2", xi.toFixed(1)); imp.setAttribute("y2", (roadY(xi) + 46).toFixed(1));
+    } else imp.style.display = "none";
+  }
+
+  function updateReadouts() {
+    updateDerived();
+    const band = Math.max(0.02 * Math.abs(state.target), 1e-4);
+    $("trOut").textContent = sim.rise > 0 ? sim.rise.toFixed(2) + " s" : "—";
+    const settled = Math.abs(state.target - sim.x) <= band && sim.t > 0.5;
+    $("tsOut").textContent = settled ? sim.lastOut.toFixed(2) + " s" : "—";
+    const os = state.target > 0 && sim.maxX > state.target ? ((sim.maxX - state.target) / state.target * 100) : 0;
+    $("mpOut").textContent = os.toFixed(1) + " %";
+    $("ekOut").textContent = (0.5 * state.m * sim.v * sim.v).toFixed(3) + " J";
+    $("euOut").textContent = (0.5 * state.k * sim.x * sim.x).toFixed(3) + " J";
+  }
+
+  /* ---------- drag block (open loop) ---------- */
+  (function enableDrag() {
+    const svg = $("scene");
+    const cube = $("cube");
+    let dragging = false;
+    const toSvg = (evt) => {
+      const pt = svg.createSVGPoint();
+      pt.x = evt.clientX; pt.y = evt.clientY;
+      const m = svg.getScreenCTM();
+      return m ? pt.matrixTransform(m.inverse()) : { x: 0, y: 0 };
+    };
+    cube.addEventListener("pointerdown", (e) => {
+      if (state.closed) return;
+      dragging = true; cube.classList.add("dragging");
+      if (cube.setPointerCapture) cube.setPointerCapture(e.pointerId);
+    });
+    cube.addEventListener("pointermove", (e) => {
+      if (!dragging) return;
+      const p = toSvg(e);
+      const Sx = 150, Sy = roadY(150);
+      const dx = 970, dy = roadY(1120) - roadY(150);
+      const vx = p.x - Sx, vy = p.y - Sy;
+      const t = (vx * dx + vy * dy) / (dx * dx + dy * dy);
+      sim.x = clamp(t, -0.05, 1.1) * state.target;
+      sim.v = 0;
+      updateScene(); updateReadouts();
+      if (drawerOpen && activeTab === "time") drawTime();
+      if (drawerOpen && activeTab === "phase") drawPhase();
+    });
+    const stop = () => { dragging = false; cube.classList.remove("dragging"); };
+    cube.addEventListener("pointerup", stop);
+    cube.addEventListener("pointercancel", stop);
+  })();
+
+  /* ---------- charts ---------- */
+  function niceStep(range, count) {
+    const raw = range / count;
+    if (!(raw > 0)) return 1;
+    const mag = Math.pow(10, Math.floor(Math.log10(raw)));
+    const n = raw / mag;
+    let s = 1;
+    if (n > 5) s = 10;
+    else if (n > 2) s = 5;
+    else if (n > 1) s = 2;
+    return s * mag;
+  }
+
+  function drawTime() {
+    const W = 1000, H = 340, L = 64, R = 22, T = 20, B = 38;
+    const sig = state.output;
+    if (!sim.history.length) {
+      $("chart").innerHTML = '<text x="500" y="170" text-anchor="middle" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="14" fill="#777">点击 Start 开始</text>';
+      return;
+    }
+    const tMax = Math.max(5, sim.t);
+    const tMin = tMax > 30 ? tMax - 30 : 0;
+    const vis = sim.history.filter((h) => h.t >= tMin);
+    let yMin = 0, yMax = 1;
+    if (sig === "x") {
+      let mx = state.target;
+      for (const h of vis) mx = Math.max(mx, h.x);
+      yMax = Math.max(state.target * 1.3, mx * 1.15);
+    } else {
+      let mv = 0.1;
+      for (const h of vis) mv = Math.max(mv, Math.abs(sig === "v" ? h.v : h.F));
+      yMin = -mv * 1.2; yMax = mv * 1.2;
+    }
+    const X = (t) => L + (t - tMin) / (tMax - tMin) * (W - L - R);
+    const Y = (v) => (H - B) - (v - yMin) / (yMax - yMin) * (H - B - T);
+
+    let s = '<rect width="' + W + '" height="' + H + '" fill="#fff"/>';
+    s += '<line x1="' + L + '" y1="' + (H - B) + '" x2="' + (W - R) + '" y2="' + (H - B) + '" stroke="#000"/>';
+    s += '<line x1="' + L + '" y1="' + (H - B) + '" x2="' + L + '" y2="' + T + '" stroke="#000"/>';
+    const stp = niceStep(tMax - tMin, 5);
+    const ticks = [];
+    for (let tt = Math.ceil(tMin / stp) * stp; tt <= tMax + 1e-9; tt += stp) ticks.push(tt);
+    s += '<g stroke="#e9e9e9">';
+    for (let i = 0; i <= 5; i++) {
+      const y = T + i * (H - B - T) / 5;
+      s += '<line x1="' + L + '" y1="' + y + '" x2="' + (W - R) + '" y2="' + y + '"/>';
+    }
+    for (const tt of ticks) {
+      const x = X(tt);
+      s += '<line x1="' + x.toFixed(1) + '" y1="' + T + '" x2="' + x.toFixed(1) + '" y2="' + (H - B) + '"/>';
+    }
+    s += '</g>';
+    if (sig === "x") {
+      const yt = Y(state.target);
+      s += '<line x1="' + L + '" y1="' + yt + '" x2="' + (W - R) + '" y2="' + yt + '" stroke="#888" stroke-dasharray="6 4"/>';
+    }
+    s += '<polyline points="' + vis.map((h) => X(h.t).toFixed(1) + "," + Y(sig === "x" ? h.x : (sig === "v" ? h.v : h.F)).toFixed(1)).join(" ") + '" fill="none" stroke="#000" stroke-width="2"/>';
+    s += '<g font-family="Lucida Console, Courier New, monospace" font-size="11" fill="#333">';
+    for (let i = 0; i <= 5; i++) {
+      const val = yMin + (yMax - yMin) * i / 5;
+      s += '<text x="' + (L - 8) + '" y="' + (Y(val) + 4) + '" text-anchor="end">' + val.toFixed(1) + '</text>';
+    }
+    for (const tt of ticks) {
+      s += '<text x="' + X(tt).toFixed(1) + '" y="' + (H - B + 18) + '" text-anchor="middle">' + (stp < 1 ? tt.toFixed(1) : tt.toFixed(0)) + '</text>';
+    }
+    s += '</g>';
+    const label = sig === "x" ? "位移 x (m)" : (sig === "v" ? "速度 v (m/s)" : "力 F (N)");
+    s += '<text x="' + L + '" y="' + (T - 6) + '" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="12">' + label + '</text>';
+    s += '<text x="' + (W - R) + '" y="' + (H - 6) + '" text-anchor="end" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="12">t (s)</text>';
+    $("chart").innerHTML = s;
+  }
+
+  function bodePoint(w) {
+    const Cre = state.kp;
+    const Cim = state.kd * w - (w > 1e-9 ? state.ki / w : 0);
+    const denRe = state.k - state.m * w * w;
+    const denIm = state.c * w;
+    const dd = denRe * denRe + denIm * denIm || 1e-12;
+    const Pre = denRe / dd, Pim = -denIm / dd;
+    const Lre = Cre * Pre - Cim * Pim;
+    const Lim = Cre * Pim + Cim * Pre;
+    return { mag: 20 * Math.log10(Math.max(Math.hypot(Lre, Lim), 1e-12)), ph: Math.atan2(Lim, Lre) * 180 / Math.PI };
+  }
+
+  function drawBode() {
+    const W = 1000, H = 340, L = 66, R = 22;
+    const mTop = 26, mBot = 166, pTop = 206, pBot = 318;
+    const wMin = 0.1, wMax = 100;
+    const X = (w) => L + (Math.log10(w) - Math.log10(wMin)) / (Math.log10(wMax) - Math.log10(wMin)) * (W - L - R);
+    const mags = [], phs = [];
+    for (let i = 0; i <= 240; i++) {
+      const w = Math.pow(10, Math.log10(wMin) + (Math.log10(wMax) - Math.log10(wMin)) * i / 240);
+      const b = bodePoint(w);
+      mags.push({ w: w, v: b.mag }); phs.push({ w: w, v: b.ph });
+    }
+    let off = 0, prev = null;
+    for (const p of phs) {
+      if (prev !== null) {
+        let d = p.v + off - prev;
+        while (d > 180) { off -= 360; d -= 360; }
+        while (d < -180) { off += 360; d += 360; }
+      }
+      p.v += off; prev = p.v;
+    }
+    let magMin = Math.min.apply(null, mags.map((m) => m.v)) - 6;
+    let magMax = Math.max.apply(null, mags.map((m) => m.v)) + 6;
+    if (magMax - magMin < 20) { const c = (magMax + magMin) / 2; magMin = c - 10; magMax = c + 10; }
+    let phMin = Math.min.apply(null, phs.map((p) => p.v)) - 8;
+    let phMax = Math.max.apply(null, phs.map((p) => p.v)) + 8;
+    if (phMax - phMin < 40) { const c = (phMax + phMin) / 2; phMin = c - 20; phMax = c + 20; }
+    const YM = (v) => mBot - (v - magMin) / (magMax - magMin) * (mBot - mTop);
+    const YP = (v) => pBot - (v - phMin) / (phMax - phMin) * (pBot - pTop);
+
+    let s = '<rect width="' + W + '" height="' + H + '" fill="#fff"/>';
+    s += '<line x1="' + L + '" y1="' + mBot + '" x2="' + (W - R) + '" y2="' + mBot + '" stroke="#000"/>';
+    s += '<line x1="' + L + '" y1="' + pBot + '" x2="' + (W - R) + '" y2="' + pBot + '" stroke="#000"/>';
+    s += '<line x1="' + L + '" y1="' + mBot + '" x2="' + L + '" y2="' + mTop + '" stroke="#000"/>';
+    s += '<line x1="' + L + '" y1="' + pBot + '" x2="' + L + '" y2="' + pTop + '" stroke="#000"/>';
+    s += '<g stroke="#e9e9e9">';
+    for (let i = 0; i <= 4; i++) { const x = L + i * (W - L - R) / 4; s += '<line x1="' + x + '" y1="' + mTop + '" x2="' + x + '" y2="' + pBot + '"/>'; }
+    s += '</g>';
+    if (magMin < 0 && magMax > 0) s += '<line x1="' + L + '" y1="' + YM(0) + '" x2="' + (W - R) + '" y2="' + YM(0) + '" stroke="#888" stroke-dasharray="6 4"/>';
+    if (phMin < -180 && phMax > -180) s += '<line x1="' + L + '" y1="' + YP(-180) + '" x2="' + (W - R) + '" y2="' + YP(-180) + '" stroke="#888" stroke-dasharray="6 4"/>';
+    s += '<polyline points="' + mags.map((m) => X(m.w).toFixed(1) + "," + YM(m.v).toFixed(1)).join(" ") + '" fill="none" stroke="#000" stroke-width="2"/>';
+    s += '<polyline points="' + phs.map((p) => X(p.w).toFixed(1) + "," + YP(p.v).toFixed(1)).join(" ") + '" fill="none" stroke="#000" stroke-width="2"/>';
+    s += '<g font-family="Lucida Console, Courier New, monospace" font-size="11" fill="#333">';
+    for (let i = 0; i <= 4; i++) {
+      const mv = magMin + (magMax - magMin) * i / 4;
+      const pv = phMin + (phMax - phMin) * i / 4;
+      s += '<text x="' + (L - 8) + '" y="' + (YM(mv) + 4) + '" text-anchor="end">' + mv.toFixed(0) + '</text>';
+      s += '<text x="' + (L - 8) + '" y="' + (YP(pv) + 4) + '" text-anchor="end">' + pv.toFixed(0) + '</text>';
+    }
+    for (const w of [0.1, 1, 10, 100]) s += '<text x="' + X(w) + '" y="' + (pBot + 18) + '" text-anchor="middle">' + (w >= 1 ? w.toFixed(0) : w.toFixed(1)) + '</text>';
+    s += '</g>';
+    s += '<text x="' + L + '" y="' + (mTop - 8) + '" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="12">开环幅值 |L| (dB)</text>';
+    s += '<text x="' + L + '" y="' + (pTop - 8) + '" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="12">相位 ∠L (°)</text>';
+    s += '<text x="' + (W - R) + '" y="' + (H - 6) + '" text-anchor="end" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="12">ω (rad/s)</text>';
+    $("chart").innerHTML = s;
+  }
+
+  function polyRoots(coeffs) {
+    let a = coeffs.slice();
+    while (a.length > 1 && Math.abs(a[0]) < 1e-12) a.shift();
+    const n = a.length - 1;
+    if (n < 1) return [];
+    if (n === 1) return [{ re: -a[1] / a[0], im: 0 }];
+    const lead = a[0];
+    a = a.map((v) => v / lead);
+    const Rg = 1 + Math.max.apply(null, a.slice(1).map(Math.abs));
+    let roots = [];
+    for (let i = 0; i < n; i++) {
+      const th = 2 * Math.PI * i / n + 0.4;
+      roots.push({ re: Rg * Math.cos(th), im: Rg * Math.sin(th) });
+    }
+    const evalP = (z) => {
+      let re = 0, im = 0;
+      for (const co of a) {
+        const nr = re * z.re - im * z.im + co;
+        const ni = re * z.im + im * z.re;
+        re = nr; im = ni;
+      }
+      return { re: re, im: im };
+    };
+    for (let it = 0; it < 200; it++) {
+      let maxd = 0;
+      const next = roots.map((z, i) => {
+        const nv = evalP(z);
+        let dre = 1, dim = 0;
+        for (let j = 0; j < n; j++) {
+          if (j === i) continue;
+          const dr = z.re - roots[j].re, di = z.im - roots[j].im;
+          const nr = dre * dr - dim * di, ni = dre * di + dim * dr;
+          dre = nr; dim = ni;
+        }
+        const den = dre * dre + dim * dim || 1e-12;
+        const qr = (nv.re * dre + nv.im * dim) / den;
+        const qi = (nv.im * dre - nv.re * dim) / den;
+        maxd = Math.max(maxd, Math.hypot(qr, qi));
+        return { re: z.re - qr, im: z.im - qi };
+      });
+      roots = next;
+      if (maxd < 1e-10) break;
+    }
+    return roots;
+  }
+
+  function quadratic(a, b, c) {
+    if (Math.abs(a) < 1e-12) return Math.abs(b) < 1e-12 ? [] : [{ re: -c / b, im: 0 }];
+    const disc = b * b - 4 * a * c;
+    if (disc >= 0) {
+      const s = Math.sqrt(disc);
+      return [{ re: (-b + s) / (2 * a), im: 0 }, { re: (-b - s) / (2 * a), im: 0 }];
+    }
+    const re = -b / (2 * a), im = Math.sqrt(-disc) / (2 * a);
+    return [{ re: re, im: im }, { re: re, im: -im }];
+  }
+
+  function drawPZ() {
+    const W = 1000, H = 340, L = 60, R = 22, T = 24, B = 38;
+    const poles = polyRoots([state.m, state.c + state.kd, state.k + state.kp, state.ki]);
+    const zeros = state.kd > 0
+      ? quadratic(state.kd, state.kp, state.ki)
+      : (state.kp > 0 ? [{ re: -state.ki / state.kp, im: 0 }] : []);
+    let mx = 2;
+    for (const p of poles) mx = Math.max(mx, Math.abs(p.re), Math.abs(p.im));
+    for (const z of zeros) mx = Math.max(mx, Math.abs(z.re), Math.abs(z.im));
+    const Rg = Math.ceil(mx * 1.25);
+    const cx = L + (W - L - R) / 2, cy = T + (H - T - B) / 2;
+    const sx = (W - L - R) / (2 * Rg), sy = (H - T - B) / (2 * Rg);
+    const X = (x) => cx + x * sx, Y = (y) => cy - y * sy;
+
+    let s = '<rect width="' + W + '" height="' + H + '" fill="#fff"/>';
+    s += '<line x1="' + L + '" y1="' + cy + '" x2="' + (W - R) + '" y2="' + cy + '" stroke="#000"/>';
+    s += '<line x1="' + cx + '" y1="' + T + '" x2="' + cx + '" y2="' + (H - B) + '" stroke="#000"/>';
+    s += '<g stroke="#e9e9e9">';
+    for (let i = 1; i < 8; i++) {
+      const x = L + i * (W - L - R) / 8, y = T + i * (H - T - B) / 8;
+      s += '<line x1="' + x + '" y1="' + T + '" x2="' + x + '" y2="' + (H - B) + '"/>';
+      s += '<line x1="' + L + '" y1="' + y + '" x2="' + (W - R) + '" y2="' + y + '"/>';
+    }
+    s += '</g>';
+    for (const z of zeros) s += '<circle cx="' + X(z.re) + '" cy="' + Y(z.im) + '" r="5.5" fill="#fff" stroke="#000" stroke-width="1.6"/>';
+    for (const p of poles) {
+      const px = X(p.re), py = Y(p.im);
+      s += '<line x1="' + (px - 5) + '" y1="' + (py - 5) + '" x2="' + (px + 5) + '" y2="' + (py + 5) + '" stroke="#000" stroke-width="1.8"/>';
+      s += '<line x1="' + (px - 5) + '" y1="' + (py + 5) + '" x2="' + (px + 5) + '" y2="' + (py - 5) + '" stroke="#000" stroke-width="1.8"/>';
+    }
+    s += '<g font-family="Lucida Console, Courier New, monospace" font-size="11" fill="#333">';
+    s += '<text x="' + (W - R) + '" y="' + (cy - 8) + '" text-anchor="end">Re</text>';
+    s += '<text x="' + (cx + 8) + '" y="' + (T + 12) + '">Im</text></g>';
+    s += '<text x="' + L + '" y="' + (T + 8) + '" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="12">× 闭环极点　○ 控制器零点</text>';
+    $("chart").innerHTML = s;
+  }
+
+  function drawPhase() {
+    const W = 1000, H = 340, L = 64, R = 22, T = 20, B = 38;
+    if (!sim.history.length) {
+      $("chart").innerHTML = '<text x="500" y="170" text-anchor="middle" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="14" fill="#777">点击 Start 开始</text>';
+      return;
+    }
+    const pts = sim.history;
+    let xMin = 0, xMax = state.target, vMax = 0.1;
+    for (const h of pts) {
+      xMin = Math.min(xMin, h.x);
+      xMax = Math.max(xMax, h.x);
+      vMax = Math.max(vMax, Math.abs(h.v));
+    }
+    const xr = (xMax - xMin) || 1;
+    xMin -= xr * 0.1; xMax += xr * 0.1; vMax *= 1.2;
+    const X = (x) => L + (x - xMin) / (xMax - xMin) * (W - L - R);
+    const cy = T + (H - B - T) / 2;
+    const Y = (v) => cy - (v / vMax) * ((H - B - T) / 2);
+
+    let s = '<rect width="' + W + '" height="' + H + '" fill="#fff"/>';
+    s += '<line x1="' + L + '" y1="' + cy + '" x2="' + (W - R) + '" y2="' + cy + '" stroke="#000"/>';
+    s += '<line x1="' + X(0) + '" y1="' + T + '" x2="' + X(0) + '" y2="' + (H - B) + '" stroke="#000"/>';
+    s += '<g stroke="#e9e9e9">';
+    for (let i = 0; i <= 5; i++) {
+      const y = T + i * (H - B - T) / 5, x = L + i * (W - L - R) / 5;
+      s += '<line x1="' + L + '" y1="' + y + '" x2="' + (W - R) + '" y2="' + y + '"/>';
+      s += '<line x1="' + x + '" y1="' + T + '" x2="' + x + '" y2="' + (H - B) + '"/>';
+    }
+    s += '</g>';
+    s += '<polyline points="' + pts.map((h) => X(h.x).toFixed(1) + "," + Y(h.v).toFixed(1)).join(" ") + '" fill="none" stroke="#000" stroke-width="1.8"/>';
+    s += '<circle cx="' + X(sim.x).toFixed(1) + '" cy="' + Y(sim.v).toFixed(1) + '" r="4" fill="#d9534f"/>';
+    s += '<g font-family="Lucida Console, Courier New, monospace" font-size="11" fill="#333">';
+    for (let i = 0; i <= 5; i++) {
+      const vv = vMax - 2 * vMax * i / 5;
+      s += '<text x="' + (L - 8) + '" y="' + (Y(vv) + 4) + '" text-anchor="end">' + vv.toFixed(1) + '</text>';
+      const xx = xMin + (xMax - xMin) * i / 5;
+      s += '<text x="' + X(xx) + '" y="' + (H - B + 18) + '" text-anchor="middle">' + xx.toFixed(1) + '</text>';
+    }
+    s += '</g>';
+    s += '<text x="' + L + '" y="' + (T - 6) + '" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="12">速度 v (m/s)</text>';
+    s += '<text x="' + (W - R) + '" y="' + (H - 6) + '" text-anchor="end" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="12">位置 x (m)</text>';
+    $("chart").innerHTML = s;
+  }
+
+  function render() {
+    document.body.classList.toggle("drawer-open", drawerOpen);
+    $("drawer").classList.toggle("open", drawerOpen);
+    if (!drawerOpen) return;
+    if (activeTab === "time") drawTime();
+    else if (activeTab === "bode") drawBode();
+    else if (activeTab === "pz") drawPZ();
+    else drawPhase();
+  }
+
+  function updateTabs() {
+    document.querySelectorAll(".tabs button").forEach((b) => b.classList.toggle("active", b.dataset.tab === activeTab));
+  }
+
+  /* ---------- events ---------- */
+  document.querySelectorAll("#lever button").forEach((b) => {
+    b.addEventListener("click", () => { readAll(); setMode(b.dataset.mode); });
+  });
+  ["m", "c", "k", "zeta", "wn", "p1re", "p1im", "target", "kp", "ki", "kd", "limit", "time", "freq",
+   "stepA", "stepPos", "impA", "impPos", "rndMean", "rndVar"].forEach((id) => {
+    $(id).addEventListener("input", () => { readAll(); updateDerived(); updateLabels(); resetSim(); });
+  });
+  ["stepOn", "impOn", "rndOn"].forEach((id) => {
+    $(id).addEventListener("change", () => { readAll(); updateScene(); resetSim(); });
+  });
+  $("output").addEventListener("change", () => { readAll(); if (drawerOpen) render(); });
+  $("wdBtn").addEventListener("click", () => { state.showTd = !state.showTd; updateDerived(); });
+
+  $("start").addEventListener("click", () => {
+    if (sim.finished) resetSim();
+    sim.running = !sim.running;
+    $("start").textContent = sim.running ? "Pause" : "Start";
+  });
+  $("reset").addEventListener("click", () => { resetSim(); if (drawerOpen) render(); });
+
+  document.querySelectorAll(".tabs button").forEach((b) => {
+    b.addEventListener("click", () => {
+      const tab = b.dataset.tab;
+      if (drawerOpen && activeTab === tab) drawerOpen = false;
+      else { activeTab = tab; drawerOpen = true; }
+      updateTabs(); render();
+    });
+  });
+  $("closeDrawer").addEventListener("click", () => { drawerOpen = false; render(); });
+
+  $("controller").addEventListener("click", () => $("controllerMenu").classList.toggle("open"));
+  document.querySelectorAll("#controllerMenu button").forEach((b) => {
+    b.addEventListener("click", () => {
+      const mode = b.dataset.mode;
+      state.ctrl = mode;
+      document.querySelectorAll("#controllerMenu button").forEach((x) => x.classList.toggle("active", x === b));
+      if (mode === "pi") $("kd").value = 0;
+      if (mode === "pd") $("ki").value = 0;
+      if (mode === "p") { $("ki").value = 0; $("kd").value = 0; }
+      state.closed = mode !== "open";
+      $("controllerMenu").classList.remove("open");
+      readAll(); updateLabels(); resetSim();
+    });
+  });
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".controller") && !e.target.closest(".controller-menu")) {
+      $("controllerMenu").classList.remove("open");
+    }
+  });
+
+  /* ---------- boot ---------- */
+  const qs = new URLSearchParams(location.search);
+  const warm = parseFloat(qs.get("warmup") || "0");
+  const qDrawer = qs.get("drawer");
+
+  readAll();
+  setMode("mck");
+  updateLabels();
+  resetSim();
+
+  if (warm > 0) {
+    const steps = Math.round(warm * state.freq);
+    for (let i = 0; i < steps; i++) step();
+    sim.running = false; sim.finished = false;
+    updateScene(); updateReadouts();
+  }
+  if (qDrawer && ["time", "bode", "pz", "phase"].includes(qDrawer)) {
+    activeTab = qDrawer; drawerOpen = true; updateTabs(); render();
+  }
+
+  requestAnimationFrame(function tick() {
+    if (sim.running) {
+      const steps = Math.max(1, Math.round((1 / 60) / (1 / state.freq)));
+      for (let i = 0; i < steps; i++) step();
+      updateScene();
+      if (drawerOpen && (activeTab === "time" || activeTab === "phase") && frame % 4 === 0) {
+        if (activeTab === "time") drawTime(); else drawPhase();
+      }
+    }
+    if (frame % 6 === 0) updateReadouts();
+    frame++;
+    requestAnimationFrame(tick);
+  });
+})();
+</script>
+</body>
+</html>

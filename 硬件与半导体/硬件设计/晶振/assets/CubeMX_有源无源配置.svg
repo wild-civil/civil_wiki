@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 450" width="100%" role="img">
+  <title>STM32CubeMX 有源/无源晶振配置对照</title>
+  <desc>无源晶振→CubeMX Crystal/Ceramic Resonator 模式（OSC_IN/OSC_OUT 接晶体+两颗负载电容，HSEState=RCC_HSE_ON）；有源晶振→BYPASS Clock Source 模式（XO OUT 接 OSC_IN，OSC_OUT 悬空，无需负载电容，HSEState=RCC_HSE_BYPASS）。</desc>
+
+  <text x="340" y="22" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="500" fill="#2c2c2a">STM32CubeMX：无源 vs 有源，对应两个不同的 HSE 模式</text>
+
+  <!-- 顶部下拉菜单示意 -->
+  <rect x="40" y="38" width="600" height="34" rx="8" fill="#f4f4f2" stroke="#2c2c2a" stroke-width="1.3"/>
+  <text x="56" y="60" font-family="sans-serif" font-size="12" fill="#2c2c2a">CubeMX ▸ RCC ▸ HSE：</text>
+  <text x="210" y="60" font-family="sans-serif" font-size="12" fill="#6b6a66">Disable</text>
+  <text x="282" y="60" font-family="sans-serif" font-size="12" font-weight="600" fill="#3b6d11">Crystal/Ceramic Resonator（无源）</text>
+  <text x="520" y="60" font-family="sans-serif" font-size="12" font-weight="600" fill="#185fa5">BYPASS（有源）</text>
+
+  <line x1="40" y1="86" x2="640" y2="86" stroke="#cfceca" stroke-width="1"/>
+  <line x1="340" y1="92" x2="340" y2="392" stroke="#cfceca" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- 左：无源 -->
+  <rect x="30" y="96" width="300" height="28" rx="6" fill="#eaf3de" stroke="#3b6d11" stroke-width="1.2"/>
+  <text x="180" y="114" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="600" fill="#27500a">① 无源晶振 → Crystal 模式</text>
+  <text x="44" y="138" font-family="sans-serif" font-size="11" fill="#3b6d11">CubeMX: Crystal 模式　→　HSEState = RCC_HSE_ON</text>
+
+  <!-- MCU -->
+  <rect x="130" y="200" width="80" height="62" rx="8" fill="#f4f4f2" stroke="#2c2c2a" stroke-width="1.4"/>
+  <text x="170" y="235" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#2c2c2a">MCU</text>
+  <circle cx="150" cy="200" r="3" fill="#2c2c2a"/>
+  <circle cx="190" cy="200" r="3" fill="#2c2c2a"/>
+  <text x="138" y="194" font-family="sans-serif" font-size="10" fill="#185fa5">OSC_IN</text>
+  <text x="196" y="194" font-family="sans-serif" font-size="10" fill="#185fa5">OSC_OUT</text>
+  <!-- 晶体 -->
+  <rect x="150" y="158" width="40" height="16" rx="3" fill="#eaf3de" stroke="#3b6d11" stroke-width="1.4"/>
+  <text x="170" y="170" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#27500a">XTAL</text>
+  <line x1="150" y1="166" x2="150" y2="200" stroke="#2c2c2a" stroke-width="1.5"/>
+  <line x1="190" y1="166" x2="190" y2="200" stroke="#2c2c2a" stroke-width="1.5"/>
+  <!-- C1 -->
+  <line x1="150" y1="200" x2="120" y2="200" stroke="#2c2c2a" stroke-width="1.4"/>
+  <line x1="120" y1="200" x2="120" y2="252" stroke="#2c2c2a" stroke-width="1.4"/>
+  <g>
+    <line x1="112" y1="252" x2="128" y2="252" stroke="#2c2c2a" stroke-width="1.6"/>
+    <line x1="120" y1="252" x2="120" y2="262" stroke="#2c2c2a" stroke-width="1.6"/>
+    <line x1="112" y1="262" x2="128" y2="262" stroke="#2c2c2a" stroke-width="1.6"/>
+    <line x1="120" y1="262" x2="120" y2="272" stroke="#2c2c2a" stroke-width="1.6"/>
+  </g>
+  <text x="104" y="248" font-family="sans-serif" font-size="10" fill="#2c2c2a">C1</text>
+  <!-- C2 -->
+  <line x1="190" y1="200" x2="220" y2="200" stroke="#2c2c2a" stroke-width="1.4"/>
+  <line x1="220" y1="200" x2="220" y2="252" stroke="#2c2c2a" stroke-width="1.4"/>
+  <g>
+    <line x1="212" y1="252" x2="228" y2="252" stroke="#2c2c2a" stroke-width="1.6"/>
+    <line x1="220" y1="252" x2="220" y2="262" stroke="#2c2c2a" stroke-width="1.6"/>
+    <line x1="212" y1="262" x2="228" y2="262" stroke="#2c2c2a" stroke-width="1.6"/>
+    <line x1="220" y1="262" x2="220" y2="272" stroke="#2c2c2a" stroke-width="1.6"/>
+  </g>
+  <text x="232" y="248" font-family="sans-serif" font-size="10" fill="#2c2c2a">C2</text>
+  <!-- GND -->
+  <line x1="110" y1="272" x2="230" y2="272" stroke="#3b3b39" stroke-width="1.4"/>
+  <text x="240" y="276" font-family="sans-serif" font-size="10" fill="#3b3b39">GND</text>
+
+  <text x="180" y="300" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#2c2c2a">C1、C2 必须焊在 PCB 上（按 C_L 计算，见 02 篇）</text>
+  <text x="180" y="320" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="600" fill="#3b6d11">OSC_IN + OSC_OUT 两个脚都用上，内部放大器驱动起振</text>
+
+  <!-- 右：有源 -->
+  <rect x="350" y="96" width="300" height="28" rx="6" fill="#eef4fb" stroke="#185fa5" stroke-width="1.2"/>
+  <text x="500" y="114" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="600" fill="#185fa5">② 有源晶振 → BYPASS 模式</text>
+  <text x="364" y="138" font-family="sans-serif" font-size="11" fill="#185fa5">CubeMX: BYPASS 模式　→　HSEState = RCC_HSE_BYPASS</text>
+
+  <!-- XO -->
+  <rect x="360" y="158" width="70" height="44" rx="6" fill="#eef4fb" stroke="#185fa5" stroke-width="1.4"/>
+  <text x="395" y="184" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#185fa5">有源 XO</text>
+  <line x1="395" y1="158" x2="395" y2="140" stroke="#2c2c2a" stroke-width="1.4"/>
+  <text x="400" y="138" font-family="sans-serif" font-size="10" fill="#2c2c2a">VCC</text>
+  <line x1="395" y1="202" x2="395" y2="220" stroke="#2c2c2a" stroke-width="1.4"/>
+  <text x="400" y="234" font-family="sans-serif" font-size="10" fill="#2c2c2a">GND</text>
+  <line x1="430" y1="180" x2="470" y2="180" stroke="#2c2c2a" stroke-width="1.5"/>
+  <text x="442" y="174" font-family="sans-serif" font-size="10" fill="#185fa5">OUT</text>
+
+  <!-- MCU -->
+  <rect x="520" y="200" width="80" height="62" rx="8" fill="#f4f4f2" stroke="#2c2c2a" stroke-width="1.4"/>
+  <text x="560" y="235" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#2c2c2a">MCU</text>
+  <circle cx="540" cy="200" r="3" fill="#2c2c2a"/>
+  <circle cx="580" cy="200" r="3" fill="#2c2c2a"/>
+  <text x="528" y="194" font-family="sans-serif" font-size="10" fill="#185fa5">OSC_IN</text>
+  <text x="586" y="194" font-family="sans-serif" font-size="10" fill="#6b6a66">OSC_OUT</text>
+  <!-- OUT -> OSC_IN -->
+  <line x1="470" y1="180" x2="540" y2="180" stroke="#2c2c2a" stroke-width="1.5"/>
+  <line x1="540" y1="180" x2="540" y2="200" stroke="#2c2c2a" stroke-width="1.5"/>
+  <!-- OSC_OUT 悬空 -->
+  <line x1="580" y1="200" x2="580" y2="180" stroke="#6b6a66" stroke-width="1.2" stroke-dasharray="3,3"/>
+  <text x="586" y="176" font-family="sans-serif" font-size="10" fill="#6b6a66">悬空/NC</text>
+
+  <text x="500" y="300" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#2c2c2a">无需负载电容；XO 上电即出干净方波</text>
+  <text x="500" y="320" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="600" fill="#185fa5">只接 OSC_IN 一个脚，内部放大器被旁路</text>
+
+  <!-- 底部结论条 -->
+  <rect x="40" y="400" width="600" height="34" rx="8" fill="#fff6e6" stroke="#c8920a" stroke-width="1"/>
+  <text x="340" y="422" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#7a5a00">一句话：无源 → Crystal 模式；有源 → BYPASS 模式。两者一一对应，选错 = 不起振或时钟不可靠。</text>
+</svg>

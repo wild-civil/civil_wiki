@@ -1,0 +1,29 @@
+<svg viewBox="0 0 680 300" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>s 平面到 z 平面的映射</title>
+  <desc>通过 z 等于 e 的 sT 次方，s 左半平面映射到 z 平面单位圆内，虚轴映射到单位圆上，右半平面映射到单位圆外。</desc>
+  <text x="48" y="52" fill="#333333" font-size="14">s 平面（连续）</text>
+  <rect x="40" y="60" width="120" height="200" fill="#e8f5e9"/>
+  <rect x="160" y="60" width="120" height="200" fill="#fdecea"/>
+  <line x1="40" y1="160" x2="280" y2="160" stroke="#333333" stroke-width="1.5"/>
+  <line x1="160" y1="60" x2="160" y2="260" stroke="#333333" stroke-width="1.5"/>
+  <text x="266" y="180" fill="#333333" font-size="13">σ</text>
+  <text x="168" y="74" fill="#333333" font-size="13">jω</text>
+  <text x="50" y="78" fill="#2e7d32" font-size="12">LHP</text>
+  <text x="200" y="78" fill="#c62828" font-size="12">RHP</text>
+  <line x1="300" y1="160" x2="382" y2="160" stroke="#333333" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="300" y="145" fill="#333333" font-size="13">z = e^(sT)</text>
+  <text x="418" y="52" fill="#333333" font-size="14">z 平面（离散）</text>
+  <rect x="410" y="60" width="240" height="200" fill="#fdecea"/>
+  <circle cx="530" cy="160" r="88" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+  <line x1="430" y1="160" x2="630" y2="160" stroke="#888780" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="530" y1="62" x2="530" y2="258" stroke="#888780" stroke-width="1" stroke-dasharray="4 4"/>
+  <text x="530" y="160" fill="#2e7d32" font-size="13" text-anchor="middle">|z| &lt; 1 稳定</text>
+  <text x="632" y="80" fill="#c62828" font-size="12" text-anchor="end">|z| &gt; 1 不稳定</text>
+  <text x="596" y="196" fill="#2e7d32" font-size="12">|z| = 1</text>
+  <text x="40" y="286" fill="#333333" font-size="13">左半平面 → 单位圆内；虚轴 → 单位圆上；右半平面 → 单位圆外</text>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#333333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+</svg>

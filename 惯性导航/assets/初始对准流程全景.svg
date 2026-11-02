@@ -39,7 +39,7 @@
 <text class="ts" x="355" y="156" text-anchor="middle" font-size="9">估计失准角 φ + 零偏</text>
 <rect x="280" y="178" width="150" height="52" rx="8" fill="#FFFFFF" stroke="#185FA5" stroke-width="1"/>
 <text class="lb" x="355" y="198" text-anchor="middle" fill="#0C447C" font-size="10">收敛残余失准角</text>
-<text class="ts" x="355" y="216" text-anchor="middle" font-size="9">水平 0.01°级、航向 <0.1°</text>
+<text class="ts" x="355" y="216" text-anchor="middle" font-size="9">水平 0.01°级、航向 &lt;0.1°</text>
 <text class="ts" x="355" y="248" text-anchor="middle" font-size="9">PSINS: alignvn / alignfn</text>
 
 <!-- 箭头 -->

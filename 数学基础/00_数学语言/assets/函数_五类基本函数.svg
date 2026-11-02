@@ -1,0 +1,41 @@
+<svg viewBox="0 0 680 300" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>五类基本函数的图像</title>
+  <desc>线性、二次、指数、对数、三角五类函数的形状对比。</desc>
+  <text x="30" y="32" fill="#333333" font-size="15">五类基本函数（示意图，未按同一比例）</text>
+  <g>
+    <line x1="40" y1="190" x2="150" y2="190" stroke="#333333" stroke-width="1"/>
+    <line x1="40" y1="190" x2="40" y2="65" stroke="#333333" stroke-width="1"/>
+    <path d="M45 190 L145 75" fill="none" stroke="#185fa5" stroke-width="2.5"/>
+    <text x="40" y="222" fill="#333333" font-size="13">线性</text>
+    <text x="40" y="242" fill="#5f5e5a" font-size="12">y = kx + b</text>
+  </g>
+  <g>
+    <line x1="170" y1="190" x2="280" y2="190" stroke="#333333" stroke-width="1"/>
+    <line x1="170" y1="190" x2="170" y2="65" stroke="#333333" stroke-width="1"/>
+    <path d="M175 190 Q270 190 270 75" fill="none" stroke="#1d9e75" stroke-width="2.5"/>
+    <text x="170" y="222" fill="#333333" font-size="13">二次</text>
+    <text x="170" y="242" fill="#5f5e5a" font-size="12">y = x²</text>
+  </g>
+  <g>
+    <line x1="300" y1="190" x2="410" y2="190" stroke="#333333" stroke-width="1"/>
+    <line x1="300" y1="190" x2="300" y2="65" stroke="#333333" stroke-width="1"/>
+    <path d="M305 185 C365 183 390 170 400 75" fill="none" stroke="#d85a30" stroke-width="2.5"/>
+    <text x="300" y="222" fill="#333333" font-size="13">指数</text>
+    <text x="300" y="242" fill="#5f5e5a" font-size="12">y = eˣ</text>
+  </g>
+  <g>
+    <line x1="430" y1="190" x2="540" y2="190" stroke="#333333" stroke-width="1"/>
+    <line x1="430" y1="190" x2="430" y2="65" stroke="#333333" stroke-width="1"/>
+    <path d="M440 185 C445 110 475 85 525 78" fill="none" stroke="#ba7517" stroke-width="2.5"/>
+    <text x="430" y="222" fill="#333333" font-size="13">对数</text>
+    <text x="430" y="242" fill="#5f5e5a" font-size="12">y = ln x</text>
+  </g>
+  <g>
+    <line x1="560" y1="190" x2="670" y2="190" stroke="#333333" stroke-width="1"/>
+    <line x1="560" y1="190" x2="560" y2="65" stroke="#333333" stroke-width="1"/>
+    <path d="M565 130 C585 80 605 80 625 130 C640 170 655 170 670 130" fill="none" stroke="#7f77dd" stroke-width="2.5"/>
+    <text x="560" y="222" fill="#333333" font-size="13">三角</text>
+    <text x="560" y="242" fill="#5f5e5a" font-size="12">y = sin x</text>
+  </g>
+  <text x="40" y="278" fill="#888780" font-size="12">横轴是自变量 x，纵轴是函数值 y</text>
+</svg>

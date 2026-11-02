@@ -1,0 +1,97 @@
+/*
+ * 让所有导航分组都能折叠（含「当前所在/激活」的分组）。
+ *
+ * 背景：
+ *  - 关闭 navigation.sections 后，非激活分组变回 md-nav__item--nested，
+ *    自带折叠箭头、默认可折叠 —— 这是期望行为。
+ *  - 但 Material 仍会给「当前所在分组」的祖先 <li> 加上
+ *    md-nav__item--section 类，并用 CSS
+ *      .md-nav__item--section > .md-nav__link > [for] { display:none }
+ *    把它的折叠箭头（<label for=__nav_x>）藏掉，导致该分组点不开/收不回。
+ *  - 这里用 !important 强制该箭头可见且可点击，实现「全部可折叠」。
+ *
+ * 另外：关掉 navigation.sections 后，分组标题失去了原生 --section 的
+ * 加粗观感，这里用 CSS 还原，保留原有的视觉层级。
+ */
+
+/* 1) 强制当前激活分组的折叠箭头可见、可点击（覆盖 Material 的 display:none） */
+.md-nav__item--section .md-nav__link[for],
+.md-nav__item--section > .md-nav__link > [for] {
+  display: inline-flex !important;
+  pointer-events: auto !important;
+  cursor: pointer;
+}
+
+/* 2) 还原分组标题加粗（对应原生 --section 的 font-weight:700）。
+ *    直接子 .md-nav__link 即 .md-nav__container（分组标题容器），
+ *    同时覆盖 --nested 与 --section 两种情况。 */
+.md-nav__item--nested > .md-nav__link,
+.md-nav__item--section > .md-nav__link {
+  font-weight: 700;
+}
+
+/* 3) 隐藏左侧主导航里「当前页」下那条重复的「单页目录」行。
+ *
+ * 背景：处于某篇文章时，Material 会在左侧主导航的该条目下再渲染一份
+ * 「本页目录（TOC）」，其折叠开关 <label for=__toc> 的标题 = 文章标题，
+ * 与紧邻的文章链接看起来一模一样（用户会误以为出现了重复条目/多个汉堡）。
+ * 它只在窄屏（抽屉式导航）下有意义；本站在此场景下用户可直接看右侧目录，
+ * 故隐藏之，避免与文章条目混淆。
+ *
+ * 只针对主导航内的 __toc 开关（右侧 .md-sidebar--secondary 的目录无此 id），
+ * 右侧（宽屏）目录与 toc.follow 高亮行为完全不受影响。 */
+.md-nav__item--active > label.md-nav__link[for="__toc"],
+.md-nav__item--active > input.md-nav__toggle#__toc,
+.md-nav__item--active > nav.md-nav--secondary {
+  display: none !important;
+}
+
+/* 4) 消除「点击导航后左侧栏高度跳变」的抖动。
+ *
+ * 现象：在同一个大分组内换文章（如「汽车电子/无钥匙进入系统」→「显示与屏幕/屏幕接口与带宽」）时，
+ *      左侧栏会先缩一下、再展开回去，看得很不舒服。
+ *
+ * 根因（实测定位，非猜测）：
+ *   Material 的 sidebar 组件（bundle 内 lo()/Ss()）用 ResizeObserver 观察 .md-main 的高度，
+ *   然后写「内联 style」给 .md-sidebar__scrollwrap 设定 height：
+ *       scrollwrap.style.height = `${mainHeight - 2 * margin}px`
+ *   副作用是：整页导航后主内容还在陆续撑高（字体切换、公式渲染、图片加载），
+ *   ResizeObserver 会先拿到一个偏小的 mainHeight 并立刻写进内联样式，之后才被修正。
+ *   实测两帧：先写 height:359.625px，约 100ms 后改写成 height:569px —— 侧栏容器高度
+ *   360px → 569px 跳了 209px，就是用户看到的「折叠再展开」。
+ *   （旁证：该内联高度与折叠状态无关；探针确认整页加载期间没有任何 JS 改动过
+ *    input.md-nav__toggle 的 checked，侧栏的展开/收起态完全来自 SSR HTML。）
+ *
+ * 解法：把 scrollwrap 的高度交回 CSS —— `height:auto` 让盒子始终等于自身内容高度，
+ *      首帧即终态，Material 再写内联也无法改变（!important 压过内联非重要声明）。
+ *
+ *   为什么 height:auto 算出来是 360 而不是 368：.md-nav 有 margin-bottom:-.4rem(=-8px)，
+ *   负外边距不参与高度计算，两者之差就是这 8px，属于 Material 有意的底部留白修剪，不是裁剪。
+ *
+ *   max-height 保留「导航很长时侧栏内部独立滚动」的原生能力（否则内容会溢出到视口外、
+ *   底部条目点不到）。
+ *
+ * ── 【max-height 公式修正（2026-09-24）】──────────────────────────────
+ * 旧公式：calc(100vh - 2.4rem - 1.2rem) → 实测算出 696px，**偏大 123px**。
+ *   后果（实测几何）：scrollwrap.top=151，底边 151+696=**847**，而视口只有 768、
+ *   页脚顶在 724 → 侧栏内容一路溢出到**页脚上、甚至页面外**，
+ *   8~12 个导航项被压在页脚条上（截图可见「汽车电子/EDA」与版权行重叠）。
+ *
+ * 错在哪：公式只减了 **.md-sidebar 自己的 sticky top(2.4rem=48px)**，
+ *   却没算 **sidebar 顶到 scrollwrap 之间的内部偏移（实测 103px ≈ 6.4rem）**。
+ *   scrollwrap 的真实 top = 151（= 48 sticky + 103 内部），不是 48。
+ *
+ * 新公式：calc(100vh - 2.4rem - 6.4rem - 1.2rem)
+ *   = 768 - 48 - 128 - 19.2 = 572.8px
+ *   实测底边 = 151 + 568 = **719 < 页脚顶 724** → 正好收在页脚上方，不再重叠。
+ *   同时可滚量 swOver 从 320px 涨到 **448px**，「导航很长时内部独立滚动」才真正可用
+ *   （旧公式下内容溢出盒子却因 overflow 语义得不到滚动，等于摆设）。
+ *
+ * 仅作用于宽屏（>=76.25em，与 Material 自己的宽屏断点一致）；窄屏抽屉式导航不受影响。 */
+@media screen and (min-width: 76.25em) {
+  .md-sidebar--primary .md-sidebar__scrollwrap {
+    height: auto !important;
+    max-height: calc(100vh - 2.4rem - 6.4rem - 1.2rem) !important;
+  }
+}
+
