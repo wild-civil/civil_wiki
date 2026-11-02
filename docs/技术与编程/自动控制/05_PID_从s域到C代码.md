@@ -15,6 +15,7 @@ tags: [自动控制, PID, 离散化, 抗积分饱和, 嵌入式, C代码]
 
 !!! tip "动手调参"
     打开 **[站内 PID Lab](assets/pid-lab.html)**{:target="_blank"}，拖动 $K_p/K_i/K_d$，实时看位置与力的响应；支持滤波微分与抗积分饱和开关。
+    想看 **controlmeplease 蓝图风格**：[打开复刻版](assets/control-lab.html){:target="_blank"}（左侧参数 + 公路方块 + 三个响应页签）。
 
 ## 一、PID 是什么
 
@@ -238,6 +239,7 @@ float u = pid_update(&pid, ref, meas);
 ## 调参工具（站内 + 外部）
 
 - **[站内 PID Lab](assets/pid-lab.html)**{:target="_blank"}：原创 m-c-k + PID 仿真器，支持 $K_p/K_i/K_d$、目标、$F_{\max}$、滤波微分与抗积分饱和；带超调 / 调节时间 / 静差 / 最大推力。
+- **[蓝图风格复刻版](assets/control-lab.html)**{:target="_blank"}：仿 controlmeplease 的全屏布局（参数栏、传递函数框图、公路方块、Time Response / Bode / Pole-Zero 页签）。
 - **[ControlMePlease](https://controlmeplease.com/)**：单页的“质量-弹簧-阻尼 + PID”仿真器。可调 $m/c/k$、$K_p/K_i/K_d$、目标值、输出限幅；微分带一阶滤波（$N=100$，$T_s=1$ ms），积分在饱和时会暂停。适合快速感受三个增益的手感。
 - **[Control Theory Simulator](https://cool-koala.github.io/Control-Theory-Simulator/)**：MIT 开源的 Vite + React 仿真器，内置 99 个控制器原型；支持阶跃 / 正弦 / 方波、执行器饱和、死区、时延、摩擦、噪声，带质量块动画和波形。适合横向对比不同控制器。
 

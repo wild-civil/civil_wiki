@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PID 实验台 · 蓝图风格</title>
+<style>
+  :root {
+    --ink: #000;
+    --paper: #fff;
+    --muted: #555;
+    --grid: #e6e6e6;
+    --mono: "Lucida Console", "Courier New", monospace;
+    --ui: Inter, "Segoe UI", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+    --hand: "Segoe Print", "Comic Sans MS", "KaiTi", cursive;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    overflow: hidden;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--ui);
+  }
+
+  /* ---------- left parameter panel ---------- */
+  .panel {
+    position: fixed;
+    left: 18px;
+    top: 16px;
+    z-index: 30;
+    width: 214px;
+  }
+  .nf {
+    display: grid;
+    grid-template-columns: 82px 78px auto;
+    gap: 6px;
+    align-items: center;
+    margin: 5px 0;
+    font-size: 14px;
+  }
+  .nf > span:first-child { white-space: nowrap; }
+  .nf input, .nf select {
+    width: 78px;
+    height: 24px;
+    border: 1px solid var(--ink);
+    background: #fff;
+    color: var(--ink);
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 1px 4px;
+    border-radius: 0;
+  }
+  .nf small { font-size: 11px; color: #222; }
+  .help {
+    display: inline-grid;
+    place-items: center;
+    width: 12px;
+    height: 12px;
+    border: 1px solid var(--ink);
+    border-radius: 50%;
+    font-size: 9px;
+    line-height: 1;
+    margin-left: 3px;
+    cursor: help;
+    vertical-align: 1px;
+  }
+  .buttons { display: flex; gap: 8px; margin-top: 14px; }
+  .buttons button {
+    border: 1px solid var(--ink);
+    background: #fff;
+    color: var(--ink);
+    font-family: var(--ui);
+    font-size: 14px;
+    padding: 7px 18px;
+    cursor: pointer;
+    border-radius: 0;
+  }
+  .buttons .start { background: var(--ink); color: #fff; }
+
+  /* ---------- top transfer card ---------- */
+  .transfer {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 25;
+    width: 900px;
+    max-width: 92vw;
+  }
+  .tag {
+    width: 112px;
+    margin: 0 auto;
+    background: var(--ink);
+    color: #fff;
+    text-align: center;
+    font-size: 14px;
+    padding: 5px 0 4px;
+    clip-path: polygon(9px 0, calc(100% - 9px) 0, 100% 100%, 0 100%);
+    letter-spacing: .06em;
+  }
+  .transfer svg { display: block; width: 100%; height: auto; }
+  .transfer text { font-family: var(--mono); font-size: 12px; fill: #000; }
+  .transfer .sig { font-family: var(--ui); font-size: 14px; }
+
+  /* ---------- road scene ---------- */
+  .road-scene {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    overflow: hidden;
+    pointer-events: none;
+    background: #fff;
+  }
+  .road-scene svg { display: block; width: 100%; height: 100%; }
+  .road-surface { fill: #fcfcfc; }
+  .road-line { stroke: #000; stroke-width: 1.5; }
+  .road-dots { opacity: .32; }
+  .sign-text { font-family: var(--hand); font-style: italic; font-size: 25px; }
+  .cube-face { fill: #fff; stroke: #000; stroke-width: 1.5; }
+  .cube-top { fill: #f7f7f7; stroke: #000; stroke-width: 1.5; }
+
+  /* ---------- controller + top right ---------- */
+  .controller {
+    position: fixed;
+    right: 56px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 22;
+    width: 70px;
+    height: 70px;
+    border: 1.5px solid var(--ink);
+    border-radius: 50%;
+    background: #fff;
+    display: grid;
+    place-items: center;
+    font-size: 12px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .controller-menu {
+    position: fixed;
+    right: 56px;
+    top: calc(50% + 42px);
+    z-index: 24;
+    background: #fff;
+    border: 1px solid var(--ink);
+    display: none;
+    min-width: 96px;
+  }
+  .controller-menu.open { display: block; }
+  .controller-menu button {
+    display: block;
+    width: 100%;
+    border: 0;
+    border-bottom: 1px solid #eee;
+    background: #fff;
+    text-align: left;
+    padding: 8px 12px;
+    font-family: var(--ui);
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .controller-menu button:last-child { border-bottom: 0; }
+  .controller-menu button:hover { background: #f3f3f3; }
+
+  .top-right {
+    position: fixed;
+    right: 20px;
+    top: 14px;
+    z-index: 30;
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    font-size: 12px;
+    color: #333;
+  }
+  .top-right .lang { cursor: default; }
+  .top-right .lang.active { font-weight: 700; color: #000; }
+  .avatar {
+    width: 22px;
+    height: 22px;
+    border: 1.5px solid var(--ink);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 10px;
+  }
+
+  /* ---------- response tabs + drawer ---------- */
+  .tabs {
+    position: fixed;
+    right: 24px;
+    bottom: 12px;
+    z-index: 50;
+    display: flex;
+    gap: 18px;
+  }
+  .tabs button {
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: #000;
+    font-family: var(--ui);
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .tabs button.active { font-weight: 850; }
+  body.drawer-open .tabs { bottom: calc(min(58vh, 470px) - 38px); right: 64px; }
+  body.drawer-open .tabs button { font-size: 15px; }
+
+  .drawer {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40;
+    height: min(58vh, 470px);
+    background: #fff;
+    border-top: 1px solid var(--ink);
+    transform: translateY(100%);
+    transition: transform .28s ease;
+    display: flex;
+    flex-direction: column;
+  }
+  .drawer.open { transform: translateY(0); }
+  .drawer-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 20px;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+  }
+  .drawer-head button {
+    border: 0;
+    background: transparent;
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .drawer-body { flex: 1; min-height: 0; padding: 4px 12px 8px; }
+  .drawer-body svg { display: block; width: 100%; height: 100%; }
+
+  .hint {
+    position: fixed;
+    left: 18px;
+    bottom: 12px;
+    z-index: 20;
+    color: #777;
+    font-size: 11px;
+    max-width: 300px;
+  }
+
+  @media (max-width: 900px) {
+    .panel { width: 190px; }
+    .nf { grid-template-columns: 72px 70px auto; font-size: 13px; }
+    .nf input, .nf select { width: 70px; }
+    .transfer { width: 96vw; }
+    .tabs { gap: 12px; }
+    .tabs button { font-size: 15px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- left parameter panel -->
+<aside class="panel">
+  <label class="nf"><span>质量 m</span><input id="m" type="number" value="1" min="0.1" max="100" step="1"><small>kg</small></label>
+  <label class="nf"><span>阻尼 c<span class="help" title="阻力与速度成正比：f = c·v。阻尼越大，道路越“黏”。">?</span></span><input id="c" type="number" value="0.5" min="0" max="100" step="0.1"><small>N·s/m</small></label>
+  <label class="nf"><span>刚度 k<span class="help" title="弹簧刚度。k 越大，弹簧越硬；k=0 时弹簧消失。">?</span></span><input id="k" type="number" value="1" min="0" max="500" step="1"><small>N/m</small></label>
+  <label class="nf"><span>目标</span><input id="target" type="number" value="10" min="0.1" max="100" step="1"><small>m</small></label>
+  <label class="nf"><span>输出</span><select id="output"><option value="x">位移 x</option><option value="v">速度 v</option></select><small></small></label>
+
+  <label class="nf"><span>Kp</span><input id="kp" type="number" value="10" min="0" max="100" step="0.1"><small></small></label>
+  <label class="nf"><span>Ki</span><input id="ki" type="number" value="1" min="0" max="100" step="0.1"><small></small></label>
+  <label class="nf"><span>Kd<span class="help" title="微分项，按误差变化率提前阻尼。太大会放大噪声。">?</span></span><input id="kd" type="number" value="0" min="0" max="20" step="0.1"><small></small></label>
+  <label class="nf"><span>限幅<span class="help" title="-1 表示不限制；否则控制力限制在 ±限幅 内，并在会加深饱和时暂停积分。">?</span></span><input id="limit" type="number" value="-1" min="-1" max="1000" step="1"><small>N</small></label>
+  <label class="nf"><span>时间 t<span class="help" title="-1 表示一直运行；否则运行到指定秒数后停止。">?</span></span><input id="time" type="number" value="-1" min="-1" max="100" step="1"><small>s</small></label>
+
+  <div class="buttons">
+    <button id="start" class="start">Start</button>
+    <button id="reset">Reset</button>
+  </div>
+</aside>
+
+<!-- top transfer function card -->
+<section class="transfer">
+  <div class="tag">传递函数</div>
+  <svg viewBox="0 0 900 150" aria-label="闭环传递函数框图">
+    <defs>
+      <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M2 1L8 5L2 9" fill="none" stroke="#000" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </marker>
+    </defs>
+    <text class="sig" x="10" y="80">R(s)</text>
+    <line x1="52" y1="76" x2="100" y2="76" stroke="#000" stroke-width="1.3" marker-end="url(#arr)"/>
+    <circle cx="118" cy="76" r="13" fill="#fff" stroke="#000" stroke-width="1.3"/>
+    <text x="105" y="62">+</text>
+    <text x="105" y="95">−</text>
+    <line x1="131" y1="76" x2="168" y2="76" stroke="#000" stroke-width="1.3" marker-end="url(#arr)"/>
+    <rect x="168" y="48" width="214" height="56" fill="#fff" stroke="#000" stroke-width="1.3"/>
+    <text id="cLabel" x="275" y="81" text-anchor="middle">(10s + 1)/s</text>
+    <line x1="382" y1="76" x2="426" y2="76" stroke="#000" stroke-width="1.3" marker-end="url(#arr)"/>
+    <rect x="426" y="48" width="224" height="56" fill="#fff" stroke="#000" stroke-width="1.3"/>
+    <text id="pLabel" x="538" y="81" text-anchor="middle">1/(s² + 0.5s + 1)</text>
+    <line x1="650" y1="76" x2="696" y2="76" stroke="#000" stroke-width="1.3" marker-end="url(#arr)"/>
+    <text class="sig" x="706" y="81">X(s)</text>
+    <circle cx="690" cy="76" r="2.5" fill="#000"/>
+    <polyline points="690,76 690,132 118,132 118,90" fill="none" stroke="#000" stroke-width="1.3" marker-end="url(#arr)"/>
+  </svg>
+</section>
+
+<!-- full-screen road scene -->
+<section class="road-scene" aria-label="road scene">
+  <svg viewBox="0 0 1400 760" preserveAspectRatio="xMidYMid slice" aria-label="block moving along a road">
+    <defs>
+      <pattern id="roadDots" width="52" height="42" patternUnits="userSpaceOnUse">
+        <circle cx="10" cy="8" r="1.1" fill="#000"/><circle cx="31" cy="21" r="0.9" fill="#000"/>
+        <circle cx="44" cy="34" r="1.2" fill="#000"/><circle cx="18" cy="33" r="0.8" fill="#000"/>
+        <circle cx="39" cy="5" r="1.0" fill="#000"/>
+      </pattern>
+    </defs>
+    <rect width="1400" height="760" fill="#fff"/>
+
+    <!-- road band: slope -0.3625, width ~106 -->
+    <polygon class="road-surface" points="-100,707 1500,127 1500,233 -100,813"/>
+    <polygon class="road-dots" points="-100,707 1500,127 1500,233 -100,813" fill="url(#roadDots)"/>
+    <line class="road-line" x1="-100" y1="707" x2="1500" y2="127"/>
+    <line class="road-line" x1="-100" y1="813" x2="1500" y2="233"/>
+
+    <!-- dashed command line toward controller -->
+    <line x1="1180" y1="296" x2="1338" y2="414" stroke="#000" stroke-width="1.2" stroke-dasharray="8 6"/>
+
+    <!-- Road Settings sign -->
+    <line x1="300" y1="504" x2="300" y2="615" stroke="#000" stroke-width="3"/>
+    <g transform="translate(300,470) rotate(-20)">
+      <rect x="-104" y="-42" width="208" height="66" fill="#fff" stroke="#000" stroke-width="1.6"/>
+      <text class="sign-text" x="0" y="2" text-anchor="middle">Road Settings</text>
+    </g>
+
+    <!-- target flag -->
+    <g id="flag" transform="translate(1180,296) scale(0.92)">
+      <ellipse cx="0" cy="0" rx="18" ry="6" fill="#8b5a2b"/>
+      <line x1="0" y1="0" x2="0" y2="-72" stroke="#b8860b" stroke-width="3"/>
+      <polygon points="0,-72 40,-57 0,-42" fill="#d9534f" stroke="#000" stroke-width="1"/>
+    </g>
+
+    <!-- mass block -->
+    <g id="cube" transform="translate(150,669)">
+      <polygon class="cube-face" points="-30,-60 30,-60 30,0 -30,0"/>
+      <polygon class="cube-top" points="-30,-60 -10,-80 50,-80 30,-60"/>
+      <polygon class="cube-face" points="30,-60 50,-80 50,-20 30,0"/>
+    </g>
+  </svg>
+</section>
+
+<!-- controller circle + menu -->
+<div class="controller" id="controller">控制器</div>
+<div class="controller-menu" id="controllerMenu">
+  <button data-mode="pid">PID</button>
+  <button data-mode="pi">PI</button>
+  <button data-mode="pd">PD</button>
+  <button data-mode="p">P</button>
+</div>
+
+<!-- top right -->
+<div class="top-right">
+  <span>更多</span>
+  <span class="lang">ENG</span>
+  <span class="lang active">中文</span>
+  <span class="avatar">N</span>
+</div>
+
+<!-- response tabs -->
+<nav class="tabs">
+  <button data-tab="time" class="active">Time Response</button>
+  <button data-tab="bode">Bode Plot</button>
+  <button data-tab="pz">Pole-Zero</button>
+</nav>
+
+<!-- response drawer -->
+<section class="drawer" id="drawer">
+  <div class="drawer-head">
+    <span id="drawerTitle">响应曲线</span>
+    <button id="closeDrawer" aria-label="关闭">×</button>
+  </div>
+  <div class="drawer-body">
+    <svg id="chart" viewBox="0 0 1000 340" preserveAspectRatio="xMidYMid meet"></svg>
+  </div>
+</section>
+
+<div class="hint">蓝图风格复刻：拖参数、点 Start 看方块沿公路移动；底部页签打开曲线。</div>
+
+<script>
+(function () {
+  "use strict";
+
+  const $ = (id) => document.getElementById(id);
+  const Ts = 0.001;
+  const N = 100;
+  const TAU_D = 1 / N;
+
+  let params = {};
+  let sim = { x: 0, v: 0, i: 0, d: 0, ePrev: 0, t: 0, history: [], running: false, finished: false };
+  let activeTab = "time";
+  let drawerOpen = false;
+  let frame = 0;
+
+  const num = (id, def) => {
+    const v = parseFloat($(id).value);
+    return Number.isFinite(v) ? v : def;
+  };
+
+  function readParams() {
+    params = {
+      m: Math.max(0.1, num("m", 1)),
+      c: Math.max(0, num("c", 0.5)),
+      k: Math.max(0, num("k", 1)),
+      target: Math.max(0.1, num("target", 10)),
+      kp: Math.max(0, num("kp", 10)),
+      ki: Math.max(0, num("ki", 1)),
+      kd: Math.max(0, num("kd", 0)),
+      limit: num("limit", -1),
+      time: num("time", -1),
+      output: $("output").value
+    };
+  }
+
+  function fmt(v) {
+    if (!Number.isFinite(v)) return "0";
+    const s = Number(v).toFixed(3).replace(/\.?0+$/, "");
+    return s === "-0" ? "0" : s;
+  }
+
+  function polyText(coeffs, symbols, withS2) {
+    const terms = [];
+    coeffs.forEach((co, i) => {
+      if (Math.abs(co) < 1e-12) return;
+      const sym = symbols[i];
+      if (i === coeffs.length - 1) terms.push(fmt(co));
+      else if (Math.abs(co - 1) < 1e-12) terms.push(sym);
+      else terms.push(fmt(co) + sym);
+    });
+    return terms.length ? terms.join(" + ") : "0";
+  }
+
+  function updateBlockLabels() {
+    readParams();
+    const cPoly = polyText([params.kd, params.kp, params.ki], ["s²", "s", ""]);
+    $("cLabel").textContent = "(" + cPoly + ")/s";
+    const pDen = polyText([params.m, params.c, params.k], ["s²", "s", ""]);
+    $("pLabel").textContent = "1/(" + pDen + ")";
+  }
+
+  function resetSim() {
+    sim = { x: 0, v: 0, i: 0, d: 0, ePrev: 0, t: 0, history: [], running: false, finished: false };
+    $("start").textContent = "Start";
+    updateScene();
+    if (drawerOpen) render();
+  }
+
+  function step() {
+    const p = params;
+    const e = p.target - sim.x;
+
+    const pTerm = p.kp * e;
+    const iNew = sim.i + p.ki * Ts * e;
+
+    const dRaw = p.kd * (e - sim.ePrev) / Ts;
+    const alpha = TAU_D / (TAU_D + Ts);
+    const dNew = alpha * sim.d + (1 - alpha) * dRaw;
+
+    const uUnsat = pTerm + iNew + dNew;
+    let iNext = iNew;
+    if (p.limit >= 0) {
+      if ((uUnsat > p.limit && e > 0) || (uUnsat < -p.limit && e < 0)) iNext = sim.i;
+    }
+
+    let F = pTerm + iNext + dNew;
+    if (p.limit >= 0) F = Math.max(-p.limit, Math.min(p.limit, F));
+
+    const a = (F - p.c * sim.v - p.k * sim.x) / p.m;
+    sim.v += a * Ts;
+    sim.x += sim.v * Ts;
+
+    sim.i = iNext;
+    sim.d = dNew;
+    sim.ePrev = e;
+    sim.t += Ts;
+
+    if (sim.history.length === 0 || sim.t - sim.history[sim.history.length - 1].t >= 5 * Ts) {
+      sim.history.push({ t: sim.t, x: sim.x, v: sim.v, F: F });
+      if (sim.history.length > 8000) sim.history.shift();
+    }
+
+    if (p.time > 0 && sim.t >= p.time) {
+      sim.running = false;
+      sim.finished = true;
+      $("start").textContent = "Start";
+    }
+  }
+
+  function updateScene() {
+    const p = params.target > 0 ? sim.x / params.target : 0;
+    const q = Math.max(-0.05, Math.min(1.1, p));
+    const px = 150 + q * 970;
+    const py = 760 - 0.3625 * (px + 100);
+    $("cube").setAttribute("transform", "translate(" + px.toFixed(1) + "," + py.toFixed(1) + ")");
+  }
+
+  /* ---------------- charts ---------------- */
+  function axes(W, H, L, R, T, B) {
+    return '<line x1="' + L + '" y1="' + (H - B) + '" x2="' + (W - R) + '" y2="' + (H - B) + '" stroke="#000" stroke-width="1"/>' +
+           '<line x1="' + L + '" y1="' + (H - B) + '" x2="' + L + '" y2="' + T + '" stroke="#000" stroke-width="1"/>';
+  }
+
+  function drawTime() {
+    const W = 1000, H = 340, L = 62, R = 22, T = 20, B = 38;
+    const svg = $("chart");
+    if (!sim.history.length) {
+      svg.innerHTML = '<text x="500" y="170" text-anchor="middle" font-family="' + 'Segoe UI, Microsoft YaHei, sans-serif' + '" font-size="14" fill="#777">点击 Start 开始</text>';
+      return;
+    }
+
+    const isX = params.output === "x";
+    const tMax = Math.max(5, sim.t);
+    const tMin = tMax > 30 ? tMax - 20 : 0;
+    const pts = sim.history.filter((h) => h.t >= tMin);
+
+    let yMin, yMax;
+    if (isX) {
+      let mx = params.target;
+      for (const h of pts) mx = Math.max(mx, h.x);
+      yMin = 0;
+      yMax = Math.max(params.target * 1.3, mx * 1.15, 1);
+    } else {
+      let mv = 0.1;
+      for (const h of pts) mv = Math.max(mv, Math.abs(h.v));
+      yMin = -mv * 1.2;
+      yMax = mv * 1.2;
+    }
+
+    const X = (t) => L + (t - tMin) / (tMax - tMin) * (W - L - R);
+    const Y = (v) => (H - B) - (v - yMin) / (yMax - yMin) * (H - B - T);
+
+    let s = '<rect width="' + W + '" height="' + H + '" fill="#fff"/>' + axes(W, H, L, R, T, B);
+    s += '<g stroke="#e9e9e9" stroke-width="1">';
+    for (let i = 0; i <= 5; i++) {
+      const y = T + i * (H - B - T) / 5;
+      s += '<line x1="' + L + '" y1="' + y + '" x2="' + (W - R) + '" y2="' + y + '"/>';
+    }
+    for (let i = 0; i <= 5; i++) {
+      const x = L + i * (W - L - R) / 5;
+      s += '<line x1="' + x + '" y1="' + T + '" x2="' + x + '" y2="' + (H - B) + '"/>';
+    }
+    s += '</g>';
+
+    if (isX) {
+      const yt = Y(params.target);
+      s += '<line x1="' + L + '" y1="' + yt + '" x2="' + (W - R) + '" y2="' + yt + '" stroke="#888" stroke-width="1" stroke-dasharray="6 4"/>';
+    }
+
+    const ptsStr = pts.map((h) => X(h.t).toFixed(1) + "," + Y(isX ? h.x : h.v).toFixed(1)).join(" ");
+    s += '<polyline points="' + ptsStr + '" fill="none" stroke="#000" stroke-width="2"/>';
+
+    s += '<g font-family="Lucida Console, Courier New, monospace" font-size="11" fill="#333">';
+    const yLabels = 5;
+    for (let i = 0; i <= yLabels; i++) {
+      const val = yMin + (yMax - yMin) * i / yLabels;
+      const y = Y(val);
+      s += '<text x="' + (L - 8) + '" y="' + (y + 4) + '" text-anchor="end">' + val.toFixed(1) + '</text>';
+    }
+    for (let i = 0; i <= 5; i++) {
+      const tt = tMin + (tMax - tMin) * i / 5;
+      s += '<text x="' + X(tt) + '" y="' + (H - B + 18) + '" text-anchor="middle">' + tt.toFixed(0) + '</text>';
+    }
+    s += '</g>';
+    s += '<text x="' + L + '" y="' + (T - 6) + '" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="12">' + (isX ? "位移 x (m)" : "速度 v (m/s)") + '</text>';
+    s += '<text x="' + (W - R) + '" y="' + (H - 6) + '" text-anchor="end" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="12">t (s)</text>';
+    svg.innerHTML = s;
+  }
+
+  function bodePoint(w) {
+    const kp = params.kp, ki = params.ki, kd = params.kd;
+    const Cre = kp;
+    const Cim = kd * w - (w > 1e-9 ? ki / w : 0);
+    const denRe = params.k - params.m * w * w;
+    const denIm = params.c * w;
+    const d = denRe * denRe + denIm * denIm || 1e-12;
+    const Pre = denRe / d;
+    const Pim = -denIm / d;
+    const Lre = Cre * Pre - Cim * Pim;
+    const Lim = Cre * Pim + Cim * Pre;
+    const mag = Math.hypot(Lre, Lim);
+    return { mag: 20 * Math.log10(Math.max(mag, 1e-12)), ph: Math.atan2(Lim, Lre) * 180 / Math.PI };
+  }
+
+  function drawBode() {
+    const W = 1000, H = 340, L = 66, R = 22;
+    const mTop = 26, mBot = 166, pTop = 206, pBot = 318;
+    const wMin = 0.1, wMax = 100;
+    const X = (w) => L + (Math.log10(w) - Math.log10(wMin)) / (Math.log10(wMax) - Math.log10(wMin)) * (W - L - R);
+
+    const mags = [], phs = [];
+    for (let i = 0; i <= 240; i++) {
+      const w = Math.pow(10, Math.log10(wMin) + (Math.log10(wMax) - Math.log10(wMin)) * i / 240);
+      const b = bodePoint(w);
+      mags.push({ w, v: b.mag });
+      phs.push({ w, v: b.ph });
+    }
+    // unwrap phase
+    let off = 0, prev = null;
+    for (const p of phs) {
+      if (prev !== null) {
+        let d = p.v + off - prev;
+        while (d > 180) { off -= 360; d -= 360; }
+        while (d < -180) { off += 360; d += 360; }
+      }
+      p.v = p.v + off;
+      prev = p.v;
+    }
+
+    let magMin = Math.min(...mags.map((m) => m.v)) - 6;
+    let magMax = Math.max(...mags.map((m) => m.v)) + 6;
+    if (magMax - magMin < 20) { const c = (magMax + magMin) / 2; magMin = c - 10; magMax = c + 10; }
+    let phMin = Math.min(...phs.map((p) => p.v)) - 8;
+    let phMax = Math.max(...phs.map((p) => p.v)) + 8;
+    if (phMax - phMin < 40) { const c = (phMax + phMin) / 2; phMin = c - 20; phMax = c + 20; }
+
+    const YM = (v) => mBot - (v - magMin) / (magMax - magMin) * (mBot - mTop);
+    const YP = (v) => pBot - (v - phMin) / (phMax - phMin) * (pBot - pTop);
+
+    let s = '<rect width="' + W + '" height="' + H + '" fill="#fff"/>';
+    s += '<line x1="' + L + '" y1="' + mBot + '" x2="' + (W - R) + '" y2="' + mBot + '" stroke="#000" stroke-width="1"/>';
+    s += '<line x1="' + L + '" y1="' + pBot + '" x2="' + (W - R) + '" y2="' + pBot + '" stroke="#000" stroke-width="1"/>';
+    s += '<line x1="' + L + '" y1="' + mBot + '" x2="' + L + '" y2="' + mTop + '" stroke="#000" stroke-width="1"/>';
+    s += '<line x1="' + L + '" y1="' + pBot + '" x2="' + L + '" y2="' + pTop + '" stroke="#000" stroke-width="1"/>';
+
+    s += '<g stroke="#e9e9e9" stroke-width="1">';
+    for (let i = 0; i <= 4; i++) {
+      const x = L + i * (W - L - R) / 4;
+      s += '<line x1="' + x + '" y1="' + mTop + '" x2="' + x + '" y2="' + pBot + '"/>';
+    }
+    s += '</g>';
+
+    if (magMin < 0 && magMax > 0) {
+      const y0 = YM(0);
+      s += '<line x1="' + L + '" y1="' + y0 + '" x2="' + (W - R) + '" y2="' + y0 + '" stroke="#888" stroke-width="1" stroke-dasharray="6 4"/>';
+    }
+    if (phMin < -180 && phMax > -180) {
+      const y180 = YP(-180);
+      s += '<line x1="' + L + '" y1="' + y180 + '" x2="' + (W - R) + '" y2="' + y180 + '" stroke="#888" stroke-width="1" stroke-dasharray="6 4"/>';
+    }
+
+    s += '<polyline points="' + mags.map((m) => X(m.w).toFixed(1) + "," + YM(m.v).toFixed(1)).join(" ") + '" fill="none" stroke="#000" stroke-width="2"/>';
+    s += '<polyline points="' + phs.map((p) => X(p.w).toFixed(1) + "," + YP(p.v).toFixed(1)).join(" ") + '" fill="none" stroke="#000" stroke-width="2"/>';
+
+    s += '<g font-family="Lucida Console, Courier New, monospace" font-size="11" fill="#333">';
+    for (let i = 0; i <= 4; i++) {
+      const val = magMin + (magMax - magMin) * i / 4;
+      s += '<text x="' + (L - 8) + '" y="' + (YM(val) + 4) + '" text-anchor="end">' + val.toFixed(0) + '</text>';
+    }
+    for (let i = 0; i <= 4; i++) {
+      const val = phMin + (phMax - phMin) * i / 4;
+      s += '<text x="' + (L - 8) + '" y="' + (YP(val) + 4) + '" text-anchor="end">' + val.toFixed(0) + '</text>';
+    }
+    for (const w of [0.1, 1, 10, 100]) {
+      s += '<text x="' + X(w) + '" y="' + (pBot + 18) + '" text-anchor="middle">' + (w >= 1 ? w.toFixed(0) : w.toFixed(1)) + '</text>';
+    }
+    s += '</g>';
+    s += '<text x="' + L + '" y="' + (mTop - 8) + '" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="12">开环幅值 |L| (dB)</text>';
+    s += '<text x="' + L + '" y="' + (pTop - 8) + '" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="12">相位 ∠L (°)</text>';
+    s += '<text x="' + (W - R) + '" y="' + (H - 6) + '" text-anchor="end" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="12">ω (rad/s)</text>';
+    $("chart").innerHTML = s;
+  }
+
+  function polyRoots(coeffs) {
+    let a = coeffs.slice();
+    while (a.length > 1 && Math.abs(a[0]) < 1e-12) a.shift();
+    const n = a.length - 1;
+    if (n < 1) return [];
+    if (n === 1) return [{ re: -a[1] / a[0], im: 0 }];
+    const lead = a[0];
+    a = a.map((v) => v / lead);
+    const R = 1 + Math.max(...a.slice(1).map(Math.abs));
+    let roots = [];
+    for (let i = 0; i < n; i++) {
+      const th = 2 * Math.PI * i / n + 0.4;
+      roots.push({ re: R * Math.cos(th), im: R * Math.sin(th) });
+    }
+    const evalP = (z) => {
+      let re = 0, im = 0;
+      for (const co of a) {
+        const nr = re * z.re - im * z.im + co;
+        const ni = re * z.im + im * z.re;
+        re = nr; im = ni;
+      }
+      return { re, im };
+    };
+    for (let it = 0; it < 200; it++) {
+      let maxd = 0;
+      const next = roots.map((z, i) => {
+        const numv = evalP(z);
+        let dre = 1, dim = 0;
+        for (let j = 0; j < n; j++) {
+          if (j === i) continue;
+          const dr = z.re - roots[j].re, di = z.im - roots[j].im;
+          const nr = dre * dr - dim * di, ni = dre * di + dim * dr;
+          dre = nr; dim = ni;
+        }
+        const den = dre * dre + dim * dim || 1e-12;
+        const qr = (numv.re * dre + numv.im * dim) / den;
+        const qi = (numv.im * dre - numv.re * dim) / den;
+        maxd = Math.max(maxd, Math.hypot(qr, qi));
+        return { re: z.re - qr, im: z.im - qi };
+      });
+      roots = next;
+      if (maxd < 1e-10) break;
+    }
+    return roots;
+  }
+
+  function quadratic(a, b, c) {
+    if (Math.abs(a) < 1e-12) return Math.abs(b) < 1e-12 ? [] : [{ re: -c / b, im: 0 }];
+    const disc = b * b - 4 * a * c;
+    if (disc >= 0) {
+      const s = Math.sqrt(disc);
+      return [{ re: (-b + s) / (2 * a), im: 0 }, { re: (-b - s) / (2 * a), im: 0 }];
+    }
+    const re = -b / (2 * a), im = Math.sqrt(-disc) / (2 * a);
+    return [{ re, im }, { re, im: -im }];
+  }
+
+  function drawPZ() {
+    const W = 1000, H = 340, L = 60, R = 22, T = 24, B = 38;
+    const poles = polyRoots([params.m, params.c + params.kd, params.k + params.kp, params.ki]);
+    const zeros = params.kd > 0 ? quadratic(params.kd, params.kp, params.ki) : (params.kp > 0 ? [{ re: -params.ki / params.kp, im: 0 }] : []);
+    let maxAbs = 2;
+    for (const p of poles) maxAbs = Math.max(maxAbs, Math.abs(p.re), Math.abs(p.im));
+    for (const z of zeros) maxAbs = Math.max(maxAbs, Math.abs(z.re), Math.abs(z.im));
+    const Rg = Math.ceil(maxAbs * 1.25);
+
+    const cx = L + (W - L - R) / 2;
+    const cy = T + (H - T - B) / 2;
+    const sx = (W - L - R) / (2 * Rg);
+    const sy = (H - T - B) / (2 * Rg);
+    const X = (x) => cx + x * sx;
+    const Y = (y) => cy - y * sy;
+
+    let s = '<rect width="' + W + '" height="' + H + '" fill="#fff"/>';
+    s += '<line x1="' + L + '" y1="' + cy + '" x2="' + (W - R) + '" y2="' + cy + '" stroke="#000" stroke-width="1"/>';
+    s += '<line x1="' + cx + '" y1="' + T + '" x2="' + cx + '" y2="' + (H - B) + '" stroke="#000" stroke-width="1"/>';
+    s += '<g stroke="#e9e9e9" stroke-width="1">';
+    for (let i = 1; i < 8; i++) {
+      const x = L + i * (W - L - R) / 8;
+      const y = T + i * (H - T - B) / 8;
+      s += '<line x1="' + x + '" y1="' + T + '" x2="' + x + '" y2="' + (H - B) + '"/>';
+      s += '<line x1="' + L + '" y1="' + y + '" x2="' + (W - R) + '" y2="' + y + '"/>';
+    }
+    s += '</g>';
+
+    for (const z of zeros) {
+      s += '<circle cx="' + X(z.re) + '" cy="' + Y(z.im) + '" r="5" fill="none" stroke="#000" stroke-width="1.6"/>';
+    }
+    for (const p of poles) {
+      const px = X(p.re), py = Y(p.im);
+      s += '<line x1="' + (px - 5) + '" y1="' + (py - 5) + '" x2="' + (px + 5) + '" y2="' + (py + 5) + '" stroke="#000" stroke-width="1.8"/>';
+      s += '<line x1="' + (px - 5) + '" y1="' + (py + 5) + '" x2="' + (px + 5) + '" y2="' + (py - 5) + '" stroke="#000" stroke-width="1.8"/>';
+    }
+
+    s += '<g font-family="Lucida Console, Courier New, monospace" font-size="11" fill="#333">';
+    s += '<text x="' + (W - R) + '" y="' + (cy - 8) + '" text-anchor="end">Re</text>';
+    s += '<text x="' + (cx + 8) + '" y="' + (T + 12) + '">Im</text>';
+    s += '</g>';
+    s += '<text x="' + L + '" y="' + (T + 8) + '" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="12">× 闭环极点　○ 控制器零点</text>';
+    s += '<text x="' + (W - R) + '" y="' + (H - 8) + '" text-anchor="end" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="12">Re(s)</text>';
+    $("chart").innerHTML = s;
+  }
+
+  function render() {
+    document.body.classList.toggle("drawer-open", drawerOpen);
+    $("drawer").classList.toggle("open", drawerOpen);
+    if (!drawerOpen) return;
+    if (activeTab === "time") drawTime();
+    else if (activeTab === "bode") drawBode();
+    else drawPZ();
+  }
+
+  function updateTabs() {
+    document.querySelectorAll(".tabs button").forEach((b) => b.classList.toggle("active", b.dataset.tab === activeTab));
+  }
+
+  /* ---------------- events ---------------- */
+  ["m", "c", "k", "target", "kp", "ki", "kd", "limit", "time"].forEach((id) => {
+    $(id).addEventListener("input", () => {
+      readParams();
+      updateBlockLabels();
+      resetSim();
+    });
+  });
+  $("output").addEventListener("change", () => { readParams(); if (drawerOpen) render(); });
+
+  $("start").addEventListener("click", () => {
+    if (sim.finished) resetSim();
+    sim.running = !sim.running;
+    $("start").textContent = sim.running ? "Pause" : "Start";
+  });
+  $("reset").addEventListener("click", () => { resetSim(); if (drawerOpen) render(); });
+
+  document.querySelectorAll(".tabs button").forEach((b) => {
+    b.addEventListener("click", () => {
+      const tab = b.dataset.tab;
+      if (drawerOpen && activeTab === tab) drawerOpen = false;
+      else { activeTab = tab; drawerOpen = true; }
+      updateTabs();
+      render();
+    });
+  });
+  $("closeDrawer").addEventListener("click", () => { drawerOpen = false; render(); });
+
+  $("controller").addEventListener("click", () => $("controllerMenu").classList.toggle("open"));
+  document.querySelectorAll("#controllerMenu button").forEach((b) => {
+    b.addEventListener("click", () => {
+      const mode = b.dataset.mode;
+      if (mode === "pi") $("kd").value = 0;
+      if (mode === "pd") $("ki").value = 0;
+      if (mode === "p") { $("ki").value = 0; $("kd").value = 0; }
+      $("controllerMenu").classList.remove("open");
+      readParams(); updateBlockLabels(); resetSim();
+    });
+  });
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".controller") && !e.target.closest(".controller-menu")) {
+      $("controllerMenu").classList.remove("open");
+    }
+  });
+
+  /* ---------------- boot ---------------- */
+  const qs = new URLSearchParams(location.search);
+  const warm = parseFloat(qs.get("warmup") || "0");
+  const qDrawer = qs.get("drawer");
+
+  readParams();
+  updateBlockLabels();
+  resetSim();
+
+  if (warm > 0) {
+    for (let i = 0; i < warm / Ts; i++) step();
+    sim.running = false;
+    sim.finished = false;
+    updateScene();
+  }
+  if (qDrawer && ["time", "bode", "pz"].includes(qDrawer)) {
+    activeTab = qDrawer;
+    drawerOpen = true;
+    updateTabs();
+    render();
+  }
+
+  requestAnimationFrame(function tick() {
+    if (sim.running) {
+      for (let i = 0; i < 16; i++) step();
+      updateScene();
+      if (drawerOpen && activeTab === "time" && frame % 5 === 0) drawTime();
+    }
+    frame++;
+    requestAnimationFrame(tick);
+  });
+
+})();
+</script>
+</body>
+</html>

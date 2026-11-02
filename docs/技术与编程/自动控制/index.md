@@ -13,6 +13,7 @@
 ## 工具与延伸
 
 - [站内 PID Lab](assets/pid-lab.html){:target="_blank"}：m-c-k + PID 交互仿真，拖参数看响应。
+- [蓝图风格复刻版](assets/control-lab.html){:target="_blank"}：仿 controlmeplease 的全屏公路 + 参数栏 + 三个响应页签。
 - [Mahony 互补滤波：一个长在 SO(3) 上的 PI 控制器](../../惯性导航/05_滤波算法精读篇/01_Mahony滤波分析.md)（控制视角见文末）
 
 > 后续可扩展：状态空间与能控能观、数字控制进阶（Tustin / 前馈 / 串级）。
