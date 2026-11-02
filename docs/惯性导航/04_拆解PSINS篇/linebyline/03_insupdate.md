@@ -588,7 +588,7 @@ fprintf('【退化倍数】3D RMS = %.2f 倍 (原版%.2f → 修改后%.2f)\n', 
 |---|---|---|---|---|
 | **① 一阶欧拉** | $\mathbf{q}_{k+1} = \mathbf{q}_k + \frac{1}{2}\mathbf{q}_k \otimes \bar{\boldsymbol{\omega}}^b \cdot \Delta t$ | $O(\Delta t^2)$ | ✅ 1-8kHz 飞控主循环 | PSINS 旧版 L45 注释行 `qupdt(qnb, wnb*nts)` |
 | **② 中点法/RK2** | $\mathbf{q}_{k+1} = \mathbf{q}_k + \frac{\Delta t}{2}(\dot{\mathbf{q}}_k + \dot{\mathbf{q}}_{k+1/2})$ | $O(\Delta t^3)$ | 少用（需半步姿态） | PSINS 没用（和速度更新一样的困境） |
-| **③ 旋转矢量法** | $\Delta\mathbf{q} = \begin{bmatrix}\cos(\frac{|\Delta\boldsymbol{\theta}|}{2})\\\frac{\Delta\boldsymbol{\theta}}{|\Delta\boldsymbol{\theta}|}\sin(\frac{|\Delta\boldsymbol{\theta}|}{2})\end{bmatrix}, \quad \mathbf{q}_{k+1}=\mathbf{q}_k\otimes\Delta\mathbf{q}$ | 精确（单步内） | ✅ 低频场景 | ✅ **就是 PSINS 的 rv2q** |
+| **③ 旋转矢量法** | $\Delta\mathbf{q} = \begin{bmatrix}\cos(\frac{\lVert\Delta\boldsymbol{\theta}\rVert}{2})\\\frac{\Delta\boldsymbol{\theta}}{\lVert\Delta\boldsymbol{\theta}\rVert}\sin(\frac{\lVert\Delta\boldsymbol{\theta}\rVert}{2})\end{bmatrix}, \quad \mathbf{q}_{k+1}=\mathbf{q}_k\otimes\Delta\mathbf{q}$ | 精确（单步内） | ✅ 低频场景 | ✅ **就是 PSINS 的 rv2q** |
 
 #### 飞控选①一阶欧拉的工程理由
 

@@ -117,11 +117,11 @@ $$H_{\text{mag}} = \frac{\partial \psi}{\partial [q_0, q_1, q_2, q_3]} = \frac{1
 
 | 步骤 | 公式 | 代码位置 |
 |---|---|---|
-| **预测** $\mathbf{x}_{k|k-1} = \Phi \mathbf{x}_{k-1|k-1}$ | $\mathbf{q}_{k|k-1} = \mathbf{q}_{k-1} \otimes \text{rv2q}(\boldsymbol{\omega} \cdot T_s)$（隐含在 kfupdate 里） | kfupdate 预测步 |
-| **协方差预测** $\mathbf{P}_{k|k-1} = \Phi \mathbf{P}_{k-1|k-1} \Phi^T + Q$ | 同标准 KF | kfupdate 预测步 |
+| **预测** $\mathbf{x}_{k\mid k-1} = \Phi \mathbf{x}_{k-1\mid k-1}$ | $\mathbf{q}_{k\mid k-1} = \mathbf{q}_{k-1} \otimes \text{rv2q}(\boldsymbol{\omega} \cdot T_s)$（隐含在 kfupdate 里） | kfupdate 预测步 |
+| **协方差预测** $\mathbf{P}_{k\mid k-1} = \Phi \mathbf{P}_{k-1\mid k-1} \Phi^T + Q$ | 同标准 KF | kfupdate 预测步 |
 | **量测** $\mathbf{z}_k = [f_x^b, f_y^b, \psi]^T$ | 加计水平 + 磁航向 | L47-54 |
 | **增益** $\mathbf{K} = \mathbf{P}\mathbf{H}^T(\mathbf{H}\mathbf{P}\mathbf{H}^T+\mathbf{R})^{-1}$ | 同标准 KF | kfupdate 量测步 |
-| **更新** $\mathbf{x}_{k|k} = \mathbf{x}_{k|k-1} + \mathbf{K}(\mathbf{z} - \mathbf{H}\mathbf{x}_{k|k-1})$ | 同标准 KF | kfupdate 量测步 |
+| **更新** $\mathbf{x}_{k\mid k} = \mathbf{x}_{k\mid k-1} + \mathbf{K}(\mathbf{z} - \mathbf{H}\mathbf{x}_{k\mid k-1})$ | 同标准 KF | kfupdate 量测步 |
 | **归一化** $\mathbf{q} \leftarrow \mathbf{q}/\Vert\mathbf{q}\Vert$ | 四元数约束 | L55 |
 
 > **关键**：QEKF 直接调用 PSINS 的通用 `kfupdate.m` 做预测+量测更新，自己只负责构建 $\Phi$、$H$、$R$ 三个矩阵。**这就是为什么先学 09_kfupdate.md 再看这里会非常轻松。**

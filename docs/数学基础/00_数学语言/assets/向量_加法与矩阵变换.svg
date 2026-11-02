@@ -1,0 +1,28 @@
+<svg viewBox="0 0 680 300" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>向量加法与矩阵变换</title>
+  <desc>左图展示向量加法的平行四边形，右图展示矩阵把单位正方形变成平行四边形。</desc>
+  <text x="40" y="32" fill="#333333" font-size="15">向量与矩阵的几何意义</text>
+  <text x="40" y="56" fill="#5f5e5a" font-size="13">向量加法：平行四边形</text>
+  <line x1="60" y1="230" x2="340" y2="230" stroke="#333333" stroke-width="1"/>
+  <line x1="140" y1="230" x2="140" y2="60" stroke="#333333" stroke-width="1"/>
+  <line x1="140" y1="230" x2="240" y2="190" stroke="#185fa5" stroke-width="3"/>
+  <line x1="140" y1="230" x2="180" y2="130" stroke="#d85a30" stroke-width="3"/>
+  <line x1="140" y1="230" x2="280" y2="90" stroke="#1d9e75" stroke-width="2.5" stroke-dasharray="6 4"/>
+  <line x1="240" y1="190" x2="280" y2="90" stroke="#888780" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="180" y1="130" x2="280" y2="90" stroke="#888780" stroke-width="1" stroke-dasharray="4 4"/>
+  <text x="246" y="184" fill="#185fa5" font-size="13">u</text>
+  <text x="166" y="124" fill="#d85a30" font-size="13">v</text>
+  <text x="286" y="86" fill="#1d9e75" font-size="13">u+v</text>
+  <text x="250" y="250" fill="#5f5e5a" font-size="12">x</text>
+  <text x="148" y="76" fill="#5f5e5a" font-size="12">y</text>
+  <text x="380" y="56" fill="#5f5e5a" font-size="13">矩阵变换：单位正方形 → 平行四边形</text>
+  <line x1="400" y1="230" x2="660" y2="230" stroke="#333333" stroke-width="1"/>
+  <line x1="470" y1="230" x2="470" y2="60" stroke="#333333" stroke-width="1"/>
+  <polygon points="470,230 520,230 520,180 470,180" fill="none" stroke="#888780" stroke-width="1.5" stroke-dasharray="4 4"/>
+  <polygon points="470,230 570,230 620,180 520,180" fill="#cfe3f7" stroke="#185fa5" stroke-width="2"/>
+  <text x="438" y="166" fill="#888780" font-size="12">单位正方形</text>
+  <text x="570" y="166" fill="#185fa5" font-size="12">A·正方形</text>
+  <text x="600" y="250" fill="#5f5e5a" font-size="12">x</text>
+  <text x="478" y="76" fill="#5f5e5a" font-size="12">y</text>
+  <text x="40" y="282" fill="#888780" font-size="12">矩阵不是"一堆数"，而是把整个平面按列向量重新铺一遍</text>
+</svg>

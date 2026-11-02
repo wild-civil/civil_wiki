@@ -1,0 +1,27 @@
+<svg viewBox="0 0 680 300" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>定积分与黎曼和</title>
+  <desc>左图是曲线下的面积，右图是用矩形逼近该面积的黎曼和。</desc>
+  <text x="40" y="32" fill="#333333" font-size="15">积分 = 累积（曲线下的面积）</text>
+  <text x="40" y="56" fill="#5f5e5a" font-size="13">定积分：精确面积</text>
+  <line x1="80" y1="240" x2="330" y2="240" stroke="#333333" stroke-width="1"/>
+  <line x1="80" y1="240" x2="80" y2="60" stroke="#333333" stroke-width="1"/>
+  <path d="M80 200 Q200 60 320 180 L320 240 L80 240 Z" fill="#cfe3f7"/>
+  <path d="M80 200 Q200 60 320 180" fill="none" stroke="#185fa5" stroke-width="2.5"/>
+  <text x="150" y="150" fill="#185fa5" font-size="13">面积 = 累积量</text>
+  <text x="300" y="262" fill="#5f5e5a" font-size="12">x</text>
+  <text x="88" y="76" fill="#5f5e5a" font-size="12">y</text>
+  <text x="380" y="56" fill="#5f5e5a" font-size="13">黎曼和：用矩形逼近</text>
+  <line x1="420" y1="240" x2="660" y2="240" stroke="#333333" stroke-width="1"/>
+  <line x1="420" y1="240" x2="420" y2="60" stroke="#333333" stroke-width="1"/>
+  <rect x="420" y="178" width="38" height="62" fill="#cfe3f7" stroke="#185fa5" stroke-width="1"/>
+  <rect x="458" y="147" width="38" height="93" fill="#cfe3f7" stroke="#185fa5" stroke-width="1"/>
+  <rect x="496" y="129" width="38" height="111" fill="#cfe3f7" stroke="#185fa5" stroke-width="1"/>
+  <rect x="534" y="122" width="38" height="118" fill="#cfe3f7" stroke="#185fa5" stroke-width="1"/>
+  <rect x="572" y="128" width="38" height="112" fill="#cfe3f7" stroke="#185fa5" stroke-width="1"/>
+  <rect x="610" y="152" width="40" height="88" fill="#cfe3f7" stroke="#185fa5" stroke-width="1"/>
+  <path d="M420 200 Q540 60 650 180" fill="none" stroke="#185fa5" stroke-width="2" stroke-dasharray="5 3"/>
+  <text x="480" y="108" fill="#185fa5" font-size="13">n 越大越准</text>
+  <text x="640" y="262" fill="#5f5e5a" font-size="12">x</text>
+  <text x="428" y="76" fill="#5f5e5a" font-size="12">y</text>
+  <text x="40" y="282" fill="#888780" font-size="12">积分就是"把无限多个小矩形加起来"；采样系统里用梯形法/矩形法做数值积分</text>
+</svg>
