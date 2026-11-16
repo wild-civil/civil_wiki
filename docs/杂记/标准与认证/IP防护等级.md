@@ -143,6 +143,6 @@ IP 6 8
 
 ## 关联与延伸
 
-- 本组首页：[标准与认证](index.md)
+- 本组首页：[标准与认证](/杂记/标准与认证/)
 - 所在分区：[杂记 / Notes](../../博客/杂记.md)
 - 外链：[IP code — Wikipedia（英文）](https://en.wikipedia.org/wiki/IP_code)

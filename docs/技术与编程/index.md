@@ -12,6 +12,7 @@ tags: [MOC, 技术]
 
 ## 主题分区
 ### 📌 核心概念
+- [三维建模](三维建模/index.md) — 参数化实体建模与多边形建模的区别，SolidWorks / Fusion 360 / Blender 怎么选
 - [SVG 动手区](前端设计/SVG/index.md) — 矢量图（SVG）动手：读图 / 改图 / 双主题 / 排错
 
 ### 🛠 实践与案例
