@@ -6,6 +6,7 @@
      · 修复 toggleAllContent 末尾的 ReferenceError
      · 视频改为进入视口才加载并播放（原作 48 路 autoplay 同屏）
      · 增加亮/暗/跟随系统 三态主题
+     · 增加「中文概括」总开关（默认关闭，状态存 localStorage）
      · 支持深链接（#Move 之类）自动展开对应卡片
    ========================================================================== */
 
@@ -93,6 +94,30 @@
     });
   }
 
+  /* ---------------- 中文概括开关 ---------------- */
+
+  function setupZh() {
+    var btn = document.getElementById('btnZh');
+    if (!btn) return;
+    var ZH_KEY = 'blendershortcuts-zh';
+
+    function paint(on) {
+      root.setAttribute('data-zh', on ? 'on' : 'off');
+      btn.textContent = on ? '中文概括：开' : '中文概括';
+      btn.setAttribute('aria-pressed', String(on));
+      btn.classList.toggle('is-on', on);
+    }
+
+    var on = root.getAttribute('data-zh') === 'on';
+    paint(on);
+
+    btn.addEventListener('click', function () {
+      on = !on;
+      paint(on);
+      try { localStorage.setItem(ZH_KEY, on ? 'on' : 'off'); } catch (e) {}
+    });
+  }
+
   /* ---------------- 全部折叠 / 展开 ---------------- */
 
   function setupCollapse() {
@@ -143,6 +168,7 @@
     }
 
     setupLazyVideo();
+    setupZh();
     setupCollapse();
     revealTarget();
     window.addEventListener('hashchange', revealTarget);
