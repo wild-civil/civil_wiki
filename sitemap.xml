@@ -937,6 +937,18 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://wiki.hanvon.top/数学基础/01_代数与几何/04_SO3与SE3李代数/</loc>
+    <lastmod>2026-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wiki.hanvon.top/数学基础/01_代数与几何/05_向量空间与线性结构/</loc>
+    <lastmod>2026-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://wiki.hanvon.top/数学基础/02_分析与微积分/01_导数与微分基础/</loc>
     <lastmod>2026-11-16</lastmod>
     <changefreq>weekly</changefreq>
@@ -944,6 +956,18 @@
   </url>
   <url>
     <loc>https://wiki.hanvon.top/数学基础/02_分析与微积分/02_微分方程与状态空间离散化/</loc>
+    <lastmod>2026-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wiki.hanvon.top/数学基础/02_分析与微积分/03_泰勒展开与小角度近似/</loc>
+    <lastmod>2026-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wiki.hanvon.top/数学基础/02_分析与微积分/04_多元微积分与矩阵求导/</loc>
     <lastmod>2026-11-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -986,6 +1010,18 @@
   </url>
   <url>
     <loc>https://wiki.hanvon.top/数学基础/05_数值与实现/01_矩阵分解与数值线性代数/</loc>
+    <lastmod>2026-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wiki.hanvon.top/数学基础/05_数值与实现/02_数值积分与ODE离散/</loc>
+    <lastmod>2026-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wiki.hanvon.top/数学基础/06_估计与优化/01_估计与优化基础/</loc>
     <lastmod>2026-11-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>

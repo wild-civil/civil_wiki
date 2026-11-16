@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" width="760" height="420" font-family="'Segoe UI','Microsoft YaHei','PingFang SC',Arial,sans-serif" role="img">
+<title>小角度近似的单位圆几何</title>
+<desc>单位圆中弧长 theta、sin theta 与 1-cos theta 的几何关系，以及 0.1 弧度时的数值对照。</desc>
+<style>
+.ttl{font-size:18px;font-weight:700;fill:#202124}
+.sub{font-size:12.5px;fill:#5f6368}
+.ax{stroke:#9aa0a6;stroke-width:1.2}
+.grid{stroke:#e8eaed;stroke-width:1}
+.lb{font-size:13px;fill:#202124}
+.sm{font-size:12px;fill:#5f6368}
+.num{font-size:11px;fill:#80868b}
+.box{fill:#f8f9fa;stroke:#dadce0;stroke-width:1}
+</style>
+<rect width="760" height="420" fill="#ffffff"/>
+<text class="ttl" x="380.0" y="30.0" text-anchor="middle" >单位圆里看清楚：谁是一阶，谁是二阶</text>
+<text class="sub" x="380.0" y="51.0" text-anchor="middle" >几何图把角度放大到 0.45 rad 便于观察；右侧数值按 θ = 0.1 rad 计算</text>
+<line class="ax" x1="200.0" y1="330.0" x2="449.0" y2="330.0"/>
+<line class="ax" x1="218.0" y1="346.0" x2="218.0" y2="105.0"/>
+<path d="M 423.0 330.0 A 205 205 0 0 0 218.0 125.0" fill="none" stroke="#9aa0a6" stroke-width="1.6"/>
+<line x1="218.0" y1="330.0" x2="423.0" y2="330.0" stroke="#5f6368" stroke-width="2"/>
+<line x1="218.0" y1="330.0" x2="402.6" y2="240.8" stroke="#1a73e8" stroke-width="2.2"/>
+<path d="M 423.0 330.0 A 205 205 0 0 0 402.6 240.8" fill="none" stroke="#d93025" stroke-width="4"/>
+<line x1="402.6" y1="240.8" x2="402.6" y2="330.0" stroke="#188038" stroke-width="3"/>
+<line x1="218.0" y1="324.0" x2="402.6" y2="324.0" stroke="#1a73e8" stroke-width="3"/>
+<line x1="402.6" y1="336.0" x2="423.0" y2="336.0" stroke="#d93025" stroke-width="4"/>
+<circle cx="402.6" cy="240.8" r="4" fill="#202124"/>
+<circle cx="218.0" cy="330.0" r="3" fill="#202124"/>
+<text class="sm" x="202.0" y="352.0" text-anchor="end" >O</text>
+<text class="lb" x="266.0" y="310.0" text-anchor="start" fill="#d93025">θ</text>
+<text class="sm" x="310.3" y="316.0" text-anchor="middle" fill="#1a73e8">cos θ</text>
+<text class="sm" x="412.6" y="289.4" text-anchor="start" fill="#188038">sin θ</text>
+<text class="sm" x="412.8" y="356.0" text-anchor="middle" fill="#d93025">1 − cos θ</text>
+<text class="sm" x="431.0" y="318.0" text-anchor="start" >A</text>
+<text class="sm" x="34.0" y="88.0" text-anchor="start" >P = (cos θ, sin θ)</text>
+<text class="sm" x="34.0" y="108.0" text-anchor="start" >红色粗弧 = 弧长 θ（弧度定义）</text>
+<text class="sm" x="34.0" y="128.0" text-anchor="start" >绿线 = sin θ，蓝线 = cos θ</text>
+<rect class="box" x="468" y="84" width="264" height="278" rx="10"/>
+<text class="lb" x="486.0" y="114.0" text-anchor="start" font-weight="700">θ = 0.1 rad 时的三条长度</text>
+<text class="sm" x="488.0" y="152.0" text-anchor="start" >弧长  θ</text>
+<text class="lb" x="712.0" y="152.0" text-anchor="end" fill="#d93025" font-weight="700">0.100000</text>
+<line x1="486" y1="161.0" x2="714" y2="161.0" stroke="#e8eaed" stroke-width="1"/>
+<text class="sm" x="488.0" y="192.0" text-anchor="start" >sin θ</text>
+<text class="lb" x="712.0" y="192.0" text-anchor="end" fill="#188038" font-weight="700">0.099833</text>
+<line x1="486" y1="201.0" x2="714" y2="201.0" stroke="#e8eaed" stroke-width="1"/>
+<text class="sm" x="488.0" y="232.0" text-anchor="start" >1 − cos θ</text>
+<text class="lb" x="712.0" y="232.0" text-anchor="end" fill="#d93025" font-weight="700">0.004996</text>
+<line x1="486" y1="241.0" x2="714" y2="241.0" stroke="#e8eaed" stroke-width="1"/>
+<text class="sm" x="488.0" y="284.0" text-anchor="start" >sin θ 与 θ 只差 0.17% → 一阶</text>
+<text class="sm" x="488.0" y="306.0" text-anchor="start" >1 − cos θ ≈ θ²/2 → 二阶小量</text>
+<text class="lb" x="488.0" y="334.0" text-anchor="start" fill="#1a73e8" font-weight="700">所以 sin θ ≈ θ，cos θ ≈ 1</text>
+<text class="sub" x="380.0" y="406.0" text-anchor="middle" >θ 越小，弦与弧越贴合；丢掉 sin θ 的一阶项，等于把这段竖直变化抹成 0</text>
+</svg>
