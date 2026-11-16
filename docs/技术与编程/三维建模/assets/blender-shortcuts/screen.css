@@ -135,20 +135,37 @@ body {
   color: var(--text);
 }
 
+/* 键帽：单个按键的胶囊。
+   ⚠️ 不要用大的 min-width——一行里可能出现 4 个键帽（Alt + G , R , S），
+   每个都被撑到 116px 就会被挤到第二行。这里只留 30px 保证单字母键不塌，
+   其余靠 padding 与文字自然撑开。 */
 .itemLink h3 em {
   display: inline-block;
-  min-width: 116px;
-  padding: 6px 14px;
+  min-width: 30px;
+  padding: 5px 10px;
   margin-top: 2px;
   font-style: normal;
   font-size: 13px;
   font-weight: 500;
+  text-align: center;
   color: var(--key-text);
   background: var(--key-bg);
   border: 1px solid var(--key-border);
   border-radius: 7px;
   white-space: nowrap;
 }
+
+/* 一排键帽整体不拆行。用 white-space 而不是 flex：flex 会把键名之间的
+   " + "、", " 文本节点变成匿名 flex 项，前后空格可能被吃掉，渲染成
+   "Alt+G,R,S"。nowrap 保持正常行内流，只是不允许断行。 */
+.itemLink h3:last-of-type {
+  white-space: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+.itemLink h3:last-of-type::-webkit-scrollbar { display: none; }
 
 .itemLink video {
   display: block;
