@@ -1,0 +1,288 @@
+/* ==========================================================================
+   Blender Shortcuts —— 复刻版样式
+   原作：Hollis Brown, https://hollisbrown.github.io/blendershortcuts/ (GPL-3.0)
+   本文件已重写：双主题变量、卡片圆角与投影、键帽样式、懒加载占位。
+   ========================================================================== */
+
+:root {
+  color-scheme: light;
+  --page-bg:      #f6f7f9;
+  --card-bg:      #ffffff;
+  --card-border:  #e2e6ec;
+  --detail-bg:    #f3f5f8;
+  --text:         #1f2328;
+  --text-dim:     #57606d;
+  --text-faint:   #8b95a3;
+  --key-bg:       #eef1f5;
+  --key-border:   #ccd3dd;
+  --key-text:     #1f2328;
+  --accent:       #2f6fed;
+  --shadow:       0 1px 2px rgba(16, 24, 40, .06);
+  --shadow-hover: 0 6px 16px rgba(16, 24, 40, .10);
+  --red:          #d93025;
+  --green:        #1a7f37;
+  --blue:         #1a56db;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page-bg:      #101010;
+  --card-bg:      #202020;
+  --card-border:  #2e2e2e;
+  --detail-bg:    #181818;
+  --text:         #e6e6e6;
+  --text-dim:     #a8a8a8;
+  --text-faint:   #767676;
+  --key-bg:       #0a0a0a;
+  --key-border:   #4a4a4a;
+  --key-text:     #f0f0f0;
+  --accent:       #7aa2f7;
+  --shadow:       0 1px 2px rgba(0, 0, 0, .5);
+  --shadow-hover: 0 6px 18px rgba(0, 0, 0, .6);
+  --red:          #f63652;
+  --green:        #86c425;
+  --blue:         #2e83e3;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--page-bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", "PingFang SC",
+               "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  transition: background .18s ease, color .18s ease;
+}
+
+.wrap {
+  max-width: 1560px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ---------- 页头 ---------- */
+
+#header {
+  padding: 40px 0 28px;
+  max-width: 760px;
+}
+
+#header h1 {
+  font-size: 28px;
+  font-weight: 500;
+  margin: 0 0 10px;
+  letter-spacing: -.01em;
+}
+
+#header p {
+  margin: 0 0 8px;
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--text-dim);
+}
+
+#header a { color: var(--accent); text-decoration: none; }
+#header a:hover { text-decoration: underline; }
+
+.meta {
+  font-size: 12px;
+  color: var(--text-faint);
+  line-height: 1.7;
+}
+
+/* ---------- 卡片网格 ---------- */
+
+.main {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  padding-bottom: 60px;
+  align-items: stretch;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  scroll-margin-top: 16px;
+}
+
+.itemLink {
+  display: block;
+  padding: 22px 20px 0;
+  text-align: center;
+  text-decoration: none;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-bottom: none;
+  border-radius: 12px 12px 0 0;
+  box-shadow: var(--shadow);
+  user-select: none;
+  transition: box-shadow .18s ease, border-color .18s ease;
+}
+
+.itemLink:hover {
+  box-shadow: var(--shadow-hover);
+  border-color: var(--accent);
+}
+
+.itemLink h3 {
+  font-size: 15px;
+  font-weight: 500;
+  margin: 0 0 10px;
+  color: var(--text);
+}
+
+.itemLink h3 em {
+  display: inline-block;
+  min-width: 116px;
+  padding: 6px 14px;
+  margin-top: 2px;
+  font-style: normal;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--key-text);
+  background: var(--key-bg);
+  border: 1px solid var(--key-border);
+  border-radius: 7px;
+  white-space: nowrap;
+}
+
+.itemLink video {
+  display: block;
+  width: 100%;
+  margin: 18px auto 0;
+  border-radius: 6px 6px 0 0;
+  background: var(--detail-bg);
+}
+
+/* ---------- 说明区 ---------- */
+
+.content {
+  flex: 1;
+  padding: 16px 20px 20px;
+  background: var(--detail-bg);
+  border: 1px solid var(--card-border);
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  font-size: 13px;
+  line-height: 1.75;
+  color: var(--text-dim);
+  box-shadow: var(--shadow);
+}
+
+.content ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.content li + li { margin-top: 8px; }
+
+.content p { margin: 0; }
+
+/* 行内键名 */
+.content em {
+  font-style: normal;
+  color: var(--text);
+  background: var(--key-bg);
+  border: 1px solid var(--key-border);
+  border-radius: 4px;
+  padding: 1px 5px;
+  white-space: nowrap;
+  font-size: 12px;
+}
+
+.content em.important {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.red   { color: var(--red)   !important; }
+.green { color: var(--green) !important; }
+.blue  { color: var(--blue)  !important; }
+
+.content em.red,
+.content em.green,
+.content em.blue { font-weight: 500; }
+
+/* ---------- 悬浮工具条 ---------- */
+
+#menu {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  gap: 8px;
+  z-index: 50;
+}
+
+#menu button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 38px;
+  min-width: 38px;
+  padding: 0 12px;
+  font-family: inherit;
+  font-size: 13px;
+  color: var(--text-dim);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 9px;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color .15s ease, border-color .15s ease, box-shadow .15s ease;
+}
+
+#menu button:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  box-shadow: var(--shadow-hover);
+}
+
+#menu button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---------- 页脚 ---------- */
+
+footer {
+  padding: 24px 0 48px;
+  font-size: 12px;
+  line-height: 1.9;
+  color: var(--text-faint);
+  border-top: 1px solid var(--card-border);
+}
+
+footer a { color: var(--text-dim); }
+footer a:hover { color: var(--accent); }
+
+/* ---------- 折叠态 ---------- */
+
+.content.is-hidden { display: none; }
+
+/* ---------- 窄屏 ---------- */
+
+@media screen and (max-width: 720px) {
+  .wrap { padding: 0 14px; }
+  #header { padding: 28px 0 20px; }
+  #header h1 { font-size: 22px; }
+  .main {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  #menu { top: 10px; right: 10px; }
+  #menu button { height: 34px; font-size: 12px; padding: 0 10px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}

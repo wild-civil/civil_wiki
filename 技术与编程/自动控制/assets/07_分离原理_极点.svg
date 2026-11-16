@@ -1,0 +1,62 @@
+<svg viewBox="0 0 680 300" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>分离原理：组合系统的极点 = 控制器极点 ∪ 观测器极点</title>
+  <desc>s 平面上，控制器极点 −2、−3 与观测器极点 −10（二重）组合后恰好是四个极点，说明两者可独立设计。</desc>
+
+  <text x="20" y="26" fill="#333333" font-size="15">分离原理：两组极点各管各的</text>
+  <text x="20" y="44" fill="#5f5e5a" font-size="11">组合系统 eig = eig(A − BK) ∪ eig(A − LC) = {−2, −3, −10, −10}</text>
+
+  <!-- 网格与坐标轴 -->
+  <g stroke="#e9e9e9" stroke-width="1">
+    <line x1="102" y1="65" x2="102" y2="225"/>
+    <line x1="185" y1="65" x2="185" y2="225"/>
+    <line x1="268" y1="65" x2="268" y2="225"/>
+    <line x1="351" y1="65" x2="351" y2="225"/>
+    <line x1="434" y1="65" x2="434" y2="225"/>
+    <line x1="517" y1="65" x2="517" y2="225"/>
+    <line x1="600" y1="65" x2="600" y2="225"/>
+    <line x1="60" y1="92" x2="640" y2="92"/>
+    <line x1="60" y1="198" x2="640" y2="198"/>
+  </g>
+  <line x1="60" y1="145" x2="640" y2="145" stroke="#333333" stroke-width="1.3"/>
+  <line x1="557" y1="65" x2="557" y2="225" stroke="#333333" stroke-width="1.3"/>
+  <text x="636" y="138" fill="#5f5e5a" font-size="11" text-anchor="end">Re</text>
+  <text x="564" y="72" fill="#5f5e5a" font-size="11">Im</text>
+
+  <!-- 刻度 -->
+  <g font-family="Lucida Console, Courier New, monospace" font-size="10" fill="#888780" text-anchor="middle">
+    <text x="143" y="242">−10</text>
+    <text x="268" y="242">−7</text>
+    <text x="394" y="242">−4</text>
+    <text x="474" y="242">−2</text>
+    <text x="433" y="242">−3</text>
+    <text x="557" y="242">0</text>
+  </g>
+
+  <!-- 控制器极点 -2, -3 -->
+  <g stroke="#185fa5" stroke-width="2.2">
+    <line x1="468" y1="139" x2="480" y2="151"/><line x1="468" y1="151" x2="480" y2="139"/>
+    <line x1="427" y1="139" x2="439" y2="151"/><line x1="427" y1="151" x2="439" y2="139"/>
+  </g>
+  <text x="474" y="132" fill="#185fa5" font-size="11" text-anchor="middle">−2</text>
+  <text x="433" y="166" fill="#185fa5" font-size="11" text-anchor="middle">−3</text>
+
+  <!-- 观测器极点 -10 (二重) -->
+  <g stroke="#d85a30" stroke-width="2.2">
+    <line x1="137" y1="139" x2="149" y2="151"/><line x1="137" y1="151" x2="149" y2="139"/>
+  </g>
+  <text x="143" y="132" fill="#d85a30" font-size="11" text-anchor="middle">−10（×2）</text>
+
+  <!-- 快慢对比 -->
+  <line x1="160" y1="190" x2="420" y2="190" stroke="#888780" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <text x="290" y="184" fill="#5f5e5a" font-size="11" text-anchor="middle">观测器极点比控制器快 3~5 倍</text>
+
+  <!-- 图例 -->
+  <g stroke-width="2">
+    <line x1="62" y1="268" x2="70" y2="276" stroke="#185fa5"/><line x1="62" y1="276" x2="70" y2="268" stroke="#185fa5"/>
+    <line x1="252" y1="268" x2="260" y2="276" stroke="#d85a30"/><line x1="252" y1="276" x2="260" y2="268" stroke="#d85a30"/>
+  </g>
+  <text x="78" y="276" fill="#333333" font-size="11">控制器极点 eig(A − BK)：由 K 决定</text>
+  <text x="268" y="276" fill="#333333" font-size="11">观测器极点 eig(A − LC)：由 L 决定</text>
+
+  <text x="20" y="296" fill="#888780" font-size="11">先按"状态可测"设计 K，再单独设计 L 估状态；组合后两组极点不相加、不串扰。</text>
+</svg>
