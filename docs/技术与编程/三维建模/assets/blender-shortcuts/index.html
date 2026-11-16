@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme="light">
+<html lang="zh-CN" data-theme="light" data-zh="off">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,6 +17,8 @@
     var actual = (m === 'auto') ? (dark ? 'dark' : 'light') : m;
     document.documentElement.setAttribute('data-theme', actual);
     document.documentElement.setAttribute('data-theme-mode', m);
+    var zh = localStorage.getItem('blendershortcuts-zh') === 'on';
+    document.documentElement.setAttribute('data-zh', zh ? 'on' : 'off');
   } catch (e) {}
 })();
 </script>
@@ -24,6 +26,7 @@
 <body>
 
 <div id="menu">
+  <button type="button" id="btnZh" aria-pressed="false" aria-label="显示或隐藏每条的中文概括">中文概括</button>
   <button type="button" id="btnTheme" aria-label="切换主题">跟随系统</button>
   <button type="button" id="btnCollapse" aria-expanded="true">收起全部</button>
 </div>
@@ -58,6 +61,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">视角全靠鼠标：中键拖动旋转，Shift+拖动平移，Ctrl+拖动或滚轮缩放。</p>
                 <ul>
                     <li>
                         <p>Drag <em class="shortcut">Middle Mouse</em> to
@@ -86,6 +90,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">小键盘 1/3/7 看正前、右侧、顶部，9 反向，5 正交，2/4/6/8 每次转 15°。</p>
                 <ul>
                     <li>
                         <p><em class="shortcut">Num 1</em>, <em class="shortcut">Num 3</em> & <em class="shortcut">Num
@@ -118,6 +123,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">小键盘 0 切到场景相机视角；加 Ctrl 指定相机，Ctrl+Alt 反过来让相机对齐当前视角。</p>
                 <ul>
                     <li>
                         <p><em class="shortcut">Numpad 0</em> to align the view with the scene camera.</p>
@@ -142,6 +148,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">小键盘 . 把视图拉到选中物；/ 进局部视图，只显示选中的东西。</p>
                 <ul>
                     <li>
                         <p> <em class="shortcut">Numpad &#46;</em> to set the <em class="important">Point of Interest</em> to the current
@@ -162,6 +169,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">Ctrl+Tab 列出所有模式；Tab 在物体模式和编辑模式之间直接切。</p>
                 <ul>
                     <li>
                         <p><em class="shortcut">Ctrl</em> + <em class="shortcut">Tab</em> to see all available
@@ -187,6 +195,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">Alt+Q 切到鼠标悬停的物体，不改变当前模式，摆姿势时也能用。</p>
                 <ul>
                     <li>
                         <p><em class="shortcut">Alt</em> + <em class="shortcut">Q</em> to switch to the hovered object without changing modes.
@@ -208,6 +217,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">G 抓起选中物跟着鼠标走；按 X/Y/Z 锁轴，连按两次切局部轴，加 Shift 排除某轴。</p>
                 <ul>
                     <li>
                         <p> Press <em class="shortcut red">X</em>, <em class="shortcut green">Y</em> or <em
@@ -236,6 +246,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">R 旋转；按 X/Y/Z 锁轴，连按两次进入万向节模式。</p>
                 <ul>
                     <li>
                         <p> Press <em class="shortcut red">X</em>, <em class="shortcut green">Y</em> or <em
@@ -263,6 +274,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">S 缩放；同样支持锁轴，连按两次切到局部轴。</p>
                 <ul>
                     <li>
                         <p> Press <em class="shortcut red">X</em>, <em class="shortcut green">Y</em> or <em
@@ -287,6 +299,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">Shift+A 调出添加菜单，加物体、加网格还是加节点，取决于当前上下文。</p>
                 <ul>
                     <li>
                         <p><em class="shortcut">Shift</em> + <em class="shortcut">A</em> adds new data.</p>
@@ -307,6 +320,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">X 删除选中：物体模式删物体，编辑模式删点、线、面。</p>
                 <ul>
                     <li>
                         <p>Press <em class="shortcut">X</em> in <em class="important">Object Mode</em> to delete
@@ -328,6 +342,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">H 隐藏选中，Shift+H 只留选中、其余全藏，Alt+H 全部恢复。</p>
                 <ul>
                     <li>
                         <p><em class="shortcut">H</em> to hide the selection.</p>
@@ -355,6 +370,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">Shift+D 复制一份；Alt+D 做关联复制，两者共用同一份数据。</p>
                 <ul>
                     <li>
                         <p>
@@ -381,6 +397,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">Z 呼出着色饼菜单；Shift+Z 切线框和透视，Alt+Z 只切透视。</p>
                 <ul>
                     <li>
                         <p><em class="shortcut">Shift</em> + <em class="shortcut">Z</em> to toggle <em
@@ -403,6 +420,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">1/2/3 切换点、线、面选择；切换时已选内容可能跟着变。</p>
                 <ul>
                     <li>
                         <p><em class="shortcut">1</em> for <em class="important">vertex select.</em></p>
@@ -428,6 +446,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">Shift+S 打开吸附菜单，把东西精确挪到另一处，最常用来摆 3D 游标。</p>
                 <ul>
                     <li>
                         <p>
@@ -452,6 +471,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">按住 Ctrl 临时开启吸附，G/R/S 和滑杆都生效。</p>
                 <ul>
                     <li>
                         <p>Hold <em class="shortcut">Ctrl</em> to enable snapping.
@@ -478,6 +498,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">G/R/S 进行中按 B 指定吸附基点：第一次点基点，第二次点目标。</p>
                 <ul>
                     <li>
                         <p>After <em class="important">Move</em>, <em class="important">Rotate</em> or <em
@@ -500,6 +521,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">Alt+G/R/S 分别把位置、旋转、缩放清零，仅物体模式有效。</p>
                 <ul>
                     <li>
                         <p>Only in <em class="important">Object Mode</em></p>
@@ -526,6 +548,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">Ctrl+A 把变换烘焙进数据；鼠标悬停在修改器上可直接应用该修改器。</p>
                 <ul>
                     <li>
                         <p>Only in <em class="important">Object Mode</em></p>
@@ -549,6 +572,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">Shift+R 重复上一个操作，并以上一次的结果为起点继续。</p>
                 <ul>
                     <li>
                         <p>
@@ -573,6 +597,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">A 全选，Alt+A 取消全选；选什么取决于当前上下文。</p>
                 <ul>
                     <li>
                         <p><em class="shortcut">A</em> to select all objects, meshes, keyframes etc. depending the
@@ -595,6 +620,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">Shift+左键点未选的加选，点已选的从选择里去掉。</p>
                 <ul>
                     <li>
                         <p><em class="shortcut">Shift</em> + <em class="shortcut">Left Mouse</em> on unselected to add
@@ -618,6 +644,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">Alt+左键点边选整圈循环；加 Shift 可增删，只对四边面有效。</p>
                 <ul>
                     <li>
                         <p><em class="shortcut">Alt</em> + <em class="shortcut">Left Mouse</em>
@@ -643,6 +670,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">Ctrl+左键补最短路径；加 Shift 拖出一块区域加选。</p>
                 <ul>
                     <li>
                         <p><em class="shortcut">Ctrl</em>+<em class="shortcut">Left Mouse</em> to add the shortest path
@@ -664,6 +692,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">L 选中光标下相连的所有元素；Ctrl+L 按当前选择扩散，Shift+L 去掉。</p>
                 <ul>
                     <li>
                         <p><em class="shortcut">L</em> to select all linked vertices under the cursor.</p>
@@ -688,6 +717,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">Ctrl+小键盘 +/- 向外扩选或向内缩选一圈；加 Shift 沿用上次的间距。</p>
                 <ul>
                     <li>
                         <p><em class="shortcut">Ctrl</em> + <em class="shortcut">Num +</em> to select more.</p>
@@ -711,9 +741,10 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">Shift+G 选中特征相近的元素，物体和节点也适用。</p>
                 <ul>
                     <li>
-                        <p><em class="shortcut">Ctrl</em> + <em class="shortcut">G</em> to select all with similar
+                        <p><em class="shortcut">Shift</em> + <em class="shortcut">G</em> to select all with similar
                             traits to the current selection.</p>
                     </li>
                     <li>
@@ -731,6 +762,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">E 挤出并直接跟着鼠标走；按 Esc 结束会留下一圈重合点。</p>
                 <ul>
                     <li>
                         <p><em class="shortcut">E</em> to extrude a connected copy of the selected mesh and wait for
@@ -756,6 +788,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">I 在选中面里内插一圈；再按 I 改为逐面内插，O 反向成外扩，B 控制边界。</p>
                 <ul>
                     <li>
                         <p><em class="shortcut">I</em> to inset around the selected faces.
@@ -785,6 +818,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">F 补面，两个孤立点之间按 F 只会连出一条边。</p>
                 <ul>
                     <li>
                         <p><em class="shortcut">F</em> to add a new face to the mesh. Adds a loose edge if two separate
@@ -812,6 +846,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">M 合并顶点；按距离合并能一次清掉挤在一起的重复点。</p>
                 <ul>
                     <li>
                         <p>Merge all selected vertices at a specified location.
@@ -833,6 +868,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">V 撕开顶点或边，撕开方向由鼠标位置决定；Alt+V 撕开并补面。</p>
                 <ul>
                     <li>
                         <p><em class="shortcut">V</em> to rip vertices or edges.</p>
@@ -855,6 +891,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">Y 把选中部分断开，但仍属于同一个物体和数据块。</p>
                 <ul>
                     <li>
                         <p><em class="shortcut">Y</em> to split the selection.</p>
@@ -877,6 +914,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">P 把选中部分拆成独立物体，原来的修改器会一起带过去。</p>
                 <ul>
                     <li>
                         <p><em class="shortcut">P</em> to separate the selection into a new object.</p>
@@ -896,6 +934,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">Ctrl+R 环切，滚轮加减段数，同样只对四边面有效。</p>
                 <ul>
                     <li>
                         <p><em class="shortcut">Ctrl</em> + <em class="shortcut">R</em> to cut a face loop into
@@ -919,6 +958,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">J 按选点的先后顺序连成边，穿过已有面时会自动补顶点。</p>
                 <ul>
                     <li>
                         <p><em class="shortcut">J</em> to connect vertices in the order in which they were selected.</p>
@@ -939,6 +979,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">Ctrl+B 倒角边，Ctrl+Shift+B 倒角顶点，滚轮调段数。</p>
                 <ul>
                     <li>
                         <p><em class="shortcut">Ctrl</em> + <em class="shortcut">B</em> to bevel edges.</p>
@@ -972,6 +1013,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">Ctrl+X 融并：删掉点但把周围边接起来；X 菜单里的 Limited Dissolve 按角度批量融并。</p>
                 <ul>
                     <li>
                         <p><em class="shortcut">Ctrl</em> + <em class="shortcut">X</em> to delete vertices but connect
@@ -994,6 +1036,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">Alt+S 沿顶点法线推拉，是加厚减薄，不是整体缩放。</p>
                 <ul>
                     <li>
                         <p>In <em class="important">Edit Mode</em>, <em class="shortcut">Alt</em> + <em
@@ -1012,6 +1055,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">O 开关衰减编辑，滚轮改影响半径，Shift+O 换衰减曲线。</p>
                 <ul>
                     <li>
                         <p><em class="shortcut">O</em> to toggle proportional editing.</p>
@@ -1034,6 +1078,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">F3 搜操作，上下键选、回车执行——记不住快捷键时就靠它。</p>
                 <ul>
                     <li>
                         <p><em class="shortcut">F3</em> to open operator search.
@@ -1056,6 +1101,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">F2 重命名当前物体，Ctrl+F2 批量重命名多个物体。</p>
                 <ul>
                     <li>
                         <p><em class="shortcut">F2</em> to rename the active object.
@@ -1078,6 +1124,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">Ctrl+右键挤出到 3D 游标处，同时还能调整上一段的方向。</p>
                 <ul>
                     <li>
                         <p><em class="shortcut">Ctrl</em> + <em class="shortcut">Right Mouse</em> to extrude to the
@@ -1100,6 +1147,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">按住 Shift 让鼠标位移变慢，方便精细微调，滑杆也适用。</p>
                 <ul>
                     <li>
                         <p>Hold <em class="shortcut">Shift</em> to divide the mouse input for more precise control.
@@ -1122,6 +1170,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">多选物体时默认只改活动物体，按住 Alt 才能改所有选中的物体。</p>
                 <ul>
                     <li>
                         <p>If you have multiple objects selected, editing parameters will only affect the <em
@@ -1145,6 +1194,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">Shift+Alt+S 把选中顶点往球面推，能把一圈点拉成正圆，球心在 3D 游标。</p>
                 <ul>
                     <li>
                         <p><em class="shortcut">Shift</em> + <em class="shortcut">Alt</em> + <em class="shortcut">S</em>
@@ -1168,6 +1218,7 @@
             </a>
 
             <div class="content">
+                    <p class="zh-lead">Ctrl+1/2/3 加上对应层级的细分曲面修改器，Ctrl+0 关掉它。</p>
                 <ul>
                     <li>
                         <p><em class="shortcut">Ctrl</em> + <em class="shortcut">1, 2, 3</em> to add a subdivision

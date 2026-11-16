@@ -199,6 +199,31 @@ body {
 
 .content p { margin: 0; }
 
+/* 中文一句话概括：默认收起，由右上角「中文概括」按钮统一切换。
+   放在 .content 顶部当导语，英文原文与演示视频保持原样。 */
+.zh-lead {
+  display: none;
+  margin: 0 0 10px;
+  padding: 7px 10px;
+  color: var(--text);
+  background: var(--key-bg);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 6px 6px 0;
+}
+
+html[data-zh="on"] .zh-lead { display: block; }
+
+/* 按钮处于「已开启」状态时给出明确反馈 */
+#menu button.is-on {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--key-bg);
+}
+
+/* 文案从「中文概括」变成「中文概括：开」时不希望挤动旁边的按钮。
+   必须写 #menu #btnZh —— 单写 #btnZh 权重(1,0,0) 会被 #menu button(1,0,1) 压住。 */
+#menu #btnZh { min-width: 108px; }
+
 /* 行内键名 */
 .content em {
   font-style: normal;
